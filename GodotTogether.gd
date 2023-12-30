@@ -19,3 +19,8 @@ func create_user_3d() -> User3D:
 	add_child(usr)
 	return usr
 
+func create_user_2d() -> User2D:
+	var usr = user_2d_scene.instantiate()
+	tree_exiting.connect(usr.queue_free)
+	EditorInterface.get_editor_viewport_2d().add_child(usr)
+	return usr
