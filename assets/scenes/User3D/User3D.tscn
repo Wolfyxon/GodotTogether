@@ -1,0 +1,67 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgsnxd7d2vfr2"]
+
+[ext_resource type="Script" path="res://addons/GodotTogether/assets/scenes/User3D/User3D.gd" id="1_kun10"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5f42m"]
+transparency = 1
+albedo_color = Color(0, 0.631373, 0.466667, 0.572549)
+
+[sub_resource type="SphereMesh" id="SphereMesh_u7t51"]
+material = SubResource("StandardMaterial3D_5f42m")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0cjbq"]
+material = SubResource("StandardMaterial3D_5f42m")
+
+[sub_resource type="PrismMesh" id="PrismMesh_wlo86"]
+material = SubResource("StandardMaterial3D_5f42m")
+
+[node name="User3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00312996, 0, -0.00445247)
+script = ExtResource("1_kun10")
+
+[node name="model" type="Node3D" parent="."]
+
+[node name="ball" type="MeshInstance3D" parent="model"]
+transform = Transform3D(0.713497, 0, 0, 0, 0.713497, 0, 0, 0, 0.713497, 0, 0, -0.0037308)
+mesh = SubResource("SphereMesh_u7t51")
+skeleton = NodePath("../..")
+
+[node name="cylinder" type="MeshInstance3D" parent="model"]
+transform = Transform3D(0.154417, 0, 0, 0, -4.56293e-09, 0.154417, 0, -0.104388, -6.74979e-09, 0, 0, 0.459719)
+mesh = SubResource("CylinderMesh_0cjbq")
+
+[node name="prism" type="MeshInstance3D" parent="model"]
+transform = Transform3D(-0.247998, 2.17801e-08, 5.74564e-16, 0, -1.089e-08, 0.150355, 2.16806e-08, 0.249135, 6.57224e-09, 0, 0, 0.71841)
+mesh = SubResource("PrismMesh_wlo86")
+
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 275.0
+offset_bottom = 74.0
+mouse_filter = 2
+
+[node name="txt" type="VBoxContainer" parent="ui"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = -5
+
+[node name="name" type="Label" parent="ui/txt"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 21
+text = "Username"
+horizontal_alignment = 1
+
+[node name="class" type="Label" parent="ui/txt"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Guest"
+horizontal_alignment = 1
