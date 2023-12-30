@@ -11,13 +11,19 @@ var user_2d_scene = load("res://addons/GodotTogether/assets/scenes/User2D/User2D
 var client = GodotTogetherClient.new()
 var server = GodotTogetherServer.new()
 
+var button = Button.new()
+
 func _enter_tree():
+	button.text = "Godot Together"
+	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
+	button.get_parent().move_child(button,button.get_index()-2)
+	
 	create_user_3d()
 	pass
 
 
 func _exit_tree():
-	pass
+	button.queue_free()
 
 func create_user_3d(name:="Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
