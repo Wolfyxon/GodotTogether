@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bti5j1lw5a1cc"]
+[gd_scene load_steps=3 format=3 uid="uid://bti5j1lw5a1cc"]
 
 [ext_resource type="Texture2D" uid="uid://vpigxkgi1nwp" path="res://addons/GodotTogether/assets/img/cursor.png" id="1_dplva"]
+[ext_resource type="Script" path="res://addons/GodotTogether/assets/scenes/User2D/User2D.gd" id="1_sptkx"]
 
 [node name="User2d" type="Control"]
 layout_mode = 3
@@ -10,6 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("1_sptkx")
 
 [node name="cursor" type="TextureRect" parent="."]
 layout_mode = 0
