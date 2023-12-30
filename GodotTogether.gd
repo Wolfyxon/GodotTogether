@@ -2,6 +2,9 @@
 extends BetterEditorPlugin_GodotTogether
 class_name GodotTogether
 
+const version = "1.0.0"
+const compatibility_version = 1
+
 var user_3d_scene = load("res://addons/GodotTogether/assets/scenes/User3D/User3D.tscn")
 var user_2d_scene = load("res://addons/GodotTogether/assets/scenes/User2D/User2D.tscn")
 
