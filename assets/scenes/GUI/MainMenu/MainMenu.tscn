@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtetxxysjhnv6"]
+
+[ext_resource type="Script" path="res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.gd" id="1_yt0t6"]
+
+[node name="MainMenu" type="PopupPanel"]
+title = "Godot Together"
+initial_position = 5
+size = Vector2i(1000, 500)
+visible = true
+borderless = false
+min_size = Vector2i(1000, 500)
+script = ExtResource("1_yt0t6")
