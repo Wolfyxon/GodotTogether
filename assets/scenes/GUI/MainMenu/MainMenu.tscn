@@ -33,6 +33,7 @@ text = "Your username"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Cool person"
+placeholder_text = "Username..."
 
 [node name="HSeparator3" type="HSeparator" parent="tabs/start/vbox"]
 layout_mode = 2
