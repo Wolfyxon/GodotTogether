@@ -24,4 +24,5 @@ func _process(delta):
 	ui.position = cam.unproject_position(position) - ui.size/2 - (Vector2(0,200)/dist)
 
 func set_username(name:String):
+	while not ui: await get_tree().physics_frame
 	text_ui.get_node("name").text = name
