@@ -9,3 +9,7 @@ func _ready():
 
 func _process(delta):
 	if not Engine.is_editor_hint(): popup()
+
+func toggle():
+	if not visible: popup()
+	else: visible = false
