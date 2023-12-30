@@ -19,14 +19,18 @@ func _enter_tree():
 func _exit_tree():
 	pass
 
-func create_user_3d() -> User3D:
+func create_user_3d(name:="Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
 	usr.main = self
 	add_child(usr)
+	
+	usr.set_username(name)
 	return usr
 
-func create_user_2d() -> User2D:
+func create_user_2d(name:="Unknown") -> User2D:
 	var usr = user_2d_scene.instantiate()
 	tree_exiting.connect(usr.queue_free)
 	EditorInterface.get_editor_viewport_2d().add_child(usr)
+	
+	usr.set_username(name)
 	return usr
