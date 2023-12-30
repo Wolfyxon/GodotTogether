@@ -16,6 +16,7 @@ var button = Button.new()
 
 func _enter_tree():
 	add_child(menu)
+	menu.visible = false
 	button.text = "Godot Together"
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	button.get_parent().move_child(button,button.get_index()-2)
