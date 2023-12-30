@@ -14,6 +14,7 @@ func _ready():
 	EditorInterface.get_editor_viewport_3d().add_child(ui)
 	
 func _exit_tree():
+	if not ui: return
 	ui.queue_free()
 	
 func _process(delta):
