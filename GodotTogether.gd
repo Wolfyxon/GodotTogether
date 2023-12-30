@@ -8,6 +8,9 @@ const compatibility_version = 1
 var user_3d_scene = load("res://addons/GodotTogether/assets/scenes/User3D/User3D.tscn")
 var user_2d_scene = load("res://addons/GodotTogether/assets/scenes/User2D/User2D.tscn")
 
+var client = GodotTogetherClient.new()
+var server = GodotTogetherServer.new()
+
 func _enter_tree():
 	create_user_3d()
 	pass
