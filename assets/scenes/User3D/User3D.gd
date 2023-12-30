@@ -21,3 +21,6 @@ func _process(delta):
 	var cam =  main.get_editor_3d_camera()
 	var dist = cam.position.distance_to(position)
 	ui.position = cam.unproject_position(position) - ui.size/2 - (Vector2(0,200)/dist)
+
+func set_username(name:String):
+	text_ui.get_node("name").text = name
