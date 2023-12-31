@@ -41,7 +41,48 @@ layout_mode = 2
 [node name="type" type="TabContainer" parent="tabs/start/vbox"]
 layout_mode = 2
 
+[node name="join" type="VBoxContainer" parent="tabs/start/vbox/type"]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="tabs/start/vbox/type/join"]
+layout_mode = 2
+text = "Server IP and port:"
+horizontal_alignment = 1
+
+[node name="address" type="HBoxContainer" parent="tabs/start/vbox/type/join"]
+layout_mode = 2
+
+[node name="ip" type="LineEdit" parent="tabs/start/vbox/type/join/address"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Server IP address..."
+
+[node name="Label" type="Label" parent="tabs/start/vbox/type/join/address"]
+layout_mode = 2
+text = ":"
+
+[node name="port" type="SpinBox" parent="tabs/start/vbox/type/join/address"]
+layout_mode = 2
+min_value = 1024.0
+max_value = 65535.0
+value = 5017.0
+
+[node name="Label6" type="Label" parent="tabs/start/vbox/type/join"]
+layout_mode = 2
+text = "Password (if required): "
+horizontal_alignment = 1
+
+[node name="password" type="LineEdit" parent="tabs/start/vbox/type/join"]
+layout_mode = 2
+placeholder_text = "Password..."
+secret = true
+
+[node name="btnJoin" type="Button" parent="tabs/start/vbox/type/join"]
+layout_mode = 2
+text = "Join"
+
 [node name="host" type="VBoxContainer" parent="tabs/start/vbox/type"]
+visible = false
 layout_mode = 2
 
 [node name="Label3" type="Label" parent="tabs/start/vbox/type/host"]
@@ -84,47 +125,6 @@ secret = true
 layout_mode = 2
 text = "Start hosting"
 
-[node name="join" type="VBoxContainer" parent="tabs/start/vbox/type"]
-visible = false
-layout_mode = 2
-
-[node name="Label5" type="Label" parent="tabs/start/vbox/type/join"]
-layout_mode = 2
-text = "Server IP and port:"
-horizontal_alignment = 1
-
-[node name="address" type="HBoxContainer" parent="tabs/start/vbox/type/join"]
-layout_mode = 2
-
-[node name="ip" type="LineEdit" parent="tabs/start/vbox/type/join/address"]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Server IP address..."
-
-[node name="Label" type="Label" parent="tabs/start/vbox/type/join/address"]
-layout_mode = 2
-text = ":"
-
-[node name="port" type="SpinBox" parent="tabs/start/vbox/type/join/address"]
-layout_mode = 2
-min_value = 1024.0
-max_value = 65535.0
-value = 5017.0
-
-[node name="Label6" type="Label" parent="tabs/start/vbox/type/join"]
-layout_mode = 2
-text = "Password (if required): "
-horizontal_alignment = 1
-
-[node name="password" type="LineEdit" parent="tabs/start/vbox/type/join"]
-layout_mode = 2
-placeholder_text = "Password..."
-secret = true
-
-[node name="btnJoin" type="Button" parent="tabs/start/vbox/type/join"]
-layout_mode = 2
-text = "Join"
-
 [node name="settings" type="Control" parent="tabs"]
 visible = false
 layout_mode = 2
@@ -137,5 +137,5 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
-[connection signal="pressed" from="tabs/start/vbox/type/host/btnHost" to="." method="_on_btn_host_pressed"]
 [connection signal="pressed" from="tabs/start/vbox/type/join/btnJoin" to="." method="_on_btn_join_pressed"]
+[connection signal="pressed" from="tabs/start/vbox/type/host/btnHost" to="." method="_on_btn_host_pressed"]
