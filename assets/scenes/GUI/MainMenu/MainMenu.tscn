@@ -136,3 +136,6 @@ layout_mode = 2
 [node name="about" type="Control" parent="tabs"]
 visible = false
 layout_mode = 2
+
+[connection signal="pressed" from="tabs/start/vbox/type/host/btnHost" to="." method="_on_btn_host_pressed"]
+[connection signal="pressed" from="tabs/start/vbox/type/join/btnJoin" to="." method="_on_btn_join_pressed"]

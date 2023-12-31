@@ -13,3 +13,11 @@ func _process(delta):
 func toggle():
 	if not visible: popup()
 	else: visible = false
+
+
+func _on_btn_host_pressed():
+	pass # Replace with function body.
+
+
+func _on_btn_join_pressed():
+	pass # Replace with function body.
