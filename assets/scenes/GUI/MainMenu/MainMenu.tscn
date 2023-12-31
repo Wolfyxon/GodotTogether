@@ -53,7 +53,6 @@ horizontal_alignment = 1
 [node name="Label7" type="Label" parent="tabs/start/vbox/type/join"]
 layout_mode = 2
 text = "Server IP and port:"
-horizontal_alignment = 1
 
 [node name="address" type="HBoxContainer" parent="tabs/start/vbox/type/join"]
 layout_mode = 2
@@ -76,7 +75,6 @@ value = 5017.0
 [node name="Label6" type="Label" parent="tabs/start/vbox/type/join"]
 layout_mode = 2
 text = "Password (if required): "
-horizontal_alignment = 1
 
 [node name="password" type="LineEdit" parent="tabs/start/vbox/type/join"]
 layout_mode = 2
@@ -126,7 +124,6 @@ layout_mode = 2
 [node name="Label4" type="Label" parent="tabs/start/vbox/type/host"]
 layout_mode = 2
 text = "Password:"
-horizontal_alignment = 1
 
 [node name="password" type="LineEdit" parent="tabs/start/vbox/type/host"]
 layout_mode = 2
