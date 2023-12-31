@@ -46,6 +46,12 @@ layout_mode = 2
 
 [node name="Label5" type="Label" parent="tabs/start/vbox/type/join"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 31
+text = "Join a editing session"
+horizontal_alignment = 1
+
+[node name="Label7" type="Label" parent="tabs/start/vbox/type/join"]
+layout_mode = 2
 text = "Server IP and port:"
 horizontal_alignment = 1
 
@@ -84,6 +90,12 @@ text = "Join"
 [node name="host" type="VBoxContainer" parent="tabs/start/vbox/type"]
 visible = false
 layout_mode = 2
+
+[node name="Label8" type="Label" parent="tabs/start/vbox/type/host"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 31
+text = "Host a editing session"
+horizontal_alignment = 1
 
 [node name="Label3" type="Label" parent="tabs/start/vbox/type/host"]
 layout_mode = 2
