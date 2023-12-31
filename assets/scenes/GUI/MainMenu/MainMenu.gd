@@ -17,6 +17,9 @@ func _ready():
 
 func _process(delta):
 	if not Engine.is_editor_hint(): popup()
+	if Engine.is_editor_hint() and EditorInterface.get_edited_scene_root() == self: return
+
+	$tabs/start/vbox/type/join/btnJoin.disabled = (join_ip.text == "")
 
 func toggle():
 	if not visible: popup()
