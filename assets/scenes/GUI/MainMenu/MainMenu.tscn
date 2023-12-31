@@ -181,6 +181,15 @@ layout_mode = 2
 size_flags_vertical = 7
 text = "End session"
 
+[node name="warning" type="Label" parent="tabs/start/vbox"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.690196, 0, 1)
+text = "Only add people you really trust! This plugin may allow hackers to execute orbitrary code on your machine and gain full control.
+Please back up your project before any work as some data may get lost corrupted."
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="settings" type="Control" parent="tabs"]
 visible = false
 layout_mode = 2
