@@ -21,7 +21,8 @@ func _process(delta):
 	if not Engine.is_editor_hint(): popup()
 	if Engine.is_editor_hint() and EditorInterface.get_edited_scene_root() == self: return
 
-	$tabs/start/vbox/joinOrHost/tabs/join/btnJoin.disabled = (join_ip.text == "")
+	$tabs/start/vbox/joinOrHost/tabs/join/btnJoin.disabled = (join_ip.text == "") or cover.visible
+	$tabs/start/vbox/joinOrHost/tabs/host/btnHost.disabled = cover.visible
 
 func toggle():
 	if not visible: popup()
