@@ -38,99 +38,108 @@ placeholder_text = "Username..."
 [node name="HSeparator3" type="HSeparator" parent="tabs/start/vbox"]
 layout_mode = 2
 
-[node name="type" type="TabContainer" parent="tabs/start/vbox"]
+[node name="joinOrHost" type="Control" parent="tabs/start/vbox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="tabs" type="TabContainer" parent="tabs/start/vbox/joinOrHost"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="join" type="VBoxContainer" parent="tabs/start/vbox/joinOrHost/tabs"]
 layout_mode = 2
 
-[node name="join" type="VBoxContainer" parent="tabs/start/vbox/type"]
-layout_mode = 2
-
-[node name="Label5" type="Label" parent="tabs/start/vbox/type/join"]
+[node name="Label5" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/join"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 31
 text = "Join a editing session"
 horizontal_alignment = 1
 
-[node name="Label7" type="Label" parent="tabs/start/vbox/type/join"]
+[node name="Label7" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/join"]
 layout_mode = 2
 text = "Server IP and port:"
 
-[node name="address" type="HBoxContainer" parent="tabs/start/vbox/type/join"]
+[node name="address" type="HBoxContainer" parent="tabs/start/vbox/joinOrHost/tabs/join"]
 layout_mode = 2
 
-[node name="ip" type="LineEdit" parent="tabs/start/vbox/type/join/address"]
+[node name="ip" type="LineEdit" parent="tabs/start/vbox/joinOrHost/tabs/join/address"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Server IP address..."
 
-[node name="Label" type="Label" parent="tabs/start/vbox/type/join/address"]
+[node name="Label" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/join/address"]
 layout_mode = 2
 text = ":"
 
-[node name="port" type="SpinBox" parent="tabs/start/vbox/type/join/address"]
+[node name="port" type="SpinBox" parent="tabs/start/vbox/joinOrHost/tabs/join/address"]
 layout_mode = 2
 min_value = 1024.0
 max_value = 65535.0
 value = 5017.0
 
-[node name="Label6" type="Label" parent="tabs/start/vbox/type/join"]
+[node name="Label6" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/join"]
 layout_mode = 2
 text = "Password (if required): "
 
-[node name="password" type="LineEdit" parent="tabs/start/vbox/type/join"]
+[node name="password" type="LineEdit" parent="tabs/start/vbox/joinOrHost/tabs/join"]
 layout_mode = 2
 placeholder_text = "Password..."
 secret = true
 
-[node name="btnJoin" type="Button" parent="tabs/start/vbox/type/join"]
+[node name="btnJoin" type="Button" parent="tabs/start/vbox/joinOrHost/tabs/join"]
 layout_mode = 2
 text = "Join"
 
-[node name="host" type="VBoxContainer" parent="tabs/start/vbox/type"]
+[node name="host" type="VBoxContainer" parent="tabs/start/vbox/joinOrHost/tabs"]
 visible = false
 layout_mode = 2
 
-[node name="Label8" type="Label" parent="tabs/start/vbox/type/host"]
+[node name="Label8" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/host"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 31
 text = "Host a editing session"
 horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="tabs/start/vbox/type/host"]
+[node name="Label3" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/host"]
 layout_mode = 2
 text = "Server configuration:"
 horizontal_alignment = 1
 
-[node name="smallConfig" type="HBoxContainer" parent="tabs/start/vbox/type/host"]
+[node name="smallConfig" type="HBoxContainer" parent="tabs/start/vbox/joinOrHost/tabs/host"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="tabs/start/vbox/type/host/smallConfig"]
+[node name="Label" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/host/smallConfig"]
 layout_mode = 2
 text = "Target port"
 
-[node name="port" type="SpinBox" parent="tabs/start/vbox/type/host/smallConfig"]
+[node name="port" type="SpinBox" parent="tabs/start/vbox/joinOrHost/tabs/host/smallConfig"]
 layout_mode = 2
 min_value = 1024.0
 max_value = 65535.0
 value = 5017.0
 
-[node name="Label2" type="Label" parent="tabs/start/vbox/type/host/smallConfig"]
+[node name="Label2" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/host/smallConfig"]
 layout_mode = 2
 text = "Max people"
 
-[node name="maxClients" type="SpinBox" parent="tabs/start/vbox/type/host/smallConfig"]
+[node name="maxClients" type="SpinBox" parent="tabs/start/vbox/joinOrHost/tabs/host/smallConfig"]
 layout_mode = 2
 
-[node name="Label4" type="Label" parent="tabs/start/vbox/type/host"]
+[node name="Label4" type="Label" parent="tabs/start/vbox/joinOrHost/tabs/host"]
 layout_mode = 2
 text = "Password:"
 
-[node name="password" type="LineEdit" parent="tabs/start/vbox/type/host"]
+[node name="password" type="LineEdit" parent="tabs/start/vbox/joinOrHost/tabs/host"]
 layout_mode = 2
 placeholder_text = "Password..."
 secret = true
 
-[node name="btnHost" type="Button" parent="tabs/start/vbox/type/host"]
+[node name="btnHost" type="Button" parent="tabs/start/vbox/joinOrHost/tabs/host"]
 layout_mode = 2
 text = "Start hosting"
 
@@ -146,5 +155,5 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
-[connection signal="pressed" from="tabs/start/vbox/type/join/btnJoin" to="." method="_on_btn_join_pressed"]
-[connection signal="pressed" from="tabs/start/vbox/type/host/btnHost" to="." method="_on_btn_host_pressed"]
+[connection signal="pressed" from="tabs/start/vbox/joinOrHost/tabs/join/btnJoin" to="." method="_on_btn_join_pressed"]
+[connection signal="pressed" from="tabs/start/vbox/joinOrHost/tabs/host/btnHost" to="." method="_on_btn_host_pressed"]
