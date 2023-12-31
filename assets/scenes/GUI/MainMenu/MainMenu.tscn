@@ -78,6 +78,7 @@ horizontal_alignment = 1
 [node name="password" type="LineEdit" parent="tabs/start/vbox/type/host"]
 layout_mode = 2
 placeholder_text = "Password..."
+secret = true
 
 [node name="btnHost" type="Button" parent="tabs/start/vbox/type/host"]
 layout_mode = 2
@@ -118,6 +119,7 @@ horizontal_alignment = 1
 [node name="password" type="LineEdit" parent="tabs/start/vbox/type/join"]
 layout_mode = 2
 placeholder_text = "Password..."
+secret = true
 
 [node name="btnJoin" type="Button" parent="tabs/start/vbox/type/join"]
 layout_mode = 2
