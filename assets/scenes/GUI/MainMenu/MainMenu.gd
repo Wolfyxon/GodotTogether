@@ -4,13 +4,13 @@ class_name GodotTogetherMainMenu
 
 var main:GodotTogether
 
-var join_ip = $tabs/start/vbox/type/join/address/ip
-var join_port = $tabs/start/vbox/type/join/address/port
-var join_password = $tabs/start/vbox/type/join/password
+@onready var join_ip = $tabs/start/vbox/type/join/address/ip
+@onready var join_port = $tabs/start/vbox/type/join/address/port
+@onready var join_password = $tabs/start/vbox/type/join/password
 
-var host_port = $tabs/start/vbox/type/host/smallConfig/port
-var host_max_clients = $tabs/start/vbox/type/host/smallConfig/maxClients
-var host_password = $tabs/start/vbox/type/host/password
+@onready var host_port = $tabs/start/vbox/type/host/smallConfig/port
+@onready var host_max_clients = $tabs/start/vbox/type/host/smallConfig/maxClients
+@onready var host_password = $tabs/start/vbox/type/host/password
 
 func _ready():
 	pass
