@@ -12,6 +12,8 @@ var main:GodotTogether
 @onready var host_max_clients = $tabs/start/vbox/joinOrHost/tabs/host/smallConfig/maxClients
 @onready var host_password = $tabs/start/vbox/joinOrHost/tabs/host/password
 
+@onready var cover = $tabs/start/vbox/joinOrHost/cover
+
 func _ready():
 	pass
 
