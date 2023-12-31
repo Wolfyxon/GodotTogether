@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dtetxxysjhnv6"]
+[gd_scene load_steps=3 format=3 uid="uid://dtetxxysjhnv6"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.gd" id="1_yt0t6"]
+[ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/assets/img/play.svg" id="2_t8t1o"]
 
 [node name="MainMenu" type="PopupPanel"]
 title = "Godot Together"
@@ -92,7 +93,9 @@ secret = true
 
 [node name="btnJoin" type="Button" parent="tabs/start/vbox/joinOrHost/tabs/join"]
 layout_mode = 2
+theme_override_colors/icon_normal_color = Color(0, 0.733333, 0, 1)
 text = "Join"
+icon = ExtResource("2_t8t1o")
 
 [node name="host" type="VBoxContainer" parent="tabs/start/vbox/joinOrHost/tabs"]
 visible = false
@@ -141,7 +144,9 @@ secret = true
 
 [node name="btnHost" type="Button" parent="tabs/start/vbox/joinOrHost/tabs/host"]
 layout_mode = 2
+theme_override_colors/icon_normal_color = Color(0, 0.733333, 0, 1)
 text = "Start hosting"
+icon = ExtResource("2_t8t1o")
 
 [node name="cover" type="ColorRect" parent="tabs/start/vbox/joinOrHost"]
 visible = false
