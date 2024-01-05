@@ -29,6 +29,9 @@ func _enter_tree():
 func _exit_tree():
 	button.queue_free()
 
+func is_session_active():
+	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint()
+
 func create_user_3d(name:="Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
 	usr.main = self
