@@ -17,6 +17,9 @@ enum VersionError {
 	TARGET_TOO_OLD,
 }
 
+static func is_empty(string:String):
+	return string.replace(" ","").is_empty()
+
 static func validate_version(target_version:int):
 	if target_version > GodotTogether.compatibility_version: return VersionError.UPDATE_REQUIRED
 	if target_version < GodotTogether.compatibility_version: return VersionError.TARGET_TOO_OLD
