@@ -2,6 +2,7 @@ extends Object
 class_name GodotTogetherValidator
 
 const max_username_length = 32
+const max_message_length = 1024
 
 enum TextError {
 	OK,
@@ -25,5 +26,11 @@ static func validate_version(target_version:int):
 static func validate_username(username:String) -> TextError:
 	if username.length() > max_username_length: return TextError.TOO_LONG
 	if username.replace(" ","").length() == 0: return TextError.EMPTY
+	
+	return TextError.OK
+
+static func validate_message(message:String) -> TextError:
+	if message.length() > max_message_length: return TextError.TOO_LONG
+	if message.replace(" ","").length() == 0: return TextError.EMPTY
 	
 	return TextError.OK
