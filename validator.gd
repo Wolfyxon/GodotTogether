@@ -6,6 +6,7 @@ const max_username_length = 32
 enum TextError {
 	OK,
 	TOO_LONG,
+	TOO_SHORT,
 	EMPTY,
 }
 
