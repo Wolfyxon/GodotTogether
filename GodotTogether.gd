@@ -15,7 +15,9 @@ var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/assets/scenes/
 var button = Button.new()
 
 func _enter_tree():
+	menu.main = self
 	add_child(menu)
+	
 	menu.visible = false
 	button.text = "Godot Together"
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
