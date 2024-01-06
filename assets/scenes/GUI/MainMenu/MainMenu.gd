@@ -30,8 +30,14 @@ func toggle():
 
 
 func _on_btn_host_pressed():
-	pass # Replace with function body.
-
+	if not main: return
+	if main.is_session_active(): return
+	
+	main.server.start_hosting(host_port.value, host_max_clients.value)
 
 func _on_btn_join_pressed():
-	pass # Replace with function body.
+	if not main: return
+	if main.is_session_active(): return
+	
+	main.client.join(join_ip.text,join_port.value)
+	
