@@ -23,7 +23,9 @@ func _process(delta):
 
 	$tabs/start/vbox/joinOrHost/tabs/join/btnJoin.disabled = (join_ip.text == "") or cover.visible
 	$tabs/start/vbox/joinOrHost/tabs/host/btnHost.disabled = cover.visible
-
+	
+	cover.visible = (main and main.is_session_active())
+	
 func toggle():
 	if not visible: popup()
 	else: visible = false
