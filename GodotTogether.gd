@@ -38,6 +38,11 @@ func _exit_tree():
 func is_session_active():
 	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint()
 
+func close_connection():
+	if not multiplayer.multiplayer_peer: return
+	multiplayer.multiplayer_peer.close()
+	multiplayer.multiplayer_peer = null
+
 func create_user_3d(name:="Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
 	usr.main = self
