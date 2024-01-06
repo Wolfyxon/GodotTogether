@@ -47,4 +47,5 @@ func _on_btn_join_pressed():
 	
 
 func _on_btn_stop_pressed():
-	multiplayer.multiplayer_peer = null
+	if not main: return
+	main.close_connection()
