@@ -35,13 +35,15 @@ func _on_btn_host_pressed():
 	if not main: return
 	if main.is_session_active(): return
 	
-	main.server.start_hosting(host_port.value, host_max_clients.value)
+	var err = main.server.start_hosting(host_port.value, host_max_clients.value)
+	push_error("Cannot host. Err: "+str(err))
 
 func _on_btn_join_pressed():
 	if not main: return
 	if main.is_session_active(): return
 	
-	main.client.join(join_ip.text,join_port.value)
+	var err = main.client.join(join_ip.text,join_port.value)
+	push_error("Cannot join. Err: "+str(err))
 	
 
 func _on_btn_stop_pressed():
