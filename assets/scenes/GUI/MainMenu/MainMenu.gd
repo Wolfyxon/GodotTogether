@@ -43,3 +43,6 @@ func _on_btn_join_pressed():
 	
 	main.client.join(join_ip.text,join_port.value)
 	
+
+func _on_btn_stop_pressed():
+	multiplayer.multiplayer_peer = null

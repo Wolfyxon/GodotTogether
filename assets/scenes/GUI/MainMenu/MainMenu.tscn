@@ -185,7 +185,7 @@ size_flags_vertical = 7
 text = "Cover text"
 horizontal_alignment = 1
 
-[node name="btn" type="Button" parent="tabs/start/vbox/joinOrHost/cover/vbox"]
+[node name="btnStop" type="Button" parent="tabs/start/vbox/joinOrHost/cover/vbox"]
 layout_mode = 2
 size_flags_vertical = 7
 text = "End session"
@@ -213,3 +213,4 @@ layout_mode = 2
 
 [connection signal="pressed" from="tabs/start/vbox/joinOrHost/tabs/join/btnJoin" to="." method="_on_btn_join_pressed"]
 [connection signal="pressed" from="tabs/start/vbox/joinOrHost/tabs/host/btnHost" to="." method="_on_btn_host_pressed"]
+[connection signal="pressed" from="tabs/start/vbox/joinOrHost/cover/vbox/btnStop" to="." method="_on_btn_stop_pressed"]
