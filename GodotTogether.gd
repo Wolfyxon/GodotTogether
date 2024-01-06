@@ -15,6 +15,9 @@ var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/assets/scenes/
 var button = Button.new()
 
 func _enter_tree():
+	add_child(client)
+	add_child(server)
+	
 	menu.main = self
 	add_child(menu)
 	
