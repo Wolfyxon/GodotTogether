@@ -10,6 +10,7 @@ var user_2d_scene = load("res://addons/GodotTogether/assets/scenes/User2D/User2D
 
 var client = GodotTogetherClient.new()
 var server = GodotTogetherServer.new()
+var dual = GodotTogetherDual.new()
 
 var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
@@ -20,6 +21,7 @@ var user_2d_markers:Array[User2D] = []
 func _enter_tree():
 	add_child(client)
 	add_child(server)
+	add_child(dual)
 	
 	menu.main = self
 	add_child(menu)
