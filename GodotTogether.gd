@@ -14,6 +14,9 @@ var server = GodotTogetherServer.new()
 var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
 
+var user_3d_markers:Array[User3D] = []
+var user_2d_markers:Array[User2D] = []
+
 func _enter_tree():
 	add_child(client)
 	add_child(server)
@@ -49,6 +52,7 @@ func create_user_3d(name:="Unknown") -> User3D:
 	add_child(usr)
 	
 	usr.set_username(name)
+	user_3d_markers.append(usr)
 	return usr
 
 func create_user_2d(name:="Unknown") -> User2D:
@@ -57,4 +61,5 @@ func create_user_2d(name:="Unknown") -> User2D:
 	EditorInterface.get_editor_viewport_2d().add_child(usr)
 	
 	usr.set_username(name)
+	user_2d_markers.append(usr)
 	return usr
