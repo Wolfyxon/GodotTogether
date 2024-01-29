@@ -42,9 +42,6 @@ func _enter_tree():
 	button.get_parent().move_child(button,button.get_index()-5)
 	button.pressed.connect(menu.popup)
 	
-	create_user_3d(-1)
-	pass
-
 
 func _exit_tree():
 	close_connection()
