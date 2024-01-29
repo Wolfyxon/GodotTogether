@@ -37,3 +37,12 @@ static func get_settings() -> Dictionary:
 	else:
 		return default_data
 
+static func get_nested(dict: Dictionary, path:String, separator := "/"):
+	var levels = path.split(separator)
+	var current = dict
+	
+	for level in levels:
+		if not current[level]: return
+		current = current[level]
+	
+	return current
