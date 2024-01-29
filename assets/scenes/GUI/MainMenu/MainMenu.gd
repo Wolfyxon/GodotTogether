@@ -15,7 +15,9 @@ var main:GodotTogether
 @onready var cover = $tabs/start/vbox/joinOrHost/cover
 
 func _ready():
-	pass
+	if Engine.is_editor_hint() and not main: return
+	
+	$tabs/start/vbox/username.text = GodotTogetherSettings.get_setting("username")
 
 func _process(delta):
 	if not Engine.is_editor_hint(): popup()
@@ -49,3 +51,7 @@ func _on_btn_join_pressed():
 func _on_btn_stop_pressed():
 	if not main: return
 	main.close_connection()
+
+
+func _on_username_text_changed(new_text):
+	GodotTogetherSettings.set_setting("username", new_text)

@@ -213,6 +213,7 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
+[connection signal="text_changed" from="tabs/start/vbox/username" to="." method="_on_username_text_changed"]
 [connection signal="pressed" from="tabs/start/vbox/joinOrHost/tabs/join/btnJoin" to="." method="_on_btn_join_pressed"]
 [connection signal="pressed" from="tabs/start/vbox/joinOrHost/tabs/host/btnHost" to="." method="_on_btn_host_pressed"]
 [connection signal="pressed" from="tabs/start/vbox/joinOrHost/cover/vbox/btnStop" to="." method="_on_btn_stop_pressed"]
