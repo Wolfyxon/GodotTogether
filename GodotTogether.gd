@@ -45,6 +45,9 @@ func close_connection():
 	if not multiplayer.multiplayer_peer: return
 	multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer = null
+	
+	user_2d_markers = []
+	user_3d_markers = []
 
 func create_user_3d(name:="Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
