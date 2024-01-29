@@ -1,6 +1,7 @@
 extends Node
 class_name GodotTogetherClient
 
+var main:GodotTogether
 var peer = ENetMultiplayerPeer.new()
 
 func join(ip:String, port:int):
