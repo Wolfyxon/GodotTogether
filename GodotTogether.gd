@@ -30,7 +30,7 @@ func _enter_tree():
 	button.get_parent().move_child(button,button.get_index()-5)
 	button.pressed.connect(menu.popup)
 	
-	create_user_3d()
+	create_user_3d(-1)
 	pass
 
 
@@ -49,21 +49,23 @@ func close_connection():
 	user_2d_markers = []
 	user_3d_markers = []
 
-func create_user_3d(name:="Unknown") -> User3D:
+func create_user_3d(id:int, name:="Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
 	usr.main = self
 	add_child(usr)
 	
 	usr.set_username(name)
+	usr.id = id
 	user_3d_markers.append(usr)
 	return usr
 
-func create_user_2d(name:="Unknown") -> User2D:
+func create_user_2d(id:int, name:="Unknown") -> User2D:
 	var usr = user_2d_scene.instantiate()
 	tree_exiting.connect(usr.queue_free)
 	EditorInterface.get_editor_viewport_2d().add_child(usr)
 	
 	usr.set_username(name)
+	usr.id = id
 	user_2d_markers.append(usr)
 	return usr
 
