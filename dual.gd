@@ -14,6 +14,7 @@ func _ready():
 
 func _update():
 	if not main: return
+	if not main.is_session_active(): return
 	rpc("update_2d_marker", get_viewport().get_mouse_position())
 
 @rpc("any_peer")
