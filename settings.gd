@@ -46,3 +46,6 @@ static func get_nested(dict: Dictionary, path:String, separator := "/"):
 		current = current[level]
 	
 	return current
+
+static func get_setting(path:String):
+	return get_nested(get_settings(), path)
