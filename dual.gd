@@ -42,7 +42,16 @@ func _connected(id:int):
 	pass
 	
 func _disconnected(id:int):
-	pass
+	var marker3d = main.get_user_3d(id)
+	var marker2d = main.get_user_2d(id)
+	
+	if marker2d: 
+		marker2d.queue_free()
+		main.user_2d_markers.erase(marker2d)
+	if marker3d: 
+		marker3d.queue_free()
+		main.user_3d_markers.erase(marker3d)
+	
 
 @rpc("any_peer")
 func update_2d_marker(vector: Vector2):
