@@ -18,9 +18,12 @@ func _connected(id: int):
 	var connected_peer = peer.get_peer(id)
 	print("Peer: "+str(id)+" connected from "+connected_peer.get_remote_address())
 	
+	main.create_user_2d(id)
+	main.create_user_3d(id)
+	
 	for i in multiplayer.get_peers():
-		main.create_user_2d(i)
-		main.create_user_3d(i)
+		main.create_user_2d.rpc_id(id, i)
+		main.create_user_3d.rpc_id(id, i)
 
 func _disconnected(id:int ):
 	print("Peer "+str(id)+" disconnected")
