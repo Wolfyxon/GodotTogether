@@ -61,6 +61,7 @@ func close_connection():
 	user_2d_markers = []
 	user_3d_markers = []
 
+@rpc("authority")
 func create_user_3d(id:int, name:="Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
 	usr.main = self
@@ -71,6 +72,7 @@ func create_user_3d(id:int, name:="Unknown") -> User3D:
 	user_3d_markers.append(usr)
 	return usr
 
+@rpc("authority")
 func create_user_2d(id:int, name:="Unknown") -> User2D:
 	var usr = user_2d_scene.instantiate()
 	tree_exiting.connect(usr.queue_free)
