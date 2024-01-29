@@ -8,3 +8,6 @@ var id := -1
 
 func set_username(name:String):
 	txt.get_node("name").text = name
+
+func set_position_percent(vector:Vector2):
+	position = get_parent().size * vector
