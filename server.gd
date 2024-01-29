@@ -15,8 +15,8 @@ func start_hosting(port:int, max_clients:=10):
 	multiplayer.multiplayer_peer = peer
 
 func _connected(id: int):
-	var peer = peer.get_peer(id)
-	print("Peer: "+str(id)+" connected from "+peer.get_remote_address())
+	var connected_peer = peer.get_peer(id)
+	print("Peer: "+str(id)+" connected from "+connected_peer.get_remote_address())
 
 func _disconnected(id:int ):
 	print("Peer "+str(id)+" disconnected")
