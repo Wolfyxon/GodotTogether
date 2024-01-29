@@ -8,6 +8,15 @@ const default_data = {
 
 const file_path = "res://addons/GodotTogether/settings.json"
 
+static func make_editable(dict: Dictionary) -> Dictionary:
+	if not dict.is_read_only(): return dict
+	
+	var res = {}
+	for key in dict.keys():
+		res[key] = dict[key]
+	
+	return res
+
 static func write_settings(data: Dictionary):
 	var f = FileAccess.open(file_path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data))
@@ -26,16 +35,16 @@ static func get_settings() -> Dictionary:
 		
 		if not parsed:
 			push_error("Parsing settings failed, returning default data")
-			return default_data
+			return make_editable(default_data)
 		
 		for key in default_data.keys():
 			if parsed[key] == null:
 				parsed[key] = default_data[key]
 		
-		return parsed
+		return make_editable(parsed)
 		
 	else:
-		return default_data
+		return make_editable(default_data)
 
 static func get_nested(dict: Dictionary, path:String, separator := "/"):
 	var levels = path.split(separator)
