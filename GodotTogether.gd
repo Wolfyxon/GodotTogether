@@ -23,6 +23,8 @@ func _enter_tree():
 	add_child(server)
 	add_child(dual)
 	
+	dual.main = self
+	
 	menu.main = self
 	add_child(menu)
 	
