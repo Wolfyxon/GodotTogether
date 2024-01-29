@@ -5,8 +5,8 @@ var main:GodotTogether
 var peer = ENetMultiplayerPeer.new()
 
 func _ready():
-	peer.peer_connected.connect(_connected)
-	peer.peer_disconnected.connect(_disconnected)
+	multiplayer.peer_connected.connect(_connected)
+	multiplayer.peer_disconnected.connect(_disconnected)
 
 
 func start_hosting(port:int, max_clients:=10):
@@ -20,7 +20,7 @@ func _connected(id: int):
 
 	main.create_user_2d(id)
 	main.create_user_3d(id)
-
+	
 	main.create_user_2d.rpc_id(id, 0)
 	main.create_user_3d.rpc_id(id, 0)
 	
