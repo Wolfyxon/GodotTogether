@@ -26,7 +26,7 @@ func _update():
 	if not main: return
 	if not main.is_session_active(): return
 	
-	var mPos = get_viewport().get_mouse_position()
+	var mPos = EditorInterface.get_editor_viewport_2d().get_mouse_position()
 	if mPos != prev_mouse_pos:
 		prev_mouse_pos = mPos
 		rpc("update_2d_marker", mPos)
