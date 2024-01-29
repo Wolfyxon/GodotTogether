@@ -47,5 +47,18 @@ static func get_nested(dict: Dictionary, path:String, separator := "/"):
 	
 	return current
 
+static func set_nested(dict:Dictionary, path:String, value, separator:= "/"):
+	var levels = path.split(separator)
+	var current = dict
+
+	for i in range(levels.size() - 1):
+		var level = levels[i]
+		if not current.has(level):
+			current[level] = {}
+		
+		current = current[level]
+
+	current[levels[-1]] = value
+
 static func get_setting(path:String):
 	return get_nested(get_settings(), path)
