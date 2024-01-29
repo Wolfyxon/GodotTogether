@@ -21,8 +21,8 @@ func _connected(id: int):
 	main.create_user_2d(id)
 	main.create_user_3d(id)
 	
-	main.create_user_2d.rpc_id(id, 0)
-	main.create_user_3d.rpc_id(id, 0)
+	main.create_user_2d.rpc_id(id, 1)
+	main.create_user_3d.rpc_id(id, 1)
 	
 	for i in multiplayer.get_peers():
 		main.create_user_2d.rpc_id(id, i)

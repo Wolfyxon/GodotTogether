@@ -23,10 +23,10 @@ func _update():
 	if not main: return
 	if not main.is_session_active(): return
 	
-	var mPos = EditorInterface.get_editor_viewport_2d().get_mouse_position()
+	var mPos = EditorInterface.get_editor_viewport_2d().get_mouse_position() / Vector2(EditorInterface.get_editor_viewport_2d().size)
 	if mPos != prev_mouse_pos:
 		prev_mouse_pos = mPos
-		rpc("update_2d_marker", mPos)
+		update_2d_marker.rpc(mPos)
 
 func _connected(id:int):
 	pass
@@ -37,4 +37,6 @@ func _disconnected(id:int):
 @rpc("any_peer")
 func update_2d_marker(vector: Vector2):
 	if not main: return
-	main.get_user_2d(multiplayer.get_remote_sender_id()).set_position_percent(vector)
+	var marker = main.get_user_2d(multiplayer.get_remote_sender_id())
+	if not marker: return
+	marker.set_position_percent(vector)
