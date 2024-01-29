@@ -5,6 +5,8 @@ class_name GodotTogetherDual
 var main:GodotTogether
 var update_timer = Timer.new()
 
+var prev_mouse_pos := Vector2()
+
 func _ready():
 	update_timer.timeout.connect(_update)
 	update_timer.one_shot = false
@@ -15,7 +17,11 @@ func _ready():
 func _update():
 	if not main: return
 	if not main.is_session_active(): return
-	rpc("update_2d_marker", get_viewport().get_mouse_position())
+	
+	var mPos = get_viewport().get_mouse_position()
+	if mPos != prev_mouse_pos:
+		prev_mouse_pos = mPos
+		rpc("update_2d_marker", mPos)
 
 @rpc("any_peer")
 func update_2d_marker(vector: Vector2):
