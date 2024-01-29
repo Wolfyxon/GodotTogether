@@ -62,3 +62,8 @@ static func set_nested(dict:Dictionary, path:String, value, separator:= "/"):
 
 static func get_setting(path:String):
 	return get_nested(get_settings(), path)
+
+static func set_setting(path:String, value):
+	var data = get_settings()
+	set_nested(data, path, value)
+	write_settings(data)
