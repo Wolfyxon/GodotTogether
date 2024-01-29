@@ -8,3 +8,5 @@ func join(ip:String, port:int):
 	var err = peer.create_client(ip, port)
 	if err: return err
 	multiplayer.multiplayer_peer = peer
+	
+	print("Connected, your ID is: "+str(multiplayer.get_unique_id()))
