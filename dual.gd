@@ -32,11 +32,9 @@ func _update():
 		rpc("update_2d_marker", mPos)
 
 func _connected(id:int):
-	print(id)
 	pass
 	
 func _disconnected(id:int):
-	print(id)
 	pass
 
 @rpc("any_peer")
