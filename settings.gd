@@ -19,7 +19,7 @@ static func make_editable(dict: Dictionary) -> Dictionary:
 
 static func write_settings(data: Dictionary):
 	var f = FileAccess.open(file_path, FileAccess.WRITE)
-	f.store_string(JSON.stringify(data))
+	f.store_string(JSON.stringify(data," "))
 	f.close()
 
 static func settings_exist() -> bool:
