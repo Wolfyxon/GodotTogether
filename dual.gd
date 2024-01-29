@@ -24,7 +24,7 @@ func _update():
 	if not main.is_session_active(): return
 	
 	var mPos = EditorInterface.get_editor_viewport_2d().get_mouse_position() / Vector2(EditorInterface.get_editor_viewport_2d().size)
-	if mPos != prev_mouse_pos:
+	if mPos != prev_mouse_pos and DisplayServer.window_is_focused():
 		prev_mouse_pos = mPos
 		update_2d_marker.rpc(mPos)
 
