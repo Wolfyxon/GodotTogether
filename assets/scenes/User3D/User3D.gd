@@ -8,7 +8,7 @@ class_name User3D
 var main:GodotTogether
 
 func _ready():
-	assert(main,"main not set")
+	if not main: return
 	$ui.visible = false
 	ui.visible = true
 	EditorInterface.get_editor_viewport_3d().add_child(ui)
