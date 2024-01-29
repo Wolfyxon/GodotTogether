@@ -42,7 +42,7 @@ static func get_nested(dict: Dictionary, path:String, separator := "/"):
 	var current = dict
 	
 	for level in levels:
-		if not current[level]: return
+		if not current.has(level): return
 		current = current[level]
 	
 	return current
