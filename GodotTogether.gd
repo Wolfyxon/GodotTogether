@@ -35,7 +35,7 @@ func _enter_tree():
 
 
 func _exit_tree():
-	multiplayer.multiplayer_peer = null
+	close_connection()
 	button.queue_free()
 
 func is_session_active():
