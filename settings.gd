@@ -48,6 +48,8 @@ static func get_nested(dict: Dictionary, path:String, separator := "/"):
 	return current
 
 static func set_nested(dict:Dictionary, path:String, value, separator:= "/"):
+	assert(not dict.is_read_only(), "Dictionary is read only")
+	
 	var levels = path.split(separator)
 	var current = dict
 
