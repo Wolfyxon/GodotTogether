@@ -2,6 +2,8 @@
 extends Node3D
 class_name User3D
 
+var id := -1
+
 @onready var ui = $ui.duplicate()
 @onready var text_ui = ui.get_node("txt")
 
