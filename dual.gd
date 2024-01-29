@@ -8,6 +8,14 @@ var update_timer = Timer.new()
 var prev_mouse_pos := Vector2()
 
 func _ready():
+	if not main: return
+	
+	main.client.peer.peer_connected.connect(_connected)
+	main.client.peer.peer_disconnected.connect(_disconnected)
+	
+	main.server.peer.peer_connected.connect(_connected)
+	main.server.peer.peer_disconnected.connect(_disconnected)
+	
 	update_timer.timeout.connect(_update)
 	update_timer.one_shot = false
 	update_timer.wait_time = 0.02
@@ -22,6 +30,14 @@ func _update():
 	if mPos != prev_mouse_pos:
 		prev_mouse_pos = mPos
 		rpc("update_2d_marker", mPos)
+
+func _connected(id:int):
+	print(id)
+	pass
+	
+func _disconnected(id:int):
+	print(id)
+	pass
 
 @rpc("any_peer")
 func update_2d_marker(vector: Vector2):
