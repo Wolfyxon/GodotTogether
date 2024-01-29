@@ -16,6 +16,9 @@ static func write_settings(data: Dictionary):
 static func settings_exist() -> bool:
 	return FileAccess.file_exists(file_path)
 
+static func create_settings():
+	write_settings(default_data)
+
 static func get_settings() -> Dictionary:
 	if settings_exist():
 		var f = FileAccess.open(file_path, FileAccess.READ)
@@ -34,5 +37,3 @@ static func get_settings() -> Dictionary:
 	else:
 		return default_data
 
-static func create_settings():
-	write_settings(default_data)
