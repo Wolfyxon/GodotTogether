@@ -25,6 +25,10 @@ static func get_settings() -> Dictionary:
 			push_error("Parsing settings failed, returning default data")
 			return default_data
 		
+		for key in default_data.keys():
+			if parsed[key] == null:
+				parsed[key] = default_data[key]
+		
 		return parsed
 		
 	else:
