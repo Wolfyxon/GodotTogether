@@ -17,9 +17,12 @@ func start_hosting(port:int, max_clients:=10):
 func _connected(id: int):
 	var connected_peer = peer.get_peer(id)
 	print("Peer: "+str(id)+" connected from "+connected_peer.get_remote_address())
-	
+
 	main.create_user_2d(id)
 	main.create_user_3d(id)
+
+	main.create_user_2d.rpc_id(id, 0)
+	main.create_user_3d.rpc_id(id, 0)
 	
 	for i in multiplayer.get_peers():
 		main.create_user_2d.rpc_id(id, i)
