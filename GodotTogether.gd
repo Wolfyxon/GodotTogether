@@ -66,3 +66,15 @@ func create_user_2d(name:="Unknown") -> User2D:
 	usr.set_username(name)
 	user_2d_markers.append(usr)
 	return usr
+
+func get_user_2d(id:int) -> User2D:
+	for i in user_2d_markers:
+		if i.id == id and i.is_inside_tree(): 
+			return i
+	return null 
+
+func get_user_3d(id:int) -> User3D:
+	for i in user_3d_markers:
+		if i.id == id and i.is_inside_tree(): 
+			return i
+	return null 
