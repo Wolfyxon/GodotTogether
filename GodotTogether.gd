@@ -19,13 +19,19 @@ var user_3d_markers:Array[User3D] = []
 var user_2d_markers:Array[User2D] = []
 
 func _enter_tree():
-	add_child(client)
-	add_child(server)
-	add_child(dual)
-	
+	name = "GodotTogether"
+
 	client.main = self
+	client.name = "client"
+	add_child(client)
+	
 	server.main = self
+	server.name = "server"
+	add_child(server)
+	
 	dual.main = self
+	dual.name = "dual"
+	add_child(dual)
 	
 	menu.main = self
 	add_child(menu)
