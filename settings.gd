@@ -5,6 +5,8 @@ const default_data = {
 	"username": "Cool person",
 	"format_version": 1,
 	
+	"last_server": "",
+	
 	"server": {
 		"password": "", # hashed password string
 		"whitelist": ["127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1"], # IP address whitelist
