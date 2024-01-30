@@ -12,3 +12,7 @@ func join(ip:String, port:int, data := {}):
 	print("Connected, your ID is: "+str(multiplayer.get_unique_id()))
 	main.server.receive_user_data.rpc_id(1, data)
 	print("Userdata sent")
+
+@rpc("authority")
+func receive_message(text:String):
+	print("[Server message] " + text)
