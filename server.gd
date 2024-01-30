@@ -27,6 +27,9 @@ func start_hosting(port:int, max_clients:=10):
 	if err: return err
 	multiplayer.multiplayer_peer = peer
 
+func is_authenticated(peerId:int):
+	return userdata.has(peerId)
+
 @rpc("any_peer", "call_remote", "reliable")
 func receive_user_data(data:Dictionary):
 	var id = multiplayer.get_remote_sender_id()
