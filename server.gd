@@ -92,6 +92,7 @@ func _connected(id: int):
 	main.create_user_3d.rpc_id(id, 1)
 	
 	for i in multiplayer.get_peers():
+		if i == id: continue
 		main.create_user_2d.rpc_id(id, i)
 		main.create_user_3d.rpc_id(id, i)
 
