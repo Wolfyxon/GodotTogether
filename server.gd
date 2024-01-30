@@ -44,12 +44,15 @@ func receive_user_data(data:Dictionary):
 	
 	if not data.has("username"):
 		print("Invalid data of "+str(id)+": missing username")
+		send_message(id,"Invalid data, missing username")
 		peer.disconnect_peer(id)
 		return
 		
 	var username_error = GodotTogetherValidator.validate_username(data["username"])
 	if username_error:
-		print("Invalid username for " + str(id) + GodotTogetherValidator.TextError.find_key(username_error))
+		var err_name = GodotTogetherValidator.TextError.find_key(username_error)
+		print("Invalid username for " + str(id) + err_name)
+		send_message(id,"Your username is invalid: " + err_name)
 		peer.disconnect_peer(id)
 		return
 		
@@ -57,6 +60,7 @@ func receive_user_data(data:Dictionary):
 	if server_password != "":
 		if not data.has("password") or data["password"] != server_password:
 			print("Access denied for: " + str(id) + ": invalid password")
+			send_message(id, "Access denied, invalid password")
 			peer.disconnect_peer(id)
 			return
 			
@@ -66,7 +70,7 @@ func receive_user_data(data:Dictionary):
 	}
 	
 	print("User " + str(id) + " registered as " + data["username"])
-	
+	send_message(id, "Welcome " + data["username"]+"!")
 
 
 func _connected(id: int):
