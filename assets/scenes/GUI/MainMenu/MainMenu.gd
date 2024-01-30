@@ -4,6 +4,8 @@ class_name GodotTogetherMainMenu
 
 var main:GodotTogether
 
+@onready var username_input = $tabs/start/vbox/username
+
 @onready var join_ip = $tabs/start/vbox/joinOrHost/tabs/join/address/ip
 @onready var join_port = $tabs/start/vbox/joinOrHost/tabs/join/address/port
 @onready var join_password = $tabs/start/vbox/joinOrHost/tabs/join/password
@@ -17,7 +19,7 @@ var main:GodotTogether
 func _ready():
 	if Engine.is_editor_hint() and not main: return
 	
-	$tabs/start/vbox/username.text = GodotTogetherSettings.get_setting("username")
+	username_input.text = GodotTogetherSettings.get_setting("username")
 
 func _process(delta):
 	if not Engine.is_editor_hint(): popup()
