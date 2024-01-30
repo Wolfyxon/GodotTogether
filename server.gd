@@ -70,6 +70,13 @@ func _connected(id: int):
 	var connected_peer = peer.get_peer(id)
 	print("Peer: "+str(id)+" connected from "+connected_peer.get_remote_address())
 
+	await get_tree().create_timer(2).timeout
+	
+	if not is_authenticated(id):
+		print("Authentication timeout for " + str(id))
+		peer.disconnect_peer(id)
+		return
+
 	main.create_user_2d(id)
 	main.create_user_3d(id)
 	
