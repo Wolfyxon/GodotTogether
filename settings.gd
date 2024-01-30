@@ -6,6 +6,7 @@ const default_data = {
 	"format_version": 1,
 	
 	"server": {
+		"password": "", # hashed password string
 		"whitelist": ["127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1"], # IP address whitelist
 		"blacklist": [], # blocked IP addresses
 		"whitelist_enabled": false,
