@@ -3,7 +3,14 @@ class_name GodotTogetherSettings
 
 const default_data = {
 	"username": "Cool person",
-	"format_version": 1
+	"format_version": 1,
+	
+	"server": {
+		"whitelist": ["127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1"], # IP address whitelist
+		"blacklist": [], # blocked IP addresses
+		"whitelist_enabled": false,
+		"allow_external_connections": true # allow connections outside of the local network (if the user has open ports) 
+	}
 }
 
 const file_path = "res://addons/GodotTogether/settings.json"
