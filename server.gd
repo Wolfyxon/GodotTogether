@@ -4,6 +4,13 @@ class_name GodotTogetherServer
 var main:GodotTogether
 var peer = ENetMultiplayerPeer.new()
 
+enum PermissionLevel {
+	GUEST, # only view access
+	EDITOR, # can edit the project
+	ADMIN, # can kick other users
+	HOST # full access, not assignable
+}
+
 func _ready():
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
