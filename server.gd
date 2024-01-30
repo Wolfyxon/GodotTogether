@@ -44,6 +44,8 @@ func receive_user_data(data:Dictionary):
 	var username_error = GodotTogetherValidator.validate_username(data["username"])
 	if username_error:
 		print("Invalid username for " + str(id) + GodotTogetherValidator.TextError.find_key(username_error))
+		peer.disconnect_peer(id)
+		return
 		
 	var server_password = GodotTogetherSettings.get_setting("server/password")
 	if server_password != "":
