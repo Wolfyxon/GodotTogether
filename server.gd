@@ -74,6 +74,7 @@ func receive_user_data(data:Dictionary):
 
 
 func _connected(id: int):
+	if not multiplayer.is_server(): return
 	var connected_peer = peer.get_peer(id)
 	print("Peer: "+str(id)+" connected from "+connected_peer.get_remote_address())
 
@@ -95,5 +96,6 @@ func _connected(id: int):
 		main.create_user_3d.rpc_id(id, i)
 
 func _disconnected(id:int ):
+	if not multiplayer.is_server(): return
 	print("Peer "+str(id)+" disconnected")
 	userdata.erase(id)
