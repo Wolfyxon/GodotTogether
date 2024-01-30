@@ -46,7 +46,7 @@ static func get_settings() -> Dictionary:
 			return make_editable(default_data)
 		
 		for key in default_data.keys():
-			if parsed[key] == null:
+			if not parsed.has(key):
 				parsed[key] = default_data[key]
 		
 		return make_editable(parsed)
