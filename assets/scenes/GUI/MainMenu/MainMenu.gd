@@ -45,8 +45,11 @@ func _on_btn_host_pressed():
 func _on_btn_join_pressed():
 	if not main: return
 	if main.is_session_active(): return
-	
-	var err = main.client.join(join_ip.text,join_port.value)
+
+	var err = main.client.join(join_ip.text,join_port.value,{
+		"username": username_input.text,
+		"password": join_password.text.sha256_text()
+	})
 	if err: push_error("Cannot join. Err: "+str(err))
 	
 
