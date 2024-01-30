@@ -89,3 +89,4 @@ func _connected(id: int):
 
 func _disconnected(id:int ):
 	print("Peer "+str(id)+" disconnected")
+	userdata.erase(id)
