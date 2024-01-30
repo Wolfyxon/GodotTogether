@@ -6,6 +6,7 @@ const default_data = {
 	"format_version": 1,
 	
 	"last_server": "",
+	"last_port": 5017,
 	
 	"server": {
 		"password": "", # hashed password string

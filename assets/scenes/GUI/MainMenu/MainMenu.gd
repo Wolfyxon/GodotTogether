@@ -20,6 +20,7 @@ func _ready():
 	if Engine.is_editor_hint() and not main: return
 
 	join_ip.text = GodotTogetherSettings.get_setting("last_server")
+	join_port.value = GodotTogetherSettings.get_setting("last_port")
 	username_input.text = GodotTogetherSettings.get_setting("username")
 
 func _process(delta):
@@ -48,6 +49,8 @@ func _on_btn_join_pressed():
 	if main.is_session_active(): return
 
 	GodotTogetherSettings.set_setting("last_server", join_ip.text)
+	GodotTogetherSettings.set_setting("last_port", join_port.value)
+	
 	var err = main.client.join(join_ip.text,join_port.value,{
 		"username": username_input.text,
 		"password": join_password.text.sha256_text()
