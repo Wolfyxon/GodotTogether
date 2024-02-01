@@ -207,6 +207,68 @@ layout_mode = 2
 
 [node name="vbox" type="VBoxContainer" parent="tabs/settings"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control3" type="Control" parent="tabs/settings/vbox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="update" type="HBoxContainer" parent="tabs/settings/vbox"]
+layout_mode = 2
+
+[node name="btnCheck" type="LinkButton" parent="tabs/settings/vbox/update"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Check for updates"
+
+[node name="current" type="Label" parent="tabs/settings/vbox/update"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.607843, 0.607843, 0.607843, 1)
+text = "Current version: x.x.x"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="tabs/settings/vbox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="btnReset" type="Button" parent="tabs/settings/vbox"]
+layout_mode = 2
+text = "Reset all settings"
+
+[node name="Control2" type="Control" parent="tabs/settings/vbox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="server" type="VBoxContainer" parent="tabs/settings/vbox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="tabs/settings/vbox/server"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Server configuration"
+
+[node name="allowExt" type="CheckButton" parent="tabs/settings/vbox/server"]
+layout_mode = 2
+text = "Accept connections outside of your local network"
+
+[node name="HSeparator2" type="HSeparator" parent="tabs/settings/vbox/server"]
+layout_mode = 2
+
+[node name="btnBlacklist" type="Button" parent="tabs/settings/vbox/server"]
+layout_mode = 2
+text = "VIew banned IP addresses"
+
+[node name="HSeparator" type="HSeparator" parent="tabs/settings/vbox/server"]
+layout_mode = 2
+
+[node name="enableWhitelist" type="CheckButton" parent="tabs/settings/vbox/server"]
+layout_mode = 2
+text = "Accept only whitelisted connections"
+
+[node name="btnWhitelist" type="Button" parent="tabs/settings/vbox/server"]
+layout_mode = 2
+text = "VIew whitelisted IP addresses"
 
 [node name="people" type="Control" parent="tabs"]
 visible = false
