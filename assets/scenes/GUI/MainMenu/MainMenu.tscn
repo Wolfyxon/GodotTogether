@@ -201,8 +201,11 @@ Please back up your project before any work as some data may get lost corrupted.
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="settings" type="Control" parent="tabs"]
+[node name="settings" type="ScrollContainer" parent="tabs"]
 visible = false
+layout_mode = 2
+
+[node name="vbox" type="VBoxContainer" parent="tabs/settings"]
 layout_mode = 2
 
 [node name="people" type="Control" parent="tabs"]
