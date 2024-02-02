@@ -21,3 +21,18 @@ static func get_property_dict(node:Node) -> Dictionary:
 		res[i] = node[i]
 	
 	return res
+
+
+func observe(node:Node):
+	var cache = get_property_dict(node)
+	
+	node.property_list_changed.connect(func():
+		var changed_keys = []
+		var current = get_property_dict(node)
+		
+		for i in current.keys():
+			if cache[i] != current[i]:
+				changed_keys.append(i)
+		
+		node_properties_changed.emit(changed_keys)
+	)
