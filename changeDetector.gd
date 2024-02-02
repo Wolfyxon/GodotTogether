@@ -14,7 +14,7 @@ static func get_property_keys(node:Node) -> Array[String]:
 		
 	return res
 
-static func properties_to_dict(node:Node) -> Dictionary:
+static func get_property_dict(node:Node) -> Dictionary:
 	var res = {}
 	
 	for i in get_property_keys(node):
