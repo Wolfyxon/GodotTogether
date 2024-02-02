@@ -2,6 +2,9 @@ extends Node
 class_name GodotTogetherPopups
 
 static func _popup(window:Window):
+	window.always_on_top = true
+	window.unresizable = true
+	
 	if Engine.is_editor_hint():
 		EditorInterface.popup_dialog_centered(window)
 	else:
