@@ -6,6 +6,7 @@ var main:GodotTogether
 
 signal node_properties_changed(changed_keys: String)
 signal node_property_changed(key: String)
+signal node_property_differs(key: String, old_value, new_value)
 
 static func get_property_keys(node:Node) -> Array[String]:
 	var res = []
@@ -34,6 +35,7 @@ func observe(node:Node):
 		for i in current.keys():
 			if cache[i] != current[i]:
 				node_property_changed.emit(i)
+				node_property_differs.emit(i, cache[i], current[i])
 				changed_keys.append(i)
 		
 		node_properties_changed.emit(changed_keys)
