@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dtetxxysjhnv6"]
+[gd_scene load_steps=4 format=3 uid="uid://dtetxxysjhnv6"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.gd" id="1_yt0t6"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/assets/img/play.svg" id="2_t8t1o"]
+[ext_resource type="Script" path="res://addons/GodotTogether/assets/scenes/GUI/MainMenu/settingsTab.gd" id="3_f3jt3"]
 
 [node name="MainMenu" type="PopupPanel"]
 title = "Godot Together"
@@ -208,6 +209,7 @@ layout_mode = 2
 [node name="vbox" type="VBoxContainer" parent="tabs/settings"]
 layout_mode = 2
 size_flags_horizontal = 3
+script = ExtResource("3_f3jt3")
 
 [node name="Control3" type="Control" parent="tabs/settings/vbox"]
 custom_minimum_size = Vector2(0, 10)
