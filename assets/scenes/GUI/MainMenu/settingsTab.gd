@@ -10,6 +10,13 @@ func _ready():
 	register_bool($server/allowExt, "server/allow_external_connections")
 	
 	$btnReload.pressed.connect(load_settings)
+	$btnReset.pressed.connect(GodotTogetherPopups.popup_confirm_action.bind(
+		"Are you sure you want to reset ALL your settings of GodotTogether?",
+		func():
+			GodotTogetherSettings.create_settings()
+			load_settings()
+	))
+	
 	load_settings()
 
 func load_settings():
