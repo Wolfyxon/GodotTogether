@@ -39,4 +39,5 @@ func observe(node:Node):
 				changed_keys.append(i)
 		
 		node_properties_changed.emit(changed_keys)
+		cache = current
 	)
