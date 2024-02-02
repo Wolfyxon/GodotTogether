@@ -258,6 +258,7 @@ text = "Server configuration"
 [node name="allowExt" type="CheckButton" parent="tabs/settings/vbox/server"]
 layout_mode = 2
 text = "Accept connections outside of your local network"
+metadata/path = "server/allow_external_connections"
 
 [node name="HSeparator2" type="HSeparator" parent="tabs/settings/vbox/server"]
 layout_mode = 2
@@ -272,6 +273,7 @@ layout_mode = 2
 [node name="enableWhitelist" type="CheckButton" parent="tabs/settings/vbox/server"]
 layout_mode = 2
 text = "Accept only whitelisted connections"
+metadata/path = "server/whitelist_enabled"
 
 [node name="btnWhitelist" type="Button" parent="tabs/settings/vbox/server"]
 layout_mode = 2

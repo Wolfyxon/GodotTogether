@@ -22,7 +22,9 @@ func register_bool(button:Button, path:String):
 		push_warning(button.name, " is not togglelable")
 	
 	button.set_meta("path", path)
-	button.toggled.connect(_set_bool.bind(button, path))
+	button.toggled.connect(func(_val):
+		_set_bool(button, path)
+	)
 
 func register_text(input: Control, path:String):
 	assert(input is LineEdit or input is TextEdit, "Not a LineEdit or TextEdit")
