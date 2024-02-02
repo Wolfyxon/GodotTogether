@@ -24,7 +24,7 @@ func _ready():
 	username_input.text = GodotTogetherSettings.get_setting("username")
 
 func _process(delta):
-	if not Engine.is_editor_hint(): popup()
+	if not Engine.is_editor_hint() and not visible: popup()
 	if Engine.is_editor_hint() and EditorInterface.get_edited_scene_root() == self: return
 
 	$tabs/start/vbox/joinOrHost/tabs/join/btnJoin.disabled = (join_ip.text == "") or cover.visible
