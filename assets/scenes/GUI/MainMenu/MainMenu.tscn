@@ -217,6 +217,7 @@ custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="update" type="HBoxContainer" parent="tabs/settings/vbox"]
+visible = false
 layout_mode = 2
 
 [node name="btnCheck" type="LinkButton" parent="tabs/settings/vbox/update"]
