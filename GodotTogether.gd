@@ -11,6 +11,7 @@ var user_2d_scene = load("res://addons/GodotTogether/assets/scenes/User2D/User2D
 var client = GodotTogetherClient.new()
 var server = GodotTogetherServer.new()
 var dual = GodotTogetherDual.new()
+var change_detector = GodotTogetherChangeDetector.new()
 
 var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
@@ -33,8 +34,13 @@ func _enter_tree():
 	dual.name = "dual"
 	add_child(dual)
 	
+	change_detector.main = self
+	change_detector.name = "change_detector"
+	add_child(change_detector)
+	
 	menu.main = self
 	add_child(menu)
+	
 	
 	menu.visible = false
 	button.text = "Godot Together"
