@@ -11,7 +11,6 @@ var user_2d_scene = load("res://addons/GodotTogether/assets/scenes/User2D/User2D
 var client = GodotTogetherClient.new()
 var server = GodotTogetherServer.new()
 var dual = GodotTogetherDual.new()
-var popups = GodotTogetherPopups.new()
 
 var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
@@ -33,9 +32,6 @@ func _enter_tree():
 	dual.main = self
 	dual.name = "dual"
 	add_child(dual)
-	
-	popups.name = "popups"
-	add_child(popups)
 	
 	menu.main = self
 	add_child(menu)
