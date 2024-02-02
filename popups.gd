@@ -18,3 +18,22 @@ static func popup_ok(text:String, title := ""):
 	
 	await dial.close_requested
 	dial.queue_free()
+
+static func popup_confirm(text:String, title := ""):
+	var dial = ConfirmationDialog.new()
+	dial.dialog_text = text
+	dial.title = title
+	dial.dialog_autowrap = true
+	
+	_popup(dial)
+
+	dial.set_meta("confirmed", false)
+	
+	dial.confirmed.connect(func():
+		dial.set_meta("confirmed", true)
+	)
+	
+	await dial.visibility_changed
+	await Engine.get_main_loop().physics_frame
+	
+	return dial.get_meta("confirmed")
