@@ -4,7 +4,7 @@ class_name GodotTogetherChangeDetector
 
 var main:GodotTogether
 
-signal node_properties_changed
+signal node_properties_changed(changed_keys: String)
 
 static func get_property_keys(node:Node) -> Array[String]:
 	var res = []
