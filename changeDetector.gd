@@ -2,11 +2,12 @@
 extends Node
 class_name GodotTogetherChangeDetector
 
-var main:GodotTogether
-
 signal node_properties_changed(changed_keys: String)
 signal node_property_changed(key: String)
 signal node_property_differs(key: String, old_value, new_value)
+
+var main:GodotTogether
+
 
 static func get_property_keys(node:Node) -> Array[String]:
 	var res = []
