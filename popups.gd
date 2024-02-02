@@ -40,3 +40,9 @@ static func popup_confirm(text:String, title := ""):
 	await Engine.get_main_loop().physics_frame
 	
 	return dial.get_meta("confirmed")
+
+static func popup_confirm_action(text:String, callback:Callable, title := ""):
+	var res = await popup_confirm(text, title)
+	if res: callback.call()
+	
+	return res
