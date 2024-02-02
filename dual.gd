@@ -5,7 +5,6 @@ class_name GodotTogetherDual
 var main:GodotTogether
 var camera:Camera3D
 var update_timer = Timer.new()
-var scan_timer = Timer.new()
 
 var prev_mouse_pos := Vector2()
 var prev_3d_pos := Vector3()
@@ -23,15 +22,6 @@ func _ready():
 	update_timer.wait_time = 0.02
 	add_child(update_timer)
 	update_timer.start()
-	
-	scan_timer.timeout.connect(_scan)
-	scan_timer.one_shot = false
-	scan_timer.wait_time = 0.03
-	add_child(scan_timer)
-	scan_timer.start()
-
-func _scan():
-	pass
 
 func _update():
 	if not main: return
