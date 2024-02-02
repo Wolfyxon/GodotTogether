@@ -22,7 +22,7 @@ static func popup_ok(text:String, title := ""):
 	await dial.close_requested
 	dial.queue_free()
 
-static func popup_confirm(text:String, title := ""):
+static func popup_confirm(text:String, title := "") -> bool:
 	var dial = ConfirmationDialog.new()
 	dial.dialog_text = text
 	dial.title = title
@@ -43,7 +43,7 @@ static func popup_confirm(text:String, title := ""):
 	
 	return dial.get_meta("confirmed")
 
-static func popup_confirm_action(text:String, callback:Callable, title := ""):
+static func popup_confirm_action(text:String, callback:Callable, title := "") -> bool:
 	var res = await popup_confirm(text, title)
 	if res: callback.call()
 	
