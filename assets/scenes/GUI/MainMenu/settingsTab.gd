@@ -26,12 +26,16 @@ func register_bool(button:Button, path:String):
 	button.toggled.connect(func(_val):
 		_set_bool(button, path)
 	)
+	
+	booleans.append(button)
 
 func register_text(input: Control, path:String):
 	assert(input is LineEdit or input is TextEdit, "Not a LineEdit or TextEdit")
 	
 	input.set_meta("path", path)
 	input.text_changed.connect(_set_text.bind(input, path))
+	
+	strings.append(input)
 
 
 func _set_text(input:Control, path:String):
