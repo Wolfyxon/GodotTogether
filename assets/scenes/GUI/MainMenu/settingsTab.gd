@@ -5,7 +5,7 @@ var booleans:Array[Button]
 var strings:Array[Control]
 
 func _ready():
-	if Engine.is_editor_hint() and EditorInterface.get_edited_scene_root() is GodotTogetherMainMenu: return
+	if Engine.is_editor_hint() and is_ancestor_of(EditorInterface.get_edited_scene_root()): return
 	register_bool($server/enableWhitelist, "server/whitelist_enabled")
 	register_bool($server/allowExt, "server/allow_external_connections")
 	
