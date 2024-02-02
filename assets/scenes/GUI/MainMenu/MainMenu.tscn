@@ -18,8 +18,10 @@ offset_left = 4.0
 offset_top = 4.0
 offset_right = 996.0
 offset_bottom = 496.0
+current_tab = 1
 
 [node name="start" type="ScrollContainer" parent="tabs"]
+visible = false
 layout_mode = 2
 
 [node name="vbox" type="VBoxContainer" parent="tabs/start"]
@@ -203,7 +205,6 @@ horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="settings" type="ScrollContainer" parent="tabs"]
-visible = false
 layout_mode = 2
 
 [node name="vbox" type="VBoxContainer" parent="tabs/settings"]
@@ -233,6 +234,10 @@ horizontal_alignment = 1
 [node name="Control" type="Control" parent="tabs/settings/vbox"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
+
+[node name="btnReload" type="Button" parent="tabs/settings/vbox"]
+layout_mode = 2
+text = "Reload"
 
 [node name="btnReset" type="Button" parent="tabs/settings/vbox"]
 layout_mode = 2
