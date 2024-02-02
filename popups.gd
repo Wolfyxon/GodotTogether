@@ -1,14 +1,14 @@
 extends Node
 class_name GodotTogetherPopups
 
-func _popup(window:Window):
+static func _popup(window:Window):
 	if Engine.is_editor_hint():
 		EditorInterface.popup_dialog_centered(window)
 	else:
-		get_tree().current_scene.add_child(window)
+		Engine.get_main_loop().current_scene.add_child(window)
 		window.popup_centered()
 
-func popup_ok(text:String, title := ""):
+static func popup_ok(text:String, title := ""):
 	var dial = AcceptDialog.new()
 	dial.dialog_text = text
 	dial.title = title
