@@ -9,6 +9,7 @@ func _ready():
 	register_bool($server/enableWhitelist, "server/whitelist_enabled")
 	register_bool($server/allowExt, "server/allow_external_connections")
 	
+	$btnReload.pressed.connect(load_settings)
 	load_settings()
 
 func load_settings():
