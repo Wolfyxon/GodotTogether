@@ -2,7 +2,8 @@
 extends VBoxContainer
 
 func _ready():
-	pass
+	register_bool($server/enableWhitelist, "server/whitelist_enabled")
+	register_bool($server/allowExt, "server/allow_external_connections")
 
 
 func register_bool(button:Button, path:String):
