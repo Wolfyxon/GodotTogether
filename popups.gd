@@ -39,6 +39,8 @@ static func popup_confirm(text:String, title := ""):
 	await dial.visibility_changed
 	await Engine.get_main_loop().physics_frame
 	
+	dial.queue_free()
+	
 	return dial.get_meta("confirmed")
 
 static func popup_confirm_action(text:String, callback:Callable, title := ""):
