@@ -22,6 +22,25 @@ func _ready():
 	multiplayer.peer_disconnected.connect(_disconnected)
 
 
+static func is_local(ip:String) -> bool:
+	if ip == "0:0:0:0:0:0:0:1": return true
+	
+	var split = ip.split(".")
+	if split.size() != 4:
+		push_error(ip+" doesn't seem to be a valid IP address: size not equal to 4. Assuming this is not a local address.")
+		return false
+	
+	var a = int(split[0])
+	var b = int(split[1])
+	var c = int(split[2])
+	var d = int(split[3])
+	
+	if a == 127: return true
+	if a == 172 and b >= 16 and b <= 31: return true
+	if a == 192 and b == 168: return true
+	
+	return false
+
 func start_hosting(port:int, max_clients:=10):
 	var err = peer.create_server(port, max_clients)
 	if err: return err
