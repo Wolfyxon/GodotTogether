@@ -32,7 +32,7 @@ func observe(node:Node):
 	
 	var cache = get_property_dict(node)
 	
-	node.property_list_changed.connect(func():
+	var on_change = func():
 		var changed_keys = []
 		var current = get_property_dict(node)
 		
@@ -44,4 +44,8 @@ func observe(node:Node):
 		
 		node_properties_changed.emit(changed_keys)
 		cache = current
+	
+	node.property_list_changed.connect(on_change)
+	node.tree_exiting.connect(func():
+		node.property_list_changed.disconnect(on_change)
 	)
