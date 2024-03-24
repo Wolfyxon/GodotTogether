@@ -6,10 +6,10 @@ signal node_properties_changed(node: Node, changed_keys: String)
 signal node_property_changed(node: Node, key: String)
 signal node_property_differs(node: Node, key: String, old_value, new_value)
 
-var main:GodotTogether
-var observed_nodes:Array[Node]
+var main: GodotTogether
+var observed_nodes: Array[Node]
 
-static func get_property_keys(node:Node) -> Array[String]:
+static func get_property_keys(node: Node) -> Array[String]:
 	var res = []
 	
 	for i in node.get_property_list():
@@ -17,7 +17,7 @@ static func get_property_keys(node:Node) -> Array[String]:
 		
 	return res
 
-static func get_property_dict(node:Node) -> Dictionary:
+static func get_property_dict(node: Node) -> Dictionary:
 	var res = {}
 	
 	for i in get_property_keys(node):
@@ -26,7 +26,7 @@ static func get_property_dict(node:Node) -> Dictionary:
 	return res
 
 
-func observe(node:Node):
+func observe(node: Node):
 	if node in observed_nodes: return
 	observed_nodes.append(node)
 	

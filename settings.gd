@@ -67,7 +67,7 @@ static func get_nested(dict: Dictionary, path:String, separator := "/"):
 	
 	return current
 
-static func set_nested(dict:Dictionary, path:String, value, separator:= "/"):
+static func set_nested(dict: Dictionary, path: String, value, separator:= "/"):
 	assert(not dict.is_read_only(), "Dictionary is read only")
 	
 	var levels = path.split(separator)
@@ -82,10 +82,10 @@ static func set_nested(dict:Dictionary, path:String, value, separator:= "/"):
 
 	current[levels[-1]] = value
 
-static func get_setting(path:String):
+static func get_setting(path: String):
 	return get_nested(get_settings(), path)
 
-static func set_setting(path:String, value):
+static func set_setting(path: String, value):
 	var data = get_settings()
 	set_nested(data, path, value)
 	write_settings(data)

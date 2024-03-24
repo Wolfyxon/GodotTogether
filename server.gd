@@ -1,7 +1,7 @@
 extends Node
 class_name GodotTogetherServer
 
-var main:GodotTogether
+var main: GodotTogether
 var peer = ENetMultiplayerPeer.new()
 
 enum PermissionLevel {
@@ -22,7 +22,7 @@ func _ready():
 	multiplayer.peer_disconnected.connect(_disconnected)
 
 
-static func is_local(ip:String) -> bool:
+static func is_local(ip: String) -> bool:
 	if ip == "0:0:0:0:0:0:0:1": return true
 	
 	var split = ip.split(".")
@@ -41,7 +41,7 @@ static func is_local(ip:String) -> bool:
 	
 	return false
 
-func start_hosting(port:int, max_clients:=10):
+func start_hosting(port: int, max_clients := 10):
 	var err = peer.create_server(port, max_clients)
 	if err: return err
 	multiplayer.multiplayer_peer = peer
@@ -49,11 +49,11 @@ func start_hosting(port:int, max_clients:=10):
 func is_authenticated(peerId:int):
 	return userdata.has(peerId)
 
-func send_message(peerId:int, text:String):
+func send_message(peerId: int, text: String):
 	main.client.receive_message.rpc_id(peerId, text)
 
 @rpc("any_peer", "call_remote", "reliable")
-func receive_user_data(data:Dictionary):
+func receive_user_data(data: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
 	if userdata.has(id): return
 	

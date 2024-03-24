@@ -16,8 +16,8 @@ var change_detector = GodotTogetherChangeDetector.new()
 var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
 
-var user_3d_markers:Array[User3D] = []
-var user_2d_markers:Array[User2D] = []
+var user_3d_markers: Array[User3D] = []
+var user_2d_markers: Array[User2D] = []
 
 func _enter_tree():
 	name = "GodotTogether"
@@ -68,7 +68,7 @@ func close_connection():
 	user_3d_markers = []
 
 @rpc("authority", "call_remote", "reliable")
-func create_user_3d(id:int, name:="Unknown") -> User3D:
+func create_user_3d(id: int, name := "Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
 	usr.main = self
 	add_child(usr)
@@ -79,7 +79,7 @@ func create_user_3d(id:int, name:="Unknown") -> User3D:
 	return usr
 
 @rpc("authority", "call_remote", "reliable")
-func create_user_2d(id:int, name:="Unknown") -> User2D:
+func create_user_2d(id: int, name := "Unknown") -> User2D:
 	var usr = user_2d_scene.instantiate()
 	tree_exiting.connect(usr.queue_free)
 	EditorInterface.get_editor_viewport_2d().add_child(usr)
@@ -89,13 +89,13 @@ func create_user_2d(id:int, name:="Unknown") -> User2D:
 	user_2d_markers.append(usr)
 	return usr
 
-func get_user_2d(id:int) -> User2D:
+func get_user_2d(id: int) -> User2D:
 	for i in user_2d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i
 	return null 
 
-func get_user_3d(id:int) -> User3D:
+func get_user_3d(id: int) -> User3D:
 	for i in user_3d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i

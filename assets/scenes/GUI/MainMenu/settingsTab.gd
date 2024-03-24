@@ -26,7 +26,7 @@ func load_settings():
 	for i in booleans:
 		i.button_pressed = GodotTogetherSettings.get_setting(i.get_meta("path"))
 
-func register_bool(button:Button, path:String):
+func register_bool(button: Button, path: String):
 	if not button.toggle_mode:
 		push_warning(button.name, " is not togglelable")
 	
@@ -37,7 +37,7 @@ func register_bool(button:Button, path:String):
 	
 	booleans.append(button)
 
-func register_text(input: Control, path:String):
+func register_text(input: Control, path: String):
 	assert(input is LineEdit or input is TextEdit, "Not a LineEdit or TextEdit")
 	
 	input.set_meta("path", path)
@@ -46,9 +46,9 @@ func register_text(input: Control, path:String):
 	strings.append(input)
 
 
-func _set_text(input:Control, path:String):
+func _set_text(input: Control, path: String):
 	assert(input is LineEdit or input is TextEdit, "Not a LineEdit or TextEdit")
 	GodotTogetherSettings.set_setting(path, input.text)
 
-func _set_bool(button:Button, path:String):
+func _set_bool(button: Button, path: String):
 	GodotTogetherSettings.set_setting(path, button.button_pressed)

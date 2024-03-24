@@ -2,7 +2,7 @@
 extends PopupPanel
 class_name GodotTogetherMainMenu
 
-var main:GodotTogether
+var main: GodotTogether
 
 @onready var username_input = $tabs/start/vbox/username
 

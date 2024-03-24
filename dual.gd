@@ -2,8 +2,8 @@ extends Node
 ## Class for managing session logic that runs on both server and client
 class_name GodotTogetherDual
 
-var main:GodotTogether
-var camera:Camera3D
+var main: GodotTogether
+var camera: Camera3D
 var update_timer = Timer.new()
 
 var prev_mouse_pos := Vector2()
@@ -38,10 +38,10 @@ func _update():
 		
 		update_3d_marker.rpc(camera.position, camera.rotation)
 
-func _connected(id:int):
+func _connected(id: int):
 	pass
 	
-func _disconnected(id:int):
+func _disconnected(id: int):
 	var marker3d = main.get_user_3d(id)
 	var marker2d = main.get_user_2d(id)
 	
@@ -61,7 +61,7 @@ func update_2d_marker(vector: Vector2):
 	marker.set_position_percent(vector)
 
 @rpc("any_peer")
-func update_3d_marker(position:Vector3, rotation:Vector3):
+func update_3d_marker(position: Vector3, rotation: Vector3):
 	if not main: return
 	var marker = main.get_user_3d(multiplayer.get_remote_sender_id())
 	if not marker: return
