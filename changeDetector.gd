@@ -2,9 +2,9 @@
 extends Node
 class_name GodotTogetherChangeDetector
 
-signal node_properties_changed(changed_keys: String)
-signal node_property_changed(key: String)
-signal node_property_differs(key: String, old_value, new_value)
+signal node_properties_changed(node: Node, changed_keys: String)
+signal node_property_changed(node: Node, key: String)
+signal node_property_differs(node: Node, key: String, old_value, new_value)
 
 var main:GodotTogether
 var observed_nodes:Array[Node]
@@ -38,11 +38,11 @@ func observe(node:Node):
 		
 		for i in current.keys():
 			if cache[i] != current[i]:
-				node_property_changed.emit(i)
-				node_property_differs.emit(i, cache[i], current[i])
+				node_property_changed.emit(node, i)
+				node_property_differs.emit(node, i, cache[i], current[i])
 				changed_keys.append(i)
 		
-		node_properties_changed.emit(changed_keys)
+		node_properties_changed.emit(node, changed_keys)
 		cache = current
 	
 	node.property_list_changed.connect(on_change)
