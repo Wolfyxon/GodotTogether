@@ -5,15 +5,15 @@ class_name GodotTogether
 const version = "1.0.0"
 const compatibility_version = 1
 
-var user_3d_scene = load("res://addons/GodotTogether/assets/scenes/User3D/User3D.tscn")
-var user_2d_scene = load("res://addons/GodotTogether/assets/scenes/User2D/User2D.tscn")
+var user_3d_scene = load("res://addons/GodotTogether/src/scenes/User3D/User3D.tscn")
+var user_2d_scene = load("res://addons/GodotTogether/src/scenes/User2D/User2D.tscn")
 
 var client = GodotTogetherClient.new()
 var server = GodotTogetherServer.new()
 var dual = GodotTogetherDual.new()
 var change_detector = GodotTogetherChangeDetector.new()
 
-var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/assets/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
+var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
 
 var user_3d_markers: Array[User3D] = []

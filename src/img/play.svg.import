@@ -2,27 +2,26 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vpigxkgi1nwp"
-path.s3tc="res://.godot/imported/cursor.png-a0f4a82a0104f368b97e70475106937f.s3tc.ctex"
+uid="uid://ca0d07y80h41v"
+path="res://.godot/imported/play.svg-d03eaac488aef1d573871b920c6fe972.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/GodotTogether/assets/img/cursor.png"
-dest_files=["res://.godot/imported/cursor.png-a0f4a82a0104f368b97e70475106937f.s3tc.ctex"]
+source_file="res://addons/GodotTogether/src/img/play.svg"
+dest_files=["res://.godot/imported/play.svg-d03eaac488aef1d573871b920c6fe972.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -32,4 +31,7 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

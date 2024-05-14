@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bti5j1lw5a1cc"]
 
-[ext_resource type="Texture2D" uid="uid://vpigxkgi1nwp" path="res://addons/GodotTogether/assets/img/cursor.png" id="1_dplva"]
-[ext_resource type="Script" path="res://addons/GodotTogether/assets/scenes/User2D/User2D.gd" id="1_sptkx"]
+[ext_resource type="Texture2D" uid="uid://vpigxkgi1nwp" path="res://addons/GodotTogether/src/img/cursor.png" id="1_dplva"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/User2D/User2D.gd" id="1_sptkx"]
 
 [node name="User2d" type="Control"]
 layout_mode = 3
