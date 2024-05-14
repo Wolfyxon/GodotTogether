@@ -21,6 +21,9 @@ func join(ip: String, port: int, data := {}):
 
 func _connected():
 	print("Successfully connected to the server")
+	
+	await get_tree().physics_frame
+	
 	main.server.receive_user_data.rpc_id(1, current_data)
 	print("Userdata sent")
 	
