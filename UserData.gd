@@ -18,3 +18,8 @@ func load_data(data: Dictionary):
 	
 	self.username = username
 	permission_level = perm_lvl
+
+# Safe to use by users
+func load_client_data(data: Dictionary):
+	data["permission_level"] = null
+	load_data(data)
