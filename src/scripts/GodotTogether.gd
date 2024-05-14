@@ -13,7 +13,7 @@ var server = GodotTogetherServer.new()
 var dual = GodotTogetherDual.new()
 var change_detector = GodotTogetherChangeDetector.new()
 
-var menu:GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
+var menu: GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
 
 var user_3d_markers: Array[User3D] = []

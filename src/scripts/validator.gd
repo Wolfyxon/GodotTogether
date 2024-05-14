@@ -17,22 +17,22 @@ enum VersionError {
 	TARGET_TOO_OLD,
 }
 
-static func is_empty(string:String):
-	return string.replace(" ","").is_empty()
+static func is_empty(string: String):
+	return string.replace(" ", "").is_empty()
 
-static func validate_version(target_version:int):
+static func validate_version(target_version: int):
 	if target_version > GodotTogether.compatibility_version: return VersionError.UPDATE_REQUIRED
 	if target_version < GodotTogether.compatibility_version: return VersionError.TARGET_TOO_OLD
 	
 	return VersionError.OK
 
-static func validate_username(username:String) -> TextError:
+static func validate_username(username: String) -> TextError:
 	if username.length() > max_username_length: return TextError.TOO_LONG
 	if is_empty(username): return TextError.EMPTY
 	
 	return TextError.OK
 
-static func validate_message(message:String) -> TextError:
+static func validate_message(message: String) -> TextError:
 	if message.length() > max_message_length: return TextError.TOO_LONG
 	if is_empty(message): return TextError.EMPTY
 	
