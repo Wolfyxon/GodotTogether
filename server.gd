@@ -27,7 +27,7 @@ static func is_local(ip: String) -> bool:
 	
 	var split = ip.split(".")
 	if split.size() != 4:
-		push_error(ip+" doesn't seem to be a valid IP address: size not equal to 4. Assuming this is not a local address.")
+		push_error(ip + " doesn't seem to be a valid IP address: size not equal to 4. Assuming this is not a local address.")
 		return false
 	
 	var a = int(split[0])
@@ -62,7 +62,7 @@ func receive_user_data(data: Dictionary):
 	print("Received data for " + str(id) + ": " + JSON.stringify(print_data))
 	
 	if not data.has("username"):
-		print("Invalid data of "+str(id)+": missing username")
+		print("Invalid data of " + str(id) + ": missing username")
 		send_message(id,"Invalid data, missing username")
 		peer.disconnect_peer(id)
 		return
@@ -89,13 +89,13 @@ func receive_user_data(data: Dictionary):
 	}
 	
 	print("User " + str(id) + " registered as " + data["username"])
-	send_message(id, "Welcome " + data["username"]+"!")
+	send_message(id, "Welcome " + data["username"] + "!")
 
 
 func _connected(id: int):
 	if not multiplayer.is_server(): return
 	var connected_peer = peer.get_peer(id)
-	print("Peer: "+str(id)+" connected from "+connected_peer.get_remote_address())
+	print("Peer: " + str(id) + " connected from " + connected_peer.get_remote_address())
 
 	await get_tree().create_timer(2).timeout
 	
@@ -117,5 +117,5 @@ func _connected(id: int):
 
 func _disconnected(id:int ):
 	if not multiplayer.is_server(): return
-	print("Peer "+str(id)+" disconnected")
+	print("Peer " + str(id) + " disconnected")
 	userdata.erase(id)

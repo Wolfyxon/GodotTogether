@@ -15,7 +15,7 @@ func join(ip: String, port: int, data := {}):
 	if err: return err
 	multiplayer.multiplayer_peer = peer
 	
-	print("Connected, your ID is: "+str(multiplayer.get_unique_id()))
+	print("Connected, your ID is: " + str(multiplayer.get_unique_id()))
 	current_data = data
 
 
