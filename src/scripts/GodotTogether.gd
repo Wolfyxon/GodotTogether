@@ -54,6 +54,23 @@ func _exit_tree():
 	close_connection()
 	button.queue_free()
 
+func get_files(path: String) -> Array[String]:
+	var res: Array[String] = []
+	
+	var dir = DirAccess.open(path)
+	assert(dir, "Failed to open " + path)
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	
+	while file_name != "":
+		if !dir.current_is_dir():
+			res.append(file_name)
+		
+		file_name = dir.get_next()
+		
+	return res
+
 func is_session_active():
 	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint() and (
 		client.peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED or 
