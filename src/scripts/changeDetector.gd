@@ -58,6 +58,7 @@ func _process(_delta):
 				
 		if changed_keys.size() != 0:
 			node_properties_changed.emit(node, changed_keys)
+			observed_nodes_cache[node] = current
 	
 
 func observe(node: Node):
