@@ -103,8 +103,9 @@ func node_update_request(scene_path: String, node_path: NodePath, property_dict:
 	
 	submit_node_update(scene_path, node_path, property_dict)
 
-func submit_node_update(cene_path: String, node_path: NodePath, property_dict: Dictionary):
-	main.client.receive_node_updates.rpc(scene_file_path, node_path, property_dict)
+func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary):
+	main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
+	main.client.receive_node_updates(scene_path, node_path, property_dict)
 
 func _connected(id: int):
 	if not multiplayer.is_server(): return
