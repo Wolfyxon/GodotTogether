@@ -16,7 +16,10 @@ func _ready():
 	
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
-
+	
+	main.change_detector.scene_changed.connect(_scene_changed)
+	main.change_detector.node_properties_changed.connect(_node_properties_changed)
+	
 	update_timer.timeout.connect(_update)
 	update_timer.one_shot = false
 	update_timer.wait_time = 0.02
@@ -52,6 +55,33 @@ func _disconnected(id: int):
 		marker3d.queue_free()
 		main.user_3d_markers.erase(marker3d)
 	
+
+func _scene_changed():
+	var scene = main.get_editor_interface().get_edited_scene_root()
+	if not scene: return
+	
+	main.change_detector.observe_recursive(scene)
+
+func _node_properties_changed(node: Node, changed_keys: Array[String]):
+	if not main: return
+	if not main.is_session_active(): return
+	
+	if not is_instance_valid(node): return
+	
+	var scene = node.get_tree().current_scene
+	if not scene: return
+	
+	var scene_path = scene.scene_file_path
+	var node_path = scene.get_path_to(node)
+	var dict = {}
+	
+	for key in changed_keys:
+		dict[key] = node[key]
+	
+	if main.client.is_active():
+		main.server.node_update_request.rpc_id(0, scene_file_path, node_path, dict)
+	elif main.server.is_active():
+		main.server.submit_node_update(scene_file_path, node_path, dict)
 
 @rpc("any_peer")
 func update_2d_marker(vector: Vector2):
