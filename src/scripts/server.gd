@@ -98,6 +98,9 @@ func node_update_request(scene_path: String, node_path: NodePath, property_dict:
 	if not user: return
 	if user["permission_level"] < PermissionLevel.EDITOR: return
 	
+	submit_node_update(scene_path, node_path, property_dict)
+
+func submit_node_update(cene_path: String, node_path: NodePath, property_dict: Dictionary):
 	for i in multiplayer.get_peers():
 		main.client.receive_node_updates(scene_file_path, node_path, property_dict)
 
