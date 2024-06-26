@@ -46,7 +46,7 @@ var observed_nodes_cache = {}
 func _process(_delta):
 	if not main: return
 	
-	var current_scene_path = main.get_editor_interface().get_edited_scene_root()
+	var current_scene_path = main.get_editor_interface().get_edited_scene_root().scene_file_path
 	if last_scene != current_scene_path:
 		last_scene = current_scene_path
 		scene_changed.emit()
