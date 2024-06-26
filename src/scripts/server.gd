@@ -23,7 +23,7 @@ func _ready():
 
 
 static func is_local(ip: String) -> bool:
-	if ip == "0:0:0:0:0:0:0:1": return true
+	if ip in ["0:0:0:0:0:0:0:1", "127.0.0.1", ":1", "localhost"]: return true
 	
 	var split = ip.split(".")
 	if split.size() != 4:
