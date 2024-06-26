@@ -10,7 +10,7 @@ var main: GodotTogether
 var observed_nodes: Array[Node]
 
 static func get_property_keys(node: Node) -> Array[String]:
-	var res = []
+	var res: Array[String] = []
 	
 	for i in node.get_property_list():
 		res.append(i.name)
