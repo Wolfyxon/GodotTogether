@@ -62,13 +62,13 @@ func _scene_changed():
 	
 	main.change_detector.observe_recursive(scene)
 
-func _node_properties_changed(node: Node, changed_keys: Array[String]):
+func _node_properties_changed(node: Node, changed_keys: Array):
 	if not main: return
 	if not main.is_session_active(): return
 	
 	if not is_instance_valid(node): return
 	
-	var scene = node.get_tree().current_scene
+	var scene = main.get_editor_interface().get_edited_scene_root()
 	if not scene: return
 	
 	var scene_path = scene.scene_file_path
@@ -79,9 +79,9 @@ func _node_properties_changed(node: Node, changed_keys: Array[String]):
 		dict[key] = node[key]
 	
 	if main.client.is_active():
-		main.server.node_update_request.rpc_id(0, scene_file_path, node_path, dict)
+		main.server.node_update_request.rpc_id(0, scene_path, node_path, dict)
 	elif main.server.is_active():
-		main.server.submit_node_update(scene_file_path, node_path, dict)
+		main.server.submit_node_update(scene_path, node_path, dict)
 
 @rpc("any_peer")
 func update_2d_marker(vector: Vector2):
