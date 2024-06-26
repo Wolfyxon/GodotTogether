@@ -105,7 +105,8 @@ func get_fs_hash(path := "res://") -> int:
 			res += get_fs_hash(path + "/" + file_name)
 		else:
 			var f = FileAccess.open(path + "/" + file_name, FileAccess.READ)
-			
+			res += hash(f.get_buffer(f.get_length()))
+			f.close()
 		
 		file_name = dir.get_next()
 	
