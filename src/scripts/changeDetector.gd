@@ -6,6 +6,12 @@ signal node_properties_changed(node: Node, changed_keys: String)
 signal node_property_changed(node: Node, key: String)
 signal node_property_differs(node: Node, key: String, old_value, new_value)
 
+const IGNORED_PROPERTY_USAGE_FLAGS = [
+	PROPERTY_USAGE_GROUP, 
+	PROPERTY_USAGE_CATEGORY, 
+	PROPERTY_USAGE_SUBGROUP
+]
+
 var main: GodotTogether
 var observed_nodes: Array[Node]
 
@@ -13,6 +19,14 @@ static func get_property_keys(node: Node) -> Array[String]:
 	var res: Array[String] = []
 	
 	for i in node.get_property_list():
+		var con = true
+		
+		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
+			if i.usage & usage:
+				con = false
+				break
+			
+		if not con: continue
 		res.append(i.name)
 		
 	return res
