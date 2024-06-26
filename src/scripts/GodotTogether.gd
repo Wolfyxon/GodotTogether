@@ -42,7 +42,6 @@ func _enter_tree():
 	menu.main = self
 	add_child(menu)
 	
-	change_detector.observe_recursive(get_editor_interface().get_edited_scene_root())
 	menu.visible = false
 	button.text = "Godot Together"
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
