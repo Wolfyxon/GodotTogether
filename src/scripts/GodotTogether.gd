@@ -89,8 +89,8 @@ func get_dirs(path: String) -> Array[String]:
 		
 	return res
 
-func get_fs_hash(path := "res://") -> String:
-	var res = ""
+func get_fs_hash(path := "res://") -> int:
+	var res = 0
 	
 	var dir = DirAccess.open(path)
 	assert(dir, "Failed to open " + path)
@@ -99,10 +99,10 @@ func get_fs_hash(path := "res://") -> String:
 	var file_name = dir.get_next()
 	
 	while file_name != "":
-		res = (res + file_name).hash()
+		res += file_name.hash()
 		
 		if dir.current_is_dir():
-			res = (res + get_fs_hash(path + "/" + file_name))
+			res += get_fs_hash(path + "/" + file_name)
 		else:
 			var f = FileAccess.open(path + "/" + file_name, FileAccess.READ)
 			
