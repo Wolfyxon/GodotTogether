@@ -91,6 +91,15 @@ func receive_user_data(data: Dictionary):
 	print("User " + str(id) + " registered as " + data["username"])
 	send_message(id, "Welcome " + data["username"] + "!")
 
+@rpc("any_peer", "call_remote", "reliable")
+func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary):
+	var id = multiplayer.get_remote_sender_id()
+	var user = userdata[id]
+	if not user: return
+	if user["permission_level"] < PermissionLevel.EDITOR: return
+	
+	for i in multiplayer.get_peers():
+		main.client.receive_node_updates(scene_file_path, node_path, property_dict)
 
 func _connected(id: int):
 	if not multiplayer.is_server(): return
