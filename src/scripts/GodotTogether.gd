@@ -4,7 +4,7 @@ class_name GodotTogether
 
 const version = "1.0.0"
 const compatibility_version = 1
-const ignored_dirs = [".godot", ".import", ".vscode"]
+const ignored_dirs = [".godot", ".import", ".vscode", "addons"]
 
 var user_3d_scene = load("res://addons/GodotTogether/src/scenes/User3D/User3D.tscn")
 var user_2d_scene = load("res://addons/GodotTogether/src/scenes/User2D/User2D.tscn")
