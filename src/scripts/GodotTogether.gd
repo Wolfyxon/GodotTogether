@@ -21,7 +21,6 @@ var user_3d_markers: Array[User3D] = []
 var user_2d_markers: Array[User2D] = []
 
 func _enter_tree():
-	get_fs_hash()
 	name = "GodotTogether"
 
 	client.main = self
