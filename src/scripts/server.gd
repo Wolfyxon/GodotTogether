@@ -46,6 +46,9 @@ func start_hosting(port: int, max_clients := 10):
 	if err: return err
 	multiplayer.multiplayer_peer = peer
 
+func is_active() -> bool:
+	return peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
+
 func is_authenticated(peerId:int):
 	return userdata.has(peerId)
 

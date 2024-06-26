@@ -18,6 +18,8 @@ func join(ip: String, port: int, data := {}):
 	print("Connected, your ID is: " + str(multiplayer.get_unique_id()))
 	current_data = data
 
+func is_active() -> bool:
+	return peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
 
 func _connected():
 	print("Successfully connected to the server")
