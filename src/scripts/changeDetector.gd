@@ -49,3 +49,9 @@ func observe(node: Node):
 	node.tree_exiting.connect(func():
 		node.property_list_changed.disconnect(on_change)
 	)
+
+func observe_recursive(node: Node):
+	observe(node)
+	
+	for i in main.get_descendants(node):
+		observe(i)
