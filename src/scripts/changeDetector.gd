@@ -2,6 +2,7 @@
 extends Node
 class_name GodotTogetherChangeDetector
 
+signal scene_changed
 signal node_properties_changed(node: Node, changed_keys: Array[String])
 signal node_property_changed(node: Node, key: String)
 signal node_property_differs(node: Node, key: String, old_value, new_value)
@@ -14,6 +15,7 @@ const IGNORED_PROPERTY_USAGE_FLAGS = [
 
 var main: GodotTogether
 var observed_nodes: Array[Node]
+var last_scene := ""
 
 static func get_property_keys(node: Node) -> Array[String]:
 	var res: Array[String] = []
@@ -42,6 +44,11 @@ static func get_property_dict(node: Node) -> Dictionary:
 var observed_nodes_cache = {}
 
 func _process(_delta):
+	var current_scene_path = main.get_editor_interface().get_edited_scene_root()
+	if last_scene != current_scene_path:
+		last_scene = current_scene_path
+		scene_changed.emit()
+	
 	for node in observed_nodes:
 		if not is_instance_valid(node): continue
 		
