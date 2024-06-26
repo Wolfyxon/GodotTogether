@@ -3,7 +3,7 @@ extends Node
 class_name GodotTogetherChangeDetector
 
 signal scene_changed
-signal node_properties_changed(node: Node, changed_keys: Array[String])
+signal node_properties_changed(node: Node, changed_keys: Array)
 signal node_property_changed(node: Node, key: String)
 signal node_property_differs(node: Node, key: String, old_value, new_value)
 
