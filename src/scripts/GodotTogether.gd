@@ -21,6 +21,7 @@ var user_3d_markers: Array[User3D] = []
 var user_2d_markers: Array[User2D] = []
 
 func _enter_tree():
+	get_fs_hash()
 	name = "GodotTogether"
 
 	client.main = self
@@ -86,6 +87,28 @@ func get_dirs(path: String) -> Array[String]:
 		
 		file_name = dir.get_next()
 		
+	return res
+
+func get_fs_hash(path := "res://") -> String:
+	var res = ""
+	
+	var dir = DirAccess.open(path)
+	assert(dir, "Failed to open " + path)
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	
+	while file_name != "":
+		res = (res + file_name).hash()
+		
+		if dir.current_is_dir():
+			res = (res + get_fs_hash(path + "/" + file_name))
+		else:
+			var f = FileAccess.open(path + "/" + file_name, FileAccess.READ)
+			
+		
+		file_name = dir.get_next()
+	
 	return res
 
 func is_session_active():
