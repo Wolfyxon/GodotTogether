@@ -33,3 +33,22 @@ func _disconnected():
 @rpc("authority")
 func receive_message(text: String):
 	print("[Server message] " + text)
+
+@rpc("authority")
+func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):
+	var current_scene = main.get_editor_interface().get_edited_scene_root()
+	
+	if not current_scene or current_scene.scene_file_path != scene_path:
+		print("NOT IMPLEMENTED YET. Node outside of current scene, not updating.")
+		return
+	
+	var node = current_scene.get_node(node_path)
+	if not node: return
+	
+	for key in property_dict.keys():
+		node[key] = property_dict[key]
+
+
+
+
+
