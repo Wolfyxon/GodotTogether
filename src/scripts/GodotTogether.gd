@@ -22,7 +22,11 @@ var user_2d_markers: Array[User2D] = []
 
 func _enter_tree():
 	name = "GodotTogether"
-
+	
+	change_detector.main = self
+	change_detector.name = "change_detector"
+	add_child(change_detector)
+	
 	client.main = self
 	client.name = "client"
 	add_child(client)
@@ -34,10 +38,6 @@ func _enter_tree():
 	dual.main = self
 	dual.name = "dual"
 	add_child(dual)
-	
-	change_detector.main = self
-	change_detector.name = "change_detector"
-	add_child(change_detector)
 	
 	menu.main = self
 	add_child(menu)
