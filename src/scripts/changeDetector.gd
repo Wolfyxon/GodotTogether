@@ -44,6 +44,8 @@ static func get_property_dict(node: Node) -> Dictionary:
 var observed_nodes_cache = {}
 
 func _process(_delta):
+	if not main: return
+	
 	var current_scene_path = main.get_editor_interface().get_edited_scene_root()
 	if last_scene != current_scene_path:
 		last_scene = current_scene_path
