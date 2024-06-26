@@ -18,10 +18,8 @@ offset_left = 4.0
 offset_top = 4.0
 offset_right = 996.0
 offset_bottom = 496.0
-current_tab = 1
 
 [node name="start" type="ScrollContainer" parent="tabs"]
-visible = false
 layout_mode = 2
 
 [node name="vbox" type="VBoxContainer" parent="tabs/start"]
@@ -205,6 +203,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="settings" type="ScrollContainer" parent="tabs"]
+visible = false
 layout_mode = 2
 
 [node name="vbox" type="VBoxContainer" parent="tabs/settings"]
