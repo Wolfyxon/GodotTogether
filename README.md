@@ -2,7 +2,7 @@
 Make Godot games together in real time!
 
 > [!WARNING]
-This plugin is still in early development.  
+This plugin is still in early development. Most features are not implemented yet or don't work properly.
 Some things will not work or may cause data corruption.  
 Back up your projects before using it.
 
