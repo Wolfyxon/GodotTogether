@@ -1,5 +1,5 @@
 @tool
-extends BetterEditorPlugin_GodotTogether
+extends EditorPlugin
 class_name GodotTogether
 
 const version = "1.0.0"
