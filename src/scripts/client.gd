@@ -49,8 +49,3 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	
 	for key in property_dict.keys():
 		node[key] = property_dict[key]
-
-
-
-
-
