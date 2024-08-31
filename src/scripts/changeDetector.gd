@@ -99,5 +99,5 @@ func observe(node: Node):
 func observe_recursive(node: Node):
 	observe(node)
 	
-	for i in main.get_descendants(node):
+	for i in GodotTogetherUtils.get_descendants(node):
 		observe(i)
