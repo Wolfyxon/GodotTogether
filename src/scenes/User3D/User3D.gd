@@ -21,7 +21,7 @@ func _exit_tree():
 	
 func _process(delta):
 	if not main: return
-	var cam =  main.get_editor_3d_camera()
+	var cam =  main.get_editor_interface().get_editor_viewport_3d().get_camera_3d()
 	var dist = cam.position.distance_to(position)
 	ui.position = cam.unproject_position(position) - ui.size/2 - (Vector2(0,200)/dist)
 

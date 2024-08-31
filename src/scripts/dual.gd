@@ -12,7 +12,7 @@ var prev_3d_rot := Vector3()
 
 func _ready():
 	if not main: return
-	camera = main.get_editor_3d_camera()
+	camera = main.get_editor_interface().get_editor_viewport_3d().get_camera_3d()
 	
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
@@ -97,4 +97,3 @@ func update_3d_marker(position: Vector3, rotation: Vector3):
 	if not marker: return
 	marker.position = position
 	marker.rotation = rotation
-
