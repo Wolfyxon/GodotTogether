@@ -92,6 +92,8 @@ func receive_user_data(data: Dictionary):
 	}
 	
 	print("User " + str(id) + " registered as " + data["username"])
+	
+	rpc_id(id, main.client.join_successful)
 	send_message(id, "Welcome " + data["username"] + "!")
 
 @rpc("any_peer", "call_remote", "reliable")

@@ -33,6 +33,10 @@ func _disconnected():
 	print("Disconnected from server")
 
 @rpc("authority")
+func join_successful():
+	print("Server accepted connection")
+
+@rpc("authority")
 func receive_message(text: String):
 	print("[Server message] " + text)
 
