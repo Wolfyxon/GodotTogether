@@ -16,6 +16,16 @@ static func get_file_tree(root := "res://") -> Array[String]:
 	
 	return res
 
+static func get_file_tree_hashes(root := "res://") -> Dictionary:
+	var res = {}
+	
+	for path in get_file_tree():
+		var f = FileAccess.open(path, FileAccess.READ)
+		res[path] = f.get_as_text().sha256_text()
+		f.close()
+	
+	return res
+
 static func get_files(path: String) -> Array[String]:
 	var res: Array[String] = []
 	
