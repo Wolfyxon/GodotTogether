@@ -60,7 +60,6 @@ func _disconnected(id: int):
 	if marker3d: 
 		marker3d.queue_free()
 		main.user_3d_markers.erase(marker3d)
-	
 
 func _scene_changed():
 	var scene = main.get_editor_interface().get_edited_scene_root()
@@ -98,6 +97,7 @@ func create_user_3d(id: int, name := "Unknown") -> User3D:
 	usr.set_username(name)
 	usr.id = id
 	user_3d_markers.append(usr)
+	
 	return usr
 
 @rpc("authority", "call_remote", "reliable")
@@ -109,32 +109,39 @@ func create_user_2d(id: int, name := "Unknown") -> User2D:
 	usr.set_username(name)
 	usr.id = id
 	user_2d_markers.append(usr)
+	
 	return usr
 
 func get_user_2d(id: int) -> User2D:
 	for i in user_2d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i
+	
 	return null 
 
 func get_user_3d(id: int) -> User3D:
 	for i in user_3d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i
+	
 	return null 
 
 
 @rpc("any_peer")
 func update_2d_marker(vector: Vector2):
 	if not main: return
+	
 	var marker = get_user_2d(multiplayer.get_remote_sender_id())
 	if not marker: return
+	
 	marker.set_position_percent(vector)
 
 @rpc("any_peer")
 func update_3d_marker(position: Vector3, rotation: Vector3):
 	if not main: return
+	
 	var marker = get_user_3d(multiplayer.get_remote_sender_id())
 	if not marker: return
+	
 	marker.position = position
 	marker.rotation = rotation
