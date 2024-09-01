@@ -96,6 +96,7 @@ func receive_user_data(data: Dictionary):
 	main.client.join_successful.rpc_id(id)
 	send_message(id, "Welcome " + data["username"] + "!")
 
+@rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
 	
