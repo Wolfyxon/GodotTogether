@@ -34,7 +34,9 @@ func _disconnected():
 
 @rpc("authority")
 func join_successful():
-	print("Server accepted connection")
+	print("Server accepted connection, requesting files (if needed)")
+	
+	rpc_id(1, main.server.project_files_request)
 
 @rpc("authority")
 func receive_message(text: String):

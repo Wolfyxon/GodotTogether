@@ -96,6 +96,16 @@ func receive_user_data(data: Dictionary):
 	rpc_id(id, main.client.join_successful)
 	send_message(id, "Welcome " + data["username"] + "!")
 
+func project_files_request(hashes: Dictionary):
+	var id = multiplayer.get_remote_sender_id()
+	
+	print("User " + str(id) + " is requesting the project files")
+	
+	if hash(hashes) != hash(GodotTogetherFiles.get_file_tree_hashes()):
+		print("User's project files don't match, sending")
+	else:
+		print("User's project files match, not sending")
+
 @rpc("any_peer", "call_remote", "reliable")
 func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
