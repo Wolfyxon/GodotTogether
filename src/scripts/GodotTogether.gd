@@ -48,8 +48,8 @@ func _exit_tree():
 
 func is_session_active():
 	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint() and (
-		client.peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED or 
-		server.peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
+		GodotTogetherUtils.is_peer_connected(client) or 
+		GodotTogetherUtils.is_peer_connected(server)
 	)
 
 func close_connection():
