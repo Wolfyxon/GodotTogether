@@ -56,10 +56,10 @@ func _disconnected(id: int):
 	
 	if marker2d: 
 		marker2d.queue_free()
-		main.user_2d_markers.erase(marker2d)
+		user_2d_markers.erase(marker2d)
 	if marker3d: 
 		marker3d.queue_free()
-		main.user_3d_markers.erase(marker3d)
+		user_3d_markers.erase(marker3d)
 
 func _scene_changed():
 	var scene = main.get_editor_interface().get_edited_scene_root()
