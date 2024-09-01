@@ -121,16 +121,16 @@ func _connected(id: int):
 		peer.disconnect_peer(id)
 		return
 
-	main.create_user_2d(id)
-	main.create_user_3d(id)
+	main.dual.create_user_2d(id)
+	main.dual.create_user_3d(id)
 	
-	main.create_user_2d.rpc_id(id, 1)
-	main.create_user_3d.rpc_id(id, 1)
+	main.dual.create_user_2d.rpc_id(id, 1)
+	main.dual.create_user_3d.rpc_id(id, 1)
 	
 	for i in multiplayer.get_peers():
 		if i == id: continue
-		main.create_user_2d.rpc_id(id, i)
-		main.create_user_3d.rpc_id(id, i)
+		main.dual.create_user_2d.rpc_id(id, i)
+		main.dual.create_user_3d.rpc_id(id, i)
 
 func _disconnected(id:int ):
 	if not multiplayer.is_server(): return
