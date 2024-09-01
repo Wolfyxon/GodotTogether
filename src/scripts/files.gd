@@ -1,6 +1,6 @@
 class_name GodotTogetherFiles
 
-const ignored_dirs = [".godot", ".import", ".vscode", "addons"]
+const ignored_dirs = ["res://.godot", "res://.import", "res://.vscode", "res://addons"]
 
 static func get_file_tree(root := "res://") -> Array[String]:
 	var res: Array[String] = []
