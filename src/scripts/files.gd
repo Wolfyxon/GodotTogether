@@ -2,7 +2,7 @@ class_name GodotTogetherFiles
 
 const ignored_dirs = [".godot", ".import", ".vscode", "addons"]
 
-func get_files(path: String) -> Array[String]:
+static func get_files(path: String) -> Array[String]:
 	var res: Array[String] = []
 	
 	var dir = DirAccess.open(path)
@@ -19,7 +19,7 @@ func get_files(path: String) -> Array[String]:
 		
 	return res
 
-func get_dirs(path: String) -> Array[String]:
+static func get_dirs(path: String) -> Array[String]:
 	var res: Array[String] = []
 	
 	var dir = DirAccess.open(path)
@@ -36,7 +36,7 @@ func get_dirs(path: String) -> Array[String]:
 		
 	return res
 
-func get_fs_hash(path := "res://") -> int:
+static func get_fs_hash(path := "res://") -> int:
 	var res = 0
 	
 	var dir = DirAccess.open(path)
