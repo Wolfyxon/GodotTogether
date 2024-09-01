@@ -3,6 +3,8 @@ class_name GodotTogetherFiles
 const ignored_dirs = ["res://.godot", "res://.import", "res://.vscode", "res://addons"]
 
 static func get_file_tree(root := "res://") -> Array[String]:
+	if root in ignored_dirs: return []
+	
 	var res: Array[String] = []
 	
 	for file in get_files(root):
