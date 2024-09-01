@@ -91,7 +91,7 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 @rpc("authority", "call_remote", "reliable")
 func create_user_3d(id: int, name := "Unknown") -> User3D:
 	var usr = user_3d_scene.instantiate()
-	usr.main = self
+	usr.main = self.main
 	add_child(usr)
 	
 	usr.set_username(name)
