@@ -4,7 +4,6 @@ class_name GodotTogether
 
 const version = "1.0.0"
 const compatibility_version = 1
-const ignored_dirs = [".godot", ".import", ".vscode", "addons"]
 
 var client = GodotTogetherClient.new()
 var server = GodotTogetherServer.new()

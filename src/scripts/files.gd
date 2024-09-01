@@ -1,5 +1,7 @@
 class_name GodotTogetherFiles
 
+const ignored_dirs = [".godot", ".import", ".vscode", "addons"]
+
 func get_files(path: String) -> Array[String]:
 	var res: Array[String] = []
 	
@@ -47,7 +49,7 @@ func get_fs_hash(path := "res://") -> int:
 		if dir.current_is_dir():
 			var ignored = false
 			# TODO: Check absolute paths
-			for ignored_dir in GodotTogether.ignored_dirs:
+			for ignored_dir in ignored_dirs:
 				if path + ignored_dir == "res://" + ignored_dir:
 					ignored = true
 					break
