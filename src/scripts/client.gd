@@ -36,7 +36,7 @@ func _disconnected():
 func join_successful():
 	print("Server accepted connection, requesting files (if needed)")
 	
-	rpc_id(1, main.server.project_files_request)
+	rpc_id(1, main.server.project_files_request, GodotTogetherFiles.get_file_tree_hashes())
 
 @rpc("authority")
 func receive_message(text: String):
