@@ -10,6 +10,12 @@ var prev_mouse_pos := Vector2()
 var prev_3d_pos := Vector3()
 var prev_3d_rot := Vector3()
 
+var user_3d_scene = load("res://addons/GodotTogether/src/scenes/User3D/User3D.tscn")
+var user_2d_scene = load("res://addons/GodotTogether/src/scenes/User2D/User2D.tscn")
+
+var user_3d_markers: Array[User3D] = []
+var user_2d_markers: Array[User2D] = []
+
 func _ready():
 	if not main: return
 	camera = main.get_editor_interface().get_editor_viewport_3d().get_camera_3d()
@@ -45,8 +51,8 @@ func _connected(id: int):
 	pass
 	
 func _disconnected(id: int):
-	var marker3d = main.get_user_3d(id)
-	var marker2d = main.get_user_2d(id)
+	var marker3d = get_user_3d(id)
+	var marker2d = get_user_2d(id)
 	
 	if marker2d: 
 		marker2d.queue_free()
@@ -83,17 +89,52 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 	elif main.server.is_active():
 		main.server.submit_node_update(scene_path, node_path, dict)
 
+@rpc("authority", "call_remote", "reliable")
+func create_user_3d(id: int, name := "Unknown") -> User3D:
+	var usr = user_3d_scene.instantiate()
+	usr.main = self
+	add_child(usr)
+	
+	usr.set_username(name)
+	usr.id = id
+	user_3d_markers.append(usr)
+	return usr
+
+@rpc("authority", "call_remote", "reliable")
+func create_user_2d(id: int, name := "Unknown") -> User2D:
+	var usr = user_2d_scene.instantiate()
+	tree_exiting.connect(usr.queue_free)
+	EditorInterface.get_editor_viewport_2d().add_child(usr)
+	
+	usr.set_username(name)
+	usr.id = id
+	user_2d_markers.append(usr)
+	return usr
+
+func get_user_2d(id: int) -> User2D:
+	for i in user_2d_markers:
+		if i.id == id and i.is_inside_tree(): 
+			return i
+	return null 
+
+func get_user_3d(id: int) -> User3D:
+	for i in user_3d_markers:
+		if i.id == id and i.is_inside_tree(): 
+			return i
+	return null 
+
+
 @rpc("any_peer")
 func update_2d_marker(vector: Vector2):
 	if not main: return
-	var marker = main.get_user_2d(multiplayer.get_remote_sender_id())
+	var marker = get_user_2d(multiplayer.get_remote_sender_id())
 	if not marker: return
 	marker.set_position_percent(vector)
 
 @rpc("any_peer")
 func update_3d_marker(position: Vector3, rotation: Vector3):
 	if not main: return
-	var marker = main.get_user_3d(multiplayer.get_remote_sender_id())
+	var marker = get_user_3d(multiplayer.get_remote_sender_id())
 	if not marker: return
 	marker.position = position
 	marker.rotation = rotation

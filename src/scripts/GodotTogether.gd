@@ -6,9 +6,6 @@ const version = "1.0.0"
 const compatibility_version = 1
 const ignored_dirs = [".godot", ".import", ".vscode", "addons"]
 
-var user_3d_scene = load("res://addons/GodotTogether/src/scenes/User3D/User3D.tscn")
-var user_2d_scene = load("res://addons/GodotTogether/src/scenes/User2D/User2D.tscn")
-
 var client = GodotTogetherClient.new()
 var server = GodotTogetherServer.new()
 var dual = GodotTogetherDual.new()
@@ -16,9 +13,6 @@ var change_detector = GodotTogetherChangeDetector.new()
 
 var menu: GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
-
-var user_3d_markers: Array[User3D] = []
-var user_2d_markers: Array[User2D] = []
 
 func _enter_tree():
 	name = "GodotTogether"
@@ -132,37 +126,3 @@ func close_connection():
 	
 	user_2d_markers = []
 	user_3d_markers = []
-
-@rpc("authority", "call_remote", "reliable")
-func create_user_3d(id: int, name := "Unknown") -> User3D:
-	var usr = user_3d_scene.instantiate()
-	usr.main = self
-	add_child(usr)
-	
-	usr.set_username(name)
-	usr.id = id
-	user_3d_markers.append(usr)
-	return usr
-
-@rpc("authority", "call_remote", "reliable")
-func create_user_2d(id: int, name := "Unknown") -> User2D:
-	var usr = user_2d_scene.instantiate()
-	tree_exiting.connect(usr.queue_free)
-	EditorInterface.get_editor_viewport_2d().add_child(usr)
-	
-	usr.set_username(name)
-	usr.id = id
-	user_2d_markers.append(usr)
-	return usr
-
-func get_user_2d(id: int) -> User2D:
-	for i in user_2d_markers:
-		if i.id == id and i.is_inside_tree(): 
-			return i
-	return null 
-
-func get_user_3d(id: int) -> User3D:
-	for i in user_3d_markers:
-		if i.id == id and i.is_inside_tree(): 
-			return i
-	return null 
