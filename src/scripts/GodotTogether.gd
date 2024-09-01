@@ -6,8 +6,6 @@ const version = "1.0.0"
 const compatibility_version = 1
 const ignored_dirs = [".godot", ".import", ".vscode", "addons"]
 
-const utils = preload("./utils.gd")
-
 var client = GodotTogetherClient.new()
 var server = GodotTogetherServer.new()
 var dual = GodotTogetherDual.new()
