@@ -93,7 +93,7 @@ func receive_user_data(data: Dictionary):
 	
 	print("User " + str(id) + " registered as " + data["username"])
 	
-	main.client.join_successful.rpc_id(1)
+	main.client.join_successful.rpc_id(id)
 	send_message(id, "Welcome " + data["username"] + "!")
 
 func project_files_request(hashes: Dictionary):
