@@ -8,3 +8,6 @@ static func get_descendants(node: Node, include_internal := false) -> Array[Node
 		res.append(i)
 	
 	return res
+	
+static func is_peer_connected(peer: MultiplayerPeer) -> bool:
+	return peer.get_connection_status() == peer.CONNECTION_CONNECTED
