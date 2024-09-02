@@ -38,7 +38,7 @@ func _enter_tree():
 	menu.visible = false
 	button.text = "Godot Together"
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
-	button.get_parent().move_child(button,button.get_index()-5)
+	button.get_parent().move_child(button,button.get_index() - 5)
 	button.pressed.connect(menu.popup)
 	
 
