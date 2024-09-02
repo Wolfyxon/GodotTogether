@@ -72,3 +72,5 @@ func receive_file(path: String, buffer: PackedByteArray):
 		return
 	
 	f.store_buffer(buffer)
+	
+	print("Saved successfully")
