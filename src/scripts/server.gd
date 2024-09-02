@@ -109,9 +109,9 @@ func project_files_request(hashes: Dictionary):
 		
 		for path in local_hashes.keys():
 			var local_hash = local_hashes[path]
-			var user_hash = hashes[path]
 			
-			if not user_hash or local_hash != user_hash:
+			
+			if not hashes.has(path) or local_hash != hashes[path]:
 				var buf = FileAccess.get_file_as_bytes(path)
 				if not buf: continue
 				
