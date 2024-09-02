@@ -63,6 +63,10 @@ func receive_file(path: String, buffer: PackedByteArray):
 		return
 	
 	var f = FileAccess.open(path, FileAccess.WRITE)
-	print("Failed to open " + path + ": " + str(FileAccess.get_open_error()))
+	
+	var err = FileAccess.get_open_error()
+	if err != OK:
+		print("Failed to open " + path + ": " + str(err))
+		return
 	
 	f.store_buffer(buffer)
