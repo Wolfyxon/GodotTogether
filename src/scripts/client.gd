@@ -75,5 +75,5 @@ func receive_file(path: String, buffer: PackedByteArray):
 	
 	print("Saved successfully")
 	
-	if path.get_extension() == ".tscn":
+	if path.get_extension() == "tscn":
 		EditorInterface.reload_scene_from_path(path)
