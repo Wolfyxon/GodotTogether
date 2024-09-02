@@ -62,6 +62,8 @@ func receive_file(path: String, buffer: PackedByteArray):
 		print("Server attempted to send file at unsafe location: " + path)
 		return
 	
+	print("Downloading " + path)
+	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	
 	var err = FileAccess.get_open_error()
