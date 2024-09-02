@@ -55,3 +55,10 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	
 	for key in property_dict.keys():
 		node[key] = property_dict[key]
+
+@rpc("authority")
+func receive_file(path: String, buffer: PackedByteArray):
+	var f = FileAccess.open(path, FileAccess.WRITE)
+	print("Failed to open " + path + ": " + str(FileAccess.get_open_error()))
+	
+	f.store_buffer(buffer)
