@@ -102,8 +102,22 @@ func project_files_request(hashes: Dictionary):
 	
 	print("User " + str(id) + " is requesting the project files")
 	
-	if hash(hashes) != hash(GodotTogetherFiles.get_file_tree_hashes()):
+	var local_hashes = GodotTogetherFiles.get_file_tree_hashes()
+	
+	if hash(hashes) != hash(local_hashes):
 		print("User's project files don't match, sending")
+		
+		for path in local_hashes.keys():
+			var local_hash = local_hashes[path]
+			var user_hash = hashes[path]
+			
+			if not user_hash or local_hash != user_hash:
+				var buf = FileAccess.get_file_as_bytes(path)
+				if not buf: continue
+				
+				print("Sending " + path)
+				main.client.receive_file.rpc_id(id, path, buf)
+		
 	else:
 		print("User's project files match, not sending")
 
