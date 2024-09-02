@@ -56,7 +56,7 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	for key in property_dict.keys():
 		node[key] = property_dict[key]
 
-@rpc("authority")
+@rpc("authority", "reliable")
 func receive_file(path: String, buffer: PackedByteArray):
 	if not GodotTogetherValidator.is_path_safe(path):
 		print("Server attempted to send file at unsafe location: " + path)
