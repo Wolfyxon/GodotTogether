@@ -18,7 +18,7 @@ var user_2d_markers: Array[User2D] = []
 
 func _ready():
 	if not main: return
-	camera = main.get_editor_interface().get_editor_viewport_3d().get_camera_3d()
+	camera = EditorInterface.get_editor_viewport_3d().get_camera_3d()
 	
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
@@ -62,7 +62,7 @@ func _disconnected(id: int):
 		user_3d_markers.erase(marker3d)
 
 func _scene_changed():
-	var scene = main.get_editor_interface().get_edited_scene_root()
+	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
 	
 	main.change_detector.observe_recursive(scene)
@@ -73,7 +73,7 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 	
 	if not is_instance_valid(node): return
 	
-	var scene = main.get_editor_interface().get_edited_scene_root()
+	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
 	
 	var scene_path = scene.scene_file_path

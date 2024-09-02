@@ -44,7 +44,7 @@ func receive_message(text: String):
 
 @rpc("authority")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):
-	var current_scene = main.get_editor_interface().get_edited_scene_root()
+	var current_scene = EditorInterface.get_edited_scene_root()
 	
 	if not current_scene or current_scene.scene_file_path != scene_path:
 		print("NOT IMPLEMENTED YET. Node outside of current scene, not updating.")
