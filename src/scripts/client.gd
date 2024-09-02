@@ -58,6 +58,10 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 
 @rpc("authority")
 func receive_file(path: String, buffer: PackedByteArray):
+	if not GodotTogetherValidator.is_path_safe(path):
+		print("Server attempted to send file at unsafe location: " + path)
+		return
+	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	print("Failed to open " + path + ": " + str(FileAccess.get_open_error()))
 	
