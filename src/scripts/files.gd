@@ -2,6 +2,11 @@ class_name GodotTogetherFiles
 
 const ignored_dirs = ["res://.godot", "res://.import", "res://.vscode", "res://addons"]
 
+static func is_path_in_project(path: String) -> bool:
+	if not path.begins_with("res://"): return false
+	
+	return ProjectSettings.globalize_path(path).begins_with(ProjectSettings.globalize_path("res://"))
+
 static func get_file_tree(root := "res://") -> Array[String]:
 	if root in ignored_dirs: return []
 	
