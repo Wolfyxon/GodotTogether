@@ -7,7 +7,7 @@ var id := -1
 @onready var ui = $ui.duplicate()
 @onready var text_ui = ui.get_node("txt")
 
-var main:GodotTogether
+var main: GodotTogether
 
 func _ready():
 	if not main: return

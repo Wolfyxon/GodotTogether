@@ -1,6 +1,11 @@
 class_name GodotTogetherFiles
 
-const ignored_dirs = ["res://.godot", "res://.import", "res://.vscode", "res://addons"]
+const ignored_dirs = [
+	"res://.godot", 
+	"res://.import", 
+	"res://.vscode", 
+	"res://addons"
+]
 
 static func is_path_in_project(path: String) -> bool:
 	if not path.begins_with("res://"): return false
