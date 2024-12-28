@@ -13,3 +13,4 @@ enum Permission {
 }
 
 var permissions: Array[Permission]
+var ip: String
