@@ -14,6 +14,6 @@ enum Permission {
 
 var id: int
 var username: String
+var peer: ENetPacketPeer
 var permissions: Array[Permission] = []
-var ip: String
 var authenticated := false
