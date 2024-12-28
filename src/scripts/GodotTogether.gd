@@ -14,31 +14,20 @@ enum Permission {
 const version = "1.0.0"
 const compatibility_version = 1
 
-var client = GodotTogetherClient.new()
-var server = GodotTogetherServer.new()
-var dual = GodotTogetherDual.new()
-var change_detector = GodotTogetherChangeDetector.new()
+var client = GodotTogetherClient.new(self, "client")
+var server = GodotTogetherServer.new(self, "server")
+var dual = GodotTogetherDual.new(self, "dual")
+var change_detector = GodotTogetherChangeDetector.new(self, "changeDetector")
 
 var menu: GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var button = Button.new()
 
 func _enter_tree():
 	name = "GodotTogether"
-	
-	change_detector.main = self
-	change_detector.name = "change_detector"
+
 	add_child(change_detector)
-	
-	client.main = self
-	client.name = "client"
 	add_child(client)
-	
-	server.main = self
-	server.name = "server"
 	add_child(server)
-	
-	dual.main = self
-	dual.name = "dual"
 	add_child(dual)
 	
 	menu.main = self
