@@ -4,10 +4,12 @@
 class_name GodotTogetherJoinData
 
 var username: String
+var password: String
 
 func as_dict() -> Dictionary:
     return {
-        "username": username
+        "username": username,
+        "password": password
     }
 
 static func from_dict(dict: Dictionary) -> GodotTogetherJoinData:
@@ -18,5 +20,6 @@ static func from_dict(dict: Dictionary) -> GodotTogetherJoinData:
         assert(val != null, "Invalid user data: %s is null: %s" % [key, dict])
 
     res.username = dict["username"]
+    res.password = dict["password"]
 
     return res
