@@ -17,3 +17,7 @@ var username: String
 var peer: ENetPacketPeer
 var permissions: Array[Permission] = []
 var authenticated := false
+
+func _init(id: int, peer: ENetPacketPeer):
+    self.id = id
+    self.peer = peer
