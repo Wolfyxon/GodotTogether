@@ -51,6 +51,31 @@ func receive_join_data(data_dict: Dictionary):
 	user.username = data.username
 
 	print("User %i authenticated as '%s'" % [id, data.username])
+	main.client.auth_successful.rpc_id(id)
+
+@rpc("any_peer", "call_remote", "reliable")
+func project_files_request(hashes: Dictionary):
+	var id = multiplayer.get_remote_sender_id()
+	
+	print("User %i is requesting the project files" % id)
+	
+	var local_hashes = GodotTogetherFiles.get_file_tree_hashes()
+	
+	if hash(hashes) != hash(local_hashes):
+		print("User's project files don't match, sending")
+		
+		for path in local_hashes.keys():
+			var local_hash = local_hashes[path]
+			
+			if not hashes.has(path) or local_hash != hashes[path]:
+				var buf = FileAccess.get_file_as_bytes(path)
+				if not buf: continue
+				
+				print("Sending " + path)
+				main.client.receive_file.rpc_id(id, path, buf)
+		
+	else:
+		print("User's project files match, not sending")
 
 func get_user_by_id(id: int) -> GodotTogetherUser:
 	for i in connected_users:
