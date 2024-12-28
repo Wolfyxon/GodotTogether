@@ -11,3 +11,5 @@ enum Permission {
     ADD_CUSTOM_FILES,
     MODIFY_CUSTOM_FILES
 }
+
+var permissions: Array[Permission]
