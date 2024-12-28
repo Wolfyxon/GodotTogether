@@ -20,6 +20,15 @@ func _connected():
 func _disconnected():
 	if multiplayer.is_server(): return
 
+func join(ip: String, port: int, data := GodotTogetherJoinData.new()):
+	var err = client_peer.create_client(ip, port)
+	if err: return err
+	
+	multiplayer.multiplayer_peer = client_peer
+	
+	print("Connected, your ID is: " + str(multiplayer.get_unique_id()))
+	current_join_data = data
+
 @rpc("authority")
 func auth_successful():
 	print("Server accepted connection, requesting files (if needed)")
