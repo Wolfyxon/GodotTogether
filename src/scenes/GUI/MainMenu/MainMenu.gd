@@ -53,12 +53,12 @@ func _on_btn_join_pressed():
 	GodotTogetherSettings.set_setting("last_server", join_ip.text)
 	GodotTogetherSettings.set_setting("last_port", join_port.value)
 	
-	var err = main.client.join(join_ip.text,join_port.value, GodotTogetherJoinData.from_dict({
+	var err = main.client.join(join_ip.text, join_port.value, GodotTogetherJoinData.from_dict({
 		"username": username_input.text,
 		"password": join_password.text
 	}))
 
-	if err: push_error("Cannot join. Err: " + str(err))
+	assert(not err, "Cannot join. Err: %i" % err)
 	
 
 func _on_btn_stop_pressed():
