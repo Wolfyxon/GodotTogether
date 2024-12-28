@@ -62,6 +62,17 @@ func receive_join_data(data_dict: Dictionary):
 	print("User %d authenticated as '%s'" % [id, data.username])
 	main.client.auth_successful.rpc_id(id)
 
+	main.dual.create_user_2d(id)
+	main.dual.create_user_3d(id)
+	
+	main.dual.create_user_2d.rpc_id(id, 1)
+	main.dual.create_user_3d.rpc_id(id, 1)
+	
+	for i in multiplayer.get_peers():
+		if i == id: continue
+		main.dual.create_user_2d.rpc_id(id, i)
+		main.dual.create_user_3d.rpc_id(id, i)
+
 @rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
