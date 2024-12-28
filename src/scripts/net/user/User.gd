@@ -13,6 +13,6 @@ enum Permission {
 }
 
 var username: String
-var permissions: Array[Permission]
+var permissions: Array[Permission] = []
 var ip: String
 var authenticated := false
