@@ -11,6 +11,7 @@ const LOCALHOST := [
 
 var main: GodotTogether
 var server_peer = ENetMultiplayerPeer.new()
+var connected_users: Array[GodotTogetherUser] = []
 
 func _ready():
 	multiplayer.peer_connected.connect(_connected)
@@ -19,8 +20,25 @@ func _ready():
 func _connected(id: int):
 	if not multiplayer.is_server(): return
 
+	var peer = server_peer.get_peer(id)
+	var user = GodotTogetherUser.new(id, peer)
+
+	connected_users.append(user) 
+
 func _disconnected(id: int):
 	if not multiplayer.is_server(): return
+
+	var user = get_user_by_id(id)
+	assert(user, "User %i disconnected, but was never listed" % id)
+
+	connected_users.erase(user)
+
+func get_user_by_id(id: int) -> GodotTogetherUser:
+	for i in connected_users:
+		if i.id == id:
+			return i
+
+	return
 
 func is_active() -> bool:
 	return server_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
