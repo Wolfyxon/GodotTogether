@@ -2,6 +2,13 @@
 extends Node
 class_name GodotTogetherServer
 
+const LOCALHOST := [
+	"0:0:0:0:0:0:0:1", 
+	"127.0.0.1", 
+	":1", 
+	"localhost"
+]
+
 var main: GodotTogether
 var server_peer = ENetMultiplayerPeer.new()
 
@@ -19,7 +26,7 @@ func is_active() -> bool:
 	return server_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
 
 static func is_local(ip: String) -> bool:
-	if ip in ["0:0:0:0:0:0:0:1", "127.0.0.1", ":1", "localhost"]: return true
+	if ip in LOCALHOST: return true
 	
 	var split = ip.split(".")
 	if split.size() != 4:
