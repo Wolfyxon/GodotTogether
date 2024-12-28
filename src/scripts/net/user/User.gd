@@ -12,5 +12,6 @@ enum Permission {
     MODIFY_CUSTOM_FILES
 }
 
+var username: String
 var permissions: Array[Permission]
 var ip: String
