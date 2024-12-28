@@ -6,8 +6,11 @@ class_name GodotTogetherUser
 var id: int
 var username: String
 var peer: ENetPacketPeer
-var permissions: Array[GodotTogether.Permission] = []
 var authenticated := false
+
+var permissions: Array[GodotTogether.Permission] = [
+    GodotTogether.Permission.EDIT_SCENES
+]
 
 func _init(id: int, peer: ENetPacketPeer):
     self.id = id
