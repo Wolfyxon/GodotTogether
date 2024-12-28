@@ -32,6 +32,12 @@ func _disconnected(id: int):
 
 	connected_users.erase(user)
 
+func start_hosting(port: int, max_clients := 10):
+	var err = server_peer.create_server(port, max_clients)
+	assert(not err, "Failed to start server: %i" % err)
+
+	multiplayer.multiplayer_peer = server_peer
+
 @rpc("any_peer", "call_remote", "reliable")
 func receive_join_data(data_dict: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
