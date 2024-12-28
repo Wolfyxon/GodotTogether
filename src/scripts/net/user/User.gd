@@ -15,3 +15,7 @@ func _init(id: int, peer: ENetPacketPeer):
 
 func has_permission(permission: GodotTogether.Permission) -> bool:
     return authenticated and permission in permissions
+
+func kick():
+    authenticated = false
+    peer.peer_disconnect_later()
