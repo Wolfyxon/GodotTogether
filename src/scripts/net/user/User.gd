@@ -12,3 +12,6 @@ var authenticated := false
 func _init(id: int, peer: ENetPacketPeer):
     self.id = id
     self.peer = peer
+
+func has_permission(permission: GodotTogether.Permission) -> bool:
+    return authenticated and permission in permissions
