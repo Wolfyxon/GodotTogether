@@ -1,8 +1,7 @@
-extends Node
+extends GodotTogetherComponent
 ## Class for managing session logic that runs on both server and client
 class_name GodotTogetherDual
 
-var main: GodotTogether
 var camera: Camera3D
 var update_timer = Timer.new()
 

@@ -1,5 +1,5 @@
 @tool
-extends Node
+extends GodotTogetherComponent
 class_name GodotTogetherChangeDetector
 
 signal scene_changed
@@ -13,7 +13,6 @@ const IGNORED_PROPERTY_USAGE_FLAGS = [
 	PROPERTY_USAGE_SUBGROUP
 ]
 
-var main: GodotTogether
 var observed_nodes: Array[Node]
 var last_scene := ""
 

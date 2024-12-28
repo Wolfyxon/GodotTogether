@@ -1,5 +1,5 @@
 @tool
-extends Node
+extends GodotTogetherComponent
 class_name GodotTogetherServer
 
 const LOCALHOST := [
@@ -9,7 +9,6 @@ const LOCALHOST := [
 	"localhost"
 ]
 
-var main: GodotTogether
 var server_peer = ENetMultiplayerPeer.new()
 var connected_users: Array[GodotTogetherUser] = []
 

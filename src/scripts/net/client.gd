@@ -1,3 +1,3 @@
 @tool
-extends Node
+extends GodotTogetherComponent
 class_name GodotTogetherClient
