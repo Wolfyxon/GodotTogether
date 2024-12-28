@@ -22,6 +22,8 @@ func _connected(id: int):
 	var peer = server_peer.get_peer(id)
 	var user = GodotTogetherUser.new(id, peer)
 
+	print("New connection from %s ID: %d" % [peer.get_remote_address(), id])
+
 	connected_users.append(user) 
 
 func _disconnected(id: int):
@@ -30,6 +32,7 @@ func _disconnected(id: int):
 	var user = get_user_by_id(id)
 	assert(user, "User %d disconnected, but was never listed" % id)
 
+	print("User %s (%d) disconnected" % [user.username, id])
 	connected_users.erase(user)
 
 func start_hosting(port: int, max_clients := 10):
