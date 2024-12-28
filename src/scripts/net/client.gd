@@ -22,7 +22,7 @@ func _disconnected():
 
 	print("Disconnected from server")
 
-func join(ip: String, port: int, data := GodotTogetherJoinData.new()):
+func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 	var err = client_peer.create_client(ip, port)
 	if err: return err
 
@@ -30,6 +30,8 @@ func join(ip: String, port: int, data := GodotTogetherJoinData.new()):
 	
 	print("Connected, your ID is: " + str(multiplayer.get_unique_id()))
 	current_join_data = data
+
+	return OK
 
 @rpc("authority")
 func auth_successful():
