@@ -23,7 +23,7 @@ func _disconnected():
 func join(ip: String, port: int, data := GodotTogetherJoinData.new()):
 	var err = client_peer.create_client(ip, port)
 	if err: return err
-	
+
 	multiplayer.multiplayer_peer = client_peer
 	
 	print("Connected, your ID is: " + str(multiplayer.get_unique_id()))
@@ -54,6 +54,20 @@ func receive_file(path: String, buffer: PackedByteArray):
 	
 	if path.get_extension() == "tscn":
 		EditorInterface.reload_scene_from_path(path)
+
+@rpc("authority")
+func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):
+	var current_scene = EditorInterface.get_edited_scene_root()
+	
+	if not current_scene or current_scene.scene_file_path != scene_path:
+		print("NOT IMPLEMENTED YET. Node outside of current scene, not updating.")
+		return
+	
+	var node = current_scene.get_node(node_path)
+	if not node: return
+	
+	for key in property_dict.keys():
+		node[key] = property_dict[key]
 
 func is_active() -> bool:
 	return client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
