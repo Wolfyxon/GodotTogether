@@ -28,13 +28,13 @@ func _disconnected(id: int):
 	if not multiplayer.is_server(): return
 
 	var user = get_user_by_id(id)
-	assert(user, "User %i disconnected, but was never listed" % id)
+	assert(user, "User %d disconnected, but was never listed" % id)
 
 	connected_users.erase(user)
 
 func start_hosting(port: int, max_clients := 10):
 	var err = server_peer.create_server(port, max_clients)
-	assert(not err, "Failed to start server: %i" % err)
+	assert(not err, "Failed to start server: %d" % err)
 
 	multiplayer.multiplayer_peer = server_peer
 
@@ -43,27 +43,27 @@ func receive_join_data(data_dict: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
 	var user = get_user_by_id(id)
 
-	print("Receiving data from %i: %s" % [id, data_dict])
+	print("Receiving data from %d: %s" % [id, data_dict])
 
 	var data = GodotTogetherJoinData.from_dict(data_dict)
 	var server_password = GodotTogetherSettings.get_setting("server/password")
 	
 	if data.password != server_password:
-		print("Invalid password for user %i" % id)
+		print("Invalid password for user %d" % id)
 		user.kick()
 		return
 
 	user.authenticated = true
 	user.username = data.username
 
-	print("User %i authenticated as '%s'" % [id, data.username])
+	print("User %d authenticated as '%s'" % [id, data.username])
 	main.client.auth_successful.rpc_id(id)
 
 @rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
 	
-	print("User %i is requesting the project files" % id)
+	print("User %d is requesting the project files" % id)
 	
 	var local_hashes = GodotTogetherFiles.get_file_tree_hashes()
 	

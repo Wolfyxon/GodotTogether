@@ -58,7 +58,7 @@ func _on_btn_join_pressed():
 		"password": join_password.text
 	}))
 
-	assert(not err, "Cannot join. Err: %i" % err)
+	assert(not err, "Cannot join. Err: %d" % err)
 	
 
 func _on_btn_stop_pressed():

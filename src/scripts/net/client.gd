@@ -46,7 +46,7 @@ func receive_file(path: String, buffer: PackedByteArray):
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	var err = FileAccess.get_open_error()
 
-	assert(err == OK, "Failed to open %s: %i" % [path, err])
+	assert(err == OK, "Failed to open %s: %d" % [path, err])
 	
 	f.store_buffer(buffer)
 	
