@@ -86,6 +86,15 @@ func project_files_request(hashes: Dictionary):
 	else:
 		print("User's project files match, not sending")
 
+@rpc("any_peer", "call_remote", "reliable")
+func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary):
+	var id = multiplayer.get_remote_sender_id()
+	var user = get_user_by_id(id)
+
+	if not user.has_permission(GodotTogether.Permission.EDIT_SCENES): return
+
+	submit_node_update(scene_path, node_path, property_dict)
+
 func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary):
 	main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
 	main.client.receive_node_updates(scene_path, node_path, property_dict)
