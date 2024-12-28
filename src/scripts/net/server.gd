@@ -32,6 +32,26 @@ func _disconnected(id: int):
 
 	connected_users.erase(user)
 
+@rpc("any_peer", "call_remote", "reliable")
+func receive_join_data(data_dict: Dictionary):
+	var id = multiplayer.get_remote_sender_id()
+	var user = get_user_by_id(id)
+
+	print("Receiving data from %i: %s" % [id, data_dict])
+
+	var data = GodotTogetherJoinData.from_dict(data_dict)
+	var server_password = GodotTogetherSettings.get_setting("server/password")
+	
+	if data.password != server_password:
+		print("Invalid password for user %i" % id)
+		user.kick()
+		return
+
+	user.authenticated = true
+	user.username = data.username
+
+	print("User %i authenticated as '%s'" % [id, data.username])
+
 func get_user_by_id(id: int) -> GodotTogetherUser:
 	for i in connected_users:
 		if i.id == id:
