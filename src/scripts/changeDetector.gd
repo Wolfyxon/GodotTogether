@@ -4,8 +4,8 @@ class_name GodotTogetherChangeDetector
 
 signal scene_changed
 signal node_properties_changed(node: Node, changed_keys: Array)
-signal node_property_changed(node: Node, key: String)
-signal node_property_differs(node: Node, key: String, old_value, new_value)
+#signal node_property_changed(node: Node, key: String)
+#signal node_property_differs(node: Node, key: String, old_value, new_value)
 
 const IGNORED_PROPERTY_USAGE_FLAGS = [
 	PROPERTY_USAGE_GROUP, 
@@ -62,8 +62,8 @@ func _process(_delta):
 		
 		for i in current.keys():
 			if cached[i] != current[i]:
-				node_property_changed.emit(node, i)
-				node_property_differs.emit(node, i, cached[i], current[i])
+				#node_property_changed.emit(node, i)
+				#node_property_differs.emit(node, i, cached[i], current[i])
 				changed_keys.append(i)
 				
 		if changed_keys.size() != 0:
