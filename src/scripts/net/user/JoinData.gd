@@ -3,23 +3,26 @@
 ### Class for data sent by users upon joining 
 class_name GodotTogetherJoinData
 
+const FIELDS = [
+    "username",
+    "password"
+]
+
 var username: String
 var password: String
 
 func as_dict() -> Dictionary:
-    return {
-        "username": username,
-        "password": password
-    }
+    var dict = {}
+
+    for field in FIELDS:
+        dict[field] = self[field]
+
+    return dict
 
 static func from_dict(dict: Dictionary) -> GodotTogetherJoinData:
     var res = GodotTogetherJoinData.new()
 
-    for key in dict.keys():
-        var val = dict[key]
-        assert(val != null, "Invalid user data: %s is null: %s" % [key, dict])
-
-    res.username = dict["username"]
-    res.password = dict["password"]
+    for field in FIELDS:
+        res[field] = dict[field]
 
     return res
