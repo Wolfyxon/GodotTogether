@@ -1,6 +1,6 @@
 @tool
 extends Control
-class_name User2D
+class_name GodotTogetherAvatar2D
 
 var id := -1 
 

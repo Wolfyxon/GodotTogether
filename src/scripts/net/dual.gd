@@ -12,8 +12,8 @@ var prev_3d_rot := Vector3()
 var user_3d_scene = load("res://addons/GodotTogether/src/scenes/User3D/User3D.tscn")
 var user_2d_scene = load("res://addons/GodotTogether/src/scenes/User2D/User2D.tscn")
 
-var user_3d_markers: Array[User3D] = []
-var user_2d_markers: Array[User2D] = []
+var user_3d_markers: Array[GodotTogetherAvatar3D] = []
+var user_2d_markers: Array[GodotTogetherAvatar2D] = []
 
 func _ready():
 	if not main: return
@@ -88,7 +88,7 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 		main.server.submit_node_update(scene_path, node_path, dict)
 
 @rpc("authority", "call_remote", "reliable")
-func create_user_3d(id: int, name := "Unknown") -> User3D:
+func create_user_3d(id: int, name := "Unknown") -> GodotTogetherAvatar3D:
 	var usr = user_3d_scene.instantiate()
 	usr.main = self.main
 	add_child(usr)
@@ -100,7 +100,7 @@ func create_user_3d(id: int, name := "Unknown") -> User3D:
 	return usr
 
 @rpc("authority", "call_remote", "reliable")
-func create_user_2d(id: int, name := "Unknown") -> User2D:
+func create_user_2d(id: int, name := "Unknown") -> GodotTogetherAvatar2D:
 	var usr = user_2d_scene.instantiate()
 	tree_exiting.connect(usr.queue_free)
 	EditorInterface.get_editor_viewport_2d().add_child(usr)
@@ -111,14 +111,14 @@ func create_user_2d(id: int, name := "Unknown") -> User2D:
 	
 	return usr
 
-func get_user_2d(id: int) -> User2D:
+func get_user_2d(id: int) -> GodotTogetherAvatar2D:
 	for i in user_2d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i
 	
 	return null 
 
-func get_user_3d(id: int) -> User3D:
+func get_user_3d(id: int) -> GodotTogetherAvatar3D:
 	for i in user_3d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i

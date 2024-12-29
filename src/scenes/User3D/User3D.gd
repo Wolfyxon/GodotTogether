@@ -1,6 +1,6 @@
 @tool
 extends Node3D
-class_name User3D
+class_name GodotTogetherAvatar3D
 
 var id := -1
 
