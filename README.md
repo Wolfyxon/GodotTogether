@@ -25,6 +25,6 @@ I must admit that I was being lazy and unmotivated to work on it.
 I also got a bit too excited for something that was just an experiment. 
 
 ### Is it possible to host a project without opening ports?
-The server is hosted on your machine, not some centralized network, so you need to either open ports in your router, host the server on a VPS or use a virtual network such as [Zerotier](https://zerotier.com).
+The server is hosted on your machine, not some centralized network, so you need to either open ports in your router, host the server on a VPS or use a virtual network such as [ZeroTier](https://zerotier.com).
 
 So yes, it is possible with a virtual network. Don't worry it's very easy.
