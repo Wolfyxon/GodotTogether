@@ -56,7 +56,7 @@ func receive_join_data(data_dict: Dictionary):
 		user.kick()
 		return
 
-	user.authenticated = true
+	user.auth()
 	user.username = data.username
 
 	print("User %d authenticated as '%s'" % [id, data.username])
