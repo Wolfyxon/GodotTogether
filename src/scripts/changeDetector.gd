@@ -14,6 +14,7 @@ const IGNORED_PROPERTY_USAGE_FLAGS = [
 ]
 
 var observed_nodes: Array[Node]
+var observed_nodes_cache = {}
 var last_scene := ""
 
 static func get_property_keys(node: Node) -> Array[String]:
@@ -39,8 +40,6 @@ static func get_property_dict(node: Node) -> Dictionary:
 		res[i] = node[i]
 	
 	return res
-
-var observed_nodes_cache = {}
 
 func _process(_delta):
 	if not main: return
