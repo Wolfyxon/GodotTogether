@@ -12,7 +12,7 @@ enum Permission {
 }
 
 const version = "1.0.0"
-const compatibility_version = 1
+const protocol_version = 1
 
 var client = GodotTogetherClient.new(self, "client")
 var server = GodotTogetherServer.new(self, "server")
