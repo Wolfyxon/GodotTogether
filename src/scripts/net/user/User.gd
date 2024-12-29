@@ -22,6 +22,12 @@ func _init(id: int, peer: ENetPacketPeer):
 func has_permission(permission: GodotTogether.Permission) -> bool:
     return authenticated and permission in permissions
 
+func auth():
+    assert(not authenticated, "User %d (%s) already authenticated" % [id, username])
+
+    authenticated = true
+    authenticated_at = Time.get_unix_time_from_system()
+
 func kick():
     authenticated = false
     peer.peer_disconnect_later()
