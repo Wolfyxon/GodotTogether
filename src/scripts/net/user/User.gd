@@ -4,7 +4,7 @@
 class_name GodotTogetherUser
 
 var id: int
-var username: String
+var name: String
 var peer: ENetPacketPeer
 var joined_at := -1.0
 var authenticated_at := -1.0
@@ -23,7 +23,7 @@ func has_permission(permission: GodotTogether.Permission) -> bool:
     return authenticated and permission in permissions
 
 func auth():
-    assert(not authenticated, "User %d (%s) already authenticated" % [id, username])
+    assert(not authenticated, "User %d (%s) already authenticated" % [id, name])
 
     authenticated = true
     authenticated_at = Time.get_unix_time_from_system()

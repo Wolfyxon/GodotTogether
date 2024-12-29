@@ -57,7 +57,7 @@ func receive_join_data(data_dict: Dictionary):
 		return
 
 	user.auth()
-	user.username = data.username
+	user.name = data.username
 
 	print("User %d authenticated as '%s'" % [id, data.username])
 	main.client.auth_successful.rpc_id(id)
