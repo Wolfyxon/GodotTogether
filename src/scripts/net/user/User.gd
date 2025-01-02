@@ -59,6 +59,9 @@ func as_dict() -> Dictionary:
 
     return res
 
+func get_type_as_string() -> String:
+    return type_to_string(type)
+
 static func type_to_string(type: Type) -> String:
     match type:
         Type.GUEST:
