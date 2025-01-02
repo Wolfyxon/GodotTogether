@@ -38,13 +38,13 @@ func _update():
 	var mPos = EditorInterface.get_editor_viewport_2d().get_mouse_position() / Vector2(EditorInterface.get_editor_viewport_2d().size)
 	if mPos != prev_mouse_pos and DisplayServer.window_is_focused():
 		prev_mouse_pos = mPos
-		update_2d_marker.rpc(mPos)
+		update_2d_avatar.rpc(mPos)
 		
 	if camera.position != prev_3d_pos or camera.rotation != prev_3d_rot:
 		prev_3d_pos = camera.position
 		prev_3d_rot = camera.rotation
 		
-		update_3d_marker.rpc(camera.position, camera.rotation)
+		update_3d_avatar.rpc(camera.position, camera.rotation)
 
 func _connected(id: int):
 	pass
@@ -129,7 +129,7 @@ func get_avatar_3d(id: int) -> GodotTogetherAvatar3D:
 
 
 @rpc("any_peer")
-func update_2d_marker(vector: Vector2):
+func update_2d_avatar(vector: Vector2):
 	if not main: return
 	
 	var marker = get_avatar_2d(multiplayer.get_remote_sender_id())
@@ -138,7 +138,7 @@ func update_2d_marker(vector: Vector2):
 	marker.set_position_percent(vector)
 
 @rpc("any_peer")
-func update_3d_marker(position: Vector3, rotation: Vector3):
+func update_3d_avatar(position: Vector3, rotation: Vector3):
 	if not main: return
 	
 	var marker = get_avatar_3d(multiplayer.get_remote_sender_id())
