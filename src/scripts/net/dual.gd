@@ -88,28 +88,30 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 		main.server.submit_node_update(scene_path, node_path, dict)
 
 @rpc("authority", "call_remote", "reliable")
-func create_user_3d(id: int, name := "Unknown") -> GodotTogetherAvatar3D:
-	var usr = avatar_3d_scene.instantiate()
-	usr.main = self.main
-	add_child(usr)
+func create_user_3d(user_dict: Dictionary) -> GodotTogetherAvatar3D:
+	var avatar = avatar_3d_scene.instantiate()
+	var user = GodotTogetherUser.from_dict(user_dict)
+
+	avatar.main = self.main
+	add_child(avatar)
 	
-	usr.set_username(name)
-	usr.id = id
-	avatar_3d_markers.append(usr)
+	avatar.set_user(user)
+	avatar_3d_markers.append(avatar)
 	
-	return usr
+	return avatar
 
 @rpc("authority", "call_remote", "reliable")
-func create_user_2d(id: int, name := "Unknown") -> GodotTogetherAvatar2D:
-	var usr = avatar_2d_scene.instantiate()
-	tree_exiting.connect(usr.queue_free)
-	EditorInterface.get_editor_viewport_2d().add_child(usr)
+func create_user_2d(user_dict: Dictionary) -> GodotTogetherAvatar2D:
+	var avatar = avatar_2d_scene.instantiate()
+	var user = GodotTogetherUser.from_dict(user_dict)
+
+	tree_exiting.connect(avatar.queue_free)
+	EditorInterface.get_editor_viewport_2d().add_child(avatar)
 	
-	usr.set_username(name)
-	usr.id = id
-	avatar_2d_markers.append(usr)
+	avatar.set_user(user)
+	avatar_2d_markers.append(avatar)
 	
-	return usr
+	return avatar
 
 func get_avatar_2d(id: int) -> GodotTogetherAvatar2D:
 	for i in avatar_2d_markers:
