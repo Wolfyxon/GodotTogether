@@ -64,19 +64,19 @@ func receive_join_data(data_dict: Dictionary):
 
 	var user_dict = user.as_dict()
 
-	main.dual.create_user_2d(user_dict)
-	main.dual.create_user_3d(user_dict)
+	main.dual.create_avatar_2d(user_dict)
+	main.dual.create_avatar_3d(user_dict)
 	
 	# TODO: Server user
-	#main.dual.create_user_2d.rpc_id(id, 1)
-	#main.dual.create_user_3d.rpc_id(id, 1)
+	#main.dual.create_avatar_2d.rpc_id(id, 1)
+	#main.dual.create_avatar_3d.rpc_id(id, 1)
 	
 	for i in connected_users:
 		if i.id == id: continue
 		var dict = i.as_dict()
 
-		main.dual.create_user_2d.rpc_id(id, dict)
-		main.dual.create_user_3d.rpc_id(id, dict)
+		main.dual.create_avatar_2d.rpc_id(id, dict)
+		main.dual.create_avatar_3d.rpc_id(id, dict)
 
 @rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary):

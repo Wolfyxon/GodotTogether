@@ -88,7 +88,7 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 		main.server.submit_node_update(scene_path, node_path, dict)
 
 @rpc("authority", "call_remote", "reliable")
-func create_user_3d(user_dict: Dictionary) -> GodotTogetherAvatar3D:
+func create_avatar_3d(user_dict: Dictionary) -> GodotTogetherAvatar3D:
 	var avatar = avatar_3d_scene.instantiate()
 	var user = GodotTogetherUser.from_dict(user_dict)
 
@@ -101,7 +101,7 @@ func create_user_3d(user_dict: Dictionary) -> GodotTogetherAvatar3D:
 	return avatar
 
 @rpc("authority", "call_remote", "reliable")
-func create_user_2d(user_dict: Dictionary) -> GodotTogetherAvatar2D:
+func create_avatar_2d(user_dict: Dictionary) -> GodotTogetherAvatar2D:
 	var avatar = avatar_2d_scene.instantiate()
 	var user = GodotTogetherUser.from_dict(user_dict)
 
