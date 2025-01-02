@@ -6,9 +6,6 @@ var id := -1
 
 @onready var txt = $txt
 
-func set_username(name: String):
-	txt.get_node("name").text = name
-
 func set_user(user: GodotTogetherUser):
 	id = user.id
 	txt.get_node("name").text = user.name

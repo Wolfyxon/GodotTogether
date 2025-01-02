@@ -37,7 +37,3 @@ func set_user(user: GodotTogetherUser):
 		class_lbl.text = "Host"
 	else:
 		class_lbl.visible = false
-
-func set_username(name:String):
-	while not ui: await get_tree().physics_frame
-	text_ui.get_node("name").text = name
