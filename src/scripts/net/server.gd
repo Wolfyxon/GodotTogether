@@ -91,7 +91,7 @@ func receive_join_data(data_dict: Dictionary):
 	#main.dual.create_avatar_2d.rpc_id(id, 1)
 	#main.dual.create_avatar_3d.rpc_id(id, 1)
 	
-	for i in connected_users:
+	for i in get_authenticated_users():
 		if i.id == id: continue
 		var dict = i.as_dict()
 
