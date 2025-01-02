@@ -29,11 +29,6 @@ func set_user(user: GodotTogetherUser):
 	while not ui: await get_tree().physics_frame
 
 	text_ui.get_node("name").text = user.name
+	text_ui.get_node("class").text = user.get_type_as_string()
+
 	id = user.id
-
-	var class_lbl = text_ui.get_node("class")
-
-	if user.type == user.Type.HOST:
-		class_lbl.text = "Host"
-	else:
-		class_lbl.visible = false
