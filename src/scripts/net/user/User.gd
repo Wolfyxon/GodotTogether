@@ -55,7 +55,7 @@ func as_dict() -> Dictionary:
     var res = {}
 
     for i in FIELDS:
-        res[i] = i[i]
+        res[i] = self[i]
 
     return res
 
