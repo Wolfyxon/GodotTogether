@@ -32,7 +32,7 @@ func _disconnected(id: int):
 	var user = get_user_by_id(id)
 	assert(user, "User %d disconnected, but was never listed" % id)
 
-	print("User %s (%d) disconnected" % [user.username, id])
+	print("User %s (%d) disconnected" % [user.name, id])
 	connected_users.erase(user)
 
 func start_hosting(port: int, max_clients := 10):
