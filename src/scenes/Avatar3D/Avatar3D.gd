@@ -25,6 +25,19 @@ func _process(delta):
 	var dist = cam.position.distance_to(position)
 	ui.position = cam.unproject_position(position) - ui.size / 2 - (Vector2(0, 200) / dist)
 
+func set_user(user: GodotTogetherUser):
+	while not ui: await get_tree().physics_frame
+
+	text_ui.get_node("name").text = user.name
+	id = user.id
+
+	var class_lbl = text_ui.get_node("class")
+
+	if user.type == user.Type.HOST:
+		class_lbl.text = "Host"
+	else:
+		class_lbl.visible = false
+
 func set_username(name:String):
 	while not ui: await get_tree().physics_frame
 	text_ui.get_node("name").text = name
