@@ -9,11 +9,11 @@ var prev_mouse_pos := Vector2()
 var prev_3d_pos := Vector3()
 var prev_3d_rot := Vector3()
 
-var user_3d_scene = load("res://addons/GodotTogether/src/scenes/User3D/User3D.tscn")
-var user_2d_scene = load("res://addons/GodotTogether/src/scenes/User2D/User2D.tscn")
+var avatar_3d_scene = load("res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.tscn")
+var avatar_2d_scene = load("res://addons/GodotTogether/src/scenes/Avatar2D/Avatar2D.tscn")
 
-var user_3d_markers: Array[GodotTogetherAvatar3D] = []
-var user_2d_markers: Array[GodotTogetherAvatar2D] = []
+var avatar_3d_markers: Array[GodotTogetherAvatar3D] = []
+var avatar_2d_markers: Array[GodotTogetherAvatar2D] = []
 
 func _ready():
 	if not main: return
@@ -55,10 +55,10 @@ func _disconnected(id: int):
 	
 	if marker2d: 
 		marker2d.queue_free()
-		user_2d_markers.erase(marker2d)
+		avatar_2d_markers.erase(marker2d)
 	if marker3d: 
 		marker3d.queue_free()
-		user_3d_markers.erase(marker3d)
+		avatar_3d_markers.erase(marker3d)
 
 func _scene_changed():
 	var scene = EditorInterface.get_edited_scene_root()
@@ -89,37 +89,37 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 
 @rpc("authority", "call_remote", "reliable")
 func create_user_3d(id: int, name := "Unknown") -> GodotTogetherAvatar3D:
-	var usr = user_3d_scene.instantiate()
+	var usr = avatar_3d_scene.instantiate()
 	usr.main = self.main
 	add_child(usr)
 	
 	usr.set_username(name)
 	usr.id = id
-	user_3d_markers.append(usr)
+	avatar_3d_markers.append(usr)
 	
 	return usr
 
 @rpc("authority", "call_remote", "reliable")
 func create_user_2d(id: int, name := "Unknown") -> GodotTogetherAvatar2D:
-	var usr = user_2d_scene.instantiate()
+	var usr = avatar_2d_scene.instantiate()
 	tree_exiting.connect(usr.queue_free)
 	EditorInterface.get_editor_viewport_2d().add_child(usr)
 	
 	usr.set_username(name)
 	usr.id = id
-	user_2d_markers.append(usr)
+	avatar_2d_markers.append(usr)
 	
 	return usr
 
 func get_user_2d(id: int) -> GodotTogetherAvatar2D:
-	for i in user_2d_markers:
+	for i in avatar_2d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i
 	
 	return null 
 
 func get_user_3d(id: int) -> GodotTogetherAvatar3D:
-	for i in user_3d_markers:
+	for i in avatar_3d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i
 	

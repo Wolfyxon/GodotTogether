@@ -55,5 +55,5 @@ func close_connection():
 	multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer = null
 	
-	dual.user_2d_markers.clear()
-	dual.user_3d_markers.clear()
+	dual.avatar_2d_markers.clear()
+	dual.avatar_3d_markers.clear()

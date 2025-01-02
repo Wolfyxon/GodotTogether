@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://b5bmcyyb6did7"]
 
-[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/User3D/User3D.gd" id="1_kun10"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.gd" id="1_kun10"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5f42m"]
 transparency = 1
@@ -15,7 +15,7 @@ material = SubResource("StandardMaterial3D_5f42m")
 [sub_resource type="PrismMesh" id="PrismMesh_wlo86"]
 material = SubResource("StandardMaterial3D_5f42m")
 
-[node name="User3D" type="Node3D"]
+[node name="Avatar3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00312996, 0, -0.00445247)
 script = ExtResource("1_kun10")
 
