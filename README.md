@@ -33,3 +33,7 @@ So yes, it is possible with a virtual network. Don't worry it's very easy.
 It uses the Godot's built-in multiplayer functionality.
 
 Each node's property is saved and then compared every frame to check if it changed. If it did, the change is sent to the host, which verifies the user who made the change, and then applies it and replicates it to other users.
+
+### Why should I be so careful?
+Godot allows you to execute scripts within the editor without needing to run the game.
+Simply opening a malicious project could get you hacked.
