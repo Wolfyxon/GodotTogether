@@ -25,6 +25,7 @@ static func from_dict(dict: Dictionary) -> GodotTogetherJoinData:
     var res = GodotTogetherJoinData.new()
 
     for field in FIELDS:
+        if not field in dict: continue
         res[field] = dict[field]
 
     return res
