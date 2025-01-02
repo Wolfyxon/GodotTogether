@@ -46,6 +46,14 @@ func create_server_user() -> GodotTogetherUser:
 
 	return user
 
+func get_authenticated_users() -> Array[GodotTogetherUser]:
+	var res: Array[GodotTogetherUser] = []
+
+	for i in connected_users:
+		if i.authenticated:
+			res.append(i)
+
+	return res
 
 func start_hosting(port: int, max_clients := 10):
 	var err = server_peer.create_server(port, max_clients)
