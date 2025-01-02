@@ -59,7 +59,7 @@ func as_dict() -> Dictionary:
 
     return res
 
-static func type_as_string(type: Type) -> String:
+static func type_to_string(type: Type) -> String:
     match type:
         Type.GUEST:
             return "Guest"
