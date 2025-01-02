@@ -50,8 +50,8 @@ func _connected(id: int):
 	pass
 	
 func _disconnected(id: int):
-	var marker3d = get_user_3d(id)
-	var marker2d = get_user_2d(id)
+	var marker3d = get_avatar_3d(id)
+	var marker2d = get_avatar_2d(id)
 	
 	if marker2d: 
 		marker2d.queue_free()
@@ -111,14 +111,14 @@ func create_user_2d(id: int, name := "Unknown") -> GodotTogetherAvatar2D:
 	
 	return usr
 
-func get_user_2d(id: int) -> GodotTogetherAvatar2D:
+func get_avatar_2d(id: int) -> GodotTogetherAvatar2D:
 	for i in avatar_2d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i
 	
 	return null 
 
-func get_user_3d(id: int) -> GodotTogetherAvatar3D:
+func get_avatar_3d(id: int) -> GodotTogetherAvatar3D:
 	for i in avatar_3d_markers:
 		if i.id == id and i.is_inside_tree(): 
 			return i
@@ -130,7 +130,7 @@ func get_user_3d(id: int) -> GodotTogetherAvatar3D:
 func update_2d_marker(vector: Vector2):
 	if not main: return
 	
-	var marker = get_user_2d(multiplayer.get_remote_sender_id())
+	var marker = get_avatar_2d(multiplayer.get_remote_sender_id())
 	if not marker: return
 	
 	marker.set_position_percent(vector)
@@ -139,7 +139,7 @@ func update_2d_marker(vector: Vector2):
 func update_3d_marker(position: Vector3, rotation: Vector3):
 	if not main: return
 	
-	var marker = get_user_3d(multiplayer.get_remote_sender_id())
+	var marker = get_avatar_3d(multiplayer.get_remote_sender_id())
 	if not marker: return
 	
 	marker.position = position
