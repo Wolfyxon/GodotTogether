@@ -3,6 +3,11 @@
 ### Class for connected users
 class_name GodotTogetherUser
 
+enum Type {
+    Host,
+    Guest
+}
+
 var id: int
 var name: String
 var peer: ENetPacketPeer
