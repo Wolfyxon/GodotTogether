@@ -8,6 +8,16 @@ enum Type {
     GUEST
 }
 
+const FIELDS = [
+    "id",
+    "name",
+    #"peer",
+    "type",
+    "joined_at",
+    "authenticated_at",
+    #"authenticated"
+]
+
 var id: int
 var name: String
 var peer: ENetPacketPeer
@@ -37,3 +47,19 @@ func auth():
 func kick():
     authenticated = false
     peer.peer_disconnect_later()
+
+func as_dict() -> Dictionary:
+    var res = {}
+
+    for i in FIELDS:
+        res[i] = i[i]
+
+    return res
+
+static func from_dict(dict: Dictionary) -> GodotTogetherUser:
+    var user = GodotTogetherUser.new(dict["id"], null)
+
+    for i in FIELDS:
+        user[i] = dict[i]
+
+    return user
