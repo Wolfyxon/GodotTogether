@@ -4,14 +4,14 @@
 class_name GodotTogetherUser
 
 enum Type {
-    Host,
-    Guest
+    HOST,
+    GUEST
 }
 
 var id: int
 var name: String
 var peer: ENetPacketPeer
-var type := Type.Guest
+var type := Type.GUEST
 var joined_at := -1.0
 var authenticated_at := -1.0
 var authenticated := false
