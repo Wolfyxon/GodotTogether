@@ -61,6 +61,10 @@ func start_hosting(port: int, max_clients := 10):
 
 	multiplayer.multiplayer_peer = server_peer
 
+	connected_users = [
+		create_server_user()	
+	]
+
 @rpc("any_peer", "call_remote", "reliable")
 func receive_join_data(data_dict: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
