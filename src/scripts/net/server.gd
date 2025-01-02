@@ -35,6 +35,18 @@ func _disconnected(id: int):
 	print("User %s (%d) disconnected" % [user.name, id])
 	connected_users.erase(user)
 
+func create_server_user() -> GodotTogetherUser:
+	var user = GodotTogetherUser.new(1, null)
+
+	user.name = "Server guy :3" # TODO: Get the actual username
+	user.type = GodotTogetherUser.Type.HOST
+	user.id = 1
+
+	user.auth()
+
+	return user
+
+
 func start_hosting(port: int, max_clients := 10):
 	var err = server_peer.create_server(port, max_clients)
 	assert(not err, "Failed to start server: %d" % err)
