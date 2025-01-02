@@ -59,6 +59,15 @@ func as_dict() -> Dictionary:
 
     return res
 
+static func type_as_string(type: Type) -> String:
+    match type:
+        Type.GUEST:
+            return "Guest"
+        Type.HOST:
+            return "Host"
+
+    return "error"
+
 static func from_dict(dict: Dictionary) -> GodotTogetherUser:
     var user = GodotTogetherUser.new(dict["id"], null)
 
