@@ -48,6 +48,9 @@ func kick():
     authenticated = false
     peer.peer_disconnect_later()
 
+func is_server_user() -> bool:
+    return peer != null
+
 func as_dict() -> Dictionary:
     var res = {}
 
