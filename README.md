@@ -10,6 +10,18 @@ Back up your projects before using.
 Never EVER join or host projects to people you don't trust.  
 Your project can be very easily stolen and someone can remotely execute malicious code with tool scripts. 
 
+## Installation
+### Unstable
+1. Create a folder called `addons` in your project's directory
+2. Download the repository's source code
+3. Extract the contents into the `addons` folder: `yourProject/addons/GodotTogether`
+4. Go to **Project** > **Project settings** in Godot
+5. Go to the **Plugins** tab
+6. Enable **Godot Together**
+
+### Stable
+(Not released yet)
+
 ## Showcase
 TODO
 
