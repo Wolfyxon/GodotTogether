@@ -2,6 +2,8 @@
 extends Node3D
 class_name GodotTogetherAvatar3D
 
+const MATERIAL: StandardMaterial3D = preload("res://addons/GodotTogether/src/scenes/Avatar3D/material.tres")
+
 var id := -1
 
 @onready var ui = $ui.duplicate()
