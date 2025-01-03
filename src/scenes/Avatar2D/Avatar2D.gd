@@ -8,7 +8,8 @@ var id := -1
 
 func set_user(user: GodotTogetherUser):
 	id = user.id
-
+	modulate = user.color
+	
 	txt.get_node("name").text = user.name
 	txt.get_node("class").text = user.get_type_as_string()
 
