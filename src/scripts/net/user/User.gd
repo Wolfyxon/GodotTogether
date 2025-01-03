@@ -36,6 +36,12 @@ func _init(id: int, peer: ENetPacketPeer):
     self.id = id
     self.peer = peer
     self.joined_at = Time.get_unix_time_from_system()
+    
+    self.color = Color(
+        randf(),
+        randf(),
+        randf()
+    )
 
 func has_permission(permission: GodotTogether.Permission) -> bool:
     return authenticated and permission in permissions
