@@ -39,7 +39,9 @@ func set_user(user: GodotTogetherUser):
 	id = user.id
 
 	var material = MATERIAL.duplicate()
+
 	material.albedo_color = user.color
+	material.albedo_color.a = MATERIAL.albedo_color.a
 
 	for i in model.get_children():
 		if i is MeshInstance3D:
