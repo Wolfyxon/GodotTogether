@@ -1,19 +1,16 @@
 [gd_scene load_steps=6 format=3 uid="uid://b5bmcyyb6did7"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.gd" id="1_kun10"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5f42m"]
-transparency = 1
-albedo_color = Color(0, 0.631373, 0.466667, 0.572549)
+[ext_resource type="Material" uid="uid://ddflrrq43ph57" path="res://addons/GodotTogether/src/scenes/Avatar3D/material.tres" id="2_gl4nl"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_u7t51"]
-material = SubResource("StandardMaterial3D_5f42m")
+material = ExtResource("2_gl4nl")
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_0cjbq"]
-material = SubResource("StandardMaterial3D_5f42m")
+material = ExtResource("2_gl4nl")
 
 [sub_resource type="PrismMesh" id="PrismMesh_wlo86"]
-material = SubResource("StandardMaterial3D_5f42m")
+material = ExtResource("2_gl4nl")
 
 [node name="Avatar3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00312996, 0, -0.00445247)
