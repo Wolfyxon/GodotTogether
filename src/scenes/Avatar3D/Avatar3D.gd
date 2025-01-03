@@ -4,11 +4,10 @@ class_name GodotTogetherAvatar3D
 
 const MATERIAL: StandardMaterial3D = preload("res://addons/GodotTogether/src/scenes/Avatar3D/material.tres")
 
-var id := -1
-
 @onready var ui = $ui.duplicate()
 @onready var text_ui = ui.get_node("txt")
 
+var id := -1
 var main: GodotTogether
 
 func _ready():
