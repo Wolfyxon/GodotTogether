@@ -43,4 +43,4 @@ func set_user(user: GodotTogetherUser):
 
 	for i in model.get_children():
 		if i is MeshInstance3D:
-			i.mesh.surface_set_material(material)
+			i.mesh.material = material
