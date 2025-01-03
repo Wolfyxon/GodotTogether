@@ -12,6 +12,7 @@ const FIELDS = [
     "id",
     "name",
     #"peer",
+    "color",
     "type",
     "joined_at",
     "authenticated_at",
@@ -22,6 +23,7 @@ var id: int
 var name: String
 var peer: ENetPacketPeer
 var type := Type.GUEST
+var color := Color.WHITE
 var joined_at := -1.0
 var authenticated_at := -1.0
 var authenticated := false
