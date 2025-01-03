@@ -4,6 +4,7 @@ class_name GodotTogetherAvatar3D
 
 const MATERIAL: StandardMaterial3D = preload("res://addons/GodotTogether/src/scenes/Avatar3D/material.tres")
 
+@onready var model = $model
 @onready var ui = $ui.duplicate()
 @onready var text_ui = ui.get_node("txt")
 
@@ -36,3 +37,10 @@ func set_user(user: GodotTogetherUser):
 	text_ui.get_node("class").text = user.get_type_as_string()
 
 	id = user.id
+
+	var material = MATERIAL.duplicate()
+	material.albedo_color = user.color
+
+	for i in model.get_children():
+		if i is MeshInstance3D:
+			i.mesh.surface_set_material(material)
