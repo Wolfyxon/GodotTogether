@@ -53,8 +53,9 @@ func _process(_delta):
 		scene_changed.emit()
 	
 	for node in observed_nodes:
-		if not is_instance_valid(node): continue
-		if not node.is_inside_tree(): continue
+		if not node.is_inside_tree() or not is_instance_valid(node):
+			observed_nodes.erase(node) 
+			continue
 		
 		var cached = observed_nodes_cache[node]
 		var current = get_property_dict(node)
