@@ -53,6 +53,9 @@ func _process(_delta):
 		scene_changed.emit()
 	
 	for node in observed_nodes:
+		# Node was already freed, can't use .erase() on it
+		if not node:
+			continue
 		if not node.is_inside_tree() or not is_instance_valid(node):
 			observed_nodes.erase(node) 
 			continue
