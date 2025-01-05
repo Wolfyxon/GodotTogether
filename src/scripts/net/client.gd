@@ -59,7 +59,7 @@ func receive_file(path: String, buffer: PackedByteArray):
 	if path.get_extension() == "tscn":
 		EditorInterface.reload_scene_from_path(path)
 
-@rpc("authority")
+@rpc("authority", "call_local")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):
 	var current_scene = EditorInterface.get_edited_scene_root()
 	
