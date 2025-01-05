@@ -6,6 +6,7 @@ signal scene_changed
 signal node_properties_changed(node: Node, changed_keys: Array)
 #signal node_property_changed(node: Node, key: String)
 #signal node_property_differs(node: Node, key: String, old_value, new_value)
+signal node_removed(node: Node)
 
 const IGNORED_PROPERTY_USAGE_FLAGS = [
 	PROPERTY_USAGE_GROUP, 
@@ -77,6 +78,8 @@ func observe(node: Node):
 	if node in observed_nodes: return
 	observed_nodes_cache[node] = get_property_dict(node)
 	observed_nodes.append(node)
+
+	node.tree_exited.connect(node_removed.emit.bind(node))
 	
 	# property_list_changed doesn't fire in editor
 	#var cache = get_property_dict(node)
