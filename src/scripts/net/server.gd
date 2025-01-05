@@ -137,6 +137,8 @@ func node_removal_request(scene_path: String, node_path: NodePath):
 	var user = get_user_by_id(id)
 
 	if not user.has_permission(GodotTogether.Permission.EDIT_SCENES): return
+
+	submit_node_removal(scene_path, node_path)
 	
 func submit_node_removal(scene_path: String, node_path: NodePath):
 	main.client.receive_node_removal(scene_path, node_path)
