@@ -139,7 +139,7 @@ func node_removal_request(scene_path: String, node_path: NodePath):
 	if not user.has_permission(GodotTogether.Permission.EDIT_SCENES): return
 	
 func submit_node_removal(scene_path: String, node_path: NodePath):
-	pass
+	main.client.receive_node_removal(scene_path, node_path)
 
 func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary):
 	main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
