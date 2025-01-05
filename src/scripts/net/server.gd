@@ -141,7 +141,7 @@ func node_removal_request(scene_path: String, node_path: NodePath):
 	submit_node_removal(scene_path, node_path)
 	
 func submit_node_removal(scene_path: String, node_path: NodePath):
-	main.client.receive_node_removal(scene_path, node_path)
+	main.client.receive_node_removal.rpc(scene_path, node_path)
 
 func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary):
 	main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
