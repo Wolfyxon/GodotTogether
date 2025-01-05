@@ -73,5 +73,18 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	for key in property_dict.keys():
 		node[key] = property_dict[key]
 
+@rpc("authority", "call_local")
+func receive_node_removal(scene_path: String, node_path: NodePath):
+	var current_scene = EditorInterface.get_edited_scene_root()
+	
+	if not current_scene or current_scene.scene_file_path != scene_path:
+		print("NOT IMPLEMENTED YET. Node outside of current scene, not removing.")
+		return
+
+	var node = current_scene.get_node(node_path)
+	if not node: return
+
+	node.queue_free()
+
 func is_active() -> bool:
 	return client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
