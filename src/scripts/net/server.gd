@@ -164,8 +164,8 @@ static func is_local(ip: String) -> bool:
 	
 	var a = int(split[0])
 	var b = int(split[1])
-	var c = int(split[2])
-	var d = int(split[3])
+	#var c = int(split[2])
+	#var d = int(split[3])
 	
 	if a == 127: return true
 	if a == 172 and b >= 16 and b <= 31: return true
