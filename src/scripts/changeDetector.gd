@@ -79,7 +79,7 @@ func observe(node: Node):
 	observed_nodes_cache[node] = get_property_dict(node)
 	observed_nodes.append(node)
 
-	node.tree_exited.connect(node_removed.emit.bind(node))
+	node.tree_exiting.connect(node_removed.emit.bind(node))
 	
 	# property_list_changed doesn't fire in editor
 	#var cache = get_property_dict(node)
