@@ -67,15 +67,18 @@ func _scene_changed():
 	
 	main.change_detector.observe_recursive(scene)
 
+func should_update(node: Node) -> bool:
+	return (
+		main and main.is_session_active() and
+		is_instance_valid(node) and
+		EditorInterface.get_edited_scene_root()
+	)
+
 func _node_properties_changed(node: Node, changed_keys: Array):
-	if not main: return
-	if not main.is_session_active(): return
-	
-	if not is_instance_valid(node): return
+	if not should_update(node): return
 	
 	var scene = EditorInterface.get_edited_scene_root()
-	if not scene: return
-	
+
 	var scene_path = scene.scene_file_path
 	var node_path = scene.get_path_to(node)
 	var dict = {}
@@ -90,13 +93,9 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 
 func _node_removed(node: Node):
 	print("rm", node)
-	if not main: return
-	if not main.is_session_active(): return
-
-	if not is_instance_valid(node): return
+	if not should_update(node): return
 	
 	var scene = EditorInterface.get_edited_scene_root()
-	if not scene: return
 	
 	var scene_path = scene.scene_file_path
 	var node_path = scene.get_path_to(node)
