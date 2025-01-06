@@ -7,6 +7,7 @@ signal node_properties_changed(node: Node, changed_keys: Array)
 #signal node_property_changed(node: Node, key: String)
 #signal node_property_differs(node: Node, key: String, old_value, new_value)
 signal node_removed(node: Node)
+signal node_added(node: Node)
 
 const IGNORED_PROPERTY_USAGE_FLAGS = [
 	PROPERTY_USAGE_GROUP, 
@@ -79,7 +80,18 @@ func _process(_delta):
 		if changed_keys.size() != 0:
 			node_properties_changed.emit(node, changed_keys)
 			observed_nodes_cache[node] = current
+
+func _node_added(node: Node):
+	var current_scene = EditorInterface.get_edited_scene_root()
 	
+	if current_scene.scene_file_path in incoming_nodes:
+		var incoming = incoming_nodes[current_scene.scene_file_path]
+
+		if node.get_path_to(current_scene) in incoming:
+			return
+
+	node_added.emit(node)
+
 func get_observed_nodes() -> Array[Node]:
 	var res: Array[Node]
 
