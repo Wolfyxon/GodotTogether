@@ -16,6 +16,10 @@ const IGNORED_PROPERTY_USAGE_FLAGS = [
 
 var observed_nodes = {}
 var observed_nodes_cache = {}
+var incoming_nodes = {
+	# scene path: Array[NodePath]
+}
+
 var last_scene := ""
 
 static func get_property_keys(node: Node) -> Array[String]:
@@ -83,6 +87,12 @@ func get_observed_nodes() -> Array[Node]:
 		res.append(i)
 
 	return res
+
+func suppress_add_signal(scene_path: String, node_path: NodePath):
+	if not scene_path in incoming_nodes:
+		incoming_nodes[scene_path] = []
+
+	incoming_nodes[scene_path].append(node_path)
 
 func observe(node: Node):
 	if node in observed_nodes: return
