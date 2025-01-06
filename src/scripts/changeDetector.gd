@@ -116,6 +116,7 @@ func observe(node: Node):
 	observed_nodes[node] = {}
 
 	node.tree_exiting.connect(node_removed.emit.bind(node))
+	node.child_entered_tree.connect(_node_added)
 	
 	# property_list_changed doesn't fire in editor
 	#var cache = get_property_dict(node)
