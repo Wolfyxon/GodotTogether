@@ -14,7 +14,7 @@ const IGNORED_PROPERTY_USAGE_FLAGS = [
 	PROPERTY_USAGE_SUBGROUP
 ]
 
-var observed_nodes: Array[Node]
+var observed_nodes = {}
 var observed_nodes_cache = {}
 var last_scene := ""
 
@@ -76,11 +76,18 @@ func _process(_delta):
 			node_properties_changed.emit(node, changed_keys)
 			observed_nodes_cache[node] = current
 	
+func get_observed_nodes() -> Array[Node]:
+	var res: Array[Node]
+
+	for i in observed_nodes.keys():
+		res.append(i)
+
+	return res
 
 func observe(node: Node):
 	if node in observed_nodes: return
 	observed_nodes_cache[node] = get_property_dict(node)
-	observed_nodes.append(node)
+	observed_nodes[node] = {}
 
 	node.tree_exiting.connect(node_removed.emit.bind(node))
 	
