@@ -25,6 +25,7 @@ func _ready():
 	main.change_detector.scene_changed.connect(_scene_changed)
 	main.change_detector.node_properties_changed.connect(_node_properties_changed)
 	main.change_detector.node_removed.connect(_node_removed)
+	main.change_detector.node_added.connect(_node_added)
 	
 	update_timer.timeout.connect(_update)
 	update_timer.one_shot = false
@@ -103,6 +104,9 @@ func _node_removed(node: Node):
 		main.server.node_removal_request.rpc_id(0, scene_path, node_path)
 	elif main.server.is_active():
 		main.server.submit_node_removal(scene_path, node_path)
+
+func _node_added(node: Node):
+	if not should_update(node): return
 
 @rpc("authority", "call_remote", "reliable")
 func create_avatar_3d(user_dict: Dictionary) -> GodotTogetherAvatar3D:
