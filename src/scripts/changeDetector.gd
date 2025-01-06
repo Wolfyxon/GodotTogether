@@ -83,11 +83,14 @@ func _process(_delta):
 
 func _node_added(node: Node):
 	var current_scene = EditorInterface.get_edited_scene_root()
-	
-	if current_scene.scene_file_path in incoming_nodes:
-		var incoming = incoming_nodes[current_scene.scene_file_path]
+	var scene_path = current_scene.scene_file_path
 
-		if node.get_path_to(current_scene) in incoming:
+	if scene_path in incoming_nodes:
+		var incoming = incoming_nodes[scene_path]
+		var node_path = node.get_path_to(current_scene)
+
+		if node_path in incoming:
+			incoming.erase(node_path)
 			return
 
 	node_added.emit(node)
