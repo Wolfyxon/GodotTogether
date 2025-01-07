@@ -129,19 +129,15 @@ func project_files_request(hashes: Dictionary):
 
 @rpc("any_peer", "call_remote", "reliable")
 func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary):
-	var id = multiplayer.get_remote_sender_id()
-	var user = get_user_by_id(id)
-
-	if not user.has_permission(GodotTogether.Permission.EDIT_SCENES): return
+	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
 
 	submit_node_update(scene_path, node_path, property_dict)
 
 @rpc("any_peer", "call_remote", "reliable")
 func node_removal_request(scene_path: String, node_path: NodePath):
 	var id = multiplayer.get_remote_sender_id()
-	var user = get_user_by_id(id)
 
-	if not user.has_permission(GodotTogether.Permission.EDIT_SCENES): return
+	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
 
 	submit_node_removal(scene_path, node_path)
 
@@ -149,10 +145,7 @@ func node_removal_request(scene_path: String, node_path: NodePath):
 func node_add_request(scene_path: String, node_path: NodePath, node_type: String):
 	assert(ClassDB.class_exists(node_type))
 	
-	var id = multiplayer.get_remote_sender_id()
-	var user = get_user_by_id(id)
-
-	if not user.has_permission(GodotTogether.Permission.EDIT_SCENES): return
+	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
 
 	submit_node_add(scene_path, node_path, node_type)
 
