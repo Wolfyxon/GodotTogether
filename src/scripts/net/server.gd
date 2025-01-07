@@ -166,6 +166,11 @@ func submit_node_update(scene_path: String, node_path: NodePath, property_dict: 
 func submit_node_add(scene_path: String, node_path: NodePath, node_type: String):
 	main.client.receive_node_add.rpc(scene_path, node_path, node_type)
 
+func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int]):
+	for i in get_authenticated_ids(false):
+		if not i in exclude_ids:
+			fn.rpc_id.callv([i] + args)
+
 func get_user_by_id(id: int) -> GodotTogetherUser:
 	for i in connected_users:
 		if i.id == id:
