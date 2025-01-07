@@ -86,5 +86,26 @@ func receive_node_removal(scene_path: String, node_path: NodePath):
 
 	node.queue_free()
 
+@rpc("authority", "call_local")
+func receive_node_add(scene_path: String, node_path: NodePath, node_type: String):
+	var current_scene = EditorInterface.get_edited_scene_root()
+	
+	if not current_scene or current_scene.scene_file_path != scene_path:
+		print("NOT IMPLEMENTED YET. Node outside of current scene, not adding.")
+		return
+
+	assert(not current_scene.get_node_or_null(node_path), "Node %s already exists, not adding" % node_path)
+
+	var path_size = node_path.get_name_count()
+	var parent_path = node_path.slice(0, path_size - 2)
+
+	var parent = current_scene.get_node(parent_path)
+	var node: Node = ClassDB.instantiate(node_type)
+
+	node.name = node_path.get_name(path_size - 1)
+
+	main.change_detector.suppress_add_signal(scene_path, node_path)
+	parent.add_child(node)
+
 func is_active() -> bool:
 	return client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
