@@ -108,6 +108,15 @@ func _node_removed(node: Node):
 func _node_added(node: Node):
 	if not should_update(node): return
 
+	var scene = EditorInterface.get_edited_scene_root()
+	var scene_path = scene.scene_file_path
+	var node_path = scene.get_path_to(node)
+
+	if main.client.is_active():
+		main.server.node_add_request.rpc_id(0, scene_path, node_path, node.get_class())
+	elif main.server.is_active():
+		main.server.submit_node_add(scene_path, node_path, node.get_class())
+
 @rpc("authority", "call_remote", "reliable")
 func create_avatar_3d(user_dict: Dictionary) -> GodotTogetherAvatar3D:
 	var avatar = avatar_3d_scene.instantiate()
