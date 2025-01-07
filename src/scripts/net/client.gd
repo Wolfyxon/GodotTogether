@@ -102,8 +102,12 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 
 	var existing = current_scene.get_node_or_null(node_path)
 	var path_size = node_path.get_name_count()
+	
 	var parent_path = node_path.slice(0, path_size - 1)
 	var parent: Node = current_scene.get_node_or_null(parent_path)
+
+	if parent_path.is_empty():
+		parent = current_scene
 
 	if existing:
 		print(existing)
