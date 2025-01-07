@@ -65,6 +65,11 @@ func start_hosting(port: int, max_clients := 10):
 		create_server_user()	
 	]
 
+func id_has_permission(peer_id: int, permission: GodotTogether.Permission) -> bool:
+	var user = get_user_by_id(peer_id)
+
+	return user != null and user.has_permission(permission)
+
 @rpc("any_peer", "call_remote", "reliable")
 func receive_join_data(data_dict: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
