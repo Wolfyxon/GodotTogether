@@ -113,13 +113,14 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 	assert(parent, "Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
 	
 	var node: Node = ClassDB.instantiate(node_type)
-
 	node.name = node_path.get_name(path_size - 1)
 
 	main.change_detector.suppress_add_signal(scene_path, node_path)
 	
 	await get_tree().process_frame
+
 	parent.add_child(node)
+	node.owner = current_scene
 
 func is_active() -> bool:
 	return client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
