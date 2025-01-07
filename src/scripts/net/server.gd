@@ -157,14 +157,17 @@ func node_add_request(scene_path: String, node_path: NodePath, node_type: String
 
 	submit_node_add(scene_path, node_path, node_type)
 
-func submit_node_removal(scene_path: String, node_path: NodePath):
-	main.client.receive_node_removal.rpc(scene_path, node_path)
+func submit_node_removal(scene_path: String, node_path: NodePath, sender := 0):
+	#main.client.receive_node_removal.rpc(scene_path, node_path)
+	auth_rpc(main.client.receive_node_removal, [scene_path, node_path], [sender])
 
-func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary):
-	main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
+func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary, sender := 0):
+	#main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
+	auth_rpc(main.client.receive_node_updates, [scene_path, node_path, property_dict], [sender])
 
-func submit_node_add(scene_path: String, node_path: NodePath, node_type: String):
-	main.client.receive_node_add.rpc(scene_path, node_path, node_type)
+func submit_node_add(scene_path: String, node_path: NodePath, node_type: String, sender := 0):
+	#main.client.receive_node_add.rpc(scene_path, node_path, node_type)
+	auth_rpc(main.client.receive_node_add, [scene_path, node_path, node_type], [sender])
 
 func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int]):
 	for i in get_authenticated_ids(false):
