@@ -84,6 +84,7 @@ func receive_node_removal(scene_path: String, node_path: NodePath):
 	var node = current_scene.get_node(node_path)
 	if not node: return
 
+	prints("rm", node_path)
 	node.queue_free()
 
 var fuse = 0
@@ -99,11 +100,15 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 		print("NOT IMPLEMENTED YET. Node outside of current scene, not adding.")
 		return
 
-	assert(not current_scene.get_node_or_null(node_path), "Node %s already exists, not adding" % node_path)
-
+	var existing = current_scene.get_node_or_null(node_path)
 	var path_size = node_path.get_name_count()
 	var parent_path = node_path.slice(0, path_size - 1)
 	var parent: Node = current_scene.get_node_or_null(parent_path)
+
+	if existing:
+		print(existing)
+		print(parent.get_children())
+		assert(false, "Node %s already exists, not adding" % node_path)
 
 	assert(parent, "Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
 	
