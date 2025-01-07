@@ -46,19 +46,19 @@ func create_server_user() -> GodotTogetherUser:
 
 	return user
 
-func get_authenticated_users() -> Array[GodotTogetherUser]:
+func get_authenticated_users(include_server := true) -> Array[GodotTogetherUser]:
 	var res: Array[GodotTogetherUser] = []
 
 	for i in connected_users:
-		if i.authenticated:
+		if i.authenticated and (include_server or i.type != GodotTogetherUser.Type.HOST):
 			res.append(i)
 
 	return res
 
-func get_authenticated_ids() -> Array[int]:
+func get_authenticated_ids(include_server := true) -> Array[int]:
 	var res: Array[int] = []
 
-	for i in get_authenticated_users():
+	for i in get_authenticated_users(include_server):
 		res.append(i.id)
 
 	return res
