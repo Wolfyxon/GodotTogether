@@ -81,12 +81,7 @@ func _process(_delta):
 			node_properties_changed.emit(node, changed_keys)
 			observed_nodes_cache[node] = current
 
-var fuse = 0
-
 func _node_added(node: Node):
-	assert(fuse < 10, "NODE OVERFLOW (temporary safety measure)")
-	fuse += 1
-
 	var current_scene = EditorInterface.get_edited_scene_root()
 	var scene_path = current_scene.scene_file_path
 

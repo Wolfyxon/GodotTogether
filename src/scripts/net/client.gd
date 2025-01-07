@@ -86,8 +86,13 @@ func receive_node_removal(scene_path: String, node_path: NodePath):
 
 	node.queue_free()
 
+var fuse = 0
+
 @rpc("authority", "call_remote")
 func receive_node_add(scene_path: String, node_path: NodePath, node_type: String):
+	assert(fuse < 10, "NODE OVERFLOW (temporary safety measure)")
+	fuse += 1
+
 	var current_scene = EditorInterface.get_edited_scene_root()
 	
 	if not current_scene or current_scene.scene_file_path != scene_path:
