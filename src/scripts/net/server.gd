@@ -155,8 +155,8 @@ func submit_node_removal(scene_path: String, node_path: NodePath):
 func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary):
 	main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
 
-func submit_node_add(cene_path: String, node_path: NodePath, node_type: String):
-	pass
+func submit_node_add(scene_path: String, node_path: NodePath, node_type: String):
+	main.client.receive_node_add.rpc(scene_path, node_path, node_type)
 
 func get_user_by_id(id: int) -> GodotTogetherUser:
 	for i in connected_users:
