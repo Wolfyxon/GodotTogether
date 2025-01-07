@@ -86,7 +86,7 @@ func receive_node_removal(scene_path: String, node_path: NodePath):
 
 	node.queue_free()
 
-@rpc("authority", "call_local")
+@rpc("authority", "call_remote")
 func receive_node_add(scene_path: String, node_path: NodePath, node_type: String):
 	var current_scene = EditorInterface.get_edited_scene_root()
 	
