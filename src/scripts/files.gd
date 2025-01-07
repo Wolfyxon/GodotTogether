@@ -5,6 +5,7 @@ const ignored_dirs = [
 	"res://.import", 
 	"res://.vscode", 
 	"res://.idea",
+	"res://.github",
 	"res://addons"
 ]
 
