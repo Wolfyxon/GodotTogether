@@ -4,6 +4,9 @@ Here are things you can do to contribute to the development of Godot Together.
 
 - [Bugs and suggestions](#bugs-and-suggesions)
 - [Writing code](#writing-code)
+	- [Rules](#rules)
+		- [Code style](#code-style)
+		- [Typing](#typing)
 
 ## Bugs and suggesions
 If you've found a bug or would like to suggest a change or a new feature, you can use [issues](https://github.com/Wolfyxon/GodotTogether/issues).
