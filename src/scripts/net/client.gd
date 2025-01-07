@@ -103,8 +103,10 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 
 	var path_size = node_path.get_name_count()
 	var parent_path = node_path.slice(0, path_size - 2)
+	var parent: Node = current_scene.get_node_or_null(parent_path)
 
-	var parent = current_scene.get_node(parent_path)
+	assert(parent, "Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
+	
 	var node: Node = ClassDB.instantiate(node_type)
 
 	node.name = node_path.get_name(path_size - 1)
