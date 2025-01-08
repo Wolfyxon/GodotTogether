@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://mpskc3ethpxo"]
+
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/NewMenu/menu.gd" id="1_an65o"]
+
+[node name="Menu" type="PopupPanel"]
+initial_position = 4
+size = Vector2i(600, 400)
+visible = true
+script = ExtResource("1_an65o")

@@ -1,0 +1,2 @@
+extends PopupPanel
+class_name GodotTogetherMenu
