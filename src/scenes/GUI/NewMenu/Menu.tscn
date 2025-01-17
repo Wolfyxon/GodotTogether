@@ -106,8 +106,7 @@ autowrap_mode = 3
 [node name="about" type="PopupPanel" parent="."]
 title = "About Godot Together"
 initial_position = 4
-size = Vector2i(500, 500)
-visible = true
+size = Vector2i(500, 250)
 borderless = false
 
 [node name="scroll" type="ScrollContainer" parent="about"]
