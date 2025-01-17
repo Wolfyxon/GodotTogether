@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=7 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/NewMenu/menu.gd" id="1_an65o"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_33aj3"]
 [ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="3_l4vkj"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_omlv0"]
+[ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="5_gj75k"]
 [ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="5_jsxso"]
 
 [node name="Menu" type="PopupPanel"]
@@ -98,7 +99,8 @@ layout_mode = 2
 [node name="warning" type="Label" parent="main/sessionInit/pre"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.75, 0, 1)
+theme = ExtResource("5_gj75k")
+theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 12
 text = "Only collaborate with people you absolutely trust!
 This plugin is currently insecure and may allow hackers to run malicious code on your system!

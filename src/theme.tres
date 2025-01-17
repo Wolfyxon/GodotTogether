@@ -1,0 +1,5 @@
+[gd_resource type="Theme" format=3 uid="uid://cgfw88edsjlsh"]
+
+[resource]
+WarningLabel/base_type = &"Label"
+WarningLabel/colors/font_color = Color(1, 0.74902, 0, 1)
