@@ -10,6 +10,7 @@ title = "Godot Together"
 initial_position = 4
 size = Vector2i(700, 400)
 visible = true
+unresizable = false
 borderless = false
 script = ExtResource("1_an65o")
 
