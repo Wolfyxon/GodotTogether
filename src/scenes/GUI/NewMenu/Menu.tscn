@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=6 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/NewMenu/menu.gd" id="1_an65o"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_33aj3"]
 [ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="3_l4vkj"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_omlv0"]
+[ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="5_jsxso"]
 
 [node name="Menu" type="PopupPanel"]
 title = "Godot Together"
@@ -45,6 +46,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="main/sessionInit"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,6 +106,79 @@ This plugin is currently insecure and may allow hackers to run malicious code on
 Back up your projects before using. Some data may get lost or corrupted due to bugs."
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="start" type="VBoxContainer" parent="main/sessionInit"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -109.0
+offset_right = 109.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="host" type="VBoxContainer" parent="main/sessionInit/start"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="main/sessionInit/start/host"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Host your project"
+horizontal_alignment = 1
+
+[node name="port" type="HBoxContainer" parent="main/sessionInit/start/host"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="main/sessionInit/start/host/port"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Server port"
+
+[node name="value" type="SpinBox" parent="main/sessionInit/start/host/port"]
+layout_mode = 2
+size_flags_horizontal = 4
+min_value = 1024.0
+max_value = 49151.0
+value = 5017.0
+prefix = ":"
+
+[node name="users" type="HBoxContainer" parent="main/sessionInit/start/host"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="main/sessionInit/start/host/users"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Max users"
+
+[node name="value" type="SpinBox" parent="main/sessionInit/start/host/users"]
+layout_mode = 2
+size_flags_horizontal = 4
+min_value = 1.0
+value = 5.0
+
+[node name="approveUsers" type="CheckButton" parent="main/sessionInit/start/host"]
+layout_mode = 2
+button_pressed = true
+text = "Approve users before join"
+
+[node name="password" type="LineEdit" parent="main/sessionInit/start/host"]
+layout_mode = 2
+placeholder_text = "Server password..."
+
+[node name="start" type="Button" parent="main/sessionInit/start/host"]
+layout_mode = 2
+text = "Start server"
+icon = ExtResource("4_omlv0")
+
+[node name="cancel" type="Button" parent="main/sessionInit/start"]
+layout_mode = 2
+text = "Cancel"
+icon = ExtResource("5_jsxso")
 
 [node name="about" type="PopupPanel" parent="."]
 title = "About Godot Together"
