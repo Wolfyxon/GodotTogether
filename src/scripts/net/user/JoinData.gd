@@ -4,28 +4,28 @@
 class_name GodotTogetherJoinData
 
 const FIELDS = [
-    "username",
-    "password",
-    "protocol_version"
+	"username",
+	"password",
+	"protocol_version"
 ]
 
 var username: String
 var password: String
-var protocol_version := GodotTogether.protocol_version
+var protocol_version := GodotTogether.PROTOCOL_VERSION
 
 func as_dict() -> Dictionary:
-    var dict = {}
+	var dict = {}
 
-    for field in FIELDS:
-        dict[field] = self[field]
+	for field in FIELDS:
+		dict[field] = self[field]
 
-    return dict
+	return dict
 
 static func from_dict(dict: Dictionary) -> GodotTogetherJoinData:
-    var res = GodotTogetherJoinData.new()
+	var res = GodotTogetherJoinData.new()
 
-    for field in FIELDS:
-        if not field in dict: continue
-        res[field] = dict[field]
+	for field in FIELDS:
+		if not field in dict: continue
+		res[field] = dict[field]
 
-    return res
+	return res

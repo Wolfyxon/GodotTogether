@@ -3,16 +3,16 @@ extends EditorPlugin
 class_name GodotTogether
 
 enum Permission {
-    EDIT_SCRIPTS,
-    EDIT_SCENES,
-    DELETE_SCENES,
-    DELETE_SCRIPTS,
-    ADD_CUSTOM_FILES,
-    MODIFY_CUSTOM_FILES
+	EDIT_SCRIPTS,
+	EDIT_SCENES,
+	DELETE_SCENES,
+	DELETE_SCRIPTS,
+	ADD_CUSTOM_FILES,
+	MODIFY_CUSTOM_FILES
 }
 
-const version = "1.0.0"
-const protocol_version = 1
+const VERSION = "1.0.0"
+const PROTOCOL_VERSION = 1
 
 var client = GodotTogetherClient.new(self, "client")
 var server = GodotTogetherServer.new(self, "server")

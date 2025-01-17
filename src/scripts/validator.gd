@@ -24,8 +24,8 @@ static func is_path_safe(path: String):
 	return GodotTogetherFiles.is_path_in_project(path) and not path.contains("..")
 
 static func validate_version(target_version: int):
-	if target_version > GodotTogether.protocol_version: return VersionError.UPDATE_REQUIRED
-	if target_version < GodotTogether.protocol_version: return VersionError.TARGET_TOO_OLD
+	if target_version > GodotTogether.PROTOCOL_VERSION: return VersionError.UPDATE_REQUIRED
+	if target_version < GodotTogether.PROTOCOL_VERSION: return VersionError.TARGET_TOO_OLD
 	
 	return VersionError.OK
 
