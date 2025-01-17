@@ -11,7 +11,6 @@ initial_position = 4
 size = Vector2i(700, 400)
 visible = true
 borderless = false
-always_on_top = true
 script = ExtResource("1_an65o")
 
 [node name="main" type="VBoxContainer" parent="."]
