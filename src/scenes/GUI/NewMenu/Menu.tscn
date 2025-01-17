@@ -156,3 +156,5 @@ uri = "https://github.com/Wolfyxon/GodotTogether/issues"
 layout_mode = 2
 text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
+
+[connection signal="pressed" from="main/topBar/about" to="about" method="popup_centered"]
