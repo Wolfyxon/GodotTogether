@@ -232,6 +232,7 @@ text = "Join server"
 icon = ExtResource("4_omlv0")
 
 [node name="warning" type="Label" parent="main/sessionInit/start/join"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("5_gj75k")
 theme_type_variation = &"WarningLabel"
