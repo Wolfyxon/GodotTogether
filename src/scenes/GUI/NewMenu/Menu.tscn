@@ -120,6 +120,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="main/sessionInit/start"]
+visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -186,7 +187,6 @@ Do not let untrusted people join!"
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="main/sessionInit/start"]
-visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -235,8 +235,10 @@ icon = ExtResource("4_omlv0")
 layout_mode = 2
 theme = ExtResource("5_gj75k")
 theme_type_variation = &"WarningLabel"
-text = "Make sure you trust the host!"
+text = "Make sure you trust the host!
+All data in this project will be OVERWRITTEN with the their version."
 horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="cancel" type="Button" parent="main/sessionInit/start"]
 layout_mode = 2
