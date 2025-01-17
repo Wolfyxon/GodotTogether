@@ -104,8 +104,7 @@ theme = ExtResource("5_gj75k")
 theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 12
 text = "Only collaborate with people you absolutely trust!
-This plugin is currently insecure and may allow hackers to run malicious code on your system!
-Back up your projects before using. Some data may get lost or corrupted due to bugs."
+This plugin is currently insecure and may allow hackers to run malicious code on your system!"
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -121,7 +120,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="main/sessionInit/start"]
-visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -179,7 +177,16 @@ layout_mode = 2
 text = "Start server"
 icon = ExtResource("4_omlv0")
 
+[node name="warning" type="Label" parent="main/sessionInit/start/host"]
+layout_mode = 2
+theme = ExtResource("5_gj75k")
+theme_type_variation = &"WarningLabel"
+text = "Back up your project before using!
+Do not let untrusted people join!"
+horizontal_alignment = 1
+
 [node name="join" type="VBoxContainer" parent="main/sessionInit/start"]
+visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 3
