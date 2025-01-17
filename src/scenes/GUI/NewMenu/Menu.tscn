@@ -119,6 +119,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="main/sessionInit/start"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
@@ -173,6 +174,50 @@ placeholder_text = "Server password..."
 [node name="start" type="Button" parent="main/sessionInit/start/host"]
 layout_mode = 2
 text = "Start server"
+icon = ExtResource("4_omlv0")
+
+[node name="join" type="VBoxContainer" parent="main/sessionInit/start"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="main/sessionInit/start/join"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Join a project"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="main/sessionInit/start/join"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Server address"
+
+[node name="address" type="HBoxContainer" parent="main/sessionInit/start/join"]
+layout_mode = 2
+alignment = 1
+
+[node name="ip" type="LineEdit" parent="main/sessionInit/start/join/address"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "localhost"
+placeholder_text = "IP address..."
+
+[node name="port" type="SpinBox" parent="main/sessionInit/start/join/address"]
+layout_mode = 2
+size_flags_horizontal = 4
+min_value = 1024.0
+max_value = 49151.0
+value = 5017.0
+prefix = ":"
+
+[node name="password" type="LineEdit" parent="main/sessionInit/start/join"]
+layout_mode = 2
+placeholder_text = "Password..."
+secret = true
+
+[node name="join" type="Button" parent="main/sessionInit/start/join"]
+layout_mode = 2
+text = "Join server"
 icon = ExtResource("4_omlv0")
 
 [node name="cancel" type="Button" parent="main/sessionInit/start"]
