@@ -111,13 +111,20 @@ size = Vector2i(500, 500)
 borderless = false
 
 [node name="scroll" type="ScrollContainer" parent="about"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 496.0
-offset_bottom = 496.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="vbox" type="VBoxContainer" parent="about/scroll"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="author" type="Label" parent="about/scroll/vbox"]
 layout_mode = 2
