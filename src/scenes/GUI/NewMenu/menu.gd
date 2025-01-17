@@ -17,6 +17,17 @@ func _process(delta: float) -> void:
 func main_menu() -> void:
 	$main/sessionInit/start.visible = false
 	$main/sessionInit/pre.visible = true
+	$main/sessionInit/start/host.visible = false
+	$main/sessionInit/start/join.visible = false
+
+func session_start_menu():
+	$main/sessionInit/start.visible = true
+	$main/sessionInit/pre.visible = false
+	# Layout glitch fix
+	await get_tree().process_frame
+	$main/sessionInit/start.visible = false
+	await get_tree().process_frame
+	$main/sessionInit/start.visible = true
 
 func visuals_available() -> bool:
 	return main or not Engine.is_editor_hint() 

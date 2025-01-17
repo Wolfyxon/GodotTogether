@@ -309,3 +309,8 @@ text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 
 [connection signal="pressed" from="main/topBar/about" to="about" method="popup_centered"]
+[connection signal="pressed" from="main/sessionInit/pre/join" to="." method="session_start_menu"]
+[connection signal="pressed" from="main/sessionInit/pre/join" to="main/sessionInit/start/join" method="show"]
+[connection signal="pressed" from="main/sessionInit/pre/host" to="." method="session_start_menu"]
+[connection signal="pressed" from="main/sessionInit/pre/host" to="main/sessionInit/start/host" method="show"]
+[connection signal="pressed" from="main/sessionInit/start/cancel" to="." method="main_menu"]
