@@ -47,7 +47,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="main/sessionInit"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -109,6 +108,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="main/sessionInit"]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -121,7 +121,7 @@ grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="main/sessionInit/start"]
 visible = false
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
@@ -187,7 +187,7 @@ Do not let untrusted people join!"
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="main/sessionInit/start"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
