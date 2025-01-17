@@ -47,6 +47,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="main/sessionInit"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -109,7 +110,6 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="main/sessionInit"]
-visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -223,6 +223,13 @@ secret = true
 layout_mode = 2
 text = "Join server"
 icon = ExtResource("4_omlv0")
+
+[node name="warning" type="Label" parent="main/sessionInit/start/join"]
+layout_mode = 2
+theme = ExtResource("5_gj75k")
+theme_type_variation = &"WarningLabel"
+text = "Make sure you trust the host!"
+horizontal_alignment = 1
 
 [node name="cancel" type="Button" parent="main/sessionInit/start"]
 layout_mode = 2
