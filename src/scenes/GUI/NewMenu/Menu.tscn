@@ -1,9 +1,91 @@
-[gd_scene load_steps=2 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=5 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/NewMenu/menu.gd" id="1_an65o"]
+[ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_33aj3"]
+[ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="3_l4vkj"]
+[ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_omlv0"]
 
 [node name="Menu" type="PopupPanel"]
+title = "Godot Together"
 initial_position = 4
-size = Vector2i(600, 400)
+size = Vector2i(700, 400)
 visible = true
+borderless = false
+always_on_top = true
 script = ExtResource("1_an65o")
+
+[node name="main" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="topBar" type="HBoxContainer" parent="main"]
+layout_mode = 2
+
+[node name="settings" type="Button" parent="main/topBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Settings"
+icon = ExtResource("2_33aj3")
+
+[node name="about" type="Button" parent="main/topBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "About"
+icon = ExtResource("3_l4vkj")
+
+[node name="sessionInit" type="Control" parent="main"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="pre" type="VBoxContainer" parent="main/sessionInit"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="main/sessionInit/pre"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Welcome to Godot Together"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="main/sessionInit/pre"]
+layout_mode = 2
+text = "Your username:"
+horizontal_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="main/sessionInit/pre"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cool person"
+placeholder_text = "Your username..."
+
+[node name="sep" type="Control" parent="main/sessionInit/pre"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="join" type="Button" parent="main/sessionInit/pre"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Join someone's project"
+icon = ExtResource("4_omlv0")
+
+[node name="host" type="Button" parent="main/sessionInit/pre"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Host your project"
+icon = ExtResource("4_omlv0")
