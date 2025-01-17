@@ -120,6 +120,7 @@ grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="main/sessionInit/start"]
 visible = false
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
@@ -177,6 +178,7 @@ text = "Start server"
 icon = ExtResource("4_omlv0")
 
 [node name="join" type="VBoxContainer" parent="main/sessionInit/start"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
