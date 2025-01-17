@@ -46,7 +46,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="main/sessionInit"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -67,7 +66,7 @@ layout_mode = 2
 text = "Your username:"
 horizontal_alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="main/sessionInit/pre"]
+[node name="username" type="LineEdit" parent="main/sessionInit/pre"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -108,6 +107,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="main/sessionInit"]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
