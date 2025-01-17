@@ -89,3 +89,16 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Host your project"
 icon = ExtResource("4_omlv0")
+
+[node name="sep2" type="Control" parent="main/sessionInit/pre"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="warning" type="Label" parent="main/sessionInit/pre"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "Only collaborate with people you absolutely trust!
+This plugin is currently insecure and may allow hackers to run malicious code on your system!"
+horizontal_alignment = 1
+autowrap_mode = 3
