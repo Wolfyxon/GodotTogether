@@ -107,6 +107,7 @@ autowrap_mode = 3
 title = "About Godot Together"
 initial_position = 4
 size = Vector2i(500, 500)
+visible = true
 borderless = false
 
 [node name="scroll" type="ScrollContainer" parent="about"]
@@ -125,17 +126,20 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="author" type="Label" parent="about/scroll/vbox"]
-layout_mode = 2
-text = "by Wolfyxon"
-
 [node name="version" type="Label" parent="about/scroll/vbox"]
 layout_mode = 2
 text = "Version: %s"
 
-[node name="Label" type="Label" parent="about/scroll/vbox"]
+[node name="author" type="Label" parent="about/scroll/vbox"]
 layout_mode = 2
-text = "Links:"
+text = "by Wolfyxon"
+
+[node name="description" type="Label" parent="about/scroll/vbox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+text = "GodotTogether is an open source plugin for live editing Godot projects with multiple people at the same time over the network.
+This plugin is in early development so expect bugs!"
+autowrap_mode = 3
 
 [node name="links" type="HBoxContainer" parent="about/scroll/vbox"]
 layout_mode = 2
