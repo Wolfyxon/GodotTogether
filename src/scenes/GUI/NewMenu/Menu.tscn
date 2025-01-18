@@ -44,7 +44,6 @@ text = "About"
 icon = ExtResource("3_l4vkj")
 
 [node name="sessionInit" type="Control" parent="main"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -255,6 +254,7 @@ text = "Cancel"
 icon = ExtResource("5_jsxso")
 
 [node name="session" type="VBoxContainer" parent="main"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
