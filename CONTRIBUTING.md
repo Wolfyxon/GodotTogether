@@ -33,7 +33,7 @@ class_name Person
 var name := "Anonymous"
 var age: int
 
-func greet(person) -> String:
-	return "Hello, %s. My name is %s" % [person.name, name]
+func greet(other_person: Person) -> String:
+	return "Hello, %s. My name is %s" % [other_person.name, name]
 
 ```
