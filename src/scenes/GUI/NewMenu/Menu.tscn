@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=8 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/NewMenu/menu.gd" id="1_an65o"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_33aj3"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_omlv0"]
 [ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="5_gj75k"]
 [ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="5_jsxso"]
+[ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_wwqlg"]
 
 [node name="Menu" type="PopupPanel"]
 title = "Godot Together"
@@ -20,10 +21,10 @@ script = ExtResource("1_an65o")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -43,6 +44,7 @@ text = "About"
 icon = ExtResource("3_l4vkj")
 
 [node name="sessionInit" type="Control" parent="main"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -252,6 +254,174 @@ layout_mode = 2
 text = "Cancel"
 icon = ExtResource("5_jsxso")
 
+[node name="session" type="VBoxContainer" parent="main"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="top" type="HBoxContainer" parent="main/session"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="end" type="Button" parent="main/session/top"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "Stop server"
+
+[node name="showJoin" type="Button" parent="main/session/top"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "Show join data"
+
+[node name="sep" type="VSeparator" parent="main/session/top"]
+layout_mode = 2
+
+[node name="status" type="Label" parent="main/session/top"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 16
+text = "Connected"
+
+[node name="tabs" type="TabContainer" parent="main/session"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Users" type="ScrollContainer" parent="main/session/tabs"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="vbox" type="VBoxContainer" parent="main/session/tabs/Users"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="header" type="HBoxContainer" parent="main/session/tabs/Users/vbox"]
+layout_mode = 2
+
+[node name="color" type="Control" parent="main/session/tabs/Users/vbox/header"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="name" type="Label" parent="main/session/tabs/Users/vbox/header"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="id" type="Label" parent="main/session/tabs/Users/vbox/header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ID"
+
+[node name="ip" type="HBoxContainer" parent="main/session/tabs/Users/vbox/header"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="name" type="Label" parent="main/session/tabs/Users/vbox/header/ip"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "IP address"
+
+[node name="toggle" type="Button" parent="main/session/tabs/Users/vbox/header/ip"]
+layout_mode = 2
+icon = ExtResource("7_wwqlg")
+flat = true
+
+[node name="rank" type="Label" parent="main/session/tabs/Users/vbox/header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rank"
+
+[node name="actions" type="Label" parent="main/session/tabs/Users/vbox/header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Actions"
+
+[node name="sep" type="HSeparator" parent="main/session/tabs/Users/vbox"]
+layout_mode = 2
+
+[node name="user" type="HBoxContainer" parent="main/session/tabs/Users/vbox"]
+layout_mode = 2
+
+[node name="color" type="ColorRect" parent="main/session/tabs/Users/vbox/user"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="name" type="LineEdit" parent="main/session/tabs/Users/vbox/user"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cool person"
+placeholder_text = "error"
+editable = false
+
+[node name="id" type="LineEdit" parent="main/session/tabs/Users/vbox/user"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "123"
+placeholder_text = "error"
+editable = false
+
+[node name="ip" type="HBoxContainer" parent="main/session/tabs/Users/vbox/user"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="value" type="LineEdit" parent="main/session/tabs/Users/vbox/user/ip"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "127.0.0.1"
+placeholder_text = "error"
+editable = false
+secret = true
+
+[node name="toggle" type="Button" parent="main/session/tabs/Users/vbox/user/ip"]
+layout_mode = 2
+icon = ExtResource("7_wwqlg")
+flat = true
+
+[node name="rank" type="OptionButton" parent="main/session/tabs/Users/vbox/user"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+disabled = true
+selected = 0
+item_count = 3
+popup/item_0/text = "Editor"
+popup/item_1/text = "Host"
+popup/item_1/id = 1
+popup/item_2/text = "Admin"
+popup/item_2/id = 2
+
+[node name="actions" type="HBoxContainer" parent="main/session/tabs/Users/vbox/user"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="kick" type="Button" parent="main/session/tabs/Users/vbox/user/actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Kick"
+
+[node name="Server settings" type="ScrollContainer" parent="main/session/tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="vbox" type="VBoxContainer" parent="main/session/tabs/Server settings"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="main/session/tabs/Server settings/vbox"]
+layout_mode = 2
+text = "Nothing yet"
+
 [node name="about" type="PopupPanel" parent="."]
 title = "About Godot Together"
 initial_position = 4
@@ -262,10 +432,10 @@ borderless = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 
