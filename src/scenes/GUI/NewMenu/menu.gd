@@ -18,6 +18,12 @@ func _process(delta: float) -> void:
 		if Input.is_action_just_pressed("ui_cancel") and $main/sessionInit/start.visible:
 			main_menu()
 
+func _host() -> void:
+	pass
+
+func _join() -> void:
+	pass
+
 func main_menu() -> void:
 	$main/sessionInit/start.visible = false
 	$main/sessionInit/pre.visible = true

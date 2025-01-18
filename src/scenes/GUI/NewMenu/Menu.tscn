@@ -483,4 +483,6 @@ uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 [connection signal="pressed" from="main/sessionInit/pre/join" to="main/sessionInit/start/join" method="show"]
 [connection signal="pressed" from="main/sessionInit/pre/host" to="." method="session_start_menu"]
 [connection signal="pressed" from="main/sessionInit/pre/host" to="main/sessionInit/start/host" method="show"]
+[connection signal="pressed" from="main/sessionInit/start/host/start" to="." method="_host"]
+[connection signal="pressed" from="main/sessionInit/start/join/join" to="." method="_join"]
 [connection signal="pressed" from="main/sessionInit/start/cancel" to="." method="main_menu"]
