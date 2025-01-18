@@ -408,19 +408,59 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Kick"
 
-[node name="Server settings" type="ScrollContainer" parent="main/session/tabs"]
+[node name="Server settings" type="VBoxContainer" parent="main/session/tabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="vbox" type="VBoxContainer" parent="main/session/tabs/Server settings"]
+[node name="scroll" type="ScrollContainer" parent="main/session/tabs/Server settings"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="vbox" type="VBoxContainer" parent="main/session/tabs/Server settings/scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="main/session/tabs/Server settings/vbox"]
+[node name="Label" type="Label" parent="main/session/tabs/Server settings/scroll/vbox"]
 layout_mode = 2
-text = "Nothing yet"
+text = "Server password:"
+
+[node name="password" type="HBoxContainer" parent="main/session/tabs/Server settings/scroll/vbox"]
+layout_mode = 2
+
+[node name="value" type="LineEdit" parent="main/session/tabs/Server settings/scroll/vbox/password"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "No password set..."
+clear_button_enabled = true
+secret = true
+
+[node name="toggle" type="Button" parent="main/session/tabs/Server settings/scroll/vbox/password"]
+layout_mode = 2
+icon = ExtResource("7_wwqlg")
+flat = true
+
+[node name="approve" type="CheckBox" parent="main/session/tabs/Server settings/scroll/vbox"]
+layout_mode = 2
+button_pressed = true
+text = "Approve users before they join"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="main/session/tabs/Server settings"]
+layout_mode = 2
+
+[node name="apply" type="Button" parent="main/session/tabs/Server settings/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Apply"
+
+[node name="unsavedWarning" type="Label" parent="main/session/tabs/Server settings/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("5_gj75k")
+theme_type_variation = &"WarningLabel"
+text = "*You have unsaved changes"
 
 [node name="about" type="PopupPanel" parent="."]
 title = "About Godot Together"
