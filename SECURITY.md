@@ -2,7 +2,7 @@
 
 Do not use issues on GitHub for reporting security vulnerabilities as they will be publicly visible.
 
-Please send them to wolfyxon@gmail.com instead.
+Please use the [GitHub's security advisories](https://github.com/Wolfyxon/GodotTogether/security/advisories/new) or contact me at wolfyxon@gmail.com instead.
 
 ## Supported versions
 - ✅ Current source code
