@@ -35,11 +35,20 @@ func _joined() -> void:
 	$main/session/top/status.text = "Connected"
 	$main/session/top/end.text = "Disconnect"
 
+func end_session() -> void:
+	if main and main.is_session_active():
+		main.close_connection()
+	
+	main_menu()
+
 func main_menu() -> void:
-	$main/sessionInit/start.visible = false
+	$main/sessionInit.visible = true
 	$main/sessionInit/pre.visible = true
+	
+	$main/sessionInit/start.visible = false
 	$main/sessionInit/start/host.visible = false
 	$main/sessionInit/start/join.visible = false
+	$main/session.visible = false
 
 func session_start_menu():
 	$main/sessionInit/start.visible = true
