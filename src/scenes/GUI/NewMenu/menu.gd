@@ -19,10 +19,21 @@ func _process(delta: float) -> void:
 			main_menu()
 
 func _host() -> void:
-	pass
+	session_menu()
+	
+	$main/session/top/status.text = "You are hosting"
+	$main/session/top/end.text = "Stop server"
+	
 
 func _join() -> void:
-	pass
+	# TODO: Connection checking and stuff
+	_joined()
+
+func _joined() -> void:
+	session_menu()
+	
+	$main/session/top/status.text = "Connected"
+	$main/session/top/end.text = "Disconnect"
 
 func main_menu() -> void:
 	$main/sessionInit/start.visible = false
@@ -38,6 +49,10 @@ func session_start_menu():
 	$main/sessionInit/start.visible = false
 	await get_tree().process_frame
 	$main/sessionInit/start.visible = true
+
+func session_menu() -> void:
+	$main/sessionInit.visible = false
+	$main/session.visible = true
 
 func visuals_available() -> bool:
 	return main or not Engine.is_editor_hint() 
