@@ -4,6 +4,8 @@ class_name GodotTogetherGUI
 
 var main: GodotTogether
 
+@onready var username_input = $main/sessionInit/pre/username
+
 func _ready() -> void:
 	if not visuals_available(): return
 	
