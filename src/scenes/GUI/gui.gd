@@ -46,7 +46,11 @@ func _join() -> void:
 		var ip = $main/sessionInit/main/sessionInit/start/join/address/ip.text
 		var port = $main/sessionInit/start/join/address/port.value
 
-		main.client.join(ip, port, main.client.current_join_data)
+		var err = main.client.join(ip, port, main.client.current_join_data)
+
+		if err:
+			alert("Failed to connect to %s:%s \n%s" % [ip, port, err], "Failed to connect to the server")
+			return
 
 	_joined()
 
