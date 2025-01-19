@@ -71,11 +71,10 @@ func alert(text: String, title := "") -> AcceptDialog:
 	popup.title = title
 	popup.always_on_top = true
 
-	add_child(popup)
-
 	if main:
 		EditorInterface.popup_dialog_centered(popup)
 	else:
+		add_child(popup)
 		popup.popup_centered()
 
 	popup.canceled.connect(popup.queue_free)
