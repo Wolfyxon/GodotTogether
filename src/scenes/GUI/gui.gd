@@ -19,6 +19,12 @@ func _process(delta: float) -> void:
 			main_menu()
 
 func _host() -> void:
+	if main:
+		var port = $main/sessionInit/start/host/port/value.value
+		var max_clients = $main/sessionInit/start/host/users/value.value
+
+		main.server.start_hosting(port, max_clients)
+
 	session_menu()
 	
 	$main/session/top/status.text = "You are hosting"
