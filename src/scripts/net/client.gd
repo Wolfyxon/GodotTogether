@@ -2,6 +2,8 @@
 extends GodotTogetherComponent
 class_name GodotTogetherClient
 
+signal connecting_finished(success: bool)
+
 var client_peer = ENetMultiplayerPeer.new()
 var current_join_data := GodotTogetherJoinData.new()
 
@@ -26,7 +28,7 @@ func _disconnected():
 	print("Disconnected from server")
 
 func _connecting_finished(success: bool):
-	pass
+	connecting_finished.emit(success)
 
 func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 	var err = client_peer.create_client(ip, port)
