@@ -41,6 +41,13 @@ func alert(text: String, title := "") -> AcceptDialog:
 	popup.dialog_text = text
 	popup.title = title
 
+	add_child(popup)
+
+	if main:
+		EditorInterface.popup_dialog_centered(popup)
+	else:
+		popup.popup_centered()
+
 	return popup
 
 func end_session() -> void:
