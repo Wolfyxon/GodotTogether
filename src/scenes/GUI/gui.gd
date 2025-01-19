@@ -31,6 +31,8 @@ func _host() -> void:
 			alert("Failed to start server: %s" % error_string(err), "Failed to start server")
 			return
 
+		main.server.get_server_user().name = username_input.text
+
 	session_menu()
 	
 	$main/session/top/status.text = "You are hosting"
