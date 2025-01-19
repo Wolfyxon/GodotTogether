@@ -40,7 +40,14 @@ func _host() -> void:
 	
 
 func _join() -> void:
-	# TODO: Connection checking and stuff
+	if main.client:
+		main.client.current_join_data.username = username_input.text
+
+		var ip = $main/sessionInit/main/sessionInit/start/join/address/ip.text
+		var port = $main/sessionInit/start/join/address/port.value
+
+		main.client.join(ip, port)
+
 	_joined()
 
 func _joined() -> void:
