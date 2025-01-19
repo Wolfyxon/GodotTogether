@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://mpskc3ethpxo"]
 
-[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/NewMenu/menu.gd" id="1_an65o"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/menu.gd" id="1_an65o"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_33aj3"]
 [ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="3_l4vkj"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_omlv0"]
