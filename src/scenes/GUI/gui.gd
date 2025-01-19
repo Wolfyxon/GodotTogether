@@ -35,6 +35,14 @@ func _joined() -> void:
 	$main/session/top/status.text = "Connected"
 	$main/session/top/end.text = "Disconnect"
 
+func alert(text: String, title := "") -> AcceptDialog:
+	var popup = AcceptDialog.new()
+	
+	popup.dialog_text = text
+	popup.title = title
+
+	return popup
+
 func end_session() -> void:
 	if main and main.is_session_active():
 		main.close_connection()
