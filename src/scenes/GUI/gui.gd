@@ -49,11 +49,11 @@ func _join() -> void:
 		var err = main.client.join(ip, port, main.client.current_join_data)
 		
 		if err:
-			alert("Failed to create client: %s" % err, "Failed to connect to the server")
+			alert("Failed to create client: %s" % err)
 			return
 
 		if not await main.client.connecting_finished:
-			alert("Failed to connect to %s:%s" % [ip, port], "Failed to connect to the server")
+			alert("Failed to connect to %s:%s" % [ip, port])
 			return
 
 	_joined()
