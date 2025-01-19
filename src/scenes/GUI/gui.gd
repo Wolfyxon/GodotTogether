@@ -48,6 +48,9 @@ func alert(text: String, title := "") -> AcceptDialog:
 	else:
 		popup.popup_centered()
 
+	popup.canceled.connect(popup.queue_free)
+	popup.confirmed.connect(popup.queue_free)
+
 	return popup
 
 func end_session() -> void:
