@@ -63,15 +63,20 @@ func get_authenticated_ids(include_server := true) -> Array[int]:
 
 	return res
 
-func start_hosting(port: int, max_clients := 10):
+func start_hosting(port: int, max_clients := 10) -> int:
 	var err = server_peer.create_server(port, max_clients)
-	assert(not err, "Failed to start server: %d" % err)
+	
+	if err:
+		push_error("Failed to start server: %d" % err)
+		return err
 
 	multiplayer.multiplayer_peer = server_peer
 
 	connected_users = [
 		create_server_user()	
 	]
+
+	return err
 
 func id_has_permission(peer_id: int, permission: GodotTogether.Permission) -> bool:
 	var user = get_user_by_id(peer_id)
