@@ -9,6 +9,9 @@ func _ready():
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
 
+	multiplayer.connected_to_server.connect(_connecting_finished.bind(true))
+	multiplayer.connection_failed.connect(_connecting_finished.bind(false))
+
 func _connected():
 	if multiplayer.is_server(): return
 
@@ -21,6 +24,9 @@ func _disconnected():
 	if multiplayer.is_server(): return
 
 	print("Disconnected from server")
+
+func _connecting_finished(success: bool):
+	pass
 
 func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 	var err = client_peer.create_client(ip, port)
