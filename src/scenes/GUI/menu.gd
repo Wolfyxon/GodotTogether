@@ -1,6 +1,6 @@
 @tool
 extends PopupPanel
-class_name GodotTogetherMenu
+class_name GodotTogetherGUI
 
 var main: GodotTogether
 
