@@ -19,7 +19,8 @@ var server = GodotTogetherServer.new(self, "server")
 var dual = GodotTogetherDual.new(self, "dual")
 var change_detector = GodotTogetherChangeDetector.new(self, "changeDetector")
 
-var menu: GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
+#var menu: GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
+var gui: GodotTogetherGUI = load("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
 var button = Button.new()
 
 func _enter_tree():
@@ -30,14 +31,14 @@ func _enter_tree():
 	add_child(server)
 	add_child(dual)
 	
-	menu.main = self
-	add_child(menu)
+	gui.main = self
+	add_child(gui)
 	
-	menu.visible = false
+	gui.visible = false
 	button.text = "Godot Together"
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	button.get_parent().move_child(button, button.get_index() - 5)
-	button.pressed.connect(menu.popup)
+	button.pressed.connect(gui.popup)
 	
 
 func _exit_tree():
