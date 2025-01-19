@@ -46,6 +46,13 @@ func create_server_user() -> GodotTogetherUser:
 
 	return user
 
+func get_server_user() -> GodotTogetherUser:
+	for i in connected_users:
+		if i.type == GodotTogetherUser.Type.HOST:
+			return i
+
+	return
+
 func get_authenticated_users(include_server := true) -> Array[GodotTogetherUser]:
 	var res: Array[GodotTogetherUser] = []
 
