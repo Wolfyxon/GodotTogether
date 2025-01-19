@@ -11,12 +11,12 @@ func _ready():
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
 
-	multiplayer.connected_to_server.connect(_connecting_finished.bind(true))
 	multiplayer.connection_failed.connect(_connecting_finished.bind(false))
 
 func _connected():
 	if multiplayer.is_server(): return
 
+	_connecting_finished(true)
 	print("Connection successful")
 
 	await get_tree().physics_frame
