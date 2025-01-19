@@ -11,7 +11,8 @@ func _ready():
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
 
-	multiplayer.connection_failed.connect(_connecting_finished.bind(false))
+	# Doesn't fire, probably a Goodt bug
+	#multiplayer.connection_failed.connect(_connecting_finished.bind(false))
 
 func _connected():
 	if multiplayer.is_server(): return
@@ -30,12 +31,31 @@ func _disconnected():
 func _connecting_finished(success: bool):
 	connecting_finished.emit(success)
 
+func _handle_connecting() -> void:
+	var connecting = MultiplayerPeer.ConnectionStatus.CONNECTION_CONNECTING
+	var success = MultiplayerPeer.ConnectionStatus.CONNECTION_CONNECTED
+
+	var status = -1
+
+	var start = Time.get_unix_time_from_system()
+	var timeout = start + 10
+
+	while (status == -1 or status == success) and Time.get_unix_time_from_system() < timeout:
+		status = client_peer.get_connection_status()
+		await get_tree().process_frame
+
+	if client_peer.get_connection_status() != success:
+		client_peer.close()
+		_connecting_finished(false)
+
 func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 	var err = client_peer.create_client(ip, port)
 	if err: return err
 
 	multiplayer.multiplayer_peer = client_peer
 	
+	_handle_connecting()
+
 	print("Connected, your ID is: " + str(multiplayer.get_unique_id()))
 	current_join_data = data
 
