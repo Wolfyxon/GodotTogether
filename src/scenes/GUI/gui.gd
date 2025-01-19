@@ -46,7 +46,7 @@ func _join() -> void:
 		var ip = $main/sessionInit/main/sessionInit/start/join/address/ip.text
 		var port = $main/sessionInit/start/join/address/port.value
 
-		main.client.join(ip, port)
+		main.client.join(ip, port, main.client.current_join_data)
 
 	_joined()
 
