@@ -23,7 +23,11 @@ func _host() -> void:
 		var port = $main/sessionInit/start/host/port/value.value
 		var max_clients = $main/sessionInit/start/host/users/value.value
 
-		main.server.start_hosting(port, max_clients)
+		var err = main.server.start_hosting(port, max_clients)
+
+		if err:
+			alert("Failed to start server: %s" % error_string(err), "Failed to start server")
+			return
 
 	session_menu()
 	
