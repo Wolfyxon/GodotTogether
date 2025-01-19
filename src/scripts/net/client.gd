@@ -18,7 +18,8 @@ func _connected():
 	if multiplayer.is_server(): return
 
 	_connecting_finished(true)
-	print("Connection successful")
+	
+	print("Connected, your ID is: %s" % multiplayer.get_unique_id())
 
 	await get_tree().physics_frame
 	main.server.receive_join_data.rpc_id(1, current_join_data.as_dict())
@@ -52,12 +53,12 @@ func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 	var err = client_peer.create_client(ip, port)
 	if err: return err
 
+	print("Connecting to %s:%s..." % [ip, port])
+
 	multiplayer.multiplayer_peer = client_peer
-	
+	current_join_data = data
 	_handle_connecting()
 
-	print("Connected, your ID is: " + str(multiplayer.get_unique_id()))
-	current_join_data = data
 
 	return OK
 
