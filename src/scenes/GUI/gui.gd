@@ -40,6 +40,7 @@ func alert(text: String, title := "") -> AcceptDialog:
 	
 	popup.dialog_text = text
 	popup.title = title
+	popup.always_on_top = true
 
 	add_child(popup)
 
