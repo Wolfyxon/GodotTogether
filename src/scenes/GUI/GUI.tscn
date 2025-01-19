@@ -1,21 +1,21 @@
 [gd_scene load_steps=8 format=3 uid="uid://mpskc3ethpxo"]
 
-[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/menu.gd" id="1_an65o"]
-[ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_33aj3"]
-[ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="3_l4vkj"]
-[ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_omlv0"]
-[ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="5_gj75k"]
-[ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="5_jsxso"]
-[ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_wwqlg"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
+[ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
+[ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="3_gc6ii"]
+[ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_lrlm7"]
+[ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="5_dxbrh"]
+[ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="6_8e3fv"]
+[ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_1sjc5"]
 
-[node name="Menu" type="PopupPanel"]
+[node name="GUI" type="PopupPanel"]
 title = "Godot Together"
 initial_position = 4
 size = Vector2i(700, 400)
 visible = true
 unresizable = false
 borderless = false
-script = ExtResource("1_an65o")
+script = ExtResource("1_73joy")
 
 [node name="main" type="VBoxContainer" parent="."]
 anchors_preset = 15
@@ -35,13 +35,13 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Settings"
-icon = ExtResource("2_33aj3")
+icon = ExtResource("2_3dfl6")
 
 [node name="about" type="Button" parent="main/topBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "About"
-icon = ExtResource("3_l4vkj")
+icon = ExtResource("3_gc6ii")
 
 [node name="sessionInit" type="Control" parent="main"]
 layout_mode = 2
@@ -90,14 +90,14 @@ custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Join someone's project"
-icon = ExtResource("4_omlv0")
+icon = ExtResource("4_lrlm7")
 
 [node name="host" type="Button" parent="main/sessionInit/pre"]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Host your project"
-icon = ExtResource("4_omlv0")
+icon = ExtResource("4_lrlm7")
 
 [node name="sep2" type="Control" parent="main/sessionInit/pre"]
 custom_minimum_size = Vector2(0, 10)
@@ -106,7 +106,7 @@ layout_mode = 2
 [node name="warning" type="Label" parent="main/sessionInit/pre"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-theme = ExtResource("5_gj75k")
+theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 12
 text = "Only collaborate with people you absolutely trust!
@@ -183,11 +183,11 @@ placeholder_text = "Server password..."
 [node name="start" type="Button" parent="main/sessionInit/start/host"]
 layout_mode = 2
 text = "Start server"
-icon = ExtResource("4_omlv0")
+icon = ExtResource("4_lrlm7")
 
 [node name="warning" type="Label" parent="main/sessionInit/start/host"]
 layout_mode = 2
-theme = ExtResource("5_gj75k")
+theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "Back up your project before using!
 Do not let untrusted people join!"
@@ -236,12 +236,12 @@ secret = true
 [node name="join" type="Button" parent="main/sessionInit/start/join"]
 layout_mode = 2
 text = "Join server"
-icon = ExtResource("4_omlv0")
+icon = ExtResource("4_lrlm7")
 
 [node name="warning" type="Label" parent="main/sessionInit/start/join"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-theme = ExtResource("5_gj75k")
+theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "Make sure you trust the host!
 All data in this project will be OVERWRITTEN with the their version."
@@ -251,7 +251,7 @@ autowrap_mode = 3
 [node name="cancel" type="Button" parent="main/sessionInit/start"]
 layout_mode = 2
 text = "Cancel"
-icon = ExtResource("5_jsxso")
+icon = ExtResource("6_8e3fv")
 
 [node name="session" type="VBoxContainer" parent="main"]
 visible = false
@@ -328,7 +328,7 @@ text = "IP address"
 
 [node name="toggle" type="Button" parent="main/session/tabs/Users/vbox/header/ip"]
 layout_mode = 2
-icon = ExtResource("7_wwqlg")
+icon = ExtResource("7_1sjc5")
 flat = true
 
 [node name="rank" type="Label" parent="main/session/tabs/Users/vbox/header"]
@@ -382,7 +382,7 @@ secret = true
 
 [node name="toggle" type="Button" parent="main/session/tabs/Users/vbox/user/ip"]
 layout_mode = 2
-icon = ExtResource("7_wwqlg")
+icon = ExtResource("7_1sjc5")
 flat = true
 
 [node name="rank" type="OptionButton" parent="main/session/tabs/Users/vbox/user"]
@@ -438,7 +438,7 @@ secret = true
 
 [node name="toggle" type="Button" parent="main/session/tabs/Server settings/scroll/vbox/password"]
 layout_mode = 2
-icon = ExtResource("7_wwqlg")
+icon = ExtResource("7_1sjc5")
 flat = true
 
 [node name="approve" type="CheckBox" parent="main/session/tabs/Server settings/scroll/vbox"]
@@ -458,7 +458,7 @@ text = "Apply"
 [node name="unsavedWarning" type="Label" parent="main/session/tabs/Server settings/HBoxContainer"]
 visible = false
 layout_mode = 2
-theme = ExtResource("5_gj75k")
+theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "*You have unsaved changes"
 
