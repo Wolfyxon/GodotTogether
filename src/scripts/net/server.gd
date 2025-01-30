@@ -143,6 +143,8 @@ func project_files_request(hashes: Dictionary):
 				
 				print("Sending " + path)
 				main.client.receive_file.rpc_id(id, path, buf)
+
+				await get_tree().process_frame
 		
 	else:
 		print("User's project files match, not sending")
