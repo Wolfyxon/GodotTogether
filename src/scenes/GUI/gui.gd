@@ -81,6 +81,8 @@ func alert(text: String, title := "") -> AcceptDialog:
 
 func prompt(text: String) -> bool:
 	var p = ConfirmationDialog.new()
+	p.dialog_text = text
+	
 	var status = null
 	
 	p.confirmed.connect(func(): status = true)
