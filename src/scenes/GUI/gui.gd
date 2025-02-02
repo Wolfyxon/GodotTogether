@@ -79,6 +79,24 @@ func alert(text: String, title := "") -> AcceptDialog:
 
 	return popup
 
+func prompt(text: String) -> bool:
+	var p = ConfirmationDialog.new()
+	var status = null
+	
+	p.confirmed.connect(func(): status = true)
+	p.canceled.connect(func(): status = false)
+	
+	add_child(p)
+	p.popup_centered()
+	
+	while status == null:
+		await get_tree().process_frame
+	
+	p.queue_free()
+	
+	return status
+	
+
 func end_session() -> void:
 	if main and main.is_session_active():
 		main.close_connection()
