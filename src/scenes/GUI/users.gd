@@ -5,12 +5,18 @@ var main: GodotTogether
 
 var template = $vbox/user
 
+func _ready() -> void:
+	if not main: return
+	
+	template.visible = false
+
 func add_user(user: GodotTogetherUser):
 	if get_entry(user):
 		push_warning("User %s alreay on the list" % user.id)
 		return
 	
 	var clone: GodotTogetherGUIUser = $vbox/user.duplicate()
+	clone.visible = true
 	clone.name = str(user.id)
 	
 	clone.set_user(user)
