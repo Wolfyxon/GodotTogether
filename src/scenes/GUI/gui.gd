@@ -79,7 +79,7 @@ func alert(text: String, title := "") -> AcceptDialog:
 
 	return popup
 
-func prompt(text: String) -> bool:
+func confirm(text: String) -> bool:
 	var p = ConfirmationDialog.new()
 	p.dialog_text = text
 	
