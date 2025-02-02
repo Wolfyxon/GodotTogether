@@ -56,6 +56,15 @@ func kick():
 	authenticated = false
 	peer.peer_disconnect_later()
 
+func is_peer_connected() -> bool:
+	var dis = [
+		ENetPacketPeer.STATE_DISCONNECTED,
+		ENetPacketPeer.STATE_DISCONNECT_LATER,
+		ENetPacketPeer.STATE_ACKNOWLEDGING_DISCONNECT
+	]
+	
+	return not peer.get_state() in dis
+
 func is_server_user() -> bool:
 	return peer != null
 
