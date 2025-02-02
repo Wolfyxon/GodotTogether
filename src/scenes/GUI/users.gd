@@ -30,6 +30,13 @@ func get_entry(user: GodotTogetherUser) -> GodotTogetherGUIUser:
 		
 	return null
 
+func get_entry_by_id(id: int) -> GodotTogetherGUIUser:
+	for i in get_entries():
+		if i.user.id == id:
+			return i
+		
+	return null
+
 func get_entries() -> Array[GodotTogetherGUIUser]:
 	var res: Array[GodotTogetherGUIUser] = []
 	
