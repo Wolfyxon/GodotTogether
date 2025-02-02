@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=10 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
@@ -7,6 +7,8 @@
 [ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="5_dxbrh"]
 [ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="6_8e3fv"]
 [ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_1sjc5"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/users.gd" id="7_nhpql"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/userEntry.gd" id="9_ymxdp"]
 
 [node name="GUI" type="PopupPanel"]
 title = "Godot Together"
@@ -44,6 +46,7 @@ text = "About"
 icon = ExtResource("3_gc6ii")
 
 [node name="sessionInit" type="Control" parent="main"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -254,7 +257,6 @@ text = "Cancel"
 icon = ExtResource("6_8e3fv")
 
 [node name="session" type="VBoxContainer" parent="main"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -291,6 +293,7 @@ current_tab = 0
 
 [node name="Users" type="ScrollContainer" parent="main/session/tabs"]
 layout_mode = 2
+script = ExtResource("7_nhpql")
 metadata/_tab_index = 0
 
 [node name="vbox" type="VBoxContainer" parent="main/session/tabs/Users"]
@@ -346,6 +349,7 @@ layout_mode = 2
 
 [node name="user" type="HBoxContainer" parent="main/session/tabs/Users/vbox"]
 layout_mode = 2
+script = ExtResource("9_ymxdp")
 
 [node name="color" type="ColorRect" parent="main/session/tabs/Users/vbox/user"]
 custom_minimum_size = Vector2(10, 10)
