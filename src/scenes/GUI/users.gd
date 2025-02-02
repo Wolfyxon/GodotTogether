@@ -1,5 +1,6 @@
 @tool
 extends ScrollContainer
+class_name GodotTogetherUserList
 
 var main: GodotTogether
 
