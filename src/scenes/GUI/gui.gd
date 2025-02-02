@@ -4,13 +4,16 @@ class_name GodotTogetherGUI
 
 var main: GodotTogether
 
+@onready var users: GodotTogetherUserList = $main/session/tabs/Users
 @onready var username_input = $main/sessionInit/pre/username
 
 func _ready() -> void:
-	if not visuals_available(): return
+	if main:
+		users.main = main
 	
-	main_menu()
-	$about/scroll/vbox/version.text = "Version: " + GodotTogether.VERSION
+	if visuals_available():
+		main_menu()
+		$about/scroll/vbox/version.text = "Version: " + GodotTogether.VERSION
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
