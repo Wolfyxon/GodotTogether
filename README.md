@@ -2,7 +2,7 @@
 Make Godot games together in real time!
 
 > [!WARNING]
-This plugin is not ready for use.  
+This plugin is **not ready for use.**  
 Many important features have not are not implemented or are buggy.  
 Back up your projects before using.
 
