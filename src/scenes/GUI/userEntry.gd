@@ -10,6 +10,10 @@ var id_node = $id
 var ip_node = $ip/value
 var rank_node = $rank
 
+func _process(_delta: float) -> void:
+	if user and not user.is_peer_connected():
+		queue_free()
+
 func set_user(user: GodotTogetherUser):
 	color_node.color = user.color
 	name_node.text = user.name
