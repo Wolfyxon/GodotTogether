@@ -41,7 +41,7 @@ func _handle_connecting() -> void:
 	var start = Time.get_unix_time_from_system()
 	var timeout = start + 10
 
-	while (status == -1 or status == success) and Time.get_unix_time_from_system() < timeout:
+	while (status == -1 or status != success) and Time.get_unix_time_from_system() < timeout:
 		status = client_peer.get_connection_status()
 		await get_tree().process_frame
 
