@@ -4,11 +4,11 @@ class_name GodotTogetherGUIUser
 
 var user: GodotTogetherUser
 
-var color_node = $color
-var name_node = $name
-var id_node = $id
-var ip_node = $ip/value
-var rank_node = $rank
+@onready var color_node = $color
+@onready var name_node = $name
+@onready var id_node = $id
+@onready var ip_node = $ip/value
+@onready var rank_node = $rank
 
 func _process(_delta: float) -> void:
 	if user and not user.is_peer_connected():

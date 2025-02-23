@@ -4,12 +4,11 @@ class_name GodotTogetherUserList
 
 var main: GodotTogether
 
-var template = $vbox/user
+@onready var template = $vbox/user
 
 func _ready() -> void:
 	if not main: return
-	
-	template.visible = false
+	template.hide()
 
 func add_user(user: GodotTogetherUser):
 	if get_entry(user):
