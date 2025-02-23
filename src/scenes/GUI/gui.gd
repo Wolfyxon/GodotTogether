@@ -18,10 +18,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
 		visible = true
-		
-	if visuals_available():
-		if Input.is_action_just_pressed("ui_cancel") and $main/sessionInit/start.visible:
-			main_menu()
 
 func _host() -> void:
 	if main:
