@@ -58,7 +58,7 @@ func _ready() -> void:
 			print_debug(error_string(ERR_CANT_CREATE)) # for smth
 			return
 		while true:
-			if !t.is_alive():
+			if not t.is_alive():
 				t.wait_to_finish()
 				break
 		)
@@ -101,42 +101,6 @@ func cycle() -> void:
 			node_properties_changed.emit(node, changed_keys)
 			observed_nodes_cache[node] = current
 
-# Calculation is freed from main thread. Commented with String.
-func _process(_delta) -> void:
-	"if not main: return
-	
-	
-	var root = EditorInterface.get_edited_scene_root()
-	if not root: return
-	
-	var current_scene_path = root.scene_file_path
-	if last_scene != current_scene_path:
-		last_scene = current_scene_path
-		scene_changed.emit()
-	
-	for node in observed_nodes:
-		if not is_instance_valid(node):
-			continue # Freed nodes are automatically erased from arrays
-		
-		if not node.is_inside_tree():
-			observed_nodes.erase(node) 
-			continue
-		
-		var cached: Dictionary = observed_nodes_cache[node]
-		var current := get_property_dict(node)
-		
-		var changed_keys: Array[Array] = []
-		
-		for i in current.keys():
-			if cached[i] != current[i]:
-				#node_property_changed.emit(node, i)
-				#node_property_differs.emit(node, i, cached[i], current[i])
-				changed_keys.append(i)
-				
-		if changed_keys.size() != 0:
-			node_properties_changed.emit(node, changed_keys)
-			observed_nodes_cache[node] = current"
-
 func _node_added(node: Node):
 	var current_scene := EditorInterface.get_edited_scene_root()
 	var scene_path := current_scene.scene_file_path
@@ -173,37 +137,6 @@ func observe(node: Node):
 
 	node.tree_exiting.connect(node_removed.emit.bind(node))
 	node.child_entered_tree.connect(_node_added)
-	
-	# ImmortalOctogen: gigachad coding??!!!
-	# property_list_changed doesn't fire in editor
-	# so let's fire `em!
-	# P.S. forget for while
-	#var script: GDScript = node.get_script() as GDScript
-	#if script == null:
-	#	return
-	#print(script.get_global_name())
-	#print(script.get_script_method_list())
-	
-	# property_list_changed doesn't fire in editor
-	#var cache = get_property_dict(node)
-	#
-	#var on_change = func():
-		#var changed_keys = []
-		#var current = get_property_dict(node)
-		#
-		#for i in current.keys():
-			#if cache[i] != current[i]:
-				#node_property_changed.emit(node, i)
-				#node_property_differs.emit(node, i, cache[i], current[i])
-				#changed_keys.append(i)
-		#
-		#node_properties_changed.emit(node, changed_keys)
-		#cache = current
-	#
-	#node.property_list_changed.connect(on_change)
-	#node.tree_exiting.connect(func():
-		#node.property_list_changed.disconnect(on_change)
-	#)
 
 func observe_recursive(node: Node):
 	observe(node)
