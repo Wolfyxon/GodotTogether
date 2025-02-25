@@ -62,7 +62,7 @@ func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 
 	return OK
 
-@rpc("authority")
+@rpc("authority", "reliable")
 func auth_successful():
 	print("Server accepted connection, requesting files (if needed)")
 	
@@ -88,7 +88,7 @@ func receive_file(path: String, buffer: PackedByteArray):
 	if path.get_extension() == "tscn":
 		EditorInterface.reload_scene_from_path(path)
 
-@rpc("authority", "call_local")
+@rpc("authority", "call_local", "reliable")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):
 	var current_scene = EditorInterface.get_edited_scene_root()
 	
@@ -102,7 +102,7 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	for key in property_dict.keys():
 		node[key] = property_dict[key]
 
-@rpc("authority", "call_local")
+@rpc("authority", "call_local", "reliable")
 func receive_node_removal(scene_path: String, node_path: NodePath):
 	var current_scene = EditorInterface.get_edited_scene_root()
 	
@@ -118,7 +118,7 @@ func receive_node_removal(scene_path: String, node_path: NodePath):
 
 var fuse = 0
 
-@rpc("authority", "call_remote")
+@rpc("authority", "call_remote", "reliable")
 func receive_node_add(scene_path: String, node_path: NodePath, node_type: String):
 	assert(fuse < 10, "NODE OVERFLOW (temporary safety measure)")
 	fuse += 1
