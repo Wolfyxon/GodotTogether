@@ -33,6 +33,17 @@ git push -u origin my-epic-patch
 #### Why? 
 If there's an issue with one part of your code but other work properly, they can already be merged and the broken part can wait until it's fixed.
 
+#### I forgot to create a branch but I want to make a separate pull request
+Simply branch off an older commit. See:
+```
+git log
+```
+To find the hash (for example a1Cx10dk01d01d), then use
+```
+git checkout -b <name of your new branch> <commit hash>
+```
+To branch off that older commit.
+
 ### Committing code
 Use `git` (or the GitHub website, although that's very slow) to commit your changes.
 
