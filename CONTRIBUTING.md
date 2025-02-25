@@ -97,3 +97,5 @@ func greet(other_person: Person) -> String:
 	return "Hello, %s. My name is %s" % [other_person.name, name]
 
 ```
+
+For more info see [the Godot's documentation](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/static_typing.html).
