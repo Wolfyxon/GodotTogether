@@ -4,6 +4,10 @@ Here are things you can do to contribute to the development of Godot Together.
 
 - [Bugs and suggestions](#bugs-and-suggesions)
 - [Writing code](#writing-code)
+	- [Creating a branch](#creating-a-branch)
+ 		- [Why?](#why)
+   		- [I forgot to create a branch but I want to make a separate pull request](#i-forgot-to-create-a-branch-but-i-want-to-make-a-separate-pull-request)
+     	- [Committing code](#committing-code) 
 	- [Rules](#rules)
 		- [Code style](#code-style)
 		- [Typing](#typing)
