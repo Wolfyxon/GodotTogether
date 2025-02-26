@@ -14,6 +14,7 @@ const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_CATEGORY, 
 	PROPERTY_USAGE_SUBGROUP
 ]
+const REFRESH_RATE: float = 0.1 # To not load CPU every frame
 
 var observed_nodes := {}
 var observed_nodes_cache := {}
@@ -45,35 +46,25 @@ static func get_property_dict(node: Node) -> Dictionary:
 	
 	for i in get_property_keys(node):
 		res[i] = node[i]
-	
 	return res
 
 func _ready() -> void:
-	# ImmortalOctogen: there is no data races and other data sync problems
-	# 'observed_nodes', 'observed_nodes_cache', 'incoming_nodes' is only used by other thread
-	var t: Thread = Thread.new() # Creating thread once saves fps
-	refrate.wait_time = 0.1
-	refrate.timeout.connect(func():
-		if t.start(cycle) == ERR_CANT_CREATE:
-			print_debug(error_string(ERR_CANT_CREATE)) # for smth
-			return
-		while true:
-			if not t.is_alive():
-				t.wait_to_finish()
-				break
-		)
+	refrate.wait_time = REFRESH_RATE
+	
+	var root := EditorInterface.get_edited_scene_root()
+	
+	refrate.timeout.connect(cycle.bind(root))
+	
 	add_child(refrate)
 	refrate.start()
 
-# The thread-only function
-func cycle() -> void:
+# The thread-only function (expected)
+# Currently, this function is used by main thread
+func cycle(root: Node) -> void:
 	if not main: return
-	
-	
-	var root := EditorInterface.call_deferred("get_edited_scene_root")
 	if not root: return
 	
-	var current_scene_path = root.scene_file_path
+	var current_scene_path := root.scene_file_path
 	if last_scene != current_scene_path:
 		last_scene = current_scene_path
 		scene_changed.emit()
