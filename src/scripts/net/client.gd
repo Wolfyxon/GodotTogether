@@ -11,7 +11,7 @@ func _ready():
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
 
-	# Doesn't fire, probably a Goodt bug
+	# Doesn't fire, probably a Godot bug
 	#multiplayer.connection_failed.connect(_connecting_finished.bind(false))
 
 func _connected():

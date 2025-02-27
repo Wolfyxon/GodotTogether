@@ -9,17 +9,19 @@ signal node_properties_changed(node: Node, changed_keys: Array)
 signal node_removed(node: Node)
 signal node_added(node: Node)
 
-const IGNORED_PROPERTY_USAGE_FLAGS = [
+const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_GROUP, 
 	PROPERTY_USAGE_CATEGORY, 
 	PROPERTY_USAGE_SUBGROUP
 ]
+const REFRESH_RATE: float = 0.1 # To not load CPU every frame
 
-var observed_nodes = {}
-var observed_nodes_cache = {}
-var incoming_nodes = {
+var observed_nodes := {}
+var observed_nodes_cache := {}
+var incoming_nodes := {
 	# scene path: Array[NodePath]
 }
+var refrate: Timer = Timer.new()
 
 var last_scene := ""
 
@@ -27,7 +29,7 @@ static func get_property_keys(node: Node) -> Array[String]:
 	var res: Array[String] = []
 	
 	for i in node.get_property_list():
-		var con = true
+		var con := true
 		
 		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
 			if i.usage & usage:
@@ -40,20 +42,29 @@ static func get_property_keys(node: Node) -> Array[String]:
 	return res
 
 static func get_property_dict(node: Node) -> Dictionary:
-	var res = {}
+	var res := {}
 	
 	for i in get_property_keys(node):
 		res[i] = node[i]
-	
 	return res
 
-func _process(_delta):
-	if not main: return
+func _ready() -> void:
+	refrate.wait_time = REFRESH_RATE
 	
-	var root = EditorInterface.get_edited_scene_root()
+	var root := EditorInterface.get_edited_scene_root()
+	
+	refrate.timeout.connect(cycle.bind(root))
+	
+	add_child(refrate)
+	refrate.start()
+
+# The thread-only function (expected)
+# Currently, this function is used by main thread
+func cycle(root: Node) -> void:
+	if not main: return
 	if not root: return
 	
-	var current_scene_path = root.scene_file_path
+	var current_scene_path := root.scene_file_path
 	if last_scene != current_scene_path:
 		last_scene = current_scene_path
 		scene_changed.emit()
@@ -66,10 +77,10 @@ func _process(_delta):
 			observed_nodes.erase(node) 
 			continue
 		
-		var cached = observed_nodes_cache[node]
-		var current = get_property_dict(node)
+		var cached: Dictionary = observed_nodes_cache[node]
+		var current := get_property_dict(node)
 		
-		var changed_keys = []
+		var changed_keys: Array[Array] = []
 		
 		for i in current.keys():
 			if cached[i] != current[i]:
@@ -82,8 +93,8 @@ func _process(_delta):
 			observed_nodes_cache[node] = current
 
 func _node_added(node: Node):
-	var current_scene = EditorInterface.get_edited_scene_root()
-	var scene_path = current_scene.scene_file_path
+	var current_scene := EditorInterface.get_edited_scene_root()
+	var scene_path := current_scene.scene_file_path
 
 	if scene_path in incoming_nodes:
 		var incoming = incoming_nodes[scene_path]
@@ -117,27 +128,6 @@ func observe(node: Node):
 
 	node.tree_exiting.connect(node_removed.emit.bind(node))
 	node.child_entered_tree.connect(_node_added)
-	
-	# property_list_changed doesn't fire in editor
-	#var cache = get_property_dict(node)
-	#
-	#var on_change = func():
-		#var changed_keys = []
-		#var current = get_property_dict(node)
-		#
-		#for i in current.keys():
-			#if cache[i] != current[i]:
-				#node_property_changed.emit(node, i)
-				#node_property_differs.emit(node, i, cache[i], current[i])
-				#changed_keys.append(i)
-		#
-		#node_properties_changed.emit(node, changed_keys)
-		#cache = current
-	#
-	#node.property_list_changed.connect(on_change)
-	#node.tree_exiting.connect(func():
-		#node.property_list_changed.disconnect(on_change)
-	#)
 
 func observe_recursive(node: Node):
 	observe(node)

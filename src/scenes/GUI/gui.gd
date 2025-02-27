@@ -64,7 +64,7 @@ func _joined() -> void:
 	$main/session/top/end.text = "Disconnect"
 
 func alert(text: String, title := "") -> AcceptDialog:
-	var popup = AcceptDialog.new()
+	var popup := AcceptDialog.new()
 	
 	popup.dialog_text = text
 	popup.title = title
@@ -79,7 +79,7 @@ func alert(text: String, title := "") -> AcceptDialog:
 	return popup
 
 func confirm(text: String) -> bool:
-	var p = ConfirmationDialog.new()
+	var p := ConfirmationDialog.new()
 	p.dialog_text = text
 	
 	var status = null
@@ -105,26 +105,28 @@ func end_session() -> void:
 	main_menu()
 
 func main_menu() -> void:
-	$main/sessionInit.visible = true
-	$main/sessionInit/pre.visible = true
+	# ImmortalOctogen: to show
+	$main/sessionInit.show()
+	$main/sessionInit/pre.show()
 	
-	$main/sessionInit/start.visible = false
-	$main/sessionInit/start/host.visible = false
-	$main/sessionInit/start/join.visible = false
-	$main/session.visible = false
+	# ImmortalOctogen: to hide
+	$main/sessionInit/start.hide()
+	$main/sessionInit/start/host.hide()
+	$main/sessionInit/start/join.hide()
+	$main/session.hide()
 
 func session_start_menu():
-	$main/sessionInit/start.visible = true
-	$main/sessionInit/pre.visible = false
+	$main/sessionInit/start.show()
+	$main/sessionInit/pre.hide()
 	# Layout glitch fix
 	await get_tree().process_frame
-	$main/sessionInit/start.visible = false
+	$main/sessionInit/start.hide()
 	await get_tree().process_frame
-	$main/sessionInit/start.visible = true
+	$main/sessionInit/start.show()
 
 func session_menu() -> void:
-	$main/sessionInit.visible = false
-	$main/session.visible = true
+	$main/sessionInit.hide()
+	$main/session.show()
 
 func visuals_available() -> bool:
 	return main or not Engine.is_editor_hint() 
