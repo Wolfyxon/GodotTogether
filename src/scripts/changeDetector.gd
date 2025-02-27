@@ -58,12 +58,12 @@ static func get_property_hash_dict(node: Node) -> Dictionary:
 func _ready() -> void:
 	refrate.wait_time = REFRESH_RATE
 	
-	refrate.timeout.connect(cycle)
+	refrate.timeout.connect(_cycle)
 	
 	add_child(refrate)
 	refrate.start()
 
-func cycle() -> void:
+func _cycle() -> void:
 	var root := EditorInterface.get_edited_scene_root()
 	
 	if not main: return
