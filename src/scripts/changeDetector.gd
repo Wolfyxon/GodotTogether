@@ -14,7 +14,7 @@ const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_CATEGORY, 
 	PROPERTY_USAGE_SUBGROUP
 ]
-const REFRESH_RATE: float = 0.1 # To not load CPU every frame
+const REFRESH_RATE: float = 0.1
 
 var observed_nodes := {}
 var observed_nodes_cache := {}
@@ -58,8 +58,6 @@ func _ready() -> void:
 	add_child(refrate)
 	refrate.start()
 
-# The thread-only function (expected)
-# Currently, this function is used by main thread
 func cycle(root: Node) -> void:
 	if not main: return
 	if not root: return

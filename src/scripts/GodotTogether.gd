@@ -37,7 +37,7 @@ func _enter_tree():
 	gui.visible = false
 	button.text = "Godot Together"
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
-	# ImmortalOctogen: No need in runtime button index detection
+	
 	button.get_parent().move_child(button, 1)
 	button.pressed.connect(gui.popup)
 	

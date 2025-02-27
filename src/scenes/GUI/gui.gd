@@ -105,11 +105,9 @@ func end_session() -> void:
 	main_menu()
 
 func main_menu() -> void:
-	# ImmortalOctogen: to show
 	$main/sessionInit.show()
 	$main/sessionInit/pre.show()
 	
-	# ImmortalOctogen: to hide
 	$main/sessionInit/start.hide()
 	$main/sessionInit/start/host.hide()
 	$main/sessionInit/start/join.hide()
