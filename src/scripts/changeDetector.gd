@@ -47,6 +47,14 @@ static func get_property_dict(node: Node) -> Dictionary:
 		res[i] = node[i]
 	return res
 
+static func get_property_hash_dict(node: Node) -> Dictionary:
+	var res := {}
+
+	for i in get_property_keys(node):
+		res[i] = hash(node[i])
+
+	return res
+
 func _ready() -> void:
 	refrate.wait_time = REFRESH_RATE
 	
@@ -75,7 +83,7 @@ func cycle(root: Node) -> void:
 			continue
 		
 		var cached: Dictionary = observed_nodes_cache[node]
-		var current := get_property_dict(node)
+		var current := get_property_hash_dict(node)
 		
 		var changed_keys: Array[String] = []
 		
@@ -119,7 +127,7 @@ func suppress_add_signal(scene_path: String, node_path: NodePath):
 func observe(node: Node):
 	if node in observed_nodes: return
 
-	observed_nodes_cache[node] = get_property_dict(node)
+	observed_nodes_cache[node] = get_property_hash_dict(node)
 	observed_nodes[node] = {}
 
 	node.tree_exiting.connect(node_removed.emit.bind(node))
