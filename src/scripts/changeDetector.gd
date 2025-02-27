@@ -77,7 +77,7 @@ func cycle(root: Node) -> void:
 		var cached: Dictionary = observed_nodes_cache[node]
 		var current := get_property_dict(node)
 		
-		var changed_keys: Array[Array] = []
+		var changed_keys: Array[String] = []
 		
 		for i in current.keys():
 			if cached[i] != current[i]:
