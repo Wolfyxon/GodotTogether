@@ -52,7 +52,6 @@ text = "About"
 icon = ExtResource("3_gc6ii")
 
 [node name="sessionInit" type="Control" parent="mainMenu/main"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -263,6 +262,7 @@ text = "Cancel"
 icon = ExtResource("6_8e3fv")
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -528,5 +528,12 @@ layout_mode = 2
 text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 
+[connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="session_start_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main/sessionInit/start/join" method="show"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main" method="session_start_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main/sessionInit/start/host" method="show"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/start/host/start" to="mainMenu/main" method="_host"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/start/join/join" to="mainMenu/main" method="_join"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/start/cancel" to="mainMenu/main" method="main_menu"]
+[connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
