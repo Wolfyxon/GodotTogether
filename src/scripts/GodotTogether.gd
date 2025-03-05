@@ -34,12 +34,11 @@ func _enter_tree():
 	gui.main = self
 	add_child(gui)
 	
-	gui.visible = false
 	button.text = "Godot Together"
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	
 	button.get_parent().move_child(button, 1)
-	button.pressed.connect(gui.popup)
+	button.pressed.connect(gui.get_menu_window().popup)
 	
 
 func _exit_tree():

@@ -472,58 +472,58 @@ theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "*You have unsaved changes"
 
-[node name="about" type="PopupPanel" parent="."]
+[node name="about" type="PopupPanel" parent="mainMenu"]
 title = "About Godot Together"
 initial_position = 4
 size = Vector2i(500, 250)
 borderless = false
 
-[node name="scroll" type="ScrollContainer" parent="about"]
+[node name="scroll" type="ScrollContainer" parent="mainMenu/about"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 9.0
 offset_top = 9.0
-offset_right = 491.0
-offset_bottom = 241.0
+offset_right = -9.0
+offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="vbox" type="VBoxContainer" parent="about/scroll"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/about/scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="version" type="Label" parent="about/scroll/vbox"]
+[node name="version" type="Label" parent="mainMenu/about/scroll/vbox"]
 layout_mode = 2
 text = "Version: %s"
 
-[node name="author" type="Label" parent="about/scroll/vbox"]
+[node name="author" type="Label" parent="mainMenu/about/scroll/vbox"]
 layout_mode = 2
 text = "by Wolfyxon"
 
-[node name="description" type="Label" parent="about/scroll/vbox"]
+[node name="description" type="Label" parent="mainMenu/about/scroll/vbox"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 text = "GodotTogether is an open source plugin for live editing Godot projects with multiple people at the same time over the network.
 This plugin is in early development so expect bugs!"
 autowrap_mode = 3
 
-[node name="links" type="HBoxContainer" parent="about/scroll/vbox"]
+[node name="links" type="HBoxContainer" parent="mainMenu/about/scroll/vbox"]
 layout_mode = 2
 alignment = 1
 
-[node name="repo" type="LinkButton" parent="about/scroll/vbox/links"]
+[node name="repo" type="LinkButton" parent="mainMenu/about/scroll/vbox/links"]
 layout_mode = 2
 text = "Source code"
 uri = "https://github.com/Wolfyxon/GodotTogether"
 
-[node name="issues" type="LinkButton" parent="about/scroll/vbox/links"]
+[node name="issues" type="LinkButton" parent="mainMenu/about/scroll/vbox/links"]
 layout_mode = 2
 text = "Bugs and proposals"
 uri = "https://github.com/Wolfyxon/GodotTogether/issues"
 
-[node name="help" type="LinkButton" parent="about/scroll/vbox/links"]
+[node name="help" type="LinkButton" parent="mainMenu/about/scroll/vbox/links"]
 layout_mode = 2
 text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
