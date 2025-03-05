@@ -1,9 +1,11 @@
 @tool
-extends PopupPanel
+extends Node
 class_name GodotTogetherGUI
 
 var main: GodotTogether
 
+@onready var menu_window = $mainMenu
+@onready var menu = menu_window.menu
 @onready var users: GodotTogetherUserList = $main/session/tabs/Users
 @onready var username_input = $main/sessionInit/pre/username
 
@@ -17,7 +19,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
-		visible = true
+		menu_window.visible = true
 
 func _host() -> void:
 	if main:

@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=12 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/menuWindow.gd" id="2_dm08s"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/menu.gd" id="3_1pnv7"]
 [ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="3_gc6ii"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_lrlm7"]
 [ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="5_dxbrh"]
@@ -10,47 +12,51 @@
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/users.gd" id="7_nhpql"]
 [ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/GUI/userEntry.gd" id="9_ymxdp"]
 
-[node name="GUI" type="PopupPanel"]
-title = "Godot Together"
+[node name="GUI" type="Node"]
+script = ExtResource("1_73joy")
+
+[node name="mainMenu" type="PopupPanel" parent="."]
+title = "GodotTogether"
 initial_position = 4
 size = Vector2i(700, 400)
 visible = true
 unresizable = false
 borderless = false
-script = ExtResource("1_73joy")
+script = ExtResource("2_dm08s")
 
-[node name="main" type="VBoxContainer" parent="."]
+[node name="main" type="VBoxContainer" parent="mainMenu"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("3_1pnv7")
 
-[node name="topBar" type="HBoxContainer" parent="main"]
+[node name="topBar" type="HBoxContainer" parent="mainMenu/main"]
 layout_mode = 2
 
-[node name="settings" type="Button" parent="main/topBar"]
+[node name="settings" type="Button" parent="mainMenu/main/topBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Settings"
 icon = ExtResource("2_3dfl6")
 
-[node name="about" type="Button" parent="main/topBar"]
+[node name="about" type="Button" parent="mainMenu/main/topBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "About"
 icon = ExtResource("3_gc6ii")
 
-[node name="sessionInit" type="Control" parent="main"]
+[node name="sessionInit" type="Control" parent="mainMenu/main"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="pre" type="VBoxContainer" parent="main/sessionInit"]
+[node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,53 +66,53 @@ grow_vertical = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="main/sessionInit/pre"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/pre"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Welcome to Godot Together"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="main/sessionInit/pre"]
+[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/pre"]
 layout_mode = 2
 text = "Your username:"
 horizontal_alignment = 1
 
-[node name="username" type="LineEdit" parent="main/sessionInit/pre"]
+[node name="username" type="LineEdit" parent="mainMenu/main/sessionInit/pre"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Cool person"
 placeholder_text = "Your username..."
 
-[node name="usernameError" type="Label" parent="main/sessionInit/pre"]
+[node name="usernameError" type="Label" parent="mainMenu/main/sessionInit/pre"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.26, 0.26, 1)
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 
-[node name="sep" type="Control" parent="main/sessionInit/pre"]
+[node name="sep" type="Control" parent="mainMenu/main/sessionInit/pre"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="join" type="Button" parent="main/sessionInit/pre"]
+[node name="join" type="Button" parent="mainMenu/main/sessionInit/pre"]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Join someone's project"
 icon = ExtResource("4_lrlm7")
 
-[node name="host" type="Button" parent="main/sessionInit/pre"]
+[node name="host" type="Button" parent="mainMenu/main/sessionInit/pre"]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Host your project"
 icon = ExtResource("4_lrlm7")
 
-[node name="sep2" type="Control" parent="main/sessionInit/pre"]
+[node name="sep2" type="Control" parent="mainMenu/main/sessionInit/pre"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="warning" type="Label" parent="main/sessionInit/pre"]
+[node name="warning" type="Label" parent="mainMenu/main/sessionInit/pre"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
@@ -117,7 +123,7 @@ This plugin is currently insecure and may allow hackers to run malicious code on
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="start" type="VBoxContainer" parent="main/sessionInit"]
+[node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit"]
 visible = false
 layout_mode = 1
 anchors_preset = 13
@@ -129,29 +135,29 @@ offset_right = 109.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="host" type="VBoxContainer" parent="main/sessionInit/start"]
+[node name="host" type="VBoxContainer" parent="mainMenu/main/sessionInit/start"]
 visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="main/sessionInit/start/host"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Host your project"
 horizontal_alignment = 1
 
-[node name="port" type="HBoxContainer" parent="main/sessionInit/start/host"]
+[node name="port" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/host"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="main/sessionInit/start/host/port"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host/port"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Server port"
 
-[node name="value" type="SpinBox" parent="main/sessionInit/start/host/port"]
+[node name="value" type="SpinBox" parent="mainMenu/main/sessionInit/start/host/port"]
 layout_mode = 2
 size_flags_horizontal = 4
 min_value = 1024.0
@@ -159,36 +165,36 @@ max_value = 49151.0
 value = 5017.0
 prefix = ":"
 
-[node name="users" type="HBoxContainer" parent="main/sessionInit/start/host"]
+[node name="users" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/host"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="main/sessionInit/start/host/users"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host/users"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Max users"
 
-[node name="value" type="SpinBox" parent="main/sessionInit/start/host/users"]
+[node name="value" type="SpinBox" parent="mainMenu/main/sessionInit/start/host/users"]
 layout_mode = 2
 size_flags_horizontal = 4
 min_value = 1.0
 value = 5.0
 
-[node name="approveUsers" type="CheckButton" parent="main/sessionInit/start/host"]
+[node name="approveUsers" type="CheckButton" parent="mainMenu/main/sessionInit/start/host"]
 layout_mode = 2
 button_pressed = true
 text = "Approve users before join"
 
-[node name="password" type="LineEdit" parent="main/sessionInit/start/host"]
+[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/host"]
 layout_mode = 2
 placeholder_text = "Server password..."
 
-[node name="start" type="Button" parent="main/sessionInit/start/host"]
+[node name="start" type="Button" parent="mainMenu/main/sessionInit/start/host"]
 layout_mode = 2
 text = "Start server"
 icon = ExtResource("4_lrlm7")
 
-[node name="warning" type="Label" parent="main/sessionInit/start/host"]
+[node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/host"]
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
@@ -196,34 +202,34 @@ text = "Back up your project before using!
 Do not let untrusted people join!"
 horizontal_alignment = 1
 
-[node name="join" type="VBoxContainer" parent="main/sessionInit/start"]
+[node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start"]
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="main/sessionInit/start/join"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/join"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Join a project"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="main/sessionInit/start/join"]
+[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/start/join"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Server address"
 
-[node name="address" type="HBoxContainer" parent="main/sessionInit/start/join"]
+[node name="address" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/join"]
 layout_mode = 2
 alignment = 1
 
-[node name="ip" type="LineEdit" parent="main/sessionInit/start/join/address"]
+[node name="ip" type="LineEdit" parent="mainMenu/main/sessionInit/start/join/address"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "localhost"
 placeholder_text = "IP address..."
 
-[node name="port" type="SpinBox" parent="main/sessionInit/start/join/address"]
+[node name="port" type="SpinBox" parent="mainMenu/main/sessionInit/start/join/address"]
 layout_mode = 2
 size_flags_horizontal = 4
 min_value = 1024.0
@@ -231,17 +237,17 @@ max_value = 49151.0
 value = 5017.0
 prefix = ":"
 
-[node name="password" type="LineEdit" parent="main/sessionInit/start/join"]
+[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/join"]
 layout_mode = 2
 placeholder_text = "Password..."
 secret = true
 
-[node name="join" type="Button" parent="main/sessionInit/start/join"]
+[node name="join" type="Button" parent="mainMenu/main/sessionInit/start/join"]
 layout_mode = 2
 text = "Join server"
 icon = ExtResource("4_lrlm7")
 
-[node name="warning" type="Label" parent="main/sessionInit/start/join"]
+[node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/join"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
@@ -251,112 +257,112 @@ All data in this project will be OVERWRITTEN with the their version."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="cancel" type="Button" parent="main/sessionInit/start"]
+[node name="cancel" type="Button" parent="mainMenu/main/sessionInit/start"]
 layout_mode = 2
 text = "Cancel"
 icon = ExtResource("6_8e3fv")
 
-[node name="session" type="VBoxContainer" parent="main"]
+[node name="session" type="VBoxContainer" parent="mainMenu/main"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="top" type="HBoxContainer" parent="main/session"]
+[node name="top" type="HBoxContainer" parent="mainMenu/main/session"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="end" type="Button" parent="main/session/top"]
+[node name="end" type="Button" parent="mainMenu/main/session/top"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 11
 text = "Stop server"
 
-[node name="showJoin" type="Button" parent="main/session/top"]
+[node name="showJoin" type="Button" parent="mainMenu/main/session/top"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 11
 text = "Show join data"
 
-[node name="sep" type="VSeparator" parent="main/session/top"]
+[node name="sep" type="VSeparator" parent="mainMenu/main/session/top"]
 layout_mode = 2
 
-[node name="status" type="Label" parent="main/session/top"]
+[node name="status" type="Label" parent="mainMenu/main/session/top"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 16
 text = "Connected"
 
-[node name="tabs" type="TabContainer" parent="main/session"]
+[node name="tabs" type="TabContainer" parent="mainMenu/main/session"]
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Users" type="ScrollContainer" parent="main/session/tabs"]
+[node name="Users" type="ScrollContainer" parent="mainMenu/main/session/tabs"]
 layout_mode = 2
 script = ExtResource("7_nhpql")
 metadata/_tab_index = 0
 
-[node name="vbox" type="VBoxContainer" parent="main/session/tabs/Users"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Users"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="header" type="HBoxContainer" parent="main/session/tabs/Users/vbox"]
+[node name="header" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox"]
 layout_mode = 2
 
-[node name="color" type="Control" parent="main/session/tabs/Users/vbox/header"]
+[node name="color" type="Control" parent="mainMenu/main/session/tabs/Users/vbox/header"]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="name" type="Label" parent="main/session/tabs/Users/vbox/header"]
+[node name="name" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Name"
 
-[node name="id" type="Label" parent="main/session/tabs/Users/vbox/header"]
+[node name="id" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "ID"
 
-[node name="ip" type="HBoxContainer" parent="main/session/tabs/Users/vbox/header"]
+[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/header"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="name" type="Label" parent="main/session/tabs/Users/vbox/header/ip"]
+[node name="name" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header/ip"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "IP address"
 
-[node name="toggle" type="Button" parent="main/session/tabs/Users/vbox/header/ip"]
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/header/ip"]
 layout_mode = 2
 icon = ExtResource("7_1sjc5")
 flat = true
 
-[node name="rank" type="Label" parent="main/session/tabs/Users/vbox/header"]
+[node name="rank" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Rank"
 
-[node name="actions" type="Label" parent="main/session/tabs/Users/vbox/header"]
+[node name="actions" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Actions"
 
-[node name="sep" type="HSeparator" parent="main/session/tabs/Users/vbox"]
+[node name="sep" type="HSeparator" parent="mainMenu/main/session/tabs/Users/vbox"]
 layout_mode = 2
 
-[node name="user" type="HBoxContainer" parent="main/session/tabs/Users/vbox"]
+[node name="user" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox"]
 layout_mode = 2
 script = ExtResource("9_ymxdp")
 
-[node name="color" type="ColorRect" parent="main/session/tabs/Users/vbox/user"]
+[node name="color" type="ColorRect" parent="mainMenu/main/session/tabs/Users/vbox/user"]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="name" type="LineEdit" parent="main/session/tabs/Users/vbox/user"]
+[node name="name" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -364,19 +370,19 @@ text = "Cool person"
 placeholder_text = "error"
 editable = false
 
-[node name="id" type="LineEdit" parent="main/session/tabs/Users/vbox/user"]
+[node name="id" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "123"
 placeholder_text = "error"
 editable = false
 
-[node name="ip" type="HBoxContainer" parent="main/session/tabs/Users/vbox/user"]
+[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="value" type="LineEdit" parent="main/session/tabs/Users/vbox/user/ip"]
+[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user/ip"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "127.0.0.1"
@@ -384,12 +390,12 @@ placeholder_text = "error"
 editable = false
 secret = true
 
-[node name="toggle" type="Button" parent="main/session/tabs/Users/vbox/user/ip"]
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/ip"]
 layout_mode = 2
 icon = ExtResource("7_1sjc5")
 flat = true
 
-[node name="rank" type="OptionButton" parent="main/session/tabs/Users/vbox/user"]
+[node name="rank" type="OptionButton" parent="mainMenu/main/session/tabs/Users/vbox/user"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -402,64 +408,64 @@ popup/item_1/id = 1
 popup/item_2/text = "Admin"
 popup/item_2/id = 2
 
-[node name="actions" type="HBoxContainer" parent="main/session/tabs/Users/vbox/user"]
+[node name="actions" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="kick" type="Button" parent="main/session/tabs/Users/vbox/user/actions"]
+[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Kick"
 
-[node name="Server settings" type="VBoxContainer" parent="main/session/tabs"]
+[node name="Server settings" type="VBoxContainer" parent="mainMenu/main/session/tabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="scroll" type="ScrollContainer" parent="main/session/tabs/Server settings"]
+[node name="scroll" type="ScrollContainer" parent="mainMenu/main/session/tabs/Server settings"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="vbox" type="VBoxContainer" parent="main/session/tabs/Server settings/scroll"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="main/session/tabs/Server settings/scroll/vbox"]
+[node name="Label" type="Label" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
 layout_mode = 2
 text = "Server password:"
 
-[node name="password" type="HBoxContainer" parent="main/session/tabs/Server settings/scroll/vbox"]
+[node name="password" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
 layout_mode = 2
 
-[node name="value" type="LineEdit" parent="main/session/tabs/Server settings/scroll/vbox/password"]
+[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "No password set..."
 clear_button_enabled = true
 secret = true
 
-[node name="toggle" type="Button" parent="main/session/tabs/Server settings/scroll/vbox/password"]
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password"]
 layout_mode = 2
 icon = ExtResource("7_1sjc5")
 flat = true
 
-[node name="approve" type="CheckBox" parent="main/session/tabs/Server settings/scroll/vbox"]
+[node name="approve" type="CheckBox" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
 layout_mode = 2
 button_pressed = true
 text = "Approve users before they join"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="main/session/tabs/Server settings"]
+[node name="HBoxContainer" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings"]
 layout_mode = 2
 
-[node name="apply" type="Button" parent="main/session/tabs/Server settings/HBoxContainer"]
+[node name="apply" type="Button" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Apply"
 
-[node name="unsavedWarning" type="Label" parent="main/session/tabs/Server settings/HBoxContainer"]
+[node name="unsavedWarning" type="Label" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer"]
 visible = false
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
@@ -476,10 +482,10 @@ borderless = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 491.0
+offset_bottom = 241.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -522,12 +528,5 @@ layout_mode = 2
 text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 
-[connection signal="pressed" from="main/topBar/about" to="about" method="popup_centered"]
-[connection signal="pressed" from="main/sessionInit/pre/join" to="." method="session_start_menu"]
-[connection signal="pressed" from="main/sessionInit/pre/join" to="main/sessionInit/start/join" method="show"]
-[connection signal="pressed" from="main/sessionInit/pre/host" to="." method="session_start_menu"]
-[connection signal="pressed" from="main/sessionInit/pre/host" to="main/sessionInit/start/host" method="show"]
-[connection signal="pressed" from="main/sessionInit/start/host/start" to="." method="_host"]
-[connection signal="pressed" from="main/sessionInit/start/join/join" to="." method="_join"]
-[connection signal="pressed" from="main/sessionInit/start/cancel" to="." method="main_menu"]
-[connection signal="pressed" from="main/session/top/end" to="." method="end_session"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main/sessionInit/start/join" method="show"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main/sessionInit/start/host" method="show"]
