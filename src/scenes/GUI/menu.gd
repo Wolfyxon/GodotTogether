@@ -88,7 +88,7 @@ func session_start_menu():
 	$sessionInit/start.show()
 	
 func visuals_available() -> bool:
-	if not main or not gui: 
+	if not gui: 
 		return false
 	
 	return gui.visuals_available()
