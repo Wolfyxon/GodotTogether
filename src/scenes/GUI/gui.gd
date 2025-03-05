@@ -11,6 +11,8 @@ var main: GodotTogether
 
 func _ready() -> void:
 	if main:
+		menu_window.main = main
+		menu.main = main
 		users.main = main
 	
 	if visuals_available():
