@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://b5bmcyyb6did7"]
 
-[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.gd" id="1_kun10"]
+[ext_resource type="Script" uid="uid://mqy1dbfo1wl2" path="res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.gd" id="1_kun10"]
 [ext_resource type="Material" uid="uid://ddflrrq43ph57" path="res://addons/GodotTogether/src/scenes/Avatar3D/material.tres" id="2_gl4nl"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_u7t51"]
