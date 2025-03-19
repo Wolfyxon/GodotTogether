@@ -75,6 +75,12 @@ git commit -m "Cleanup"
 
 
 ### Rules
+#### No AI generated code
+AI tools such as ChatGPT can be useful tool for analysis, explanations, showing examples and debugging, but you cannot use it
+to write entire sections of code with it.
+
+You must have full understanding of the code you write.
+
 #### Code style
 The [default GDScript style](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html) is used in the project.
 
