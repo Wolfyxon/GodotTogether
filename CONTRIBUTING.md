@@ -77,7 +77,7 @@ git commit -m "Cleanup"
 
 ### Rules
 #### No AI generated code
-AI tools such as ChatGPT can be useful tools for analysis, explanations, showing examples and debugging, but you cannot use it
+AI tools such as ChatGPT can be useful tools for analysis, explanations, showing examples and debugging, but you cannot use them
 to write entire sections of code with it as you're not the person who writes the code then.
 
 You must have full understanding of the code you write and thus using AI generated code in this project is not allowed.
