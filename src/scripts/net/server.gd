@@ -157,7 +157,8 @@ func node_update_request(scene_path: String, node_path: NodePath, property_dict:
 	var id = multiplayer.get_remote_sender_id()
 	
 	if not id_has_permission(id, GodotTogether.Permission.EDIT_SCENES): return
-
+	
+	main.client.receive_node_updates(scene_path, node_path, property_dict)
 	submit_node_update(scene_path, node_path, property_dict, id)
 
 @rpc("any_peer", "call_remote", "reliable")
