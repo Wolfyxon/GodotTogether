@@ -72,6 +72,7 @@ func auth_successful():
 
 @rpc("authority", "reliable")
 func project_files_downloaded():
+	print("Project files downloaded")
 	main.change_detector.resume()
 	main.change_detector.observe_current_scene()
 
