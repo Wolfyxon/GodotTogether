@@ -113,6 +113,8 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 
 @rpc("authority", "call_local", "reliable")
 func receive_node_removal(scene_path: String, node_path: NodePath):
+	# Freeing nodes during scene reloading / in removed scenes seems to be the cause of crash during join
+
 	var current_scene = EditorInterface.get_edited_scene_root()
 	
 	if not current_scene or current_scene.scene_file_path != scene_path:
