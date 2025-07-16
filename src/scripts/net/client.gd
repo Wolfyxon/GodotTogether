@@ -66,7 +66,13 @@ func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 func auth_successful():
 	print("Server accepted connection, requesting files (if needed)")
 	
+	main.change_detector.pause()
+	main.change_detector.clear()
 	main.server.project_files_request.rpc_id(1, GodotTogetherFiles.get_file_tree_hashes())
+
+func project_files_downloaded():
+	main.change_detector.resume()
+	main.change_detector.observe_current_scene()
 
 @rpc("authority", "reliable")
 func receive_file(path: String, buffer: PackedByteArray):

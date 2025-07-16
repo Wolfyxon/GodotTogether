@@ -63,11 +63,8 @@ func _disconnected(id: int):
 		marker3d.queue_free()
 		avatar_3d_markers.erase(marker3d)
 
-func _scene_changed():
-	var scene = EditorInterface.get_edited_scene_root()
-	if not scene: return
-	
-	main.change_detector.observe_recursive(scene)
+func _scene_changed():	
+	main.change_detector.observe_current_scene()
 
 func should_update(node: Node) -> bool:
 	return (

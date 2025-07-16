@@ -110,6 +110,23 @@ func _node_added(node: Node):
 
 	node_added.emit(node)
 
+func observe_current_scene():
+	var scene = EditorInterface.get_edited_scene_root()
+	if not scene: return
+	
+	main.change_detector.observe_recursive(scene)
+
+func clear():
+	observed_nodes.clear()
+	observed_nodes_cache.clear()
+	incoming_nodes.clear()
+
+func pause():
+	refrate.paused = true
+
+func resume():
+	refrate.paused = false
+
 func get_observed_nodes() -> Array[Node]:
 	var res: Array[Node]
 
