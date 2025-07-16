@@ -133,6 +133,12 @@ func pause():
 func resume():
 	refrate.paused = false
 
+func merge(node: Node, property_dict: Dictionary):
+	observe(node)
+	
+	for key in property_dict.keys():
+		observed_nodes_cache[node][key] = hash(node[key])
+
 func get_observed_nodes() -> Array[Node]:
 	var res: Array[Node]
 

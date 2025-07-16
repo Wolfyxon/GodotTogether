@@ -108,15 +108,9 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	var node = current_scene.get_node_or_null(node_path)
 	if not node: return
 	
-	var cache = main.change_detector.observed_nodes_cache
+	main.change_detector.merge(node, property_dict)
 
 	for key in property_dict.keys():
-		if not cache.has(node):
-			cache[node] = {}
-
-		var node_cache = main.change_detector.observed_nodes_cache[node]
-		
-		node_cache[key] = hash(property_dict[key])
 		node[key] = property_dict[key]
 
 @rpc("authority", "call_local", "reliable")
