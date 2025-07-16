@@ -154,9 +154,11 @@ func project_files_request(hashes: Dictionary):
 
 @rpc("any_peer", "call_remote", "reliable")
 func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary):
-	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
+	var id = multiplayer.get_remote_sender_id()
+	
+	if not id_has_permission(id, GodotTogether.Permission.EDIT_SCENES): return
 
-	submit_node_update(scene_path, node_path, property_dict)
+	submit_node_update(scene_path, node_path, property_dict, id)
 
 @rpc("any_peer", "call_remote", "reliable")
 func node_removal_request(scene_path: String, node_path: NodePath):
@@ -164,7 +166,7 @@ func node_removal_request(scene_path: String, node_path: NodePath):
 
 	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
 
-	submit_node_removal(scene_path, node_path)
+	submit_node_removal(scene_path, node_path, id)
 
 @rpc("any_peer", "call_remote", "reliable")
 func node_add_request(scene_path: String, node_path: NodePath, node_type: String):
