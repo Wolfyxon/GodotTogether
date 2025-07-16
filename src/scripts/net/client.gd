@@ -28,6 +28,7 @@ func _disconnected():
 	if multiplayer.is_server(): return
 
 	print("Disconnected from server")
+	main.dual.clear_avatars()
 
 func _connecting_finished(success: bool):
 	connecting_finished.emit(success)
