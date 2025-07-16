@@ -70,6 +70,7 @@ func auth_successful():
 	main.change_detector.clear()
 	main.server.project_files_request.rpc_id(1, GodotTogetherFiles.get_file_tree_hashes())
 
+@rpc("authority", "reliable")
 func project_files_downloaded():
 	main.change_detector.resume()
 	main.change_detector.observe_current_scene()
