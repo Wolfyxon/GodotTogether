@@ -155,6 +155,12 @@ func get_avatar_3d(id: int) -> GodotTogetherAvatar3D:
 	
 	return null 
 
+func clear_avatars():
+	for i in avatar_3d_markers:
+		i.queue_free()
+
+	for i in avatar_2d_markers:
+		i.queue_free()
 
 @rpc("any_peer")
 func update_2d_avatar(vector: Vector2):
