@@ -3,7 +3,7 @@ Make Godot games together in real time!
 
 > [!WARNING]
 > This plugin is **not ready for use.**  
-> Many important features have not are not implemented or are buggy.
+> Many important features have not are not implemented or are buggy.  
 > You are also risking **breaking your project** so make sure to **make a backup**.
 >
 > See the [TODO list](https://github.com/wolfyxon/godotTogether/issues/1) to see the current progress.
