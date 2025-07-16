@@ -107,11 +107,15 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	
 	var node = current_scene.get_node_or_null(node_path)
 	if not node: return
-	
+
+	main.change_detector.set_node_supression(node, true)	
 	main.change_detector.merge(node, property_dict)
 
 	for key in property_dict.keys():
 		node[key] = property_dict[key]
+	
+	await get_tree().create_timer(0.1).timeout # Temporary fix, not great
+	main.change_detector.set_node_supression(node, false)
 
 @rpc("authority", "call_local", "reliable")
 func receive_node_removal(scene_path: String, node_path: NodePath):

@@ -15,7 +15,10 @@ const IGNORED_PROPERTY_USAGE_FLAGS := [
 ]
 const REFRESH_RATE: float = 0.1
 
+# Dicts are faster that arrays apparently
 var observed_nodes := {}
+var supressed_nodes := {}
+
 var observed_nodes_cache := {}
 var incoming_nodes := {
 	# scene path: Array[NodePath]
@@ -93,7 +96,9 @@ func _cycle() -> void:
 				changed_keys.append(i)
 				
 		if changed_keys.size() != 0:
-			node_properties_changed.emit(node, changed_keys)
+			if not supressed_nodes.has(node):
+				node_properties_changed.emit(node, changed_keys)
+			
 			observed_nodes_cache[node] = current
 
 func _node_added(node: Node):
@@ -138,6 +143,12 @@ func merge(node: Node, property_dict: Dictionary):
 	
 	for key in property_dict.keys():
 		observed_nodes_cache[node][key] = hash(node[key])
+
+func set_node_supression(node: Node, supressed: bool):
+	if supressed:
+		supressed_nodes.get_or_add(node, true)
+	else:
+		supressed_nodes.erase(node)
 
 func get_observed_nodes() -> Array[Node]:
 	var res: Array[Node]
