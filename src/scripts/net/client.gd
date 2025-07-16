@@ -105,7 +105,7 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 		print("NOT IMPLEMENTED YET. Node outside of current scene, not updating.")
 		return
 	
-	var node = current_scene.get_node(node_path)
+	var node = current_scene.get_node_or_null(node_path)
 	if not node: return
 	
 	for key in property_dict.keys():
@@ -121,7 +121,7 @@ func receive_node_removal(scene_path: String, node_path: NodePath):
 		print("NOT IMPLEMENTED YET. Node outside of current scene, not removing.")
 		return
 
-	var node = current_scene.get_node(node_path)
+	var node = current_scene.get_node_or_null(node_path)
 	if not node: return
 
 	prints("rm", node_path)
