@@ -21,7 +21,7 @@ func _host() -> void:
 		var max_clients = $sessionInit/start/host/users/value.value
 		
 		set_session_init_cover("Starting server...")
-		await get_tree().process_frame
+		await RenderingServer.frame_post_draw
 		
 		var err = main.server.start_hosting(port, max_clients)
 		
