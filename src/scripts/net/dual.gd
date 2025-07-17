@@ -53,6 +53,8 @@ func _peer_connected(id: int):
 	pass
 	
 func _peer_disconnected(id: int):
+	print("Peer %s disconnected" % id)
+
 	var marker3d = get_avatar_3d(id)
 	var marker2d = get_avatar_2d(id)
 	
