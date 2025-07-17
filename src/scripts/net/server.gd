@@ -142,7 +142,7 @@ func project_files_request(hashes: Dictionary):
 			if FileAccess.file_exists(path):
 				files_to_send.append(path)
 
-	main.client.begin_project_files_download(files_to_send.size())
+	main.client.begin_project_files_download.rpc_id(id, files_to_send.size())
 
 	for path in files_to_send:
 		var buf = FileAccess.get_file_as_bytes(path)
