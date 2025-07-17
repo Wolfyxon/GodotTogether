@@ -105,6 +105,11 @@ func receive_file(path: String, buffer: PackedByteArray):
 	print("Saved successfully")
 	
 	if path.get_extension() == "tscn":
+		var current_scene = EditorInterface.get_edited_scene_root()
+
+		if current_scene and current_scene.scene_file_path == path:
+			EditorInterface.mark_scene_as_unsaved()
+
 		EditorInterface.reload_scene_from_path(path)
 
 	if downloaded_file_count >= target_file_count:
