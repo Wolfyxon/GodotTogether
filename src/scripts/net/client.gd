@@ -82,6 +82,9 @@ func auth_successful():
 
 func _project_files_downloaded():
 	print("Project files downloaded")
+
+	EditorInterface.get_resource_filesystem().scan()
+
 	main.change_detector.resume()
 	main.change_detector.observe_current_scene()
 
