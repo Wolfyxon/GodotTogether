@@ -261,6 +261,34 @@ layout_mode = 2
 text = "Cancel"
 icon = ExtResource("6_8e3fv")
 
+[node name="cover" type="ColorRect" parent="mainMenu/main/sessionInit"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.376471)
+
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/sessionInit/cover"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="title" type="Label" parent="mainMenu/main/sessionInit/cover/vbox"]
+layout_mode = 2
+text = "Starting server"
+
 [node name="session" type="VBoxContainer" parent="mainMenu/main"]
 visible = false
 layout_mode = 2
