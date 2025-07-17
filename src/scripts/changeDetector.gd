@@ -120,7 +120,9 @@ func observe_current_scene():
 	if not scene: return
 	
 	main.change_detector.observe_recursive(scene)
-	scene.tree_exiting.connect(delayed_observe_current_scene)
+
+	if not scene.tree_exiting.is_connected(delayed_observe_current_scene):
+		scene.tree_exiting.connect(delayed_observe_current_scene)
 
 func delayed_observe_current_scene():
 	await get_tree().process_frame
