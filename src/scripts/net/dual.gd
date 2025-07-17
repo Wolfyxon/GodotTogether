@@ -59,11 +59,11 @@ func _peer_disconnected(id: int):
 	var marker2d = get_avatar_2d(id)
 	
 	if marker2d: 
-		marker2d.queue_free()
 		avatar_2d_markers.erase(marker2d)
+		marker2d.queue_free()
 	if marker3d: 
-		marker3d.queue_free()
 		avatar_3d_markers.erase(marker3d)
+		marker3d.queue_free()
 
 func _scene_changed():	
 	main.change_detector.observe_current_scene()
@@ -145,24 +145,29 @@ func create_avatar_2d(user_dict: Dictionary) -> GodotTogetherAvatar2D:
 
 func get_avatar_2d(id: int) -> GodotTogetherAvatar2D:
 	for i in avatar_2d_markers:
-		if i.id == id and i.is_inside_tree(): 
+		if is_instance_valid(i) and i.id == id and i.is_inside_tree(): 
 			return i
 	
 	return null 
 
 func get_avatar_3d(id: int) -> GodotTogetherAvatar3D:
 	for i in avatar_3d_markers:
-		if i.id == id and i.is_inside_tree(): 
+		if is_instance_valid(i) and i.id == id and i.is_inside_tree(): 
 			return i
 	
 	return null 
 
 func clear_avatars():
 	for i in avatar_3d_markers:
-		i.queue_free()
+		if is_instance_valid(i):
+			i.queue_free()
 
 	for i in avatar_2d_markers:
-		i.queue_free()
+		if is_instance_valid(i):
+			i.queue_free()
+
+	avatar_3d_markers.clear()
+	avatar_3d_markers.clear()
 
 @rpc("any_peer")
 func update_2d_avatar(vector: Vector2):
