@@ -20,8 +20,8 @@ func _ready():
 	if not main: return
 	camera = EditorInterface.get_editor_viewport_3d().get_camera_3d()
 	
-	multiplayer.peer_connected.connect(_connected)
-	multiplayer.peer_disconnected.connect(_disconnected)
+	multiplayer.peer_connected.connect(_peer_connected)
+	multiplayer.peer_disconnected.connect(_peer_disconnected)
 	
 	main.change_detector.scene_changed.connect(_scene_changed)
 	main.change_detector.node_properties_changed.connect(_node_properties_changed)
@@ -49,10 +49,10 @@ func _update():
 		
 		update_3d_avatar.rpc(camera.position, camera.rotation)
 
-func _connected(id: int):
+func _peer_connected(id: int):
 	pass
 	
-func _disconnected(id: int):
+func _peer_disconnected(id: int):
 	var marker3d = get_avatar_3d(id)
 	var marker2d = get_avatar_2d(id)
 	
