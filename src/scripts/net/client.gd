@@ -7,6 +7,9 @@ signal connecting_finished(success: bool)
 var client_peer = ENetMultiplayerPeer.new()
 var current_join_data := GodotTogetherJoinData.new()
 
+var downloaded_file_count := 0
+var target_file_count := 0
+
 func _ready():
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
@@ -79,7 +82,13 @@ func project_files_downloaded():
 	main.change_detector.observe_current_scene()
 
 @rpc("authority", "reliable")
+func begin_project_files_download(file_count: int):
+	target_file_count = file_count
+
+@rpc("authority", "reliable")
 func receive_file(path: String, buffer: PackedByteArray):
+	downloaded_file_count += 1
+
 	if not GodotTogetherValidator.is_path_safe(path):
 		print("Server attempted to send file at unsafe location: " + path)
 		return
@@ -97,6 +106,9 @@ func receive_file(path: String, buffer: PackedByteArray):
 	
 	if path.get_extension() == "tscn":
 		EditorInterface.reload_scene_from_path(path)
+
+	if downloaded_file_count >= target_file_count:
+		project_files_downloaded()
 
 @rpc("authority", "call_local", "reliable")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):

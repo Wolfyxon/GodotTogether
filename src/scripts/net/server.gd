@@ -132,26 +132,26 @@ func project_files_request(hashes: Dictionary):
 	print("User %d is requesting the project files" % id)
 	
 	var local_hashes = GodotTogetherFiles.get_file_tree_hashes()
-	
-	if hash(hashes) != hash(local_hashes):
-		print("User's project files don't match, sending")
-		
-		for path in local_hashes.keys():
-			var local_hash = local_hashes[path]
-			
-			if not hashes.has(path) or local_hash != hashes[path]:
-				var buf = FileAccess.get_file_as_bytes(path)
-				if not buf: continue
-				
-				print("Sending " + path)
-				main.client.receive_file.rpc_id(id, path, buf)
 
-				await get_tree().process_frame
-		
-	else:
-		print("User's project files match, not sending")
+	var files_to_send = []
 
-	main.client.project_files_downloaded.rpc_id(id)
+	for path in local_hashes.keys():
+		var local_hash = local_hashes[path]
+		
+		if not hashes.has(path) or local_hash != hashes[path]:			
+			if FileAccess.file_exists(path):
+				files_to_send.append(path)
+
+	main.client.begin_project_files_download(files_to_send.size())
+
+	for path in files_to_send:
+		var buf = FileAccess.get_file_as_bytes(path)
+		if not buf: continue
+		
+		print("Sending " + path)
+		main.client.receive_file.rpc_id(id, path, buf)
+
+	#main.client.project_files_downloaded.rpc_id(id)
 
 
 @rpc("any_peer", "call_remote", "reliable")
