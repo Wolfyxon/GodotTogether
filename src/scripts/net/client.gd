@@ -3,6 +3,9 @@ extends GodotTogetherComponent
 class_name GodotTogetherClient
 
 signal connecting_finished(success: bool)
+signal auth_succeed
+signal project_files_download_started(amount: int)
+signal file_received(path: String)
 
 var client_peer = ENetMultiplayerPeer.new()
 var current_join_data := GodotTogetherJoinData.new()
@@ -71,23 +74,28 @@ func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 func auth_successful():
 	print("Server accepted connection, requesting files (if needed)")
 	
+	auth_succeed.emit()
+
 	main.change_detector.pause()
 	main.change_detector.clear()
 	main.server.project_files_request.rpc_id(1, GodotTogetherFiles.get_file_tree_hashes())
 
-@rpc("authority", "reliable")
-func project_files_downloaded():
+func _project_files_downloaded():
 	print("Project files downloaded")
 	main.change_detector.resume()
 	main.change_detector.observe_current_scene()
 
 @rpc("authority", "reliable")
 func begin_project_files_download(file_count: int):
+	print("Begin downloading ", file_count, " files")
+
 	target_file_count = file_count
+	project_files_download_started.emit(file_count)
 
 @rpc("authority", "reliable")
 func receive_file(path: String, buffer: PackedByteArray):
 	downloaded_file_count += 1
+	file_received.emit(path)
 
 	if not GodotTogetherValidator.is_path_safe(path):
 		print("Server attempted to send file at unsafe location: " + path)
@@ -112,8 +120,9 @@ func receive_file(path: String, buffer: PackedByteArray):
 
 		EditorInterface.reload_scene_from_path(path)
 
-	if downloaded_file_count >= target_file_count:
-		project_files_downloaded()
+	if target_file_count != 0 and downloaded_file_count >= target_file_count:
+		target_file_count = 0
+		_project_files_downloaded()
 
 @rpc("authority", "call_local", "reliable")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):

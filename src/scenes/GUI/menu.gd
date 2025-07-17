@@ -58,6 +58,16 @@ func _join() -> void:
 			gui.alert("Failed to connect to %s:%s" % [ip, port])
 			return
 
+	set_session_init_cover("Authenticating...")
+	
+	await main.client.auth_succeed
+
+	set_session_init_cover("Starting project download...")
+
+	while main.client.target_file_count != 0:
+		set_session_init_cover("Downloading files %s/%s" % [main.client.downloaded_file_count, main.client.target_file_count])
+		await main.client.file_received
+
 	_joined()
 
 func _joined() -> void:
@@ -82,6 +92,7 @@ func end_session() -> void:
 	main_menu()
 
 func session_menu() -> void:
+	set_session_init_cover()
 	$sessionInit.hide()
 	$session.show()
 
