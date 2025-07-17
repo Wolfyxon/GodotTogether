@@ -51,6 +51,8 @@ func _handle_connecting() -> void:
 		_connecting_finished(false)
 
 func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
+	main.prepare_session()
+
 	var err = client_peer.create_client(ip, port)
 	if err: return err
 
@@ -59,7 +61,6 @@ func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
 	multiplayer.multiplayer_peer = client_peer
 	current_join_data = data
 	_handle_connecting()
-
 
 	return OK
 

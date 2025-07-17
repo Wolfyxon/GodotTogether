@@ -71,6 +71,8 @@ func get_authenticated_ids(include_server := true) -> Array[int]:
 	return res
 
 func start_hosting(port: int, max_clients := 10) -> int:
+	main.prepare_session()
+
 	var err = server_peer.create_server(port, max_clients)
 	
 	if err:

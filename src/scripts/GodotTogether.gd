@@ -53,6 +53,9 @@ func is_session_active():
 		GodotTogetherUtils.is_peer_connected(server.server_peer)
 	)
 
+func prepare_session():
+	EditorInterface.save_all_scenes()
+
 func close_connection():
 	if not multiplayer.multiplayer_peer: return
 	multiplayer.multiplayer_peer.close()
