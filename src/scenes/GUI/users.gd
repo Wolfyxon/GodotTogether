@@ -4,6 +4,9 @@ class_name GDTUserList
 
 var gui: GodotTogetherGUI
 
+const IMG_IP_HIDDEN = preload("res://addons/GodotTogether/src/img/hidden.svg")
+const IMG_IP_VISIBLE = preload("res://addons/GodotTogether/src/img/visible.svg")
+
 @onready var template = $vbox/user
 
 func _ready() -> void:
@@ -13,6 +16,14 @@ func _ready() -> void:
 	if not gui.visuals_available(): return
 
 	template.hide()
+	add_user(GDTUser.from_dict({
+		"name": "a",
+		"id": 0,
+		"color": Color.RED,
+		"type": GDTUser.Type.GUEST,
+		"joined_at": 0,
+		"authenticated_at": 0,
+	}))
 
 func add_user(user: GDTUser):
 	if get_entry(user):
@@ -23,8 +34,8 @@ func add_user(user: GDTUser):
 	clone.visible = true
 	clone.name = str(user.id)
 	
-	clone.set_user(user)
 	$vbox.add_child(clone)
+	clone.set_user(user)
 
 func get_entry(user: GDTUser) -> GDTGUIUser:
 	for i in get_entries():
