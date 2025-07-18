@@ -14,10 +14,20 @@ func _ready() -> void:
 	
 	if not gui: return
 	if not gui.visuals_available(): return
-
-	gui.main.dual.users_listed.connect(_users_listed)
-	gui.main.dual.user_connected.connect(add_user)
-	gui.main.dual.user_disconnected.connect(remove_user)
+	
+	var entry_rank_sel: OptionButton = template.get_node("rank")
+	entry_rank_sel.clear()
+	
+	for i in GDTUser.Type.values():
+		entry_rank_sel.add_item(
+			GDTUser.type_to_string(i), 
+			i
+		)
+	
+	if gui.main:
+		gui.main.dual.users_listed.connect(_users_listed)
+		gui.main.dual.user_connected.connect(add_user)
+		gui.main.dual.user_disconnected.connect(remove_user)
 
 	template.hide()
 

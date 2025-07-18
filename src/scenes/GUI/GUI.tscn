@@ -429,13 +429,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 disabled = true
 selected = 0
-item_count = 3
-popup/item_0/text = "Editor"
+item_count = 1
+popup/item_0/text = "error"
 popup/item_0/id = 0
-popup/item_1/text = "Host"
-popup/item_1/id = 1
-popup/item_2/text = "Admin"
-popup/item_2/id = 2
 
 [node name="actions" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user"]
 layout_mode = 2
