@@ -16,14 +16,6 @@ func _ready() -> void:
 	if not gui.visuals_available(): return
 
 	template.hide()
-	add_user(GDTUser.from_dict({
-		"name": "a",
-		"id": 0,
-		"color": Color.RED,
-		"type": GDTUser.Type.GUEST,
-		"joined_at": 0,
-		"authenticated_at": 0,
-	}))
 
 func add_user(user: GDTUser):
 	if get_entry(user):
