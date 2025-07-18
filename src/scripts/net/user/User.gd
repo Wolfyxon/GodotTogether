@@ -102,11 +102,10 @@ func get_type_as_string() -> String:
 	return type_to_string(type)
 
 static func type_to_string(type: Type) -> String:
-	match type:
-		Type.GUEST:
-			return "Guest"
-		Type.HOST:
-			return "Host"
+	var key: String = Type.find_key(type)
+
+	if key:
+		return key.to_lower().capitalize()
 	
 	return "error"
 
