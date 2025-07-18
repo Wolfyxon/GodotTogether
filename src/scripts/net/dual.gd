@@ -69,28 +69,6 @@ func _peer_disconnected(id: int):
 		avatar_3d_markers.erase(marker3d)
 		marker3d.queue_free()
 
-
-@rpc("authority", "call_remote", "reliable")
-func _user_connected(user_dict: Dictionary):
-	var user = GDTUser.from_dict(user_dict)
-
-	user_connected.emit(user)
-
-@rpc("authority", "call_remote", "reliable")
-func _user_disconnected(user_dict: Dictionary):
-	var user = GDTUser.from_dict(user_dict)
-
-	user_disconnected.emit(user)
-
-@rpc("authority", "call_remote", "reliable")
-func _users_listed(user_dicts: Array):
-	var users: Array[GDTUser]
-
-	for dict in user_dicts:
-		users.append(GDTUser.from_dict(dict))
-
-	users_listed.emit(users)
-
 func _scene_changed():	
 	main.change_detector.observe_current_scene()
 

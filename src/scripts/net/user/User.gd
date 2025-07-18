@@ -69,6 +69,9 @@ func kick(reason: DisconnectReason = DisconnectReason.UNKNOWN):
 		peer.peer_disconnect_now(reason)
 
 func is_peer_connected(truly_connected := false) -> bool:
+	if not peer:
+		return true
+
 	var state = peer.get_state()
 	
 	if truly_connected:

@@ -80,6 +80,28 @@ func auth_successful():
 	main.change_detector.clear()
 	main.server.project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
 
+
+@rpc("authority", "call_remote", "reliable")
+func receive_user_list(user_dicts: Array):
+	var users: Array[GDTUser]
+
+	for dict in user_dicts:
+		users.append(GDTUser.from_dict(dict))
+
+	main.dual.users_listed.emit(users)
+
+@rpc("authority", "call_remote", "reliable")
+func user_connected(user_dict: Dictionary):
+	var user = GDTUser.from_dict(user_dict)
+
+	main.dual.user_connected.emit(user)
+
+@rpc("authority", "call_remote", "reliable")
+func user_disconnected(user_dict: Dictionary):
+	var user = GDTUser.from_dict(user_dict)
+
+	main.dual.user_disconnected.emit(user)
+
 func _project_files_downloaded():
 	print("Project files downloaded")
 

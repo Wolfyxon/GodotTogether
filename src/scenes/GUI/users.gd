@@ -15,7 +15,17 @@ func _ready() -> void:
 	if not gui: return
 	if not gui.visuals_available(): return
 
+	gui.main.dual.users_listed.connect(_users_listed)
+	gui.main.dual.user_connected.connect(add_user)
+	gui.main.dual.user_disconnected.connect(remove_user)
+
 	template.hide()
+
+func _users_listed(users: Array[GDTUser]) -> void:
+	clear()
+
+	for user in users:
+		add_user(user)
 
 func add_user(user: GDTUser):
 	if get_entry(user):
@@ -29,6 +39,9 @@ func add_user(user: GDTUser):
 	$vbox.add_child(clone)
 	clone.set_user(user)
 
+func remove_user(user: GDTUser) -> void:
+	remove_by_id(user.id)
+
 func get_entry(user: GDTUser) -> GDTGUIUser:
 	for i in get_entries():
 		if i.user == user:
@@ -38,10 +51,16 @@ func get_entry(user: GDTUser) -> GDTGUIUser:
 
 func get_entry_by_id(id: int) -> GDTGUIUser:
 	for i in get_entries():
-		if i.user.id == id:
+		if i.user and i.user.id == id:
 			return i
 		
 	return null
+
+func remove_by_id(id: int) -> void:
+	var entry = get_entry_by_id(id)
+
+	if entry:
+		entry.queue_free()
 
 func get_entries() -> Array[GDTGUIUser]:
 	var res: Array[GDTGUIUser] = []

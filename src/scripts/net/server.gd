@@ -36,8 +36,8 @@ func _disconnected(id: int):
 	
 	var user_dict = user.to_dict()
 
-	auth_rpc(main.dual._user_disconnected, [user_dict])
-	main.dual._user_disconnected(user_dict)
+	auth_rpc(main.client.user_disconnected, [user_dict])
+	main.dual.user_disconnected.emit(user)
 
 	connected_users.erase(user)
 
@@ -91,6 +91,8 @@ func start_hosting(port: int, max_clients := 10) -> int:
 		create_server_user()	
 	]
 
+	main.dual.users_listed.emit(connected_users)
+
 	return err
 
 func id_has_permission(peer_id: int, permission: GodotTogether.Permission) -> bool:
@@ -132,9 +134,9 @@ func receive_join_data(data_dict: Dictionary):
 	main.dual.create_avatar_2d(user_dict)
 	main.dual.create_avatar_3d(user_dict)
 
-	auth_rpc(main.dual._user_connected, [user_dict], [id])
-	main.dual._users_listed.rpc_id(id, get_user_dicts())
-	main.dual._user_connected(user_dict)
+	auth_rpc(main.client.user_connected, [user_dict], [id])
+	main.client.receive_user_list.rpc_id(id, get_user_dicts())
+	main.dual.user_connected.emit(user)
 
 	for i in get_authenticated_users():
 		if i.id == id: continue

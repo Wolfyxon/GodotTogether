@@ -31,6 +31,8 @@ func set_user(user: GDTUser) -> void:
 	name_node.text = user.name
 	id_node.text = str(user.id)
 	
+	self.user = user
+
 	if user.peer:
 		ip_node.text = user.peer.get_remote_address()
 	else:
