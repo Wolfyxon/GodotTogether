@@ -115,6 +115,12 @@ func _node_added(node: Node):
 
 	node_added.emit(node)
 
+func _node_exiting(node: Node):
+	var scene = EditorInterface.get_edited_scene_root()
+
+	if scene.is_ancestor_of(node):
+		node_removed.emit(node)
+
 func observe_current_scene():
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
@@ -179,7 +185,7 @@ func observe(node: Node):
 	observed_nodes_cache[node] = get_property_hash_dict(node)
 	observed_nodes[node] = {}
 
-	node.tree_exiting.connect(node_removed.emit.bind(node))
+	node.tree_exiting.connect(_node_exiting.bind(node))
 	node.child_entered_tree.connect(_node_added)
 
 func observe_recursive(node: Node):
