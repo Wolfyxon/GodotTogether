@@ -33,6 +33,12 @@ func _disconnected(id: int):
 	assert(user, "User %d disconnected, but was never listed" % id)
 
 	print("User %s (%d) disconnected" % [user.name, id])
+	
+	var user_dict = user.to_dict()
+
+	auth_rpc(main.dual._user_disconnected, [user_dict])
+	main.dual._user_disconnected(user_dict)
+
 	connected_users.erase(user)
 
 func create_server_user() -> GodotTogetherUser:
@@ -92,6 +98,14 @@ func id_has_permission(peer_id: int, permission: GodotTogether.Permission) -> bo
 
 	return user != null and user.has_permission(permission)
 
+func get_user_dicts() -> Array[Dictionary]:
+	var dicts: Array[Dictionary] = []
+
+	for user in get_authenticated_users():
+		dicts.append(user.to_dict())
+
+	return dicts
+
 @rpc("any_peer", "call_remote", "reliable")
 func receive_join_data(data_dict: Dictionary):
 	var id = multiplayer.get_remote_sender_id()
@@ -117,7 +131,11 @@ func receive_join_data(data_dict: Dictionary):
 
 	main.dual.create_avatar_2d(user_dict)
 	main.dual.create_avatar_3d(user_dict)
-	
+
+	auth_rpc(main.dual._user_connected, [user_dict], [id])
+	main.dual._users_listed.rpc_id(id, get_user_dicts())
+	main.dual._user_connected(user_dict)
+
 	for i in get_authenticated_users():
 		if i.id == id: continue
 		var dict = i.to_dict()

@@ -3,6 +3,10 @@ extends GodotTogetherComponent
 ## Class for managing session logic that runs on both server and client
 class_name GodotTogetherDual
 
+signal user_connected(user: GodotTogetherUser)
+signal user_disconnected(user: GodotTogetherUser)
+signal users_listed(users: Array[GodotTogetherUser])
+
 var camera: Camera3D
 var update_timer = Timer.new()
 
@@ -64,6 +68,28 @@ func _peer_disconnected(id: int):
 	if marker3d: 
 		avatar_3d_markers.erase(marker3d)
 		marker3d.queue_free()
+
+
+@rpc("authority", "call_remote", "reliable")
+func _user_connected(user_dict: Dictionary):
+	var user = GodotTogetherUser.from_dict(user_dict)
+
+	user_connected.emit(user)
+
+@rpc("authority", "call_remote", "reliable")
+func _user_disconnected(user_dict: Dictionary):
+	var user = GodotTogetherUser.from_dict(user_dict)
+
+	user_disconnected.emit(user)
+
+@rpc("authority", "call_local", "reliable")
+func _users_listed(user_dicts: Array):
+	var users: Array[GodotTogetherUser]
+
+	for dict in user_dicts:
+		users.append(GodotTogetherUser.from_dict(dict))
+
+	users_listed.emit(users)
 
 func _scene_changed():	
 	main.change_detector.observe_current_scene()
