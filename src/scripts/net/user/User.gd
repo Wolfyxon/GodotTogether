@@ -60,6 +60,8 @@ func auth():
 	authenticated_at = Time.get_unix_time_from_system()
 
 func kick(reason: DisconnectReason = DisconnectReason.UNKNOWN):
+	assert(peer, "Unable to kick user %s: missing peer" % id)
+	
 	authenticated = false
 	peer.peer_disconnect_later(reason)
 

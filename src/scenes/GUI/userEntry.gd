@@ -10,6 +10,7 @@ var user: GDTUser
 @onready var ip_node = $ip/value
 @onready var ip_toggle = $ip/toggle
 @onready var rank_node = $rank
+@onready var kick_btn = $actions/kick
 
 func _process(_delta: float) -> void:
 	if user and not user.is_peer_connected():
@@ -40,7 +41,8 @@ func set_user(user: GDTUser) -> void:
 	
 	rank_node.select(user.type)
 	
-	$actions/kick.pressed.connect(user.kick.bind(GDTUser.DisconnectReason.KICKED))
+	kick_btn.disabled = not user.peer
+	kick_btn.pressed.connect(user.kick.bind(GDTUser.DisconnectReason.KICKED))
 
 func toggle_ip_visibility() -> void:
 	set_ip_visible(not is_ip_visible())
