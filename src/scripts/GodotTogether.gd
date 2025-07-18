@@ -61,4 +61,8 @@ func close_connection() -> void:
 	multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer = null
 	
+	post_session_end()
+
+func post_session_end() -> void:
 	dual.clear_avatars()
+	gui.get_menu().users.clear()

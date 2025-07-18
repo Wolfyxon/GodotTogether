@@ -34,7 +34,7 @@ func _disconnected() -> void:
 	if multiplayer.is_server(): return
 
 	print("Disconnected from server")
-	main.dual.clear_avatars()
+	main.post_session_end()
 
 func _connecting_finished(success: bool) -> void:
 	connecting_finished.emit(success)
