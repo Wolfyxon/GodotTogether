@@ -127,7 +127,7 @@ func receive_file(path: String, buffer: PackedByteArray):
 		target_file_count = 0
 		_project_files_downloaded()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("authority", "call_remote", "reliable")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):
 	var current_scene = EditorInterface.get_edited_scene_root()
 	
@@ -147,7 +147,7 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	await get_tree().create_timer(0.1).timeout # Temporary fix, not great
 	main.change_detector.set_node_supression(node, false)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("authority", "call_remote", "reliable")
 func receive_node_removal(scene_path: String, node_path: NodePath):
 	# Freeing nodes during scene reloading / in removed scenes seems to be the cause of crash during join
 

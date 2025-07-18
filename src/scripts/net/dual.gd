@@ -82,7 +82,7 @@ func _user_disconnected(user_dict: Dictionary):
 
 	user_disconnected.emit(user)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("authority", "call_remote", "reliable")
 func _users_listed(user_dicts: Array):
 	var users: Array[GodotTogetherUser]
 
