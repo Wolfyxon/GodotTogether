@@ -8,6 +8,13 @@ enum Type {
 	GUEST
 }
 
+enum DisconnectReason {
+	UNKNOWN,
+	KICKED,
+	BANNED,
+	PASSWORD_INVALID
+}
+
 const FIELDS = [
 	"id",
 	"name",
@@ -52,14 +59,14 @@ func auth():
 	authenticated = true
 	authenticated_at = Time.get_unix_time_from_system()
 
-func kick():
+func kick(reason: DisconnectReason = DisconnectReason.UNKNOWN):
 	authenticated = false
-	peer.peer_disconnect_later()
+	peer.peer_disconnect_later(reason)
 
 	await EditorInterface.get_editor_main_screen().get_tree().create_timer(3).timeout
 
 	if is_peer_connected(true):
-		peer.peer_disconnect_now()
+		peer.peer_disconnect_now(reason)
 
 func is_peer_connected(truly_connected := false) -> bool:
 	var state = peer.get_state()

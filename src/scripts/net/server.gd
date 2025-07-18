@@ -118,7 +118,7 @@ func receive_join_data(data_dict: Dictionary):
 	
 	if data.password != server_password:
 		print("Invalid password for user %d" % id)
-		user.kick()
+		user.kick(GodotTogetherUser.DisconnectReason.PASSWORD_INVALID)
 		return
 
 	user.auth()
