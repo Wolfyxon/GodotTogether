@@ -1,5 +1,5 @@
 extends Node
-class_name GodotTogetherSettings
+class_name GDTSettings
 
 const default_data = {
 	"username": "Cool person",

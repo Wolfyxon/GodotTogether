@@ -1,6 +1,6 @@
 @tool
 extends Node
-class_name GodotTogetherComponent
+class_name GDTComponent
 
 var main: GodotTogether
 

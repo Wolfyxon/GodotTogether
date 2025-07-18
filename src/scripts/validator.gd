@@ -1,5 +1,5 @@
 extends Object
-class_name GodotTogetherValidator
+class_name GDTValidator
 
 const max_username_length = 32
 const max_message_length = 1024
@@ -21,7 +21,7 @@ static func is_empty(string: String):
 	return string.replace(" ", "").is_empty()
 
 static func is_path_safe(path: String):
-	return GodotTogetherFiles.is_path_in_project(path) and not path.contains("..")
+	return GDTFiles.is_path_in_project(path) and not path.contains("..")
 
 static func validate_version(target_version: int):
 	if target_version > GodotTogether.PROTOCOL_VERSION: return VersionError.UPDATE_REQUIRED

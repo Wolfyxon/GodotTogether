@@ -1,5 +1,5 @@
 extends Node
-class_name GodotTogetherPopups
+class_name GDTPopups
 
 static func _popup(window: Window):
 	window.always_on_top = true

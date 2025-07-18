@@ -1,4 +1,4 @@
-class_name GodotTogetherUtils
+class_name GDTUtils
 
 static func get_descendants(node: Node, include_internal := false) -> Array[Node]:
 	var res: Array[Node] = []

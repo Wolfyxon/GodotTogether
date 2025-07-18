@@ -1,6 +1,6 @@
 @tool
-extends GodotTogetherComponent
-class_name GodotTogetherServer
+extends GDTComponent
+class_name GDTServer
 
 const LOCALHOST := [
 	"0:0:0:0:0:0:0:1", 
@@ -10,7 +10,7 @@ const LOCALHOST := [
 ]
 
 var server_peer = ENetMultiplayerPeer.new()
-var connected_users: Array[GodotTogetherUser] = []
+var connected_users: Array[GDTUser] = []
 
 func _ready():
 	multiplayer.peer_connected.connect(_connected)
@@ -20,7 +20,7 @@ func _connected(id: int):
 	if not multiplayer.is_server(): return
 
 	var peer = server_peer.get_peer(id)
-	var user = GodotTogetherUser.new(id, peer)
+	var user = GDTUser.new(id, peer)
 
 	print("New connection from %s ID: %d" % [peer.get_remote_address(), id])
 
@@ -41,29 +41,29 @@ func _disconnected(id: int):
 
 	connected_users.erase(user)
 
-func create_server_user() -> GodotTogetherUser:
-	var user = GodotTogetherUser.new(1, null)
+func create_server_user() -> GDTUser:
+	var user = GDTUser.new(1, null)
 
 	user.name = "Server guy :3" # TODO: Get the actual username
-	user.type = GodotTogetherUser.Type.HOST
+	user.type = GDTUser.Type.HOST
 	user.id = 1
 
 	user.auth()
 
 	return user
 
-func get_server_user() -> GodotTogetherUser:
+func get_server_user() -> GDTUser:
 	for i in connected_users:
-		if i.type == GodotTogetherUser.Type.HOST:
+		if i.type == GDTUser.Type.HOST:
 			return i
 
 	return
 
-func get_authenticated_users(include_server := true) -> Array[GodotTogetherUser]:
-	var res: Array[GodotTogetherUser] = []
+func get_authenticated_users(include_server := true) -> Array[GDTUser]:
+	var res: Array[GDTUser] = []
 
 	for i in connected_users:
-		if i.authenticated and (include_server or i.type != GodotTogetherUser.Type.HOST):
+		if i.authenticated and (include_server or i.type != GDTUser.Type.HOST):
 			res.append(i)
 
 	return res
@@ -113,12 +113,12 @@ func receive_join_data(data_dict: Dictionary):
 
 	print("Receiving data from %d: %s" % [id, data_dict])
 
-	var data = GodotTogetherJoinData.from_dict(data_dict)
-	var server_password = GodotTogetherSettings.get_setting("server/password")
+	var data = GDTJoinData.from_dict(data_dict)
+	var server_password = GDTSettings.get_setting("server/password")
 	
 	if data.password != server_password:
 		print("Invalid password for user %d" % id)
-		user.kick(GodotTogetherUser.DisconnectReason.PASSWORD_INVALID)
+		user.kick(GDTUser.DisconnectReason.PASSWORD_INVALID)
 		return
 
 	user.auth()
@@ -149,7 +149,7 @@ func project_files_request(hashes: Dictionary):
 	
 	print("User %d is requesting the project files" % id)
 	
-	var local_hashes = GodotTogetherFiles.get_file_tree_hashes()
+	var local_hashes = GDTFiles.get_file_tree_hashes()
 
 	var files_to_send = []
 
@@ -214,7 +214,7 @@ func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []):
 		if not i in exclude_ids:
 			fn.rpc_id.callv([i] + args)
 
-func get_user_by_id(id: int) -> GodotTogetherUser:
+func get_user_by_id(id: int) -> GDTUser:
 	for i in connected_users:
 		if i.id == id:
 			return i

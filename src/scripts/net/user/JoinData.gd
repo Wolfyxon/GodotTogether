@@ -1,7 +1,7 @@
 @tool
 
 ### Class for data sent by users upon joining 
-class_name GodotTogetherJoinData
+class_name GDTJoinData
 
 const FIELDS = [
 	"username",
@@ -21,8 +21,8 @@ func to_dict() -> Dictionary:
 
 	return dict
 
-static func from_dict(dict: Dictionary) -> GodotTogetherJoinData:
-	var res = GodotTogetherJoinData.new()
+static func from_dict(dict: Dictionary) -> GDTJoinData:
+	var res = GDTJoinData.new()
 
 	for field in FIELDS:
 		if not field in dict: continue

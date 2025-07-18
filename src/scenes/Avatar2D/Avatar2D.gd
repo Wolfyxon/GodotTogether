@@ -1,12 +1,12 @@
 @tool
 extends Control
-class_name GodotTogetherAvatar2D
+class_name GDTAvatar2D
 
 var id := -1 
 
 @onready var txt = $txt
 
-func set_user(user: GodotTogetherUser):
+func set_user(user: GDTUser):
 	id = user.id
 	modulate = user.color
 	

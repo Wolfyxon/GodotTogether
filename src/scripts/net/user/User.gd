@@ -1,7 +1,7 @@
 @tool
 
 ### Class for connected users
-class_name GodotTogetherUser
+class_name GDTUser
 
 enum Type {
 	HOST,
@@ -105,8 +105,8 @@ static func type_to_string(type: Type) -> String:
 	
 	return "error"
 
-static func from_dict(dict: Dictionary) -> GodotTogetherUser:
-	var user = GodotTogetherUser.new(dict["id"], null)
+static func from_dict(dict: Dictionary) -> GDTUser:
+	var user = GDTUser.new(dict["id"], null)
 
 	for i in FIELDS:
 		user[i] = dict[i]

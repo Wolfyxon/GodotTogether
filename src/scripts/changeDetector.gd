@@ -1,6 +1,6 @@
 @tool
-extends GodotTogetherComponent
-class_name GodotTogetherChangeDetector
+extends GDTComponent
+class_name GDTChangeDetector
 
 signal scene_changed
 signal node_properties_changed(node: Node, changed_keys: Array)
@@ -191,5 +191,5 @@ func observe(node: Node):
 func observe_recursive(node: Node):
 	observe(node)
 	
-	for i in GodotTogetherUtils.get_descendants(node):
+	for i in GDTUtils.get_descendants(node):
 		observe(i)

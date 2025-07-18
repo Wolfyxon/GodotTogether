@@ -1,4 +1,4 @@
-class_name GodotTogetherFiles
+class_name GDTFiles
 
 const ignored_dirs = [
 	"res://.godot", 

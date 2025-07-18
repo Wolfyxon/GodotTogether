@@ -20,10 +20,10 @@ func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
 		get_menu_window().visible = true
 
-func get_menu() -> GodotTogetherMenu:
+func get_menu() -> GDTMenu:
 	return get_menu_window().get_menu()
 
-func get_menu_window() -> GodotTogetherMenuWindow:
+func get_menu_window() -> GDTMenuWindow:
 	return $mainMenu
 
 func alert(text: String, title := "") -> AcceptDialog:

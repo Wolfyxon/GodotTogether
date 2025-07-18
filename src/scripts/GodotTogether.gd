@@ -14,10 +14,10 @@ enum Permission {
 const VERSION = "1.0.0"
 const PROTOCOL_VERSION = 1
 
-var client = GodotTogetherClient.new(self, "client")
-var server = GodotTogetherServer.new(self, "server")
-var dual = GodotTogetherDual.new(self, "dual")
-var change_detector = GodotTogetherChangeDetector.new(self, "changeDetector")
+var client = GDTClient.new(self, "client")
+var server = GDTServer.new(self, "server")
+var dual = GDTDual.new(self, "dual")
+var change_detector = GDTChangeDetector.new(self, "changeDetector")
 
 #var menu: GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var gui: GodotTogetherGUI = preload("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
@@ -49,8 +49,8 @@ func _exit_tree():
 
 func is_session_active():
 	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint() and (
-		GodotTogetherUtils.is_peer_connected(client.client_peer) or 
-		GodotTogetherUtils.is_peer_connected(server.server_peer)
+		GDTUtils.is_peer_connected(client.client_peer) or 
+		GDTUtils.is_peer_connected(server.server_peer)
 	)
 
 func prepare_session():

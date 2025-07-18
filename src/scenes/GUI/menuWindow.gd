@@ -1,6 +1,6 @@
 @tool
 extends PopupPanel
-class_name GodotTogetherMenuWindow
+class_name GDTMenuWindow
 
 var main: GodotTogether
 
@@ -10,5 +10,5 @@ func _ready() -> void:
 	if main:
 		$about/scroll/vbox/version.text = "Version: " + GodotTogether.VERSION
 
-func get_menu() -> GodotTogetherMenu:
+func get_menu() -> GDTMenu:
 	return $main

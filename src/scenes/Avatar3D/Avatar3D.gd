@@ -1,6 +1,6 @@
 @tool
 extends Node3D
-class_name GodotTogetherAvatar3D
+class_name GDTAvatar3D
 
 const MATERIAL: StandardMaterial3D = preload("res://addons/GodotTogether/src/scenes/Avatar3D/material.tres")
 
@@ -30,7 +30,7 @@ func _process(delta):
 	ui.visible = cam.is_position_in_frustum(position)
 	ui.position = cam.unproject_position(position) - ui.size / 2 - (Vector2(0, 200) / dist)
 
-func set_user(user: GodotTogetherUser):
+func set_user(user: GDTUser):
 	while not ui: await get_tree().physics_frame
 
 	text_ui.get_node("name").text = user.name

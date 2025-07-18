@@ -1,11 +1,11 @@
 @tool
-extends GodotTogetherComponent
+extends GDTComponent
 ## Class for managing session logic that runs on both server and client
-class_name GodotTogetherDual
+class_name GDTDual
 
-signal user_connected(user: GodotTogetherUser)
-signal user_disconnected(user: GodotTogetherUser)
-signal users_listed(users: Array[GodotTogetherUser])
+signal user_connected(user: GDTUser)
+signal user_disconnected(user: GDTUser)
+signal users_listed(users: Array[GDTUser])
 
 var camera: Camera3D
 var update_timer = Timer.new()
@@ -17,8 +17,8 @@ var prev_3d_rot := Vector3()
 var avatar_3d_scene = preload("res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.tscn")
 var avatar_2d_scene = preload("res://addons/GodotTogether/src/scenes/Avatar2D/Avatar2D.tscn")
 
-var avatar_3d_markers: Array[GodotTogetherAvatar3D] = []
-var avatar_2d_markers: Array[GodotTogetherAvatar2D] = []
+var avatar_3d_markers: Array[GDTAvatar3D] = []
+var avatar_2d_markers: Array[GDTAvatar2D] = []
 
 func _ready():
 	if not main: return
@@ -72,22 +72,22 @@ func _peer_disconnected(id: int):
 
 @rpc("authority", "call_remote", "reliable")
 func _user_connected(user_dict: Dictionary):
-	var user = GodotTogetherUser.from_dict(user_dict)
+	var user = GDTUser.from_dict(user_dict)
 
 	user_connected.emit(user)
 
 @rpc("authority", "call_remote", "reliable")
 func _user_disconnected(user_dict: Dictionary):
-	var user = GodotTogetherUser.from_dict(user_dict)
+	var user = GDTUser.from_dict(user_dict)
 
 	user_disconnected.emit(user)
 
 @rpc("authority", "call_remote", "reliable")
 func _users_listed(user_dicts: Array):
-	var users: Array[GodotTogetherUser]
+	var users: Array[GDTUser]
 
 	for dict in user_dicts:
-		users.append(GodotTogetherUser.from_dict(dict))
+		users.append(GDTUser.from_dict(dict))
 
 	users_listed.emit(users)
 
@@ -144,9 +144,9 @@ func _node_added(node: Node):
 		main.server.submit_node_add(scene_path, node_path, node.get_class())
 
 @rpc("authority", "call_remote", "reliable")
-func create_avatar_3d(user_dict: Dictionary) -> GodotTogetherAvatar3D:
+func create_avatar_3d(user_dict: Dictionary) -> GDTAvatar3D:
 	var avatar = avatar_3d_scene.instantiate()
-	var user = GodotTogetherUser.from_dict(user_dict)
+	var user = GDTUser.from_dict(user_dict)
 
 	avatar.main = self.main
 	add_child(avatar)
@@ -157,9 +157,9 @@ func create_avatar_3d(user_dict: Dictionary) -> GodotTogetherAvatar3D:
 	return avatar
 
 @rpc("authority", "call_remote", "reliable")
-func create_avatar_2d(user_dict: Dictionary) -> GodotTogetherAvatar2D:
+func create_avatar_2d(user_dict: Dictionary) -> GDTAvatar2D:
 	var avatar = avatar_2d_scene.instantiate()
-	var user = GodotTogetherUser.from_dict(user_dict)
+	var user = GDTUser.from_dict(user_dict)
 
 	tree_exiting.connect(avatar.queue_free)
 	EditorInterface.get_editor_viewport_2d().add_child(avatar)
@@ -169,14 +169,14 @@ func create_avatar_2d(user_dict: Dictionary) -> GodotTogetherAvatar2D:
 	
 	return avatar
 
-func get_avatar_2d(id: int) -> GodotTogetherAvatar2D:
+func get_avatar_2d(id: int) -> GDTAvatar2D:
 	for i in avatar_2d_markers:
 		if is_instance_valid(i) and i.id == id and i.is_inside_tree(): 
 			return i
 	
 	return null 
 
-func get_avatar_3d(id: int) -> GodotTogetherAvatar3D:
+func get_avatar_3d(id: int) -> GDTAvatar3D:
 	for i in avatar_3d_markers:
 		if is_instance_valid(i) and i.id == id and i.is_inside_tree(): 
 			return i

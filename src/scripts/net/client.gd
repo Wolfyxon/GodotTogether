@@ -1,6 +1,6 @@
 @tool
-extends GodotTogetherComponent
-class_name GodotTogetherClient
+extends GDTComponent
+class_name GDTClient
 
 signal connecting_finished(success: bool)
 signal auth_succeed
@@ -8,7 +8,7 @@ signal project_files_download_started(amount: int)
 signal file_received(path: String)
 
 var client_peer = ENetMultiplayerPeer.new()
-var current_join_data := GodotTogetherJoinData.new()
+var current_join_data := GDTJoinData.new()
 
 var downloaded_file_count := 0
 var target_file_count := 0
@@ -56,7 +56,7 @@ func _handle_connecting() -> void:
 		client_peer.close()
 		_connecting_finished(false)
 
-func join(ip: String, port: int, data := GodotTogetherJoinData.new()) -> int:
+func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()
 
 	var err = client_peer.create_client(ip, port)
@@ -78,7 +78,7 @@ func auth_successful():
 
 	main.change_detector.pause()
 	main.change_detector.clear()
-	main.server.project_files_request.rpc_id(1, GodotTogetherFiles.get_file_tree_hashes())
+	main.server.project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
 
 func _project_files_downloaded():
 	print("Project files downloaded")
@@ -100,7 +100,7 @@ func receive_file(path: String, buffer: PackedByteArray):
 	downloaded_file_count += 1
 	file_received.emit(path)
 
-	if not GodotTogetherValidator.is_path_safe(path):
+	if not GDTValidator.is_path_safe(path):
 		print("Server attempted to send file at unsafe location: " + path)
 		return
 	

@@ -1,11 +1,11 @@
 @tool
 extends VBoxContainer
-class_name GodotTogetherMenu
+class_name GDTMenu
 
 var main: GodotTogether
 var gui: GodotTogetherGUI
 
-@onready var users: GodotTogetherUserList = $session/tabs/Users
+@onready var users: GDTUserList = $session/tabs/Users
 @onready var username_input = $sessionInit/pre/username
 @onready var session_init_cover = $sessionInit/cover
 
