@@ -13,7 +13,7 @@ var username: String
 var password: String
 var protocol_version := GodotTogether.PROTOCOL_VERSION
 
-func as_dict() -> Dictionary:
+func to_dict() -> Dictionary:
 	var dict = {}
 
 	for field in FIELDS:

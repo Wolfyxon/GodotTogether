@@ -28,7 +28,7 @@ func _connected():
 	print("Connected, your ID is: %s" % multiplayer.get_unique_id())
 
 	await get_tree().physics_frame
-	main.server.receive_join_data.rpc_id(1, current_join_data.as_dict())
+	main.server.receive_join_data.rpc_id(1, current_join_data.to_dict())
 
 func _disconnected():
 	if multiplayer.is_server(): return

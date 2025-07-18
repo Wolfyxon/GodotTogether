@@ -68,7 +68,7 @@ func is_peer_connected() -> bool:
 func is_server_user() -> bool:
 	return peer != null
 
-func as_dict() -> Dictionary:
+func to_dict() -> Dictionary:
 	var res = {}
 
 	for i in FIELDS:

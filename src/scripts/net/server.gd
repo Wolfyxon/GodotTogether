@@ -113,14 +113,14 @@ func receive_join_data(data_dict: Dictionary):
 	print("User %d authenticated as '%s'" % [id, data.username])
 	main.client.auth_successful.rpc_id(id)
 
-	var user_dict = user.as_dict()
+	var user_dict = user.to_dict()
 
 	main.dual.create_avatar_2d(user_dict)
 	main.dual.create_avatar_3d(user_dict)
 	
 	for i in get_authenticated_users():
 		if i.id == id: continue
-		var dict = i.as_dict()
+		var dict = i.to_dict()
 
 		main.dual.create_avatar_2d.rpc_id(id, dict)
 		main.dual.create_avatar_3d.rpc_id(id, dict)
