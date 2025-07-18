@@ -77,7 +77,7 @@ func _joined() -> void:
 	$session/top/end.text = "Disconnect"
 
 
-func set_session_init_cover(text: String = ""):
+func set_session_init_cover(text: String = "") -> void:
 	if text == "":
 		session_init_cover.hide()
 		return

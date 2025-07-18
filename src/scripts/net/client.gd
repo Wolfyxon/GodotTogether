@@ -13,14 +13,14 @@ var current_join_data := GDTJoinData.new()
 var downloaded_file_count := 0
 var target_file_count := 0
 
-func _ready():
+func _ready() -> void:
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
 
 	# Doesn't fire, probably a Godot bug
 	#multiplayer.connection_failed.connect(_connecting_finished.bind(false))
 
-func _connected():
+func _connected() -> void:
 	if multiplayer.is_server(): return
 
 	_connecting_finished(true)
@@ -30,13 +30,13 @@ func _connected():
 	await get_tree().physics_frame
 	main.server.receive_join_data.rpc_id(1, current_join_data.to_dict())
 
-func _disconnected():
+func _disconnected() -> void:
 	if multiplayer.is_server(): return
 
 	print("Disconnected from server")
 	main.dual.clear_avatars()
 
-func _connecting_finished(success: bool):
+func _connecting_finished(success: bool) -> void:
 	connecting_finished.emit(success)
 
 func _handle_connecting() -> void:
@@ -71,7 +71,7 @@ func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	return OK
 
 @rpc("authority", "reliable")
-func auth_successful():
+func auth_successful() -> void:
 	print("Server accepted connection, requesting files (if needed)")
 	
 	auth_succeed.emit()
@@ -82,7 +82,7 @@ func auth_successful():
 
 
 @rpc("authority", "call_remote", "reliable")
-func receive_user_list(user_dicts: Array):
+func receive_user_list(user_dicts: Array) -> void:
 	var users: Array[GDTUser]
 
 	for dict in user_dicts:
@@ -91,18 +91,18 @@ func receive_user_list(user_dicts: Array):
 	main.dual.users_listed.emit(users)
 
 @rpc("authority", "call_remote", "reliable")
-func user_connected(user_dict: Dictionary):
+func user_connected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
 
 	main.dual.user_connected.emit(user)
 
 @rpc("authority", "call_remote", "reliable")
-func user_disconnected(user_dict: Dictionary):
+func user_disconnected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
 
 	main.dual.user_disconnected.emit(user)
 
-func _project_files_downloaded():
+func _project_files_downloaded() -> void:
 	print("Project files downloaded")
 
 	EditorInterface.get_resource_filesystem().scan()
@@ -111,14 +111,14 @@ func _project_files_downloaded():
 	main.change_detector.observe_current_scene()
 
 @rpc("authority", "reliable")
-func begin_project_files_download(file_count: int):
+func begin_project_files_download(file_count: int) -> void:
 	print("Begin downloading ", file_count, " files")
 
 	target_file_count = file_count
 	project_files_download_started.emit(file_count)
 
 @rpc("authority", "reliable")
-func receive_file(path: String, buffer: PackedByteArray):
+func receive_file(path: String, buffer: PackedByteArray) -> void:
 	downloaded_file_count += 1
 	file_received.emit(path)
 
@@ -150,7 +150,7 @@ func receive_file(path: String, buffer: PackedByteArray):
 		_project_files_downloaded()
 
 @rpc("authority", "call_remote", "reliable")
-func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary):
+func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary) -> void:
 	var current_scene = EditorInterface.get_edited_scene_root()
 	
 	if not current_scene or current_scene.scene_file_path != scene_path:
@@ -170,7 +170,7 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	main.change_detector.set_node_supression(node, false)
 
 @rpc("authority", "call_remote", "reliable")
-func receive_node_removal(scene_path: String, node_path: NodePath):
+func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
 	# Freeing nodes during scene reloading / in removed scenes seems to be the cause of crash during join
 
 	var current_scene = EditorInterface.get_edited_scene_root()
@@ -188,7 +188,7 @@ func receive_node_removal(scene_path: String, node_path: NodePath):
 var fuse = 0
 
 @rpc("authority", "call_remote", "reliable")
-func receive_node_add(scene_path: String, node_path: NodePath, node_type: String):
+func receive_node_add(scene_path: String, node_path: NodePath, node_type: String) -> void:
 	assert(fuse < 10, "NODE OVERFLOW (temporary safety measure)")
 	fuse += 1
 

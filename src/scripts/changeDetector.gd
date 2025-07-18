@@ -101,7 +101,7 @@ func _cycle() -> void:
 			
 			observed_nodes_cache[node] = current
 
-func _node_added(node: Node):
+func _node_added(node: Node) -> void:
 	var current_scene := EditorInterface.get_edited_scene_root()
 	var scene_path := current_scene.scene_file_path
 
@@ -115,13 +115,13 @@ func _node_added(node: Node):
 
 	node_added.emit(node)
 
-func _node_exiting(node: Node):
+func _node_exiting(node: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 
 	if scene.is_ancestor_of(node):
 		node_removed.emit(node)
 
-func observe_current_scene():
+func observe_current_scene() -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
 	
@@ -130,16 +130,16 @@ func observe_current_scene():
 	if not scene.tree_exiting.is_connected(delayed_observe_current_scene):
 		scene.tree_exiting.connect(delayed_observe_current_scene)
 
-func delayed_observe_current_scene():
+func delayed_observe_current_scene() -> void:
 	await get_tree().process_frame
 
 	observe_current_scene()
 
-func disconnect_signals(node: Node):
+func disconnect_signals(node: Node) -> void:
 	node.child_entered_tree.disconnect(_node_added)
 	node.tree_exiting.disconnect(node_removed.emit)
 
-func clear():
+func clear() -> void:
 	for node in observed_nodes.keys():
 		disconnect_signals(node)
 
@@ -147,19 +147,19 @@ func clear():
 	observed_nodes_cache.clear()
 	incoming_nodes.clear()
 
-func pause():
+func pause() -> void:
 	refrate.paused = true
 
-func resume():
+func resume() -> void:
 	refrate.paused = false
 
-func merge(node: Node, property_dict: Dictionary):
+func merge(node: Node, property_dict: Dictionary) -> void:
 	observe(node)
 	
 	for key in property_dict.keys():
 		observed_nodes_cache[node][key] = hash(node[key])
 
-func set_node_supression(node: Node, supressed: bool):
+func set_node_supression(node: Node, supressed: bool) -> void:
 	if supressed:
 		supressed_nodes.get_or_add(node, true)
 	else:
@@ -173,13 +173,13 @@ func get_observed_nodes() -> Array[Node]:
 
 	return res
 
-func suppress_add_signal(scene_path: String, node_path: NodePath):
+func suppress_add_signal(scene_path: String, node_path: NodePath) -> void:
 	if not scene_path in incoming_nodes:
 		incoming_nodes[scene_path] = []
 
 	incoming_nodes[scene_path].append(node_path)
 
-func observe(node: Node):
+func observe(node: Node) -> void:
 	if node in observed_nodes: return
 
 	observed_nodes_cache[node] = get_property_hash_dict(node)
@@ -188,7 +188,7 @@ func observe(node: Node):
 	node.tree_exiting.connect(_node_exiting.bind(node))
 	node.child_entered_tree.connect(_node_added)
 
-func observe_recursive(node: Node):
+func observe_recursive(node: Node) -> void:
 	observe(node)
 	
 	for i in GDTUtils.get_descendants(node):

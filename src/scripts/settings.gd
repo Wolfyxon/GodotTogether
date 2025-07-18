@@ -36,7 +36,7 @@ static func write_settings(data: Dictionary):
 static func settings_exist() -> bool:
 	return FileAccess.file_exists(file_path)
 
-static func create_settings():
+static func create_settings() -> void:
 	write_settings(default_data)
 
 static func get_settings() -> Dictionary:
@@ -85,7 +85,7 @@ static func set_nested(dict: Dictionary, path: String, value, separator:= "/"):
 static func get_setting(path: String):
 	return get_nested(get_settings(), path)
 
-static func set_setting(path: String, value):
+static func set_setting(path: String, value) -> void:
 	var data = get_settings()
 	set_nested(data, path, value)
 	write_settings(data)

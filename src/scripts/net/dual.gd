@@ -20,7 +20,7 @@ var avatar_2d_scene = preload("res://addons/GodotTogether/src/scenes/Avatar2D/Av
 var avatar_3d_markers: Array[GDTAvatar3D] = []
 var avatar_2d_markers: Array[GDTAvatar2D] = []
 
-func _ready():
+func _ready() -> void:
 	if not main: return
 	camera = EditorInterface.get_editor_viewport_3d().get_camera_3d()
 	
@@ -38,7 +38,7 @@ func _ready():
 	add_child(update_timer)
 	update_timer.start()
 
-func _update():
+func _update() -> void:
 	if not main: return
 	if not main.is_session_active(): return
 	
@@ -53,10 +53,10 @@ func _update():
 		
 		update_3d_avatar.rpc(camera.position, camera.rotation)
 
-func _peer_connected(id: int):
+func _peer_connected(id: int) -> void:
 	pass
 	
-func _peer_disconnected(id: int):
+func _peer_disconnected(id: int) -> void:
 	print("Peer %s disconnected" % id)
 
 	var marker3d = get_avatar_3d(id)
@@ -69,7 +69,7 @@ func _peer_disconnected(id: int):
 		avatar_3d_markers.erase(marker3d)
 		marker3d.queue_free()
 
-func _scene_changed():	
+func _scene_changed() -> void:	
 	main.change_detector.observe_current_scene()
 
 func should_update(node: Node) -> bool:
@@ -161,7 +161,7 @@ func get_avatar_3d(id: int) -> GDTAvatar3D:
 	
 	return null 
 
-func clear_avatars():
+func clear_avatars() -> void:
 	for i in avatar_3d_markers:
 		if is_instance_valid(i):
 			i.queue_free()
@@ -174,7 +174,7 @@ func clear_avatars():
 	avatar_3d_markers.clear()
 
 @rpc("any_peer")
-func update_2d_avatar(vector: Vector2):
+func update_2d_avatar(vector: Vector2) -> void:
 	if not main: return
 	
 	var marker = get_avatar_2d(multiplayer.get_remote_sender_id())
@@ -183,7 +183,7 @@ func update_2d_avatar(vector: Vector2):
 	marker.set_position_percent(vector)
 
 @rpc("any_peer")
-func update_3d_avatar(position: Vector3, rotation: Vector3):
+func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:
 	if not main: return
 	
 	var marker = get_avatar_3d(multiplayer.get_remote_sender_id())

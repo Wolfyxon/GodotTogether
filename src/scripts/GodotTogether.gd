@@ -23,7 +23,7 @@ var change_detector = GDTChangeDetector.new(self, "changeDetector")
 var gui: GodotTogetherGUI = preload("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
 var button = Button.new()
 
-func _enter_tree():
+func _enter_tree() -> void:
 	name = "GodotTogether"
 
 	add_child(change_detector)
@@ -41,22 +41,22 @@ func _enter_tree():
 	button.pressed.connect(gui.get_menu_window().popup)
 	
 
-func _exit_tree():
+func _exit_tree() -> void:
 	close_connection()
 	button.queue_free()
 	# ImmortalOctogen: To prevent from endless executing unfreed scripts + nodes
 	queue_free()
 
-func is_session_active():
+func is_session_active() -> bool:
 	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint() and (
 		GDTUtils.is_peer_connected(client.client_peer) or 
 		GDTUtils.is_peer_connected(server.server_peer)
 	)
 
-func prepare_session():
+func prepare_session() -> void:
 	EditorInterface.save_all_scenes()
 
-func close_connection():
+func close_connection() -> void:
 	if not multiplayer.multiplayer_peer: return
 	multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer = null

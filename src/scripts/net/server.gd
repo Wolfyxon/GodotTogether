@@ -12,11 +12,11 @@ const LOCALHOST := [
 var server_peer = ENetMultiplayerPeer.new()
 var connected_users: Array[GDTUser] = []
 
-func _ready():
+func _ready() -> void:
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
 
-func _connected(id: int):
+func _connected(id: int) -> void:
 	if not multiplayer.is_server(): return
 
 	var peer = server_peer.get_peer(id)
@@ -26,7 +26,7 @@ func _connected(id: int):
 
 	connected_users.append(user) 
 
-func _disconnected(id: int):
+func _disconnected(id: int) -> void:
 	if not multiplayer.is_server(): return
 
 	var user = get_user_by_id(id)
@@ -109,7 +109,7 @@ func get_user_dicts() -> Array[Dictionary]:
 	return dicts
 
 @rpc("any_peer", "call_remote", "reliable")
-func receive_join_data(data_dict: Dictionary):
+func receive_join_data(data_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = get_user_by_id(id)
 
@@ -146,7 +146,7 @@ func receive_join_data(data_dict: Dictionary):
 		main.dual.create_avatar_3d.rpc_id(id, dict)
 
 @rpc("any_peer", "call_remote", "reliable")
-func project_files_request(hashes: Dictionary):
+func project_files_request(hashes: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	
 	print("User %d is requesting the project files" % id)
@@ -175,7 +175,7 @@ func project_files_request(hashes: Dictionary):
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary):
+func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	
 	if not id_has_permission(id, GodotTogether.Permission.EDIT_SCENES): return
@@ -184,7 +184,7 @@ func node_update_request(scene_path: String, node_path: NodePath, property_dict:
 	submit_node_update(scene_path, node_path, property_dict, id)
 
 @rpc("any_peer", "call_remote", "reliable")
-func node_removal_request(scene_path: String, node_path: NodePath):
+func node_removal_request(scene_path: String, node_path: NodePath) -> void:
 	var id = multiplayer.get_remote_sender_id()
 
 	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
@@ -192,26 +192,26 @@ func node_removal_request(scene_path: String, node_path: NodePath):
 	submit_node_removal(scene_path, node_path, id)
 
 @rpc("any_peer", "call_remote", "reliable")
-func node_add_request(scene_path: String, node_path: NodePath, node_type: String):
+func node_add_request(scene_path: String, node_path: NodePath, node_type: String) -> void:
 	assert(ClassDB.class_exists(node_type))
 	
 	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
 
 	submit_node_add(scene_path, node_path, node_type)
 
-func submit_node_removal(scene_path: String, node_path: NodePath, sender := 0):
+func submit_node_removal(scene_path: String, node_path: NodePath, sender := 0) -> void:
 	#main.client.receive_node_removal.rpc(scene_path, node_path)
 	auth_rpc(main.client.receive_node_removal, [scene_path, node_path], [sender])
 
-func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary, sender := 0):
+func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary, sender := 0) -> void:
 	#main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
 	auth_rpc(main.client.receive_node_updates, [scene_path, node_path, property_dict], [sender])
 
-func submit_node_add(scene_path: String, node_path: NodePath, node_type: String, sender := 0):
+func submit_node_add(scene_path: String, node_path: NodePath, node_type: String, sender := 0) -> void:
 	#main.client.receive_node_add.rpc(scene_path, node_path, node_type)
 	auth_rpc(main.client.receive_node_add, [scene_path, node_path, node_type], [sender])
 
-func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []):
+func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []) -> void:
 	for i in get_authenticated_ids(false):
 		if not i in exclude_ids:
 			fn.rpc_id.callv([i] + args)

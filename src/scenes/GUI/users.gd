@@ -37,7 +37,7 @@ func _users_listed(users: Array[GDTUser]) -> void:
 	for user in users:
 		add_user(user)
 
-func add_user(user: GDTUser):
+func add_user(user: GDTUser) -> void:
 	if get_entry(user):
 		push_warning("User %s alreay on the list" % user.id)
 		return
@@ -81,6 +81,6 @@ func get_entries() -> Array[GDTGUIUser]:
 	
 	return res
 
-func clear():
+func clear() -> void:
 	for i in get_entries():
 		i.queue_free()

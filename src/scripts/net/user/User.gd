@@ -53,13 +53,13 @@ func _init(id: int, peer: ENetPacketPeer):
 func has_permission(permission: GodotTogether.Permission) -> bool:
 	return authenticated and permission in permissions
 
-func auth():
+func auth() -> void:
 	assert(not authenticated, "User %d (%s) already authenticated" % [id, name])
 
 	authenticated = true
 	authenticated_at = Time.get_unix_time_from_system()
 
-func kick(reason: DisconnectReason = DisconnectReason.UNKNOWN):
+func kick(reason: DisconnectReason = DisconnectReason.UNKNOWN) -> void:
 	assert(peer, "Unable to kick user %s: missing peer" % id)
 	
 	authenticated = false

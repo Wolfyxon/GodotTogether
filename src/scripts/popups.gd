@@ -1,7 +1,7 @@
 extends Node
 class_name GDTPopups
 
-static func _popup(window: Window):
+static func _popup(window: Window) -> void:
 	window.always_on_top = true
 	window.unresizable = true
 	
@@ -11,7 +11,7 @@ static func _popup(window: Window):
 		Engine.get_main_loop().current_scene.add_child(window)
 		window.popup_centered()
 
-static func popup_ok(text: String, title := ""):
+static func popup_ok(text: String, title := "") -> void:
 	var dial = AcceptDialog.new()
 	dial.dialog_text = text
 	dial.title = title
