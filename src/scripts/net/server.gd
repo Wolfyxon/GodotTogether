@@ -191,7 +191,7 @@ func submit_node_add(scene_path: String, node_path: NodePath, node_type: String,
 	#main.client.receive_node_add.rpc(scene_path, node_path, node_type)
 	auth_rpc(main.client.receive_node_add, [scene_path, node_path, node_type], [sender])
 
-func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int]):
+func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []):
 	for i in get_authenticated_ids(false):
 		if not i in exclude_ids:
 			fn.rpc_id.callv([i] + args)
