@@ -56,6 +56,11 @@ func kick():
 	authenticated = false
 	peer.peer_disconnect_later()
 
+	await EditorInterface.get_editor_main_screen().get_tree().create_timer(3).timeout
+
+	if is_peer_connected(true):
+		peer.peer_disconnect_now()
+
 func is_peer_connected(truly_connected := false) -> bool:
 	var state = peer.get_state()
 	
