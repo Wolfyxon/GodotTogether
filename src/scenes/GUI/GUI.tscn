@@ -52,6 +52,7 @@ text = "About"
 icon = ExtResource("3_gc6ii")
 
 [node name="sessionInit" type="Control" parent="mainMenu/main"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -290,7 +291,6 @@ layout_mode = 2
 text = "Starting server"
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 

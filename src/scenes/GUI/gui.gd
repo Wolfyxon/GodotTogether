@@ -5,17 +5,16 @@ class_name GodotTogetherGUI
 var main: GodotTogether
 
 func _ready() -> void:
+	var menu_window = get_menu_window()
+	var menu = get_menu()
+
+	menu.gui = self
+	menu.users.gui = self
+
 	if main:
-		var menu_window = get_menu_window()
-		var menu = get_menu()
-		
 		menu_window.visible = false
-		
-		menu.gui = self
 		menu.main = main
 		
-		menu.users.main = main
-
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
 		get_menu_window().visible = true

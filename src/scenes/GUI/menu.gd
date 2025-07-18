@@ -12,7 +12,7 @@ var gui: GodotTogetherGUI
 func _ready() -> void:
 	await get_tree().process_frame
 	
-	if visuals_available():
+	if main:
 		main_menu()
 
 func _host() -> void:

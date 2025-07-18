@@ -2,12 +2,16 @@
 extends ScrollContainer
 class_name GDTUserList
 
-var main: GodotTogether
+var gui: GodotTogetherGUI
 
 @onready var template = $vbox/user
 
 func _ready() -> void:
-	if not main: return
+	await get_tree().process_frame
+	
+	if not gui: return
+	if not gui.visuals_available(): return
+
 	template.hide()
 
 func add_user(user: GDTUser):
