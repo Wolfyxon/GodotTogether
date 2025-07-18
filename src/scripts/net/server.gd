@@ -91,9 +91,13 @@ func start_hosting(port: int, max_clients := 10) -> int:
 		create_server_user()	
 	]
 
-	main.dual.users_listed.emit(connected_users)
+	_post_start()
 
 	return err
+
+func _post_start() -> void:
+	await get_tree().process_frame
+	main.dual.users_listed.emit(connected_users)
 
 func id_has_permission(peer_id: int, permission: GodotTogether.Permission) -> bool:
 	var user = get_user_by_id(peer_id)
