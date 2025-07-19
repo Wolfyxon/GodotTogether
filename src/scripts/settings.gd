@@ -37,7 +37,7 @@ static func make_editable(dict: Dictionary) -> Dictionary:
 	
 	return res
 
-static func write_settings(data: Dictionary):
+static func write_settings(data: Dictionary) -> void:
 	var f = FileAccess.open(file_path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data," "))
 	f.close()
@@ -78,7 +78,7 @@ static func get_nested(dict: Dictionary, path:String, separator := "/"):
 	
 	return current
 
-static func set_nested(dict: Dictionary, path: String, value, separator:= "/"):
+static func set_nested(dict: Dictionary, path: String, value, separator:= "/") -> void:
 	assert(not dict.is_read_only(), "Dictionary is read only")
 	
 	var levels = path.split(separator)
