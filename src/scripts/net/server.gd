@@ -63,7 +63,7 @@ func get_authenticated_users(include_server := true) -> Array[GDTUser]:
 	var res: Array[GDTUser] = []
 
 	for i in connected_users:
-		if i.authenticated and (include_server or i.type != GDTUser.Type.HOST):
+		if i.authenticated and (include_server or i.type != GDTUser.Type.HOST) and (not i.peer or i.is_peer_connected()):
 			res.append(i)
 
 	return res
