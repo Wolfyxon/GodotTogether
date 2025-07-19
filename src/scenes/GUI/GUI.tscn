@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=13 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" uid="uid://pxi6vqp6q3d0" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_1sjc5"]
 [ext_resource type="Script" uid="uid://42xnckjjvo6" path="res://addons/GodotTogether/src/scenes/GUI/users.gd" id="7_nhpql"]
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/userEntry.gd" id="9_ymxdp"]
+[ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
 
 [node name="GUI" type="Node"]
 script = ExtResource("1_73joy")
@@ -25,6 +26,7 @@ borderless = false
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -497,6 +499,49 @@ theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "*You have unsaved changes"
 
+[node name="disclaimer" type="VBoxContainer" parent="mainMenu"]
+offset_left = 13.0
+offset_top = 13.0
+offset_right = 687.0
+offset_bottom = 387.0
+script = ExtResource("12_tagic")
+
+[node name="header" type="Label" parent="mainMenu/disclaimer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Hold up!"
+horizontal_alignment = 1
+
+[node name="text" type="RichTextLabel" parent="mainMenu/disclaimer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "This plugin is NOT COMPLETE.  You are going to encounter various bugs and unfinished features.
+
+For now, don't use this plugin outside of testing as editing only works on a basic level.
+
+Do not collaborate with people you don't fully trust as you might be infected with malware and your project files may be stolen.
+Currently the plugin does not have any security measures to protect against malicious project scripts (including tool scripts which run in the editor).
+[center]
+[url=https://github.com/Wolfyxon/GodotTogether/issues/1]TODO list[/url] | [url=https://github.com/Wolfyxon/GodotTogether/issues/new]Report bugs[/url] | [url=https://github.com/Wolfyxon/GodotTogether]Source code[/url] | [url=https://discord.com/invite/RztUGCK]Discord server[/url]
+[/center]"
+shortcut_keys_enabled = false
+
+[node name="checks" type="VBoxContainer" parent="mainMenu/disclaimer"]
+layout_mode = 2
+
+[node name="check" type="CheckBox" parent="mainMenu/disclaimer/checks"]
+layout_mode = 2
+text = "I unerstand the plugin is not complete and buggy"
+
+[node name="check2" type="CheckBox" parent="mainMenu/disclaimer/checks"]
+layout_mode = 2
+text = "I'm aware of the security risk and I won't use it with people I don't fully trust"
+
+[node name="btnProceed" type="Button" parent="mainMenu/disclaimer"]
+layout_mode = 2
+text = "Proceed"
+
 [node name="about" type="PopupPanel" parent="mainMenu"]
 title = "About Godot Together"
 initial_position = 4
@@ -565,3 +610,5 @@ uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Users/vbox/user" method="toggle_ip_visibility"]
+[connection signal="meta_clicked" from="mainMenu/disclaimer/text" to="mainMenu/disclaimer" method="_on_text_meta_clicked"]
+[connection signal="pressed" from="mainMenu/disclaimer/btnProceed" to="mainMenu/disclaimer" method="_on_btn_proceed_pressed"]

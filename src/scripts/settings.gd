@@ -14,6 +14,10 @@ const default_data = {
 		"blacklist": [], # blocked IP addresses
 		"whitelist_enabled": false,
 		"allow_external_connections": true # allow connections outside of the local network (if the user has open ports) 
+	},
+	
+	"seen" : {
+		"disclaimer": false
 	}
 }
 

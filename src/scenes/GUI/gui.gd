@@ -7,10 +7,13 @@ var main: GodotTogether
 func _ready() -> void:
 	var menu_window = get_menu_window()
 	var menu = get_menu()
-
+	var disclaimer = menu_window.get_disclaimer()
+	
+	menu_window.gui = self
 	menu.gui = self
 	menu.users.gui = self
-
+	disclaimer.gui = self
+	
 	if main:
 		menu_window.visible = false
 		menu.main = main
