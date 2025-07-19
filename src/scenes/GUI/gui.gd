@@ -34,8 +34,14 @@ func alert(text: String, title := "") -> AcceptDialog:
 	popup.dialog_text = text
 	popup.title = title
 	popup.always_on_top = true
-
-	add_child(popup)
+	
+	var menu_w = get_menu_window()
+	
+	if menu_w.visible:
+		menu_w.add_child(popup)
+	else:
+		add_child(popup)
+	
 	popup.popup_centered()
 
 	popup.canceled.connect(popup.queue_free)
@@ -52,7 +58,13 @@ func confirm(text: String) -> bool:
 	p.confirmed.connect(func(): status = true)
 	p.canceled.connect(func(): status = false)
 	
-	add_child(p)
+	var menu_w = get_menu_window()
+	
+	if menu_w.visible:
+		menu_w.add_child(p)
+	else:
+		add_child(p)
+
 	p.popup_centered()
 	
 	while status == null:
