@@ -2,10 +2,10 @@
 extends ScrollContainer
 class_name GDTUserList
 
-var gui: GodotTogetherGUI
-
 const IMG_IP_HIDDEN = preload("res://addons/GodotTogether/src/img/hidden.svg")
 const IMG_IP_VISIBLE = preload("res://addons/GodotTogether/src/img/visible.svg")
+
+var gui: GodotTogetherGUI
 
 @onready var template = $vbox/user
 @onready var ip_toggle = $vbox/header/ip/toggle

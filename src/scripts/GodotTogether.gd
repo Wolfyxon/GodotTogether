@@ -19,7 +19,6 @@ var server = GDTServer.new(self, "server")
 var dual = GDTDual.new(self, "dual")
 var change_detector = GDTChangeDetector.new(self, "changeDetector")
 
-#var menu: GodotTogetherMainMenu = load("res://addons/GodotTogether/src/scenes/GUI/MainMenu/MainMenu.tscn").instantiate()
 var gui: GodotTogetherGUI = preload("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
 var button = Button.new()
 
