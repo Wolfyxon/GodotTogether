@@ -82,7 +82,6 @@ func _cycle() -> void:
 			continue # Freed nodes are automatically erased from arrays
 		
 		if not node.is_inside_tree():
-			observed_nodes.erase(node) 
 			continue
 		
 		var cached: Dictionary = observed_nodes_cache[node]
