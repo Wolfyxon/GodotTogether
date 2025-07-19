@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=14 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" uid="uid://pxi6vqp6q3d0" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="6_8e3fv"]
 [ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_1sjc5"]
 [ext_resource type="Script" uid="uid://42xnckjjvo6" path="res://addons/GodotTogether/src/scenes/GUI/users.gd" id="7_nhpql"]
+[ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="9_4c4b3"]
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/userEntry.gd" id="9_ymxdp"]
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
 
@@ -31,8 +32,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 13.0
 offset_top = 13.0
-offset_right = 687.0
-offset_bottom = 387.0
+offset_right = -13.0
+offset_bottom = -13.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_1pnv7")
@@ -57,6 +58,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -124,7 +126,6 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit"]
-visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -263,7 +264,6 @@ text = "Cancel"
 icon = ExtResource("6_8e3fv")
 
 [node name="cover" type="ColorRect" parent="mainMenu/main/sessionInit"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -285,10 +285,16 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 10
 
 [node name="title" type="Label" parent="mainMenu/main/sessionInit/cover/vbox"]
 layout_mode = 2
 text = "Starting server"
+
+[node name="btnCancel" type="Button" parent="mainMenu/main/sessionInit/cover/vbox"]
+layout_mode = 2
+text = "Cancel"
+icon = ExtResource("9_4c4b3")
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main"]
 visible = false
@@ -607,6 +613,7 @@ uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/host/start" to="mainMenu/main" method="_host"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/join/join" to="mainMenu/main" method="_join"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/cancel" to="mainMenu/main" method="main_menu"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/cover/vbox/btnCancel" to="mainMenu/main" method="_on_btn_cancel_pressed"]
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Users/vbox/user" method="toggle_ip_visibility"]

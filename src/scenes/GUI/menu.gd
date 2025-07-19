@@ -8,6 +8,7 @@ var gui: GodotTogetherGUI
 @onready var users: GDTUserList = $session/tabs/Users
 @onready var username_input = $sessionInit/pre/username
 @onready var session_init_cover = $sessionInit/cover
+@onready var session_cancel = $sessionInit/cover/vbox/btnCancel
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -16,6 +17,7 @@ func _ready() -> void:
 		main_menu()
 
 	if visuals_available():
+		set_session_init_cover()
 		username_input.text = GDTSettings.get_setting("username")
 
 func _host() -> void:
@@ -24,6 +26,8 @@ func _host() -> void:
 		var max_clients = $sessionInit/start/host/users/value.value
 		
 		set_session_init_cover("Starting server...")
+		session_cancel.visible = false
+		
 		await RenderingServer.frame_post_draw
 		
 		var err = main.server.start_hosting(port, max_clients)
@@ -47,6 +51,8 @@ func _join() -> void:
 		var ip = $sessionInit/start/join/address/ip.text
 		var port = $sessionInit/start/join/address/port.value
 		
+		session_cancel.visible = true
+
 		set_session_init_cover("Connecting...")
 		
 		var err = main.client.join(ip, port, main.client.current_join_data)
@@ -136,3 +142,8 @@ func visuals_available() -> bool:
 func _on_username_text_changed(text: String) -> void:
 	if visuals_available():
 		GDTSettings.set_setting("username", text)
+
+func _on_btn_cancel_pressed() -> void:
+	if main:
+		main.close_connection()
+		set_session_init_cover()
