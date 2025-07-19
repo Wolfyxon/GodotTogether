@@ -56,9 +56,9 @@ func prepare_session() -> void:
 	EditorInterface.save_all_scenes()
 
 func close_connection() -> void:
-	if not multiplayer.multiplayer_peer: return
-	multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer = null
+	client.client_peer.close()
+	server.server_peer.close()
 	
 	post_session_end()
 
