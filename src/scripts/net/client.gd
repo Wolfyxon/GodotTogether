@@ -117,6 +117,9 @@ func begin_project_files_download(file_count: int) -> void:
 	target_file_count = file_count
 	project_files_download_started.emit(file_count)
 
+	if file_count == 0:
+		_project_files_downloaded()
+
 @rpc("authority", "reliable")
 func receive_file(path: String, buffer: PackedByteArray) -> void:
 	downloaded_file_count += 1
