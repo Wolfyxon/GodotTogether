@@ -135,14 +135,18 @@ func delayed_observe_current_scene() -> void:
 
 	observe_current_scene()
 
-func disconnect_signals(node: Node) -> void:
-	node.child_entered_tree.disconnect(_node_added)
-	node.tree_exiting.disconnect(node_removed.emit)
+func disconnect_signal_from_self(sig: Signal) -> void:
+	for i in sig.get_connections():
+		var fn: Callable = i.callable
+
+		if fn.get_object() == self:
+			sig.disconnect(fn)
 
 func clear() -> void:
 	for node in observed_nodes.keys():
-		disconnect_signals(node)
-
+		disconnect_signal_from_self(node.tree_exiting)
+		disconnect_signal_from_self(node.child_entered_tree)
+	
 	observed_nodes.clear()
 	observed_nodes_cache.clear()
 	incoming_nodes.clear()
