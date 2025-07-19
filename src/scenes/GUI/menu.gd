@@ -53,12 +53,20 @@ func _join() -> void:
 		
 		if err:
 			set_session_init_cover()
-			gui.alert("Failed to create client: %s" % err)
+			gui.alert(
+				"Error: %s. \nMake sure the IP and port is valid. \nSee output for more details" % error_string(err),
+				"Failed to start client"
+			)
+
 			return
 		
 		if not await main.client.connecting_finished:
 			set_session_init_cover()
-			gui.alert("Failed to connect to %s:%s" % [ip, port])
+			gui.alert(
+				"Connection to %s:%s timed out. \nMake sure the IP and port is valid and the host's server \nis running and configured properly." % [ip, port],
+				"Failed to connect"
+			)
+
 			return
 
 	set_session_init_cover("Authenticating...")
