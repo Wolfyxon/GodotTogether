@@ -28,7 +28,12 @@ static func make_editable(dict: Dictionary) -> Dictionary:
 	
 	var res = {}
 	for key in dict.keys():
-		res[key] = dict[key]
+		var value = dict[key]
+		
+		if value is Dictionary:
+			value = make_editable(value)
+		
+		res[key] = value
 	
 	return res
 
