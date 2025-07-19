@@ -53,6 +53,8 @@ static func get_settings() -> Dictionary:
 		var f = FileAccess.open(file_path, FileAccess.READ)
 		var parsed = JSON.parse_string(f.get_as_text())
 		
+		f.close()
+
 		if not parsed:
 			push_error("Parsing settings failed, returning default data")
 			return make_editable(default_data)
