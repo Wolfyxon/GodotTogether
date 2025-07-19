@@ -17,6 +17,8 @@ func _process(_delta: float) -> void:
 		queue_free()
 
 func set_ip_visible(state: bool) -> void:
+	if not user.peer: return
+
 	ip_node.secret = not state
 	
 	if state:
@@ -37,7 +39,9 @@ func set_user(user: GDTUser) -> void:
 	if user.peer:
 		ip_node.text = user.peer.get_remote_address()
 	else:
-		ip_node.text = "unknown"
+		ip_toggle.disabled = true
+		ip_node.secret = false
+		ip_node.text = "N/A"
 	
 	rank_node.select(user.type)
 	
