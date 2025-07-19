@@ -85,6 +85,8 @@ func start_hosting(port: int, max_clients := 10) -> int:
 		push_error("Failed to start server: %d" % err)
 		return err
 
+	print("Server started. Port: %s Max clients: %s" % [port, max_clients])
+
 	multiplayer.multiplayer_peer = server_peer
 
 	connected_users = [
