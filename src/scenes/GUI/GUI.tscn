@@ -26,7 +26,6 @@ borderless = false
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -500,6 +499,7 @@ theme_type_variation = &"WarningLabel"
 text = "*You have unsaved changes"
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu"]
+visible = false
 offset_left = 13.0
 offset_top = 13.0
 offset_right = 687.0
