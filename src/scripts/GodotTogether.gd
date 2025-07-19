@@ -56,7 +56,10 @@ func prepare_session() -> void:
 	EditorInterface.save_all_scenes()
 
 func close_connection() -> void:
+	client.connection_cancelled = true
+		
 	multiplayer.multiplayer_peer = null
+
 	client.client_peer.close()
 	server.server_peer.close()
 	

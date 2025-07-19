@@ -67,6 +67,11 @@ func _join() -> void:
 			return
 		
 		if not await main.client.connecting_finished:
+			if main.client.connection_cancelled:
+				set_session_init_cover()
+				return
+
+
 			set_session_init_cover()
 			gui.alert(
 				"Connection to %s:%s timed out. \nMake sure the IP and port is valid and the host's server \nis running and configured properly." % [ip, port],

@@ -13,6 +13,8 @@ var current_join_data := GDTJoinData.new()
 var downloaded_file_count := 0
 var target_file_count := 0
 
+var connection_cancelled := false
+
 func _ready() -> void:
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
@@ -48,9 +50,14 @@ func _handle_connecting() -> void:
 	var start = Time.get_unix_time_from_system()
 	var timeout = start + 10
 
-	while (status == -1 or status != success) and Time.get_unix_time_from_system() < timeout:
+	while (status == -1 or status != success) and Time.get_unix_time_from_system() < timeout and not connection_cancelled:
 		status = client_peer.get_connection_status()
 		await get_tree().process_frame
+
+	if connection_cancelled:
+		client_peer.close()
+		_connecting_finished(false)
+		return
 
 	if client_peer.get_connection_status() != success:
 		client_peer.close()
@@ -58,6 +65,7 @@ func _handle_connecting() -> void:
 
 func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()
+	connection_cancelled = false
 
 	var err = client_peer.create_client(ip, port)
 	if err: return err
