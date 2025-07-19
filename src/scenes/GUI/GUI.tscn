@@ -562,4 +562,5 @@ uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/join/join" to="mainMenu/main" method="_join"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/cancel" to="mainMenu/main" method="main_menu"]
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
+[connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Users/vbox/user" method="toggle_ip_visibility"]

@@ -8,6 +8,9 @@ const IMG_IP_HIDDEN = preload("res://addons/GodotTogether/src/img/hidden.svg")
 const IMG_IP_VISIBLE = preload("res://addons/GodotTogether/src/img/visible.svg")
 
 @onready var template = $vbox/user
+@onready var ip_toggle = $vbox/header/ip/toggle
+
+var global_ip_visible := false
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -84,3 +87,19 @@ func get_entries() -> Array[GDTGUIUser]:
 func clear() -> void:
 	for i in get_entries():
 		i.queue_free()
+
+func set_all_ip_visible(state: bool) -> void:
+	global_ip_visible = state
+	update_ip_toggle()
+	
+	for i in get_entries():
+		i.set_ip_visible(state)
+
+func update_ip_toggle() -> void:
+	if global_ip_visible:
+		ip_toggle.icon = IMG_IP_VISIBLE
+	else:
+		ip_toggle.icon = IMG_IP_HIDDEN
+
+func toggle_all_ips() -> void:
+	set_all_ip_visible(not global_ip_visible)
