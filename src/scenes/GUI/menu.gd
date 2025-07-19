@@ -15,6 +15,9 @@ func _ready() -> void:
 	if main:
 		main_menu()
 
+	if visuals_available():
+		username_input.text = GDTSettings.get_setting("username")
+
 func _host() -> void:
 	if main:
 		var port = $sessionInit/start/host/port/value.value
@@ -121,3 +124,7 @@ func visuals_available() -> bool:
 		return false
 	
 	return gui.visuals_available()
+
+func _on_username_text_changed(text: String) -> void:
+	if visuals_available():
+		GDTSettings.set_setting("username", text)

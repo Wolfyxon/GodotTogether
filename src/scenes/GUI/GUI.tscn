@@ -52,12 +52,10 @@ text = "About"
 icon = ExtResource("3_gc6ii")
 
 [node name="sessionInit" type="Control" parent="mainMenu/main"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -82,7 +80,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Cool person"
+text = "Error"
 placeholder_text = "Your username..."
 
 [node name="usernameError" type="Label" parent="mainMenu/main/sessionInit/pre"]
@@ -125,6 +123,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit"]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -291,6 +290,7 @@ layout_mode = 2
 text = "Starting server"
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -554,6 +554,7 @@ text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
+[connection signal="text_changed" from="mainMenu/main/sessionInit/pre/username" to="mainMenu/main" method="_on_username_text_changed"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="session_start_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main/sessionInit/start/join" method="show"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main" method="session_start_menu"]
