@@ -66,5 +66,6 @@ func close_connection() -> void:
 	post_session_end()
 
 func post_session_end() -> void:
+	button.icon = null
 	dual.clear_avatars()
 	gui.get_menu().users.clear()

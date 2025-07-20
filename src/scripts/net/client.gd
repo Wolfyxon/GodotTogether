@@ -28,6 +28,7 @@ func _connected() -> void:
 	_connecting_finished(true)
 	
 	print("Connected, your ID is: %s" % multiplayer.get_unique_id())
+	main.button.icon = load("res://addons/GodotTogether/src/img/connect.svg")
 
 	await get_tree().physics_frame
 	main.server.receive_join_data.rpc_id(1, current_join_data.to_dict())
