@@ -100,7 +100,7 @@ func start_hosting(port: int, max_clients := 10) -> int:
 func _post_start() -> void:
 	await get_tree().process_frame
 
-	main.button.icon = load("res://addons/GodotTogether/src/img/server.svg")
+	main.button.set_session_icon(GDTMenuButton.ICON_SERVER)
 	main.dual.users_listed.emit(connected_users)
 
 func id_has_permission(peer_id: int, permission: GodotTogether.Permission) -> bool:

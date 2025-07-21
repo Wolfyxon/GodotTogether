@@ -20,7 +20,7 @@ var dual = GDTDual.new(self, "dual")
 var change_detector = GDTChangeDetector.new(self, "changeDetector")
 
 var gui: GodotTogetherGUI = preload("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
-var button = Button.new()
+var button = GDTMenuButton.new()
 
 func _enter_tree() -> void:
 	name = "GodotTogether"
@@ -33,7 +33,6 @@ func _enter_tree() -> void:
 	gui.main = self
 	add_child(gui)
 	
-	button.text = "Godot Together"
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	
 	button.get_parent().move_child(button, 1)
@@ -66,6 +65,6 @@ func close_connection() -> void:
 	post_session_end()
 
 func post_session_end() -> void:
-	button.icon = null
+	button.clear()
 	dual.clear_avatars()
 	gui.get_menu().users.clear()
