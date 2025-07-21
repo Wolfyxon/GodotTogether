@@ -33,7 +33,7 @@ func set_session_icon(icon: Texture) -> void:
 	main_icon = ICON_SESSION
 	second_icon = icon
 
-func clear() -> void:
+func reset() -> void:
 	main_icon = null
 	second_icon = null
 
