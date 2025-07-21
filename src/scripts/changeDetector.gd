@@ -15,7 +15,7 @@ const IGNORED_PROPERTY_USAGE_FLAGS := [
 ]
 const REFRESH_RATE: float = 0.1
 
-# Dicts are faster that arrays apparently
+# Dicts are faster than arrays apparently
 var observed_nodes := {}
 var supressed_nodes := {}
 
