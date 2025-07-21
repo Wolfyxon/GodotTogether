@@ -116,6 +116,7 @@ func _node_added(node: Node) -> void:
 
 func _node_exiting(node: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
+	if not scene: return
 
 	if scene.is_ancestor_of(node):
 		node_removed.emit(node)
