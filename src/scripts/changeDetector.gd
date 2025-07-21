@@ -90,7 +90,7 @@ func _cycle() -> void:
 		var changed_keys: Array[String] = []
 		
 		for i in current.keys():
-			if cached[i] != current[i]:
+			if (not i in cached) or (not i in current) or (cached[i] != current[i]):
 				#node_property_changed.emit(node, i)
 				changed_keys.append(i)
 				
