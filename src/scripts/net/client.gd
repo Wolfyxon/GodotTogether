@@ -37,6 +37,8 @@ func _disconnected() -> void:
 	if multiplayer.is_server(): return
 
 	print("Disconnected from server")
+	main.gui.alert("You were disconnected from the server")
+	
 	main.post_session_end()
 
 func _connecting_finished(success: bool) -> void:
