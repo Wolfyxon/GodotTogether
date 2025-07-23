@@ -33,6 +33,7 @@ func _host() -> void:
 		var err = main.server.start_hosting(port, max_clients)
 		
 		if err:
+			set_session_init_cover()
 			gui.alert("Failed to start server: %s" % error_string(err), "Failed to start server")
 			return
 
