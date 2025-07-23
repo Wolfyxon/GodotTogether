@@ -53,7 +53,7 @@ static func get_property_dict(obj: Object) -> Dictionary:
 			value = encode_file_resource(value)
 
 		res[i] = value
-	
+
 	return res
 
 static func get_property_hash_dict(node: Node) -> Dictionary:
@@ -122,7 +122,7 @@ func _cycle() -> void:
 	
 	for node in observed_nodes:
 		if not is_instance_valid(node):
-			continue # Freed nodes are automatically erased from arrays
+			continue # Freed nodes are automatically erased from arrays but not instantly
 		
 		if not node.is_inside_tree():
 			continue
