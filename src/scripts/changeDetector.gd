@@ -16,6 +16,11 @@ const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_INTERNAL,
 	PROPERTY_USAGE_READ_ONLY
 ]
+
+const IGNORED_NODE_PROPERTIES: Array[String] = [
+	"owner"
+]
+
 const REFRESH_RATE: float = 0.1
 
 # Dicts are faster than arrays apparently
@@ -32,10 +37,14 @@ var last_scene := ""
 
 static func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
+	var is_node = obj is Node
 	
 	for i in obj.get_property_list():
 		var con := true
 		
+		if is_node and i.name in IGNORED_NODE_PROPERTIES:
+			continue
+
 		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
 			if i.usage & usage:
 				con = false

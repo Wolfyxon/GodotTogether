@@ -176,6 +176,9 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	main.change_detector.merge(node, property_dict)
 
 	for key in property_dict.keys():
+		if key in GDTChangeDetector.IGNORED_NODE_PROPERTIES:
+			continue
+
 		var value = property_dict[key]
 
 		if GDTChangeDetector.is_encoded_file_resource(value):
