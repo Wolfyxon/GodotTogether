@@ -228,8 +228,6 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 		parent = current_scene
 
 	if existing:
-		print(existing)
-		print(parent.get_children())
 		assert(false, "Node %s already exists, not adding" % node_path)
 
 	assert(parent, "Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
