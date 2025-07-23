@@ -137,7 +137,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="mainMenu/main/sessionInit/start"]
-visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -182,8 +181,8 @@ min_value = 1.0
 value = 5.0
 
 [node name="approveUsers" type="CheckButton" parent="mainMenu/main/sessionInit/start/host"]
+visible = false
 layout_mode = 2
-button_pressed = true
 text = "Approve users before join"
 
 [node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/host"]
@@ -204,6 +203,7 @@ Do not let untrusted people join!"
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start"]
+visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -264,6 +264,7 @@ text = "Cancel"
 icon = ExtResource("6_8e3fv")
 
 [node name="cover" type="ColorRect" parent="mainMenu/main/sessionInit"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
