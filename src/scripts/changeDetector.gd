@@ -155,7 +155,9 @@ func _node_added(node: Node) -> void:
 			incoming.erase(node_path)
 			return
 
-	node_added.emit(node)
+	if not node in observed_nodes:
+		observe_recursive(node)
+		node_added.emit(node)
 
 func _node_exiting(node: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
