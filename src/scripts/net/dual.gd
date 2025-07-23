@@ -91,8 +91,8 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 	for key in changed_keys:
 		var value = node[key]
 
-		if GDTChangeDetector.is_file_resource(value):
-			value = GDTChangeDetector.encode_file_resource(value)
+		if value is Resource:
+			value = GDTChangeDetector.encode_resource(value)
 
 		dict[key] = value
 	

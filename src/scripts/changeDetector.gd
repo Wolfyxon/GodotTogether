@@ -8,6 +8,11 @@ signal node_properties_changed(node: Node, changed_keys: Array)
 signal node_removed(node: Node)
 signal node_added(node: Node)
 
+enum ResourceType {
+	LOCAL,
+	FILE
+}
+
 const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_NONE,
 	PROPERTY_USAGE_GROUP, 
@@ -61,8 +66,8 @@ static func get_property_dict(obj: Object) -> Dictionary:
 	for i in get_property_keys(obj):
 		var value = obj[i]
 		
-		if is_file_resource(value):
-			value = encode_file_resource(value)
+		if value is Resource:
+			value = encode_resource(value)
 
 		res[i] = value
 
@@ -76,42 +81,59 @@ static func get_property_hash_dict(node: Node) -> Dictionary:
 
 	return res
 
-static func is_file_resource(value) -> bool:
-	return value and value is Resource and value.resource_path
-
-static func is_encoded_file_resource(value) -> bool:
+static func is_encoded_resource(value) -> bool:
 	return value is Dictionary and "_gdtRes" in value
 
-static func encode_file_resource(resource: Resource) -> Dictionary:
+static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
-		"_gdtRes": true,
-		"path": resource.resource_path,
+		"_gdtRes": ResourceType.LOCAL,
 		"sub": {}
 	}
+
+	var cloned = false
 
 	for key in get_property_keys(resource):
 		var value = resource[key]
 
-		if is_file_resource(value):
-			res["sub"][key] = encode_file_resource(value)
+		if value is Resource:
+			if not cloned:
+				cloned = true
+				resource = resource.duplicate()
+
+			resource[key] = null
+			res["sub"][key] = encode_resource(value)
+
+	if resource.resource_path == "":
+		res["buf"] = var_to_bytes_with_objects(resource)
+	else:
+		res["_gdtRes"] = ResourceType.FILE
+		res["path"] = resource.resource_path
 
 	return res
 
-static func decode_file_resource(dict: Dictionary) -> Resource:
-	assert(is_encoded_file_resource(dict), "Provided dict isn't a resource dict")
-	assert("path" in dict, "Resource dict doesn't contain path key")
-	assert(GDTValidator.is_path_safe(dict["path"]), "Cannot load resource from unsafe path %s" % dict["path"])
+static func decode_resource(dict: Dictionary) -> Resource:
+	assert(is_encoded_resource(dict), "Provided dict isn't a resource dict")
+	
+	var resource: Resource
 
-	var res = load(dict["path"])
+	if "path" in dict:
+		assert(GDTValidator.is_path_safe(dict["path"]), "Cannot load resource from unsafe path %s" % dict["path"])
 
-	if "sub" in dict:
-		var sub = dict["sub"]
+		resource = load(dict["path"])
+	elif "buf" in dict:
+		resource = bytes_to_var_with_objects(dict["buf"])
+		assert(resource is Resource, "Decoded resource isn't a resource")
+	
+		if "sub" in dict:
+			var sub = dict["sub"]
 
-		if sub is Dictionary:
-			for key in sub.keys():
-				res[key] = decode_file_resource(sub[key])
+			if sub is Dictionary:
+				for key in sub.keys():
+					resource[key] = decode_resource(sub[key])
+	else:
+		push_error("Cannot decode resource: 'buf' and 'path' missing from resource dict")
 
-	return res
+	return resource
 
 func _ready() -> void:
 	refrate.wait_time = REFRESH_RATE

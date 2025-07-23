@@ -181,8 +181,8 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 
 		var value = property_dict[key]
 
-		if GDTChangeDetector.is_encoded_file_resource(value):
-			value = GDTChangeDetector.decode_file_resource(value)
+		if GDTChangeDetector.is_encoded_resource(value):
+			value = GDTChangeDetector.decode_resource(value)
 
 		node[key] = value
 	
