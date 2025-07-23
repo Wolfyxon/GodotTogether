@@ -28,7 +28,7 @@ func get_menu() -> GDTMenu:
 func get_menu_window() -> GDTMenuWindow:
 	return $mainMenu
 
-func alert(text: String, title := "") -> AcceptDialog:
+func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 	var popup := AcceptDialog.new()
 	
 	popup.dialog_text = text
