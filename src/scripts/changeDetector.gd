@@ -27,10 +27,10 @@ var refrate: Timer = Timer.new()
 
 var last_scene := ""
 
-static func get_property_keys(node: Node) -> Array[String]:
+static func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
 	
-	for i in node.get_property_list():
+	for i in obj.get_property_list():
 		var con := true
 		
 		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
@@ -43,11 +43,17 @@ static func get_property_keys(node: Node) -> Array[String]:
 		
 	return res
 
-static func get_property_dict(node: Node) -> Dictionary:
+static func get_property_dict(obj: Object) -> Dictionary:
 	var res := {}
 	
-	for i in get_property_keys(node):
-		res[i] = node[i]
+	for i in get_property_keys(obj):
+		var value = obj[i]
+		
+		if is_file_resource(value):
+			value = encode_file_resource(value)
+
+		res[i] = value
+	
 	return res
 
 static func get_property_hash_dict(node: Node) -> Dictionary:
@@ -55,6 +61,43 @@ static func get_property_hash_dict(node: Node) -> Dictionary:
 
 	for i in get_property_keys(node):
 		res[i] = hash(node[i])
+
+	return res
+
+static func is_file_resource(value) -> bool:
+	return value and value is Resource and value.resource_path
+
+static func is_encoded_file_resource(value) -> bool:
+	return value is Dictionary and "_gdtRes" in value
+
+static func encode_file_resource(resource: Resource) -> Dictionary:
+	var res = {
+		"_gdtRes": true,
+		"path": resource.resource_path,
+		"sub": {}
+	}
+
+	for key in get_property_keys(resource):
+		var value = resource[key]
+
+		if is_file_resource(value):
+			res["sub"][key] = encode_file_resource(value)
+
+	return res
+
+static func decode_file_resource(dict: Dictionary) -> Resource:
+	assert(is_encoded_file_resource(dict), "Provided dict isn't a resource dict")
+	assert("path" in dict, "Resource dict doesn't contain path key")
+	assert(GDTValidator.is_path_safe(dict["path"]), "Cannot load resource from unsafe path %s" % dict["path"])
+
+	var res = load(dict["path"])
+
+	if "sub" in dict:
+		var sub = dict["sub"]
+
+		if sub is Dictionary:
+			for key in sub.keys():
+				res[key] = decode_file_resource(sub[key])
 
 	return res
 
