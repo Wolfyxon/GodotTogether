@@ -176,7 +176,12 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	main.change_detector.merge(node, property_dict)
 
 	for key in property_dict.keys():
-		node[key] = property_dict[key]
+		var value = property_dict[key]
+
+		if GDTChangeDetector.is_encoded_file_resource(value):
+			value = GDTChangeDetector.decode_file_resource(value)
+
+		node[key] = value
 	
 	await get_tree().create_timer(0.1).timeout # Temporary fix, not great
 	main.change_detector.set_node_supression(node, false)

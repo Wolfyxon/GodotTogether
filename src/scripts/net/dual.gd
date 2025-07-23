@@ -89,7 +89,12 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 	var dict = {}
 	
 	for key in changed_keys:
-		dict[key] = node[key]
+		var value = node[key]
+
+		if GDTChangeDetector.is_file_resource(value):
+			value = GDTChangeDetector.encode_file_resource(value)
+
+		dict[key] = value
 	
 	if main.client.is_active():
 		main.server.node_update_request.rpc_id(0, scene_path, node_path, dict)
