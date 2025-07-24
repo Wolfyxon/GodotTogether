@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bti5j1lw5a1cc"]
 
-[ext_resource type="Texture2D" uid="uid://vpigxkgi1nwp" path="res://addons/GodotTogether/src/img/cursor.png" id="1_dplva"]
 [ext_resource type="Script" uid="uid://c0xq7s6u5sxa5" path="res://addons/GodotTogether/src/scenes/Avatar2D/Avatar2D.gd" id="1_sptkx"]
+[ext_resource type="Texture2D" uid="uid://btimsnam5ve1r" path="res://addons/GodotTogether/src/img/mouse.svg" id="2_8nie3"]
 
 [node name="Avatar2D" type="Control"]
 z_index = 4096
@@ -17,10 +17,11 @@ script = ExtResource("1_sptkx")
 [node name="cursor" type="TextureRect" parent="."]
 texture_filter = 1
 layout_mode = 0
-offset_right = 26.0
-offset_bottom = 40.0
+offset_right = 30.0
+offset_bottom = 39.0
 mouse_filter = 2
-texture = ExtResource("1_dplva")
+texture = ExtResource("2_8nie3")
+expand_mode = 1
 
 [node name="txt" type="VBoxContainer" parent="."]
 layout_mode = 1
