@@ -23,7 +23,8 @@ const IGNORED_PROPERTY_USAGE_FLAGS := [
 ]
 
 const IGNORED_NODE_PROPERTIES: Array[String] = [
-	"owner"
+	"owner",
+	"multiplayer"
 ]
 
 const REFRESH_RATE: float = 0.1
