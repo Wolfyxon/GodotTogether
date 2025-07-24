@@ -74,11 +74,16 @@ static func get_property_dict(obj: Object) -> Dictionary:
 
 	return res
 
-static func get_property_hash_dict(node: Node) -> Dictionary:
+static func get_property_hash_dict(obj: Object) -> Dictionary:
 	var res := {}
 
-	for i in get_property_keys(node):
-		res[i] = hash(node[i])
+	for i in get_property_keys(obj):
+		var value = obj[i]
+		
+		if value is Object:
+			value = get_property_hash_dict(value)
+		
+		res[i] = hash(value)
 
 	return res
 
