@@ -90,6 +90,9 @@ static func get_property_hash_dict(obj: Object) -> Dictionary:
 static func is_encoded_resource(value) -> bool:
 	return value is Dictionary and "_gdtRes" in value
 
+static func is_file_resource(resource: Resource) -> bool:
+	return resource.resource_path and not resource.resource_path.contains("::")
+
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
 		"_gdtRes": ResourceType.LOCAL,
@@ -109,7 +112,7 @@ static func encode_resource(resource: Resource) -> Dictionary:
 			resource[key] = null
 			res["sub"][key] = encode_resource(value)
 
-	if resource.resource_path == "":
+	if not is_file_resource(resource):
 		res["buf"] = var_to_bytes_with_objects(resource)
 	else:
 		res["_gdtRes"] = ResourceType.FILE
