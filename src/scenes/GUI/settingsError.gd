@@ -4,13 +4,14 @@ class_name GDTSettingsErrorGUI
 
 @onready var error_label = $error
 @onready var line_label = $line
+@onready var path_label = $path
 
 var gui: GodotTogetherGUI
 
 func set_json(json: JSON) -> void:
 	error_label.text = "Error: " + json.get_error_message()
 	line_label.text = "Line: " + str(json.get_error_line())
-	
+	path_label.text = "Path: " + GDTSettings.FILE_PATH
 
 func _on_open_gd_pressed() -> void:
 	if not gui: return
