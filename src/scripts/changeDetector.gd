@@ -22,10 +22,13 @@ const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_READ_ONLY
 ]
 
-const IGNORED_NODE_PROPERTIES: Array[String] = [
-	"owner",
-	"multiplayer"
-]
+# TODO: Ignores for different kinds of objects, Ignore resource_path
+const IGNORED_PROPERTIES: Dictionary = {
+	"Node": [
+		"owner",
+		"multiplayer"
+	]
+}
 
 const REFRESH_RATE: float = 0.1
 
@@ -41,14 +44,22 @@ var refrate: Timer = Timer.new()
 
 var last_scene := ""
 
+static func get_ignored_properties(obj: Object) -> Array:
+	for key in IGNORED_PROPERTIES.keys():
+		if obj.is_class(key):
+			return IGNORED_PROPERTIES[key]
+	
+	return []
+
 static func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
-	var is_node = obj is Node
+	
+	var ignored = get_ignored_properties(obj)
 	
 	for i in obj.get_property_list():
 		var con := true
 		
-		if is_node and i.name in IGNORED_NODE_PROPERTIES:
+		if i.name in ignored:
 			continue
 
 		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
