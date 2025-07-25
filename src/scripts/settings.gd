@@ -55,7 +55,7 @@ static func get_settings_json() -> JSON:
 	var file = FileAccess.open(FILE_PATH, FileAccess.READ)
 	var json = JSON.new()
 
-	json.parse(file.get_as_text())
+	json.parse(file.get_as_text(), true)
 	file.close()
 
 	return json
