@@ -53,10 +53,9 @@ func confirm(text: String) -> bool:
 	var p := ConfirmationDialog.new()
 	p.dialog_text = text
 	
-	var status = null
 	
-	p.confirmed.connect(func(): status = true)
-	p.canceled.connect(func(): status = false)
+	p.confirmed.connect(p.set_meta.bind("status", true))
+	p.canceled.connect(p.set_meta.bind("status", false))
 	
 	var menu_w = get_menu_window()
 	
@@ -67,12 +66,12 @@ func confirm(text: String) -> bool:
 
 	p.popup_centered()
 	
-	while status == null:
+	while not p.has_meta("status"):
 		await get_tree().process_frame
 	
 	p.queue_free()
 	
-	return status
+	return p.get_meta("status")
 	
 
 func visuals_available() -> bool:
