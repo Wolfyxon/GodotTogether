@@ -2,21 +2,18 @@ name: Bug report
 description: Report a bug
 title: "[Bug] "
 labels: ["bug"]
-
 body:
   - type: textarea
     id: description
     attributes:
       label: Bug description
       description: Describe the what's wrong. Provide as much details as possible.
-    
   - type: input
     id: godot-version
     attributes:
       label: Godot version
       description: The version of Godot you're running
       placeholder: ex. v4.4.1.stable.arch_linux
-
   - type: checkboxes
     id: checks
     attributes:
