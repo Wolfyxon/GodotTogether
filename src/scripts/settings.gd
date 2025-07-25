@@ -38,18 +38,18 @@ static func make_editable(dict: Dictionary) -> Dictionary:
 	return res
 
 static func write_settings(data: Dictionary) -> void:
-	var f = FileAccess.open(file_path, FileAccess.WRITE)
+	var f = FileAccess.open(FILE_PATH, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data," "))
 	f.close()
 
 static func settings_exist() -> bool:
-	return FileAccess.file_exists(file_path)
+	return FileAccess.file_exists(FILE_PATH)
 
 static func create_settings() -> void:
 	write_settings(default_data)
 
 static func get_settings_json() -> JSON:
-	var file = FileAccess.open(file_path, FileAccess.READ)
+	var file = FileAccess.open(FILE_PATH, FileAccess.READ)
 	var json = JSON.new()
 
 	json.parse(file.get_as_text())
