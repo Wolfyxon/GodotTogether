@@ -1,0 +1,20 @@
+name: Suggestion
+description: Suggest a change or a new feature
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Suggestion description
+      description: Describe the feature or change you'd like to see.
+      placeholder: Describe your suggestion...
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched for other issues describing this suggestion
+          required: true
+        - label: The feature or change isn't listed in the [TODO list](https://github.com/Wolfyxon/GodotTogether/issues/1)
+          required: true
+ 
