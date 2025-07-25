@@ -11,9 +11,17 @@ func _ready() -> void:
 	if gui.visuals_available():
 		$about/scroll/vbox/version.text = "Version: " + GodotTogether.VERSION
 		
-		var seen_disclaimer = GDTSettings.get_setting("seen/disclaimer")
-		get_menu().visible = seen_disclaimer
-		get_disclaimer().visible = not seen_disclaimer
+		var settings_json = GDTSettings.get_settings_json()
+		
+		if settings_json.get_error_line() == 0:
+			$settingsError.visible = false
+			
+			var seen_disclaimer = GDTSettings.get_setting("seen/disclaimer")
+			get_menu().visible = seen_disclaimer
+			get_disclaimer().visible = not seen_disclaimer
+		else:
+			$settingsError.set_json(settings_json)
+			$settingsError.visible = true
 
 func get_menu() -> GDTMenu:
 	return $main
