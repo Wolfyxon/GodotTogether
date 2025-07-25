@@ -7,16 +7,23 @@ class_name GDTSettingsErrorGUI
 @onready var path_label = $path
 
 var gui: GodotTogetherGUI
+var json: JSON
 
 func set_json(json: JSON) -> void:
 	error_label.text = "Error: " + json.get_error_message()
 	line_label.text = "Line: " + str(json.get_error_line())
 	path_label.text = "Path: " + GDTSettings.FILE_PATH
 
+	self.json = json
+
 func _on_open_gd_pressed() -> void:
 	if not gui: return
 	
-	EditorInterface.edit_script(load(GDTSettings.FILE_PATH))
+	var scr = GDScript.new()
+	scr.resource_path = GDTSettings.FILE_PATH
+	scr.source_code = json.get_parsed_text()
+
+	EditorInterface.edit_script(scr)
 
 func _on_show_file_pressed() -> void:
 	OS.shell_show_in_file_manager(GDTSettings.get_absolute_path())
