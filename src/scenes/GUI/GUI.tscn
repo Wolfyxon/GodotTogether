@@ -585,9 +585,11 @@ theme_override_font_sizes/font_size = 20
 text = "Line: %s"
 
 [node name="path" type="Label" parent="mainMenu/settingsError"]
+custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Path: %s"
+autowrap_mode = 3
 
 [node name="sep" type="Control" parent="mainMenu/settingsError"]
 layout_mode = 2
