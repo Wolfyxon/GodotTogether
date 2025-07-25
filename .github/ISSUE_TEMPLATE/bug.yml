@@ -7,7 +7,8 @@ body:
     id: description
     attributes:
       label: Bug description
-      description: Describe the what's wrong. Provide as much details as possible.
+      description: Describe the what's wrong. Provide as much details as possible. You can also attach screenshots and videos.
+      placeholder: Describe the bug...
   - type: input
     id: godot-version
     attributes:
