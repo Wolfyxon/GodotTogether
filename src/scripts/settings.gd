@@ -23,6 +23,9 @@ const default_data = {
 
 const FILE_PATH = "res://addons/GodotTogether/settings.json"
 
+static func get_absolute_path() -> String:
+	return ProjectSettings.globalize_path(FILE_PATH)
+
 static func make_editable(dict: Dictionary) -> Dictionary:
 	if not dict.is_read_only(): return dict
 	
