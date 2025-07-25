@@ -22,5 +22,5 @@ body:
       options:
         - label: I searched for other issues describing this bug
           required: true
-        - label: The bug isn't listed in the TODO list and the feature it's referring to is implemented
+        - label: The bug isn't listed in the [TODO list](https://github.com/Wolfyxon/GodotTogether/issues/1) and the feature it's referring to is implemented
           required: true
