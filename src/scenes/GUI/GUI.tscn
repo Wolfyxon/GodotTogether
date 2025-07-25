@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=18 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" uid="uid://pxi6vqp6q3d0" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
@@ -14,6 +14,9 @@
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/userEntry.gd" id="9_ymxdp"]
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
 [ext_resource type="Script" uid="uid://don784mnkl7xf" path="res://addons/GodotTogether/src/scenes/GUI/settingsError.gd" id="14_a4cyb"]
+[ext_resource type="Texture2D" uid="uid://bpui0o3t80my5" path="res://addons/GodotTogether/src/img/script.svg" id="15_bvn1h"]
+[ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
+[ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
 
 [node name="GUI" type="Node"]
 script = ExtResource("1_73joy")
@@ -596,16 +599,19 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Open in Godot"
+icon = ExtResource("15_bvn1h")
 
 [node name="openExt" type="Button" parent="mainMenu/settingsError/actions"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Open in an external text editor"
+icon = ExtResource("16_8pkel")
 
 [node name="reset" type="Button" parent="mainMenu/settingsError/actions"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Reset to default"
+icon = ExtResource("17_u8ku5")
 
 [node name="Label" type="Label" parent="mainMenu/settingsError"]
 layout_mode = 2
