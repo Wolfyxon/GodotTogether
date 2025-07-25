@@ -1,5 +1,6 @@
 @tool
 extends VBoxContainer
+class_name GDTSettingsErrorGUI
 
 @onready var error_label = $error
 @onready var line_label = $line
