@@ -7,6 +7,8 @@ signal auth_succeed
 signal project_files_download_started(amount: int)
 signal file_received(path: String)
 
+var ignored_node_properties = GDTChangeDetector.IGNORED_PROPERTIES.Node
+
 var client_peer = ENetMultiplayerPeer.new()
 var current_join_data := GDTJoinData.new()
 
@@ -178,7 +180,7 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 	main.change_detector.merge(node, property_dict)
 
 	for key in property_dict.keys():
-		if key in GDTChangeDetector.IGNORED_NODE_PROPERTIES:
+		if key in ignored_node_properties:
 			continue
 
 		var value = property_dict[key]
