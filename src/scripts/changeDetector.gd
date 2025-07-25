@@ -27,6 +27,9 @@ const IGNORED_PROPERTIES: Dictionary = {
 	"Node": [
 		"owner",
 		"multiplayer"
+	],
+	"Resource": [
+		"resource_path"
 	]
 }
 
@@ -55,7 +58,7 @@ static func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
 	
 	var ignored = get_ignored_properties(obj)
-	
+
 	for i in obj.get_property_list():
 		var con := true
 		
