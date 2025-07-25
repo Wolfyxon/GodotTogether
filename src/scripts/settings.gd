@@ -48,15 +48,22 @@ static func settings_exist() -> bool:
 static func create_settings() -> void:
 	write_settings(default_data)
 
+static func get_settings_json() -> JSON:
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	var json = JSON.new()
+
+	json.parse(file.get_as_text())
+	file.close()
+
+	return json
+
 static func get_settings() -> Dictionary:
 	if settings_exist():
-		var f = FileAccess.open(file_path, FileAccess.READ)
-		var parsed = JSON.parse_string(f.get_as_text())
+		var json = get_settings_json()
+		var parsed = json.data
 		
-		f.close()
-
 		if not parsed:
-			push_error("Parsing settings failed, returning default data")
+			push_error("Parsing settings failed at line %s: %s Returning default data." % [json.get_error_line(), json.get_error_message()])
 			return make_editable(default_data)
 		
 		for key in default_data.keys():
