@@ -604,10 +604,10 @@ size_flags_horizontal = 3
 text = "Open in Godot"
 icon = ExtResource("15_bvn1h")
 
-[node name="openExt" type="Button" parent="mainMenu/settingsError/actions"]
+[node name="showFile" type="Button" parent="mainMenu/settingsError/actions"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Open in an external text editor"
+text = "Show in file manager"
 icon = ExtResource("16_8pkel")
 
 [node name="reset" type="Button" parent="mainMenu/settingsError/actions"]
@@ -693,5 +693,5 @@ uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 [connection signal="meta_clicked" from="mainMenu/disclaimer/text" to="mainMenu/disclaimer" method="_on_text_meta_clicked"]
 [connection signal="pressed" from="mainMenu/disclaimer/btnProceed" to="mainMenu/disclaimer" method="_on_btn_proceed_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/openGd" to="mainMenu/settingsError" method="_on_open_gd_pressed"]
-[connection signal="pressed" from="mainMenu/settingsError/actions/openExt" to="mainMenu/settingsError" method="_on_open_ext_pressed"]
+[connection signal="pressed" from="mainMenu/settingsError/actions/showFile" to="mainMenu/settingsError" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]

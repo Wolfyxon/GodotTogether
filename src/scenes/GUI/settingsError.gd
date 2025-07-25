@@ -18,8 +18,8 @@ func _on_open_gd_pressed() -> void:
 	
 	EditorInterface.edit_script(load(GDTSettings.FILE_PATH))
 
-func _on_open_ext_pressed() -> void:
-	pass # Replace with function body.
+func _on_show_file_pressed() -> void:
+	OS.shell_show_in_file_manager(GDTSettings.get_absolute_path())
 
 func _on_reset_pressed() -> void:
 	if not gui: return
