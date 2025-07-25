@@ -8,6 +8,12 @@ body:
       label: Suggestion description
       description: Describe the feature or change you'd like to see.
       placeholder: Describe your suggestion...
+  - type: textarea
+    id: why
+    attributes:
+      label: Why should it happen?
+      description: Describe why the feature or change should be made in the project.
+      placeholder: Describe why...
   - type: checkboxes
     id: checks
     attributes:
