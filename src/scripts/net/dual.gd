@@ -42,7 +42,9 @@ func _update() -> void:
 	if not main: return
 	if not main.is_session_active(): return
 	
-	var mPos = EditorInterface.get_editor_viewport_2d().get_mouse_position() / Vector2(EditorInterface.get_editor_viewport_2d().size)
+	var viewport_2d = EditorInterface.get_editor_viewport_2d()
+	var mPos = viewport_2d.get_mouse_position() / Vector2(viewport_2d.size)
+	
 	if mPos != prev_mouse_pos and DisplayServer.window_is_focused():
 		prev_mouse_pos = mPos
 		update_2d_avatar.rpc(mPos)
