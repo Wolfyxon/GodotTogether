@@ -42,7 +42,6 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	close_connection()
 	button.queue_free()
-	# ImmortalOctogen: To prevent from endless executing unfreed scripts + nodes
 	queue_free()
 
 func is_session_active() -> bool:
