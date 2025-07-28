@@ -1,6 +1,5 @@
 @tool
 extends GDTComponent
-## Class for managing session logic that runs on both server and client
 class_name GDTDual
 
 signal user_connected(user: GDTUser)

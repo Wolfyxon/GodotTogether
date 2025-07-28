@@ -1,6 +1,5 @@
 @tool
 
-### Class for connected users
 class_name GDTUser
 
 enum Type {
