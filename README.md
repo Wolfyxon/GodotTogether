@@ -18,7 +18,7 @@ Make Godot games together in real time!
 3. Extract the contents into the `addons` folder: `yourProject/addons/GodotTogether`
 4. Hit the **plus icon** under **scene**
 5. Search **Tree**
-6. Click on** tree** and hit **create**
+6. Click on **tree** and hit **create**
 7. Make sure tree is selected and on right hit Inspector
 8. Change **Columns** to **3** and hit **enter**
 9. Go to **Project** > **Project settings** in Godot
