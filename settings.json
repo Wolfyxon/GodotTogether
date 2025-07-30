@@ -1,0 +1,20 @@
+{
+ "format_version": 1.0,
+ "last_port": 5017.0,
+ "last_server": "",
+ "seen": {
+  "disclaimer": true
+ },
+ "server": {
+  "allow_external_connections": true,
+  "blacklist": [],
+  "password": "",
+  "whitelist": [
+   "127.0.0.1",
+   "0.0.0.0",
+   "0:0:0:0:0:0:0:1"
+  ],
+  "whitelist_enabled": false
+ },
+ "username": ""
+}
