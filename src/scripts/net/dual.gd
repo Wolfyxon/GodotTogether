@@ -73,11 +73,20 @@ func _peer_disconnected(id: int) -> void:
 func _user_connected(user: GDTUser) -> void:
 	user_connected.emit(user)
 
+	if should_notify_user_connection():
+		main.toaster.push_toast("User %s (%s) joined" % [user.name, user.id])
+
 func _user_disconnected(user: GDTUser) -> void:
 	user_disconnected.emit(user)
+	
+	if should_notify_user_connection():
+		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, user.id])
 
 func _scene_changed() -> void:	
 	main.change_detector.observe_current_scene()
+
+func should_notify_user_connection() -> bool:
+	return GDTSettings.get_setting("notifications/users")
 
 func should_update(node: Node) -> bool:
 	return (
