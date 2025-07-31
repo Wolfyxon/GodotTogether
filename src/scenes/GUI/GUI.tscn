@@ -746,6 +746,19 @@ text = "Accept tool scripts"
 [node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 
+[node name="Label3" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Actions"
+
+[node name="actions" type="HBoxContainer" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+
+[node name="reset" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Factory reset"
+
 [node name="Label" type="Label" parent="mainMenu/settings/main"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -775,4 +788,5 @@ text = "close"
 [connection signal="pressed" from="mainMenu/settingsError/actions/openGd" to="mainMenu/settingsError" method="_on_open_gd_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/showFile" to="mainMenu/settingsError" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/close" to="mainMenu/settings" method="hide"]
