@@ -21,6 +21,7 @@ var change_detector = GDTChangeDetector.new(self, "changeDetector")
 
 var gui: GodotTogetherGUI = preload("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
 var button = GDTMenuButton.new()
+var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
 func _enter_tree() -> void:
 	name = "GodotTogether"
