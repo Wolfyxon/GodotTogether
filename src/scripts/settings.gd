@@ -15,6 +15,10 @@ const default_data = {
 		"whitelist_enabled": false,
 		"allow_external_connections": true # allow connections outside of the local network (if the user has open ports) 
 	},
+
+	"notifications": {
+		"users": true
+	},
 	
 	"seen" : {
 		"disclaimer": false
