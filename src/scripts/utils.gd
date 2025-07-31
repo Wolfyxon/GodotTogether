@@ -1,5 +1,17 @@
 class_name GDTUtils
 
+static func join(array: Array, separator := "\n") -> String:
+	var res = ""
+	var ln = array.size()
+	
+	for i in ln:
+		res += str(array[i])
+		
+		if i != ln - 1:
+			res += separator
+	
+	return res
+
 static func get_descendants(node: Node, include_internal := false) -> Array[Node]:
 	var res: Array[Node] = []
 	
