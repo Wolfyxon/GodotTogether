@@ -11,7 +11,6 @@ enum Permission {
 	MODIFY_CUSTOM_FILES
 }
 
-const VERSION = "1.0.0"
 const PROTOCOL_VERSION = 1
 
 var client = GDTClient.new(self, "client")
