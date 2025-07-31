@@ -770,6 +770,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "close"
 
+[connection signal="pressed" from="mainMenu/main/topBar/settings" to="mainMenu/settings" method="popup"]
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
 [connection signal="text_changed" from="mainMenu/main/sessionInit/pre/username" to="mainMenu/main" method="_on_username_text_changed"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="session_start_menu"]
