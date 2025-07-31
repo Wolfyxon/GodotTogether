@@ -31,7 +31,6 @@ borderless = false
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -555,6 +554,7 @@ layout_mode = 2
 text = "Proceed"
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu"]
+visible = false
 offset_left = 13.0
 offset_top = 13.0
 offset_right = 687.0
@@ -678,6 +678,46 @@ layout_mode = 2
 text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 
+[node name="settings" type="PopupPanel" parent="mainMenu"]
+title = "GodotTogether - settings"
+initial_position = 1
+size = Vector2i(400, 300)
+visible = true
+unresizable = false
+borderless = false
+
+[node name="main" type="VBoxContainer" parent="mainMenu/settings"]
+offset_left = 13.0
+offset_top = 13.0
+offset_right = 387.0
+offset_bottom = 287.0
+
+[node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="userNotif" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+tooltip_text = "Show a notification when a user joins or leaves the editing session."
+text = "User join/leave notification"
+metadata/setting = "notifications/users"
+
+[node name="Label" type="Label" parent="mainMenu/settings/main"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Hover over a setting to see what it does."
+
+[node name="close" type="Button" parent="mainMenu/settings/main"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "close"
+
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
 [connection signal="text_changed" from="mainMenu/main/sessionInit/pre/username" to="mainMenu/main" method="_on_username_text_changed"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="session_start_menu"]
@@ -696,3 +736,4 @@ uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
 [connection signal="pressed" from="mainMenu/settingsError/actions/openGd" to="mainMenu/settingsError" method="_on_open_gd_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/showFile" to="mainMenu/settingsError" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/close" to="mainMenu/settings" method="hide"]
