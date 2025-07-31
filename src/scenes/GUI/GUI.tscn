@@ -701,11 +701,48 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="HSeparator" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "General"
+
 [node name="userNotif" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 tooltip_text = "Show a notification when a user joins or leaves the editing session."
-text = "User join/leave notification"
+text = "User join/leave notifications"
 metadata/setting = "notifications/users"
+
+[node name="HSeparator2" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Security"
+
+[node name="acceptScripts" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+tooltip_text = "Not implemented.
+
+Should you receive scripts when joining someone's project and should other users be able to edit your scripts when hosting."
+disabled = true
+button_pressed = true
+text = "Accept scripts"
+
+[node name="acceptToolScripts" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+tooltip_text = "Not implemented.
+
+Same as the setting above, but only applies to @tool scripts which can run in Godot without running the game."
+disabled = true
+button_pressed = true
+text = "Accept tool scripts"
+
+[node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
 
 [node name="Label" type="Label" parent="mainMenu/settings/main"]
 layout_mode = 2
