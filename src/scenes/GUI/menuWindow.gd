@@ -10,18 +10,21 @@ func _ready() -> void:
 	
 	if main:
 		$about/scroll/vbox/version.text = "Version: " + main.get_plugin_version()
-	
+
 	if gui.visuals_available():
 		var settings_json = GDTSettings.get_settings_json()
 		var error_gui = get_settings_error_gui()
-		
+		var settings_gui = get_settings_gui()
+
 		if settings_json.get_error_line() == 0:
 			error_gui.visible = false
 			
 			var seen_disclaimer = GDTSettings.get_setting("seen/disclaimer")
 			get_menu().visible = seen_disclaimer
 			get_disclaimer().visible = not seen_disclaimer
-			get_settings_gui().gui = gui
+			
+			settings_gui.gui = gui
+			settings_gui.visible = false
 		else:
 			error_gui.gui = gui
 			error_gui.set_json(settings_json)

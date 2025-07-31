@@ -4,14 +4,6 @@ class_name GDTSettingsGUI
 
 var gui: GodotTogetherGUI
 
-func _ready() -> void:
-	await get_tree().process_frame
-
-	if not gui: return
-	if not gui.visuals_available(): return
-	
-	hide()
-
 func _on_reset_pressed() -> void:
 	if not gui: return
 	
