@@ -70,6 +70,12 @@ func _peer_disconnected(id: int) -> void:
 		avatar_3d_markers.erase(marker3d)
 		marker3d.queue_free()
 
+func _user_connected(user: GDTUser) -> void:
+	user_connected.emit(user)
+
+func _user_disconnected(user: GDTUser) -> void:
+	user_disconnected.emit(user)
+
 func _scene_changed() -> void:	
 	main.change_detector.observe_current_scene()
 

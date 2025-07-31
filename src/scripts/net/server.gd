@@ -37,7 +37,7 @@ func _disconnected(id: int) -> void:
 	var user_dict = user.to_dict()
 
 	auth_rpc(main.client.user_disconnected, [user_dict])
-	main.dual.user_disconnected.emit(user)
+	main.dual._user_disconnected(user)
 
 	connected_users.erase(user)
 
@@ -144,7 +144,7 @@ func receive_join_data(data_dict: Dictionary) -> void:
 
 	auth_rpc(main.client.user_connected, [user_dict], [id])
 	main.client.receive_user_list.rpc_id(id, get_user_dicts())
-	main.dual.user_connected.emit(user)
+	main.dual._user_connected(user)
 
 	for i in get_authenticated_users():
 		if i.id == id: continue

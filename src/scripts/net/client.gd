@@ -107,13 +107,13 @@ func receive_user_list(user_dicts: Array) -> void:
 func user_connected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
 
-	main.dual.user_connected.emit(user)
+	main.dual._user_connected(user)
 
 @rpc("authority", "call_remote", "reliable")
 func user_disconnected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
 
-	main.dual.user_disconnected.emit(user)
+	main.dual._user_disconnected(user)
 
 func _project_files_downloaded() -> void:
 	print("Project files downloaded")
