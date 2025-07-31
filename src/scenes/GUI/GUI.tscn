@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=19 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" uid="uid://pxi6vqp6q3d0" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bpui0o3t80my5" path="res://addons/GodotTogether/src/img/script.svg" id="15_bvn1h"]
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
+[ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings.gd" id="18_8pkel"]
 
 [node name="GUI" type="Node"]
 script = ExtResource("1_73joy")
@@ -685,6 +686,7 @@ size = Vector2i(400, 300)
 visible = true
 unresizable = false
 borderless = false
+script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings"]
 offset_left = 13.0
