@@ -37,7 +37,7 @@ func _host() -> void:
 			gui.alert("Failed to start server: %s" % error_string(err), "Failed to start server")
 			return
 
-		main.server.get_server_user().name = username_input.text
+		main.dual.get_server_user().name = username_input.text
 
 	session_menu()
 	

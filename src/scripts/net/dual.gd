@@ -151,6 +151,20 @@ func _node_added(node: Node):
 	elif main.server.is_active():
 		main.server.submit_node_add(scene_path, node_path, node.get_class())
 
+func get_user_by_id(id: int) -> GDTUser:
+	for i in users:
+		if i.id == id:
+			return i
+
+	return
+
+func get_server_user() -> GDTUser:
+	for i in users:
+		if i.type == GDTUser.Type.HOST:
+			return i
+
+	return
+
 @rpc("authority", "call_remote", "reliable")
 func create_avatar_3d(user_dict: Dictionary) -> GDTAvatar3D:
 	var avatar = avatar_3d_scene.instantiate()

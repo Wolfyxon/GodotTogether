@@ -29,7 +29,7 @@ func _connected(id: int) -> void:
 func _disconnected(id: int) -> void:
 	if not multiplayer.is_server(): return
 
-	var user = get_user_by_id(id)
+	var user = main.dual.get_user_by_id(id)
 	assert(user, "User %d disconnected, but was never listed" % id)
 
 	print("User %s (%d) disconnected" % [user.name, id])
@@ -49,13 +49,6 @@ func create_server_user() -> GDTUser:
 	user.auth()
 
 	return user
-
-func get_server_user() -> GDTUser:
-	for i in main.dual.users:
-		if i.type == GDTUser.Type.HOST:
-			return i
-
-	return
 
 func get_authenticated_users(include_server := true) -> Array[GDTUser]:
 	var res: Array[GDTUser] = []
@@ -101,7 +94,7 @@ func _post_start() -> void:
 	main.button.set_session_icon(GDTMenuButton.ICON_SERVER)
 
 func id_has_permission(peer_id: int, permission: GodotTogether.Permission) -> bool:
-	var user = get_user_by_id(peer_id)
+	var user = main.dual.get_user_by_id(peer_id)
 
 	return user != null and user.has_permission(permission)
 
@@ -116,7 +109,7 @@ func get_user_dicts() -> Array[Dictionary]:
 @rpc("any_peer", "call_remote", "reliable")
 func receive_join_data(data_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
-	var user = get_user_by_id(id)
+	var user = main.dual.get_user_by_id(id)
 
 	print("Receiving data from %d: %s" % [id, data_dict])
 
@@ -220,13 +213,6 @@ func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []) -> void:
 	for i in get_authenticated_ids(false):
 		if not i in exclude_ids:
 			fn.rpc_id.callv([i] + args)
-
-func get_user_by_id(id: int) -> GDTUser:
-	for i in main.dual.users:
-		if i.id == id:
-			return i
-
-	return
 
 func is_active() -> bool:
 	return server_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
