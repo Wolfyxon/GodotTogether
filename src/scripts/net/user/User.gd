@@ -38,7 +38,7 @@ var permissions: Array[GodotTogether.Permission] = [
 	GodotTogether.Permission.EDIT_SCENES
 ]
 
-func _init(id: int, peer: ENetPacketPeer):
+func _init(id: int, peer: ENetPacketPeer = null):
 	self.id = id
 	self.peer = peer
 	self.joined_at = Time.get_unix_time_from_system()
