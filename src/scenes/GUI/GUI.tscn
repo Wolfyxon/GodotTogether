@@ -714,6 +714,7 @@ text = "General"
 [node name="userNotif" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 tooltip_text = "Show a notification when a user joins or leaves the editing session."
+button_pressed = true
 text = "User join/leave notifications"
 metadata/setting = "notifications/users"
 
@@ -759,6 +760,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Factory reset"
 
+[node name="showFile" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Show settings file"
+
 [node name="Label" type="Label" parent="mainMenu/settings/main"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -790,4 +796,5 @@ text = "close"
 [connection signal="pressed" from="mainMenu/settingsError/actions/showFile" to="mainMenu/settingsError" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/close" to="mainMenu/settings" method="hide"]

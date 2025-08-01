@@ -48,3 +48,7 @@ func _on_reset_pressed() -> void:
 	], "\n")):
 		GDTSettings.write_settings(GDTSettings.default_data)
 		EditorInterface.set_plugin_enabled("GodotTogether", false)
+
+
+func _on_show_file_pressed() -> void:
+	OS.shell_show_in_file_manager(GDTSettings.get_absolute_path())
