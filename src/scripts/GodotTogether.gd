@@ -42,6 +42,7 @@ func _enter_tree() -> void:
 	
 	await get_tree().process_frame
 
+	chat.main = self
 	var chat_btn = add_control_to_bottom_panel(chat, "Chat")
 	chat_btn.tooltip_text = "Toggle GodotTogether chat"
 
