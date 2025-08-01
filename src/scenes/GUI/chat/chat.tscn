@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://bt7xho72ewnem"]
+
+[ext_resource type="Script" uid="uid://c4fyt053t343v" path="res://addons/GodotTogether/src/scenes/GUI/chat/chat.gd" id="1_fubo5"]
+
+[node name="Chat" type="VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+offset_right = 976.0
+offset_bottom = 237.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_fubo5")
+
+[node name="scroll" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="msgs" type="VBoxContainer" parent="scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="scroll/msgs"]
+layout_mode = 2
+text = "test"
+
+[node name="Label2" type="Label" parent="scroll/msgs"]
+layout_mode = 2
+text = "hi"
+
+[node name="controls" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="input" type="LineEdit" parent="controls"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter message..."
+
+[node name="send" type="Button" parent="controls"]
+layout_mode = 2
+text = "send"

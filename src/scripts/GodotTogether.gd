@@ -19,6 +19,8 @@ var dual = GDTDual.new(self, "dual")
 var change_detector = GDTChangeDetector.new(self, "changeDetector")
 
 var gui: GodotTogetherGUI = preload("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
+var chat: GDTChat = preload("res://addons/GodotTogether/src/scenes/GUI/chat/chat.tscn").instantiate()
+
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
@@ -38,10 +40,13 @@ func _enter_tree() -> void:
 	button.get_parent().move_child(button, 1)
 	button.pressed.connect(gui.get_menu_window().popup)
 	
+	var chat_btn = add_control_to_bottom_panel(chat, "Chat")
+	tree_exited.connect(chat_btn.queue_free)
 
 func _exit_tree() -> void:
 	close_connection()
 	button.queue_free()
+	chat.queue_free()
 	queue_free()
 
 func is_session_active() -> bool:
