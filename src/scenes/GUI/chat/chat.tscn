@@ -64,11 +64,14 @@ text = "System message"
 [node name="controls" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="input" type="LineEdit" parent="controls"]
+[node name="input" type="TextEdit" parent="controls"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Enter message..."
+wrap_mode = 1
+scroll_fit_content_height = true
 
 [node name="send" type="Button" parent="controls"]
 layout_mode = 2
+size_flags_vertical = 0
 text = "send"
