@@ -41,6 +41,7 @@ func _enter_tree() -> void:
 	button.pressed.connect(gui.get_menu_window().popup)
 	
 	var chat_btn = add_control_to_bottom_panel(chat, "Chat")
+	chat_btn.tooltip_text = "Toggle GodotTogether chat"
 	tree_exited.connect(chat_btn.queue_free)
 
 func _exit_tree() -> void:
