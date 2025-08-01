@@ -30,6 +30,10 @@ theme_override_constants/separation = 0
 [node name="userHeader" type="HBoxContainer" parent="scroll/msgs"]
 layout_mode = 2
 
+[node name="sep" type="Control" parent="scroll/msgs/userHeader"]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+
 [node name="icon" type="Panel" parent="scroll/msgs/userHeader"]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
@@ -46,12 +50,14 @@ layout_mode = 2
 
 [node name="time" type="Label" parent="scroll/msgs/msg"]
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 8
 text = "00:00"
 
 [node name="content" type="Label" parent="scroll/msgs/msg"]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "hello there"
 autowrap_mode = 3
