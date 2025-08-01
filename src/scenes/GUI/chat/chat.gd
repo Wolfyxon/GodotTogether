@@ -32,7 +32,9 @@ func _process(_delta: float) -> void:
 			_send()
 
 func _send() -> void:
-	if input.text == "":
+	var text = input.text.strip_edges()
+	
+	if text == "":
 		return
 	
 	add_user_message(input.text, test_user)
