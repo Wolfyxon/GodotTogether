@@ -10,7 +10,6 @@ const LOCALHOST := [
 ]
 
 var server_peer = ENetMultiplayerPeer.new()
-var connected_users: Array[GDTUser] = []
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_connected)
@@ -24,7 +23,8 @@ func _connected(id: int) -> void:
 
 	print("New connection from %s ID: %d" % [peer.get_remote_address(), id])
 
-	connected_users.append(user) 
+	# The user needs to be added early
+	main.dual.users.append(user) 
 
 func _disconnected(id: int) -> void:
 	if not multiplayer.is_server(): return
@@ -39,12 +39,10 @@ func _disconnected(id: int) -> void:
 	auth_rpc(main.client.user_disconnected, [user_dict])
 	main.dual._user_disconnected(user)
 
-	connected_users.erase(user)
-
 func create_server_user() -> GDTUser:
 	var user = GDTUser.new(1, null)
 
-	user.name = "Server guy :3" # TODO: Get the actual username
+	user.name = GDTSettings.get_setting("username")
 	user.type = GDTUser.Type.HOST
 	user.id = 1
 
@@ -53,7 +51,7 @@ func create_server_user() -> GDTUser:
 	return user
 
 func get_server_user() -> GDTUser:
-	for i in connected_users:
+	for i in main.dual.users:
 		if i.type == GDTUser.Type.HOST:
 			return i
 
@@ -62,7 +60,7 @@ func get_server_user() -> GDTUser:
 func get_authenticated_users(include_server := true) -> Array[GDTUser]:
 	var res: Array[GDTUser] = []
 
-	for i in connected_users:
+	for i in main.dual.users:
 		if i.authenticated and (include_server or i.type != GDTUser.Type.HOST) and (not i.peer or i.is_peer_connected()):
 			res.append(i)
 
@@ -89,9 +87,9 @@ func start_hosting(port: int, max_clients := 10) -> int:
 
 	multiplayer.multiplayer_peer = server_peer
 
-	connected_users = [
-		create_server_user()	
-	]
+	main.dual._users_listed([
+		create_server_user()
+	])
 
 	_post_start()
 
@@ -101,7 +99,6 @@ func _post_start() -> void:
 	await get_tree().process_frame
 
 	main.button.set_session_icon(GDTMenuButton.ICON_SERVER)
-	main.dual._users_listed(connected_users)
 
 func id_has_permission(peer_id: int, permission: GodotTogether.Permission) -> bool:
 	var user = get_user_by_id(peer_id)
@@ -225,7 +222,7 @@ func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []) -> void:
 			fn.rpc_id.callv([i] + args)
 
 func get_user_by_id(id: int) -> GDTUser:
-	for i in connected_users:
+	for i in main.dual.users:
 		if i.id == id:
 			return i
 

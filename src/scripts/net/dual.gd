@@ -8,6 +8,7 @@ signal users_listed(users: Array[GDTUser])
 
 var camera: Camera3D
 var update_timer = Timer.new()
+var users: Array[GDTUser]
 
 var prev_mouse_pos := Vector2()
 var prev_3d_pos := Vector3()
@@ -73,16 +74,21 @@ func _peer_disconnected(id: int) -> void:
 func _user_connected(user: GDTUser) -> void:
 	user_connected.emit(user)
 
+	if user in users:
+		users.append(user)
+
 	if should_notify_user_connection():
 		main.toaster.push_toast("User %s (%s) joined" % [user.name, user.id])
 
 func _user_disconnected(user: GDTUser) -> void:
+	users.erase(user)
 	user_disconnected.emit(user)
 	
 	if should_notify_user_connection():
 		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, user.id])
 
 func _users_listed(users: Array[GDTUser]) -> void:
+	self.users = users
 	users_listed.emit(users)
 
 func _scene_changed() -> void:	
