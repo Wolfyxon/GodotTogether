@@ -55,6 +55,7 @@ func add_user_message(text: String, user: GDTUser):
 		header.get_node("name").text = user.name
 		
 		messages.add_child(header)
+		last_user = user
 	
 	var msg = usr_message.duplicate()
 	var time = Time.get_datetime_dict_from_system()
