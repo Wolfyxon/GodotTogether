@@ -82,6 +82,9 @@ func _user_disconnected(user: GDTUser) -> void:
 	if should_notify_user_connection():
 		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, user.id])
 
+func _users_listed(users: Array[GDTUser]) -> void:
+	users_listed.emit(users)
+
 func _scene_changed() -> void:	
 	main.change_detector.observe_current_scene()
 

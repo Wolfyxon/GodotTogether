@@ -101,7 +101,7 @@ func receive_user_list(user_dicts: Array) -> void:
 	for dict in user_dicts:
 		users.append(GDTUser.from_dict(dict))
 
-	main.dual.users_listed.emit(users)
+	main.dual._users_listed(users)
 
 @rpc("authority", "call_remote", "reliable")
 func user_connected(user_dict: Dictionary) -> void:
