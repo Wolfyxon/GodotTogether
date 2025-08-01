@@ -13,7 +13,7 @@ var prev_mouse_pos := Vector2()
 var prev_3d_pos := Vector3()
 var prev_3d_rot := Vector3()
 
-var avatar_3d_scene = preload("res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.tscn")
+var avatar_3d_scene = load("res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.tscn")
 var avatar_2d_scene = load("res://addons/GodotTogether/src/scenes/Avatar2D/Avatar2D.tscn")
 
 var avatar_3d_markers: Array[GDTAvatar3D] = []
