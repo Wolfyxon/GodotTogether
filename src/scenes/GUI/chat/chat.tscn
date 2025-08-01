@@ -75,3 +75,5 @@ scroll_fit_content_height = true
 layout_mode = 2
 size_flags_vertical = 0
 text = "send"
+
+[connection signal="pressed" from="controls/send" to="." method="_send"]
