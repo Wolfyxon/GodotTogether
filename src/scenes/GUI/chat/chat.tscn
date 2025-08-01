@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bt7xho72ewnem"]
+[gd_scene load_steps=3 format=3 uid="uid://bt7xho72ewnem"]
 
 [ext_resource type="Script" uid="uid://c4fyt053t343v" path="res://addons/GodotTogether/src/scenes/GUI/chat/chat.gd" id="1_fubo5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fubo5"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
 
 [node name="Chat" type="VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
@@ -18,14 +25,41 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="scroll/msgs"]
+[node name="userHeader" type="HBoxContainer" parent="scroll/msgs"]
 layout_mode = 2
-text = "test"
 
-[node name="Label2" type="Label" parent="scroll/msgs"]
+[node name="icon" type="Panel" parent="scroll/msgs/userHeader"]
+custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
-text = "hi"
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_fubo5")
+
+[node name="name" type="Label" parent="scroll/msgs/userHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Someone"
+
+[node name="msg" type="HBoxContainer" parent="scroll/msgs"]
+layout_mode = 2
+
+[node name="time" type="Label" parent="scroll/msgs/msg"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "00:00"
+
+[node name="content" type="Label" parent="scroll/msgs/msg"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "hello there"
+autowrap_mode = 3
+
+[node name="systemMsg" type="Label" parent="scroll/msgs"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "System message"
 
 [node name="controls" type="HBoxContainer" parent="."]
 layout_mode = 2
