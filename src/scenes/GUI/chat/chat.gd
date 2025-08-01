@@ -37,7 +37,11 @@ func _send() -> void:
 	if text == "":
 		return
 	
-	add_user_message(text, test_user)
+	if main.server.is_active():
+		main.server.submit_chat_message(1, text)
+	else:
+		main.server.receive_chat_message.rpc_id(1, text)
+
 	input.clear()
 
 func add_system_message(text: String):
@@ -67,6 +71,13 @@ func add_user_message(text: String, user: GDTUser):
 	msg.get_node("time").text = "%s:%s" % [time["hour"], time["minute"]]
 	
 	messages.add_child(msg)
+
+@rpc("authority", "reliable")
+func receive_user_message(text: String, id: int):
+	var user = main.dual.get_user_by_id(id)
+	if not user: return
+
+	add_user_message(text, user)
 
 func get_templates() -> Array[Control]:
 	return [

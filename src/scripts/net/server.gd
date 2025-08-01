@@ -106,6 +106,20 @@ func get_user_dicts() -> Array[Dictionary]:
 
 	return dicts
 
+@rpc("any_peer", "reliable")
+func receive_chat_message(text: String) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	var user = main.dual.get_user_by_id(id)
+
+	if not user: return
+	if not user.authenticated: return
+
+	submit_chat_message(id, text)
+
+func submit_chat_message(user_id: int, text) -> void:
+	auth_rpc(main.chat.receive_user_message, [text, user_id])
+	main.chat.receive_user_message(text, user_id)
+
 @rpc("any_peer", "call_remote", "reliable")
 func receive_join_data(data_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
