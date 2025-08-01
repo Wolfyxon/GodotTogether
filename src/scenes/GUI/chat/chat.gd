@@ -59,6 +59,7 @@ func add_user_message(text: String, user: GDTUser):
 		header.visible = true
 		header.modulate = user.color
 		header.get_node("name").text = user.name
+		header.get_node("id").text = str(user.id)
 		
 		messages.add_child(header)
 		last_user = user
