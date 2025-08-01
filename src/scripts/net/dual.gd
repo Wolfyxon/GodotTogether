@@ -72,10 +72,10 @@ func _peer_disconnected(id: int) -> void:
 		marker3d.queue_free()
 
 func _user_connected(user: GDTUser) -> void:
-	user_connected.emit(user)
+	if user in users: return
 
-	if user in users:
-		users.append(user)
+	user_connected.emit(user)
+	users.append(user)
 
 	if should_notify_user_connection():
 		main.toaster.push_toast("User %s (%s) joined" % [user.name, user.id])
