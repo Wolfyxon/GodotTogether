@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bt7xho72ewnem"]
+[gd_scene load_steps=4 format=3 uid="uid://bt7xho72ewnem"]
 
 [ext_resource type="Script" uid="uid://c4fyt053t343v" path="res://addons/GodotTogether/src/scenes/GUI/chat/chat.gd" id="1_fubo5"]
 
@@ -8,6 +8,8 @@ corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fubo5"]
 
 [node name="Chat" type="VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
@@ -25,7 +27,7 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 0
+theme_override_constants/separation = 1
 
 [node name="userHeader" type="HBoxContainer" parent="scroll/msgs"]
 layout_mode = 2
@@ -59,6 +61,7 @@ custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_fubo5")
 text = "hello there"
 autowrap_mode = 3
 

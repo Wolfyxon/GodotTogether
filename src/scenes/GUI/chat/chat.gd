@@ -37,7 +37,7 @@ func _send() -> void:
 	if text == "":
 		return
 	
-	add_user_message(input.text, test_user)
+	add_user_message(text, test_user)
 	input.clear()
 
 func add_system_message(text: String):
