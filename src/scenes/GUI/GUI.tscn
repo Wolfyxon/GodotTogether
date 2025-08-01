@@ -759,11 +759,13 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Factory reset"
+icon = ExtResource("17_u8ku5")
 
 [node name="showFile" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Show settings file"
+icon = ExtResource("16_8pkel")
 
 [node name="Label" type="Label" parent="mainMenu/settings/main"]
 layout_mode = 2
