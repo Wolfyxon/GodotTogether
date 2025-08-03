@@ -6,6 +6,7 @@ class_name GDTChat
 @onready var usr_header = $scroll/msgs/userHeader
 @onready var usr_message = $scroll/msgs/msg
 @onready var system_message = $scroll/msgs/systemMsg
+@onready var user_notification = $scroll/msgs/userNotif
 
 @onready var input = $controls/input
 
@@ -73,6 +74,18 @@ func add_user_message(text: String, user: GDTUser):
 	
 	messages.add_child(msg)
 
+func add_user_notification(icon: Texture, user: GDTUser, status: String) -> void:
+	var msg = user_notification.duplicate()
+	var user_label = msg.get_node("user")
+	
+	msg.get_node("icon").texture = icon
+	msg.get_node("status").text = status
+	
+	user_label.text = "%s (%s)" % [user.name, str(user.id)]
+	
+	msg.visible = true
+	messages.add_child(msg)
+
 @rpc("authority", "reliable")
 func receive_user_message(text: String, id: int):
 	var user = main.dual.get_user_by_id(id)
@@ -84,7 +97,8 @@ func get_templates() -> Array[Control]:
 	return [
 		usr_header,
 		usr_message,
-		system_message
+		system_message,
+		user_notification
 	]
 
 func clear():
