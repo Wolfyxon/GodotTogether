@@ -2,6 +2,9 @@
 extends VBoxContainer
 class_name GDTChat
 
+const IMG_JOINED = preload("res://addons/GodotTogether/src/img/play.svg")
+const IMG_DISCONNECTED = preload("res://addons/GodotTogether/src/img/arrowLeft.svg")
+
 @onready var messages = $scroll/msgs
 @onready var usr_header = $scroll/msgs/userHeader
 @onready var usr_message = $scroll/msgs/msg
@@ -25,6 +28,9 @@ func _ready() -> void:
 	
 	var scroll_style = EditorInterface.get_editor_theme().get_stylebox("panel", "Panel")
 	$scroll.add_theme_stylebox_override("panel", scroll_style)
+
+	main.dual.user_connected.connect(add_user_notification.bind(IMG_JOINED, "joined"))
+	main.dual.user_disconnected.connect(add_user_notification.bind(IMG_DISCONNECTED, "disconnected"))
 
 func _process(_delta: float) -> void:
 	if input.has_focus():
