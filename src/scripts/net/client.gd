@@ -2,6 +2,7 @@
 extends GDTComponent
 class_name GDTClient
 
+signal disconnected
 signal connecting_finished(success: bool)
 signal auth_succeed
 signal project_files_download_started(amount: int)
@@ -41,6 +42,7 @@ func _disconnected() -> void:
 	print("Disconnected from server")
 	main.gui.alert("You were disconnected from the server")
 	
+	disconnected.emit()
 	main.post_session_end()
 
 func _connecting_finished(success: bool) -> void:
