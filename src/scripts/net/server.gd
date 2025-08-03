@@ -128,8 +128,6 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = main.dual.get_user_by_id(id)
 
-	print("Receiving data from %d: %s" % [id, data_dict])
-
 	var data = GDTJoinData.from_dict(data_dict)
 	var server_password = GDTSettings.get_setting("server/password")
 	
@@ -163,8 +161,6 @@ func receive_join_data(data_dict: Dictionary) -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
-	
-	print("User %d is requesting the project files" % id)
 	
 	var local_hashes = GDTFiles.get_file_tree_hashes()
 
