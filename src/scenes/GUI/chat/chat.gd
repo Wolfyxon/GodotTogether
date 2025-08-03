@@ -74,7 +74,7 @@ func add_user_message(text: String, user: GDTUser):
 	
 	messages.add_child(msg)
 
-func add_user_notification(icon: Texture, user: GDTUser, status: String) -> void:
+func add_user_notification(user: GDTUser, icon: Texture, status: String) -> void:
 	var msg = user_notification.duplicate()
 	var user_label = msg.get_node("user")
 	
