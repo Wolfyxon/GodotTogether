@@ -31,6 +31,8 @@ func _ready() -> void:
 	main.dual.user_connected.connect(add_user_notification.bind(IMG_JOINED, "joined"))
 	main.dual.user_disconnected.connect(add_user_notification.bind(IMG_DISCONNECTED, "disconnected"))
 
+	clear()
+
 func _process(_delta: float) -> void:
 	if input.has_focus():
 		
@@ -113,3 +115,5 @@ func clear():
 	for i in messages.get_children():
 		if not i in templates:
 			i.queue_free()
+
+	add_system_message("Welcome to the GodotTogether chat! \nRemember to be nice and civil.")
