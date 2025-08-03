@@ -84,7 +84,8 @@ func add_user_notification(user: GDTUser, icon: Texture, status: String) -> void
 	msg.get_node("status").text = status
 	
 	user_label.text = "%s (%s)" % [user.name, str(user.id)]
-	
+	user_label.modulate = user.color
+
 	msg.visible = true
 	messages.add_child(msg)
 
