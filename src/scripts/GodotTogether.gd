@@ -2,6 +2,8 @@
 extends EditorPlugin
 class_name GodotTogether
 
+signal session_ended
+
 enum Permission {
 	EDIT_SCRIPTS,
 	EDIT_SCENES,
@@ -76,3 +78,5 @@ func post_session_end() -> void:
 	button.reset()
 	dual.clear_avatars()
 	gui.get_menu().users.clear()
+
+	session_ended.emit()
