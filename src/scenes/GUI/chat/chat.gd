@@ -25,6 +25,9 @@ func _ready() -> void:
 	var scroll_style = EditorInterface.get_editor_theme().get_stylebox("panel", "Panel")
 	$scroll.add_theme_stylebox_override("panel", scroll_style)
 
+	main.server.hosting_started.connect(add_system_message.bind("Server started"))
+	main.client.auth_succeed.connect(add_system_message.bind("Connected to the server"))
+
 	main.dual.user_connected.connect(add_user_notification.bind(IMG_JOINED, "joined"))
 	main.dual.user_disconnected.connect(add_user_notification.bind(IMG_DISCONNECTED, "disconnected"))
 
