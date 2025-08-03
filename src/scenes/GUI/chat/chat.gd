@@ -16,13 +16,9 @@ const IMG_DISCONNECTED = preload("res://addons/GodotTogether/src/img/arrowLeft.s
 var main: GodotTogether
 var last_user: GDTUser
 
-var test_user = GDTUser.new(1)
-
 func _ready() -> void:
 	if not main: return
-	
-	test_user.name = "aaaaa"
-	
+
 	for i in get_templates():
 		i.visible = false
 	
