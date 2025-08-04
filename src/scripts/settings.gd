@@ -57,6 +57,8 @@ static func create_settings() -> void:
 
 static func get_settings_json() -> JSON:
 	var file = FileAccess.open(FILE_PATH, FileAccess.READ)
+	if not file: return
+
 	var json = JSON.new()
 
 	json.parse(file.get_as_text(), true)
@@ -67,6 +69,11 @@ static func get_settings_json() -> JSON:
 static func get_settings() -> Dictionary:
 	if settings_exist():
 		var json = get_settings_json()
+
+		if not json:
+			push_error("Unable to access the settings file. Returning default data")
+			return make_editable(default_data)
+
 		var parsed = json.data
 		
 		if not parsed:

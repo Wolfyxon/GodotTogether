@@ -10,9 +10,14 @@ var gui: GodotTogetherGUI
 var json: JSON
 
 func set_json(json: JSON) -> void:
-	error_label.text = "Error: " + json.get_error_message()
-	line_label.text = "Line: " + str(json.get_error_line())
 	path_label.text = "Path: " + GDTSettings.FILE_PATH
+
+	if json:
+		error_label.text = "Error: " + json.get_error_message()
+		line_label.text = "Line: " + str(json.get_error_line())
+	else:
+		error_label.text = "Failed to access settings"
+		line_label.text = ""
 
 	self.json = json
 
