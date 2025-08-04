@@ -31,13 +31,14 @@ var components = [
 ]
 
 func _enter_tree() -> void:
-	var root = EditorInterface.get_base_control()
+	var root = get_tree().root
 	
 	name = "GodotTogether"
 	gui.main = self
 
 	for i in components:
-		root.add_child(i) 
+		root.add_child(i)
+		print(i.get_path())
 	
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	
