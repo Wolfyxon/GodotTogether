@@ -24,7 +24,8 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="Chat" type="VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 300)
+offset_top = 37.0
 offset_right = 976.0
 offset_bottom = 237.0
 size_flags_horizontal = 3
