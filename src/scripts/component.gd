@@ -8,6 +8,6 @@ func _init(main: GodotTogether, name: String = "") -> void:
 	self.main = main
 
 	if name != "":
-		self.name = name
+		self.name = "GodotTogether_" + name
 
 	main.tree_exited.connect(queue_free)
