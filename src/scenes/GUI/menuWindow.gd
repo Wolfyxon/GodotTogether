@@ -16,7 +16,9 @@ func _ready() -> void:
 		var error_gui = get_settings_error_gui()
 		var settings_gui = get_settings_gui()
 
-		if settings_json.get_error_line() == 0:
+		settings_gui.visible = false
+
+		if settings_json and settings_json.get_error_line() == 0:
 			error_gui.visible = false
 			
 			var seen_disclaimer = GDTSettings.get_setting("seen/disclaimer")
@@ -24,7 +26,6 @@ func _ready() -> void:
 			get_disclaimer().visible = not seen_disclaimer
 			
 			settings_gui.gui = gui
-			settings_gui.visible = false
 		else:
 			error_gui.gui = gui
 			error_gui.set_json(settings_json)
