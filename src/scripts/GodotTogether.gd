@@ -38,7 +38,6 @@ func _enter_tree() -> void:
 
 	for i in components:
 		root.add_child(i)
-		print(i.get_path())
 	
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	
