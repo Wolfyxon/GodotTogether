@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bt7xho72ewnem"]
+[gd_scene load_steps=6 format=3 uid="uid://bt7xho72ewnem"]
 
 [ext_resource type="Script" uid="uid://c4fyt053t343v" path="res://addons/GodotTogether/src/scenes/GUI/chat/chat.gd" id="1_fubo5"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="2_sr26q"]
@@ -11,6 +11,17 @@ corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fubo5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sr26q"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.196078)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Chat" type="VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
@@ -81,6 +92,7 @@ selection_enabled = true
 [node name="systemMsg" type="Label" parent="scroll/msgs"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_sr26q")
 text = "System message"
 
 [node name="userNotif" type="HBoxContainer" parent="scroll/msgs"]
