@@ -9,3 +9,5 @@ func _init(main: GodotTogether, name: String = "") -> void:
 
 	if name != "":
 		self.name = name
+
+	main.tree_exited.connect(queue_free)

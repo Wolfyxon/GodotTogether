@@ -26,16 +26,18 @@ var chat: GDTChat = preload("res://addons/GodotTogether/src/scenes/GUI/chat/chat
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
-func _enter_tree() -> void:
-	name = "GodotTogether"
+var components = [
+	client, server, dual, change_detector, gui
+]
 
-	add_child(change_detector)
-	add_child(client)
-	add_child(server)
-	add_child(dual)
+func _enter_tree() -> void:
+	var root = EditorInterface.get_base_control()
 	
+	name = "GodotTogether"
 	gui.main = self
-	add_child(gui)
+
+	for i in components:
+		root.add_child(i) 
 	
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	
