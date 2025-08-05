@@ -88,16 +88,17 @@ static func get_property_dict(obj: Object) -> Dictionary:
 
 	return res
 
+static func hash_value(value) -> int:
+	if value is Object:
+		return hash(value) + hash(get_property_hash_dict(value))
+	else:
+		return hash(value)
+
 static func get_property_hash_dict(obj: Object) -> Dictionary:
 	var res := {}
 
-	for i in get_property_keys(obj):
-		var value = obj[i]
-		
-		if value is Object:
-			res[i] = hash(value) + hash(get_property_hash_dict(value))
-		else:
-			res[i] = hash(value)
+	for i in get_property_keys(obj):		
+		res[i] = hash_value(obj[i])
 
 	return res
 
