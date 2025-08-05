@@ -264,7 +264,7 @@ func merge(node: Node, property_dict: Dictionary) -> void:
 	observe(node)
 	
 	for key in property_dict.keys():
-		observed_nodes_cache[node][key] = hash(node[key])
+		observed_nodes_cache[node][key] = hash_value(node[key])
 
 func set_node_supression(node: Node, supressed: bool) -> void:
 	if supressed:
