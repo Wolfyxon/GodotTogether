@@ -117,6 +117,8 @@ func receive_chat_message(text: String) -> void:
 	if not user: return
 	if not user.authenticated: return
 
+	if text == "": return
+
 	submit_chat_message(id, text)
 
 func submit_chat_message(user_id: int, text) -> void:
