@@ -118,6 +118,7 @@ func receive_chat_message(text: String) -> void:
 	if not user.authenticated: return
 
 	if text == "": return
+	if text.length() > GDTChat.MAX_MESSAGE_LEN: return
 
 	submit_chat_message(id, text)
 

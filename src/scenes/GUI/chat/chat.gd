@@ -4,6 +4,7 @@ class_name GDTChat
 
 const IMG_JOINED = preload("res://addons/GodotTogether/src/img/play.svg")
 const IMG_DISCONNECTED = preload("res://addons/GodotTogether/src/img/arrowLeft.svg")
+const MAX_MESSAGE_LEN = 2048
 
 @onready var messages = $scroll/msgs
 @onready var usr_header = $scroll/msgs/userHeader
@@ -42,8 +43,8 @@ func _process(_delta: float) -> void:
 func _send() -> void:
 	var text = input.text.strip_edges()
 	
-	if text == "":
-		return
+	if text == "": return
+	if text.length() > MAX_MESSAGE_LEN: return
 	
 	if main.server.is_active():
 		main.server.submit_chat_message(1, text)
