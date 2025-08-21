@@ -123,7 +123,11 @@ text = "joined"
 [node name="controls" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="input" type="TextEdit" parent="controls"]
+[node name="inputContainer" type="VBoxContainer" parent="controls"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="input" type="TextEdit" parent="controls/inputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Enter message..."

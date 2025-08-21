@@ -12,7 +12,7 @@ const MAX_MESSAGE_LEN = 2048
 @onready var system_message = $scroll/msgs/systemMsg
 @onready var user_notification = $scroll/msgs/userNotif
 
-@onready var input = $controls/input
+@onready var input = $controls/inputContainer/input
 
 var main: GodotTogether
 var last_user: GDTUser
