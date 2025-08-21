@@ -23,12 +23,6 @@ static func is_empty(string: String):
 static func is_path_safe(path: String):
 	return GDTFiles.is_path_in_project(path) and not path.contains("..")
 
-static func validate_version(target_version: int):
-	if target_version > GodotTogether.PROTOCOL_VERSION: return VersionError.UPDATE_REQUIRED
-	if target_version < GodotTogether.PROTOCOL_VERSION: return VersionError.TARGET_TOO_OLD
-	
-	return VersionError.OK
-
 static func validate_username(username: String) -> TextError:
 	if username.length() > max_username_length: return TextError.TOO_LONG
 	if is_empty(username): return TextError.EMPTY
