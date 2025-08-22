@@ -126,7 +126,7 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 	elif main.server.is_active():
 		main.server.submit_node_update(scene_path, node_path, dict)
 
-func _node_removed(node: Node):
+func _node_removed(node: Node) -> void:
 	if not should_update(node): return
 	
 	var scene = EditorInterface.get_edited_scene_root()
@@ -139,7 +139,7 @@ func _node_removed(node: Node):
 	elif main.server.is_active():
 		main.server.submit_node_removal(scene_path, node_path)
 
-func _node_added(node: Node):
+func _node_added(node: Node) -> void:
 	if not should_update(node): return
 
 	var scene = EditorInterface.get_edited_scene_root()

@@ -17,10 +17,10 @@ enum VersionError {
 	TARGET_TOO_OLD,
 }
 
-static func is_empty(string: String):
+static func is_empty(string: String) -> bool:
 	return string.replace(" ", "").is_empty()
 
-static func is_path_safe(path: String):
+static func is_path_safe(path: String) -> bool:
 	return GDTFiles.is_path_in_project(path) and not path.contains("..")
 
 static func validate_username(username: String) -> TextError:

@@ -128,7 +128,7 @@ func main_menu() -> void:
 	$sessionInit/start/join.hide()
 	$session.hide()
 
-func session_start_menu():
+func session_start_menu() -> void:
 	set_session_init_cover()
 	
 	$sessionInit/start.show()

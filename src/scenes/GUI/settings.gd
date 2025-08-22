@@ -27,7 +27,7 @@ func register_control(node: Control) -> void:
 	
 	update_control(node)
 
-func update_control(node: Control):
+func update_control(node: Control) -> void:
 	var path = node.get_meta("setting")
 	var value = GDTSettings.get_setting(path)
 	

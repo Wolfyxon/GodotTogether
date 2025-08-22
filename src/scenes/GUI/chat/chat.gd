@@ -59,7 +59,7 @@ func _send() -> void:
 
 	input.clear()
 
-func add_msg_node(node: Control):
+func add_msg_node(node: Control) -> void:
 	var sb: VScrollBar = scroll.get_v_scroll_bar()
 	var scroll_down = false
 	
@@ -71,7 +71,7 @@ func add_msg_node(node: Control):
 	if scroll_down:
 		scroll.scroll_vertical = sb.max_value
 
-func add_system_message(text: String):
+func add_system_message(text: String) -> void:
 	var msg = system_message.duplicate()
 	msg.visible = true
 	msg.text = text
@@ -79,7 +79,7 @@ func add_system_message(text: String):
 	
 	last_user = null
 
-func add_user_message(text: String, user: GDTUser):
+func add_user_message(text: String, user: GDTUser) -> void:
 	if last_user != user:
 		var header = usr_header.duplicate()
 		
@@ -114,7 +114,7 @@ func add_user_notification(user: GDTUser, icon: Texture, status: String) -> void
 	add_msg_node(msg)
 
 @rpc("authority", "reliable")
-func receive_user_message(text: String, id: int):
+func receive_user_message(text: String, id: int) -> void:
 	var user = main.dual.get_user_by_id(id)
 	if not user: return
 
@@ -128,7 +128,7 @@ func get_templates() -> Array[Control]:
 		user_notification
 	]
 
-func clear():
+func clear() -> void:
 	var templates = get_templates()
 	
 	for i in messages.get_children():
