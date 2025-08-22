@@ -53,11 +53,14 @@ func _send() -> void:
 
 	input.clear()
 
+func add_msg_node(node: Control):
+	messages.add_child(node)
+
 func add_system_message(text: String):
 	var msg = system_message.duplicate()
 	msg.visible = true
 	msg.text = text
-	messages.add_child(msg)
+	add_msg_node(msg)
 	
 	last_user = null
 
@@ -80,7 +83,7 @@ func add_user_message(text: String, user: GDTUser):
 	msg.get_node("content").text = text
 	msg.get_node("time").text = "%s:%s" % [time["hour"], time["minute"]]
 	
-	messages.add_child(msg)
+	add_msg_node(msg)
 
 func add_user_notification(user: GDTUser, icon: Texture, status: String) -> void:
 	var msg = user_notification.duplicate()
@@ -93,7 +96,7 @@ func add_user_notification(user: GDTUser, icon: Texture, status: String) -> void
 	user_label.modulate = user.color
 
 	msg.visible = true
-	messages.add_child(msg)
+	add_msg_node(msg)
 
 @rpc("authority", "reliable")
 func receive_user_message(text: String, id: int):
