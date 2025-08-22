@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bt7xho72ewnem"]
+[gd_scene load_steps=7 format=3 uid="uid://bt7xho72ewnem"]
 
 [ext_resource type="Script" uid="uid://c4fyt053t343v" path="res://addons/GodotTogether/src/scenes/GUI/chat/chat.gd" id="1_fubo5"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="2_sr26q"]
+[ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="3_6unrw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fubo5"]
 bg_color = Color(1, 1, 1, 1)
@@ -149,5 +150,35 @@ scroll_fit_content_height = true
 layout_mode = 2
 size_flags_vertical = 0
 text = "send"
+
+[node name="cover" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.443137)
+
+[node name="vbox" type="VBoxContainer" parent="cover"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="title" type="Label" parent="cover/vbox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Join or start a server to use the GodotTogether chat"
+horizontal_alignment = 1
+
+[node name="btnMenu" type="Button" parent="cover/vbox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Open menu"
+icon = ExtResource("3_6unrw")
 
 [connection signal="pressed" from="main/controls/send" to="." method="_send"]

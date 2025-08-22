@@ -6,6 +6,8 @@ const IMG_JOINED = preload("res://addons/GodotTogether/src/img/play.svg")
 const IMG_DISCONNECTED = preload("res://addons/GodotTogether/src/img/arrowLeft.svg")
 const MAX_MESSAGE_LEN = 2048
 
+@onready var cover = $cover
+
 @onready var scroll = $main/scroll
 @onready var messages = $main/scroll/msgs
 @onready var usr_header = $main/scroll/msgs/userHeader
@@ -33,11 +35,14 @@ func _ready() -> void:
 	main.dual.user_connected.connect(add_user_notification.bind(IMG_JOINED, "joined"))
 	main.dual.user_disconnected.connect(add_user_notification.bind(IMG_DISCONNECTED, "disconnected"))
 
+	$cover/vbox/btnMenu.pressed.connect(main.open_menu)
+	
 	clear()
 
 func _process(_delta: float) -> void:
+	cover.visible = main and not main.is_session_active()
+	
 	if input.has_focus():
-		
 		if Input.is_key_pressed(KEY_ENTER) and not Input.is_key_pressed(KEY_CTRL) and not Input.is_key_pressed(KEY_SHIFT):
 			_send()
 
