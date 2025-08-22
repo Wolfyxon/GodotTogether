@@ -42,7 +42,7 @@ func _enter_tree() -> void:
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	
 	button.get_parent().move_child(button, 1)
-	button.pressed.connect(gui.get_menu_window().popup)
+	button.pressed.connect(open_menu)
 	
 	await get_tree().process_frame
 
@@ -62,6 +62,9 @@ func is_session_active() -> bool:
 		GDTUtils.is_peer_connected(client.client_peer) or 
 		GDTUtils.is_peer_connected(server.server_peer)
 	)
+
+func open_menu() -> void:
+	gui.get_menu_window().popup()
 
 func prepare_session() -> void:
 	EditorInterface.save_all_scenes()
