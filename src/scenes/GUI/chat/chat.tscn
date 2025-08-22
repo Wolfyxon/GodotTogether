@@ -23,61 +23,72 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="Chat" type="VBoxContainer"]
+[node name="Chat" type="Control"]
 custom_minimum_size = Vector2(0, 300)
+layout_mode = 3
+anchors_preset = 0
 offset_top = 37.0
 offset_right = 976.0
-offset_bottom = 237.0
+offset_bottom = 337.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_fubo5")
 
-[node name="scroll" type="ScrollContainer" parent="."]
+[node name="main" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="scroll" type="ScrollContainer" parent="main"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="msgs" type="VBoxContainer" parent="scroll"]
+[node name="msgs" type="VBoxContainer" parent="main/scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 1
 
-[node name="userHeader" type="HBoxContainer" parent="scroll/msgs"]
+[node name="userHeader" type="HBoxContainer" parent="main/scroll/msgs"]
 layout_mode = 2
 
-[node name="sep" type="Control" parent="scroll/msgs/userHeader"]
+[node name="sep" type="Control" parent="main/scroll/msgs/userHeader"]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 
-[node name="icon" type="Panel" parent="scroll/msgs/userHeader"]
+[node name="icon" type="Panel" parent="main/scroll/msgs/userHeader"]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_fubo5")
 
-[node name="name" type="Label" parent="scroll/msgs/userHeader"]
+[node name="name" type="Label" parent="main/scroll/msgs/userHeader"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "Someone"
 
-[node name="VSeparator" type="VSeparator" parent="scroll/msgs/userHeader"]
+[node name="VSeparator" type="VSeparator" parent="main/scroll/msgs/userHeader"]
 layout_mode = 2
 
-[node name="id" type="Label" parent="scroll/msgs/userHeader"]
+[node name="id" type="Label" parent="main/scroll/msgs/userHeader"]
 layout_mode = 2
 text = "12345"
 
-[node name="msg" type="HBoxContainer" parent="scroll/msgs"]
+[node name="msg" type="HBoxContainer" parent="main/scroll/msgs"]
 layout_mode = 2
 mouse_default_cursor_shape = 1
 
-[node name="time" type="Label" parent="scroll/msgs/msg"]
+[node name="time" type="Label" parent="main/scroll/msgs/msg"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 8
 text = "00:00"
 
-[node name="content" type="RichTextLabel" parent="scroll/msgs/msg"]
+[node name="content" type="RichTextLabel" parent="main/scroll/msgs/msg"]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -90,53 +101,53 @@ fit_content = true
 scroll_active = false
 selection_enabled = true
 
-[node name="systemMsg" type="Label" parent="scroll/msgs"]
+[node name="systemMsg" type="Label" parent="main/scroll/msgs"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_sr26q")
 text = "System message"
 
-[node name="userNotif" type="HBoxContainer" parent="scroll/msgs"]
+[node name="userNotif" type="HBoxContainer" parent="main/scroll/msgs"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="icon" type="TextureRect" parent="scroll/msgs/userNotif"]
+[node name="icon" type="TextureRect" parent="main/scroll/msgs/userNotif"]
 custom_minimum_size = Vector2(15, 15)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("2_sr26q")
 expand_mode = 2
 
-[node name="Label" type="Label" parent="scroll/msgs/userNotif"]
+[node name="Label" type="Label" parent="main/scroll/msgs/userNotif"]
 layout_mode = 2
 text = "User"
 
-[node name="user" type="Label" parent="scroll/msgs/userNotif"]
+[node name="user" type="Label" parent="main/scroll/msgs/userNotif"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "Username (123)"
 
-[node name="status" type="Label" parent="scroll/msgs/userNotif"]
+[node name="status" type="Label" parent="main/scroll/msgs/userNotif"]
 layout_mode = 2
 text = "joined"
 
-[node name="controls" type="HBoxContainer" parent="."]
+[node name="controls" type="HBoxContainer" parent="main"]
 layout_mode = 2
 
-[node name="inputContainer" type="VBoxContainer" parent="controls"]
+[node name="inputContainer" type="VBoxContainer" parent="main/controls"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="input" type="TextEdit" parent="controls/inputContainer"]
+[node name="input" type="TextEdit" parent="main/controls/inputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Enter message..."
 wrap_mode = 1
 scroll_fit_content_height = true
 
-[node name="send" type="Button" parent="controls"]
+[node name="send" type="Button" parent="main/controls"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "send"
 
-[connection signal="pressed" from="controls/send" to="." method="_send"]
+[connection signal="pressed" from="main/controls/send" to="." method="_send"]

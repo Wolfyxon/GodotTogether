@@ -1,19 +1,19 @@
 @tool
-extends VBoxContainer
+extends Control
 class_name GDTChat
 
 const IMG_JOINED = preload("res://addons/GodotTogether/src/img/play.svg")
 const IMG_DISCONNECTED = preload("res://addons/GodotTogether/src/img/arrowLeft.svg")
 const MAX_MESSAGE_LEN = 2048
 
-@onready var scroll = $scroll
-@onready var messages = $scroll/msgs
-@onready var usr_header = $scroll/msgs/userHeader
-@onready var usr_message = $scroll/msgs/msg
-@onready var system_message = $scroll/msgs/systemMsg
-@onready var user_notification = $scroll/msgs/userNotif
+@onready var scroll = $main/scroll
+@onready var messages = $main/scroll/msgs
+@onready var usr_header = $main/scroll/msgs/userHeader
+@onready var usr_message = $main/scroll/msgs/msg
+@onready var system_message = $main/scroll/msgs/systemMsg
+@onready var user_notification = $main/scroll/msgs/userNotif
 
-@onready var input = $controls/inputContainer/input
+@onready var input = $main/controls/inputContainer/input
 
 var main: GodotTogether
 var last_user: GDTUser
@@ -25,7 +25,7 @@ func _ready() -> void:
 		i.visible = false
 	
 	var scroll_style = EditorInterface.get_editor_theme().get_stylebox("panel", "Panel")
-	$scroll.add_theme_stylebox_override("panel", scroll_style)
+	scroll.add_theme_stylebox_override("panel", scroll_style)
 
 	main.server.hosting_started.connect(add_system_message.bind("Server started"))
 	main.client.auth_succeed.connect(add_system_message.bind("Connected to the server"))
