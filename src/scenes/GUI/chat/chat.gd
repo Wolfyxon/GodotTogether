@@ -6,6 +6,7 @@ const IMG_JOINED = preload("res://addons/GodotTogether/src/img/play.svg")
 const IMG_DISCONNECTED = preload("res://addons/GodotTogether/src/img/arrowLeft.svg")
 const MAX_MESSAGE_LEN = 2048
 
+@onready var scroll = $scroll
 @onready var messages = $scroll/msgs
 @onready var usr_header = $scroll/msgs/userHeader
 @onready var usr_message = $scroll/msgs/msg
@@ -54,7 +55,16 @@ func _send() -> void:
 	input.clear()
 
 func add_msg_node(node: Control):
+	var sb: VScrollBar = scroll.get_v_scroll_bar()
+	var scroll_down = false
+	
+	if (sb.max_value - sb.value) < 300:
+		scroll_down = true
+	
 	messages.add_child(node)
+	
+	if scroll_down:
+		scroll.scroll_vertical = sb.max_value
 
 func add_system_message(text: String):
 	var msg = system_message.duplicate()
