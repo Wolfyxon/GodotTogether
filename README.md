@@ -16,9 +16,37 @@ An **experimental** plugin for real-time collaboration over the network for Godo
 > Your project can be very easily stolen and someone can remotely execute malicious code with tool scripts. 
 
 ## Installation
-1. Create a folder called `addons` in your project's directory
-2. [Download the repository's source code](https://github.com/Wolfyxon/GodotTogether/archive/refs/heads/main.zip)
-3. Extract the contents into the `addons` folder so it looks like this: `yourProject/addons/GodotTogether`. Make sure to rename the extracted folder to `GodotTogether`
-4. Go to **Project** > **Project settings** in Godot
-5. Go to the **Plugins** tab
-6. Enable **Godot Together**
+First create a folder called `addons` in your project's directory.
+
+## Getting the plugin
+>[!NOTE]
+> As the plugin is not fully released, you're going to download the **current state of development** which may be unstable. 
+
+### With Git (recommended)
+Open the terminal in your `addons` folder, then run:
+```
+git clone https://github.com/Wolfyxon/GodotTogether.git
+```
+
+### Manual download
+
+1. [Download the source code](https://github.com/Wolfyxon/GodotTogether/archive/refs/heads/main.zip) zip.
+2. Extract the zip contents into your `addons` folder.
+3. Rename `GodotTogether-main` to `GodotTogether`. IMPORTANT!!!
+
+The structure should look like this
+```
+yourProject
+|_ addons
+  |_ GodotTogether
+    |_ src
+      |_ scripts
+      |_ img
+      |_ scenes
+```
+
+## Enabling 
+1. Click on **Project** on the top-left toolbar.
+2. Go to **Project settings**
+3. Go to the **plugins** tab
+4. Enable **Godot Together**
