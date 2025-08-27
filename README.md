@@ -28,6 +28,8 @@ Open the terminal in your `addons` folder, then run:
 git clone https://github.com/Wolfyxon/GodotTogether.git
 ```
 
+Then proceed to the [enabling section](#enabling).
+
 #### Manual download
 
 1. [Download the source code](https://github.com/Wolfyxon/GodotTogether/archive/refs/heads/main.zip) zip.
