@@ -10,6 +10,9 @@ var gui: GodotTogetherGUI
 @onready var session_init_cover = $sessionInit/cover
 @onready var session_cancel = $sessionInit/cover/vbox/btnCancel
 
+@onready var join_password = $sessionInit/start/join/password
+@onready var host_password = $sessionInit/start/host/password
+
 func _ready() -> void:
 	await get_tree().process_frame
 	
@@ -18,7 +21,9 @@ func _ready() -> void:
 
 	if visuals_available():
 		set_session_init_cover()
+		
 		username_input.text = GDTSettings.get_setting("username")
+		host_password.text = GDTSettings.get_setting("server/password")
 
 func _host() -> void:
 	if main:
@@ -27,6 +32,8 @@ func _host() -> void:
 		
 		set_session_init_cover("Starting server...")
 		session_cancel.visible = false
+		
+		GDTSettings.set_setting("server/password", host_password.text)
 		
 		await RenderingServer.frame_post_draw
 		
@@ -48,7 +55,8 @@ func _host() -> void:
 func _join() -> void:
 	if main.client:
 		main.client.current_join_data.username = username_input.text
-
+		main.client.current_join_data.password = join_password.text
+		
 		var ip = $sessionInit/start/join/address/ip.text
 		var port = $sessionInit/start/join/address/port.value
 		
