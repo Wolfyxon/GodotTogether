@@ -9,7 +9,7 @@ const default_data = {
 	"last_port": 5017,
 	
 	"server": {
-		"password": "", # hashed password string
+		"password": "",
 		"whitelist": ["127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1"], # IP address whitelist
 		"blacklist": [], # blocked IP addresses
 		"whitelist_enabled": false,
