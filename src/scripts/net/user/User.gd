@@ -28,6 +28,7 @@ const FIELDS = [
 var id: int
 var name: String
 var peer: ENetPacketPeer
+var main: GodotTogether = null
 var type := Type.GUEST
 var color := Color.WHITE
 var joined_at := -1.0
@@ -38,10 +39,11 @@ var permissions: Array[GodotTogether.Permission] = [
 	GodotTogether.Permission.EDIT_SCENES
 ]
 
-func _init(id: int, peer: ENetPacketPeer = null):
+func _init(id: int, peer: ENetPacketPeer = null, main: GodotTogether = null):
 	self.id = id
 	self.peer = peer
 	self.joined_at = Time.get_unix_time_from_system()
+	self.main = main
 	
 	self.color = Color(
 		randf(),
@@ -62,7 +64,13 @@ func kick(reason: DisconnectReason = DisconnectReason.UNKNOWN) -> void:
 	assert(peer, "Unable to kick user %s: missing peer" % id)
 	
 	authenticated = false
-	peer.peer_disconnect_later(reason)
+
+	if main:
+		main.client.kick.rpc_id(id, reason)
+	else:
+		push_warning("Unable to send kick reason, main is null")
+
+	peer.peer_disconnect_later()
 
 	await EditorInterface.get_editor_main_screen().get_tree().create_timer(3).timeout
 
@@ -99,6 +107,17 @@ func to_dict() -> Dictionary:
 
 func get_type_as_string() -> String:
 	return type_to_string(type)
+
+static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
+	match reason:
+		DisconnectReason.KICKED:
+			return "Kicked by host"
+		DisconnectReason.BANNED:
+			return "You are banned"
+		DisconnectReason.PASSWORD_INVALID:
+			return "Invalid password"
+	
+	return "Connection lost"
 
 static func type_to_string(type: Type) -> String:
 	var key: String = Type.find_key(type)

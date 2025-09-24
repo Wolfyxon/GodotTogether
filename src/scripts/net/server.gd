@@ -21,7 +21,7 @@ func _connected(id: int) -> void:
 	if not multiplayer.is_server(): return
 
 	var peer = server_peer.get_peer(id)
-	var user = GDTUser.new(id, peer)
+	var user = GDTUser.new(id, peer, main)
 
 	print("New connection from %s ID: %d" % [peer.get_remote_address(), id])
 

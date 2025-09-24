@@ -17,6 +17,7 @@ var downloaded_file_count := 0
 var target_file_count := 0
 
 var connection_cancelled := false
+var disconnect_reason: GDTUser.DisconnectReason = 0
 
 func _ready() -> void:
 	multiplayer.connected_to_server.connect(_connected)
@@ -40,8 +41,12 @@ func _disconnected() -> void:
 	if multiplayer.is_server(): return
 
 	print("Disconnected from server")
-	main.gui.alert("You were disconnected from the server")
-	
+
+	main.gui.alert(
+		GDTUser.disconnect_reason_to_string(disconnect_reason),
+		"Disconnected from the server"
+	)
+
 	disconnected.emit()
 	main.post_session_end()
 
@@ -84,6 +89,10 @@ func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	_handle_connecting()
 
 	return OK
+
+@rpc("authority", "reliable")
+func kick(reason: GDTUser.DisconnectReason) -> void:
+	disconnect_reason = reason
 
 @rpc("authority", "reliable")
 func auth_successful() -> void:
