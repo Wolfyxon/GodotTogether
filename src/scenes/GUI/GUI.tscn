@@ -23,6 +23,7 @@
 script = ExtResource("1_73joy")
 
 [node name="mainMenu" type="PopupPanel" parent="."]
+oversampling_override = 1.0
 title = "GodotTogether"
 initial_position = 4
 size = Vector2i(700, 400)

@@ -18,6 +18,8 @@ func _ready() -> void:
 	
 	if main:
 		main_menu()
+		
+		main.client.disconnected.connect(session_start_menu.bind("join"))
 
 	if visuals_available():
 		set_session_init_cover()
@@ -136,17 +138,25 @@ func main_menu() -> void:
 	$sessionInit/start/join.hide()
 	$session.hide()
 
-func session_start_menu() -> void:
+func session_start_menu(tab: String = "") -> void:
 	set_session_init_cover()
 	
 	$sessionInit/start.show()
 	$sessionInit/pre.hide()
+	$sessionInit.show()
+	$session.hide()
+
+	if tab == "join":
+		$sessionInit/start/join.show()
+	elif tab == "host":
+		$sessionInit/start/host.show()
+
 	# Layout glitch fix
 	await get_tree().process_frame
 	$sessionInit/start.hide()
 	await get_tree().process_frame
 	$sessionInit/start.show()
-	
+		
 func visuals_available() -> bool:
 	if not gui: 
 		return false
