@@ -33,6 +33,7 @@ func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 	
 	popup.dialog_text = text
 	popup.title = title
+	popup.min_size.x = 300
 	popup.always_on_top = true
 	
 	var menu_w = get_menu_window()
