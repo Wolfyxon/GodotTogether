@@ -546,7 +546,7 @@ layout_mode = 2
 
 [node name="check" type="CheckBox" parent="mainMenu/disclaimer/checks"]
 layout_mode = 2
-text = "I unerstand the plugin is not complete and buggy"
+text = "I understand the plugin is not complete and buggy"
 
 [node name="check2" type="CheckBox" parent="mainMenu/disclaimer/checks"]
 layout_mode = 2
