@@ -251,6 +251,7 @@ func _node_exiting(node: Node) -> void:
 	if not scene: return
 
 	if scene.is_ancestor_of(node):
+		# TODO: Fix nodes being detected as deleted upon reloading scene (last time I tried to fix that I broke everything else instead :'3 )
 		node_removed.emit(node)
 
 func observe_current_scene() -> void:
