@@ -187,7 +187,6 @@ func project_files_request(hashes: Dictionary) -> void:
 
 	#main.client.project_files_downloaded.rpc_id(id)
 
-
 @rpc("any_peer", "call_remote", "reliable")
 func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
@@ -206,24 +205,126 @@ func node_removal_request(scene_path: String, node_path: NodePath) -> void:
 	submit_node_removal(scene_path, node_path, id)
 
 @rpc("any_peer", "call_remote", "reliable")
-func node_add_request(scene_path: String, node_path: NodePath, node_type: String) -> void:
-	assert(ClassDB.class_exists(node_type))
+func node_add_request(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary) -> void:
+	if not ClassDB.class_exists(node_type):
+		print("Invalid node type: %s" % node_type)
+		return
 	
 	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
 
-	submit_node_add(scene_path, node_path, node_type)
+	submit_node_add(scene_path, node_path, node_type, properties)
 
 func submit_node_removal(scene_path: String, node_path: NodePath, sender := 0) -> void:
-	#main.client.receive_node_removal.rpc(scene_path, node_path)
 	auth_rpc(main.client.receive_node_removal, [scene_path, node_path], [sender])
 
 func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary, sender := 0) -> void:
-	#main.client.receive_node_updates.rpc(scene_path, node_path, property_dict)
 	auth_rpc(main.client.receive_node_updates, [scene_path, node_path, property_dict], [sender])
 
-func submit_node_add(scene_path: String, node_path: NodePath, node_type: String, sender := 0) -> void:
-	#main.client.receive_node_add.rpc(scene_path, node_path, node_type)
-	auth_rpc(main.client.receive_node_add, [scene_path, node_path, node_type], [sender])
+func submit_node_add(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary, sender := 0) -> void:
+	auth_rpc(main.client.receive_node_add, [scene_path, node_path, node_type, properties], [sender])
+
+@rpc("any_peer", "call_remote", "reliable")
+func node_rename_request(scene_path: String, old_path: NodePath, new_name: String) -> void:
+	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
+	
+	submit_node_rename(scene_path, old_path, new_name)
+
+@rpc("any_peer", "call_remote", "reliable")
+func node_reparent_request(scene_path: String, node_path: NodePath, new_parent_path: NodePath, new_index: int) -> void:
+	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
+	
+	submit_node_reparent(scene_path, node_path, new_parent_path, new_index)
+
+func submit_node_rename(scene_path: String, old_path: NodePath, new_name: String, sender := 0) -> void:
+	auth_rpc(main.client.receive_node_rename, [scene_path, old_path, new_name], [sender])
+
+func submit_node_reparent(scene_path: String, node_path: NodePath, new_parent_path: NodePath, new_index: int, sender := 0) -> void:
+	auth_rpc(main.client.receive_node_reparent, [scene_path, node_path, new_parent_path, new_index], [sender])
+
+@rpc("any_peer", "call_remote", "reliable")
+func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	if not id_has_permission(id, GodotTogether.Permission.ADD_CUSTOM_FILES): return
+	
+	print("[SERVER] Received file add from client %d: %s" % [id, path])
+	main.change_detector.suppress_filesystem_sync = true
+	
+	var new_hash = buffer.get_string_from_utf8().sha256_text()
+	main.change_detector.cached_file_hashes[path] = new_hash
+	
+	var f = FileAccess.open(path, FileAccess.WRITE)
+	if f:
+		f.store_buffer(buffer)
+		f.close()
+	
+	EditorInterface.get_resource_filesystem().scan()
+	
+	main.change_detector.suppress_filesystem_sync = false
+	
+	broadcast_file_add_with_buffer(path, buffer, id)
+
+@rpc("any_peer", "call_remote", "reliable")
+func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	if not id_has_permission(id, GodotTogether.Permission.MODIFY_CUSTOM_FILES): return
+	
+	print("[SERVER] Received file modify from client %d: %s" % [id, path])
+	main.change_detector.suppress_filesystem_sync = true
+	
+	var new_hash = buffer.get_string_from_utf8().sha256_text()
+	main.change_detector.cached_file_hashes[path] = new_hash
+	
+	var f = FileAccess.open(path, FileAccess.WRITE)
+	if f:
+		f.store_buffer(buffer)
+		f.close()
+	
+	EditorInterface.get_resource_filesystem().scan()
+	
+	main.change_detector.suppress_filesystem_sync = false
+	
+	broadcast_file_modify_with_buffer(path, buffer, id)
+
+@rpc("any_peer", "call_remote", "reliable")
+func file_remove_from_client(path: String) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	if not id_has_permission(id, GodotTogether.Permission.DELETE_SCRIPTS): return
+	
+	print("[SERVER] Received file remove from client %d: %s" % [id, path])
+	main.change_detector.suppress_filesystem_sync = true
+	main.change_detector.cached_file_hashes.erase(path)
+	
+	if FileAccess.file_exists(path):
+		DirAccess.remove_absolute(path)
+	
+	EditorInterface.get_resource_filesystem().scan()
+	
+	await get_tree().create_timer(1.0).timeout
+	main.change_detector.suppress_filesystem_sync = false
+	
+	broadcast_file_remove(path, id)
+
+func broadcast_file_add(path: String, sender := 0) -> void:
+	var buffer = FileAccess.get_file_as_bytes(path)
+	if buffer:
+		broadcast_file_add_with_buffer(path, buffer, sender)
+
+func broadcast_file_add_with_buffer(path: String, buffer: PackedByteArray, sender := 0) -> void:
+	print("[SERVER] Broadcasting file add to clients: ", path)
+	auth_rpc(main.client.sync_file_add, [path, buffer], [sender])
+
+func broadcast_file_modify(path: String, sender := 0) -> void:
+	var buffer = FileAccess.get_file_as_bytes(path)
+	if buffer:
+		broadcast_file_modify_with_buffer(path, buffer, sender)
+
+func broadcast_file_modify_with_buffer(path: String, buffer: PackedByteArray, sender := 0) -> void:
+	print("[SERVER] Broadcasting file modify to clients: ", path)
+	auth_rpc(main.client.sync_file_modify, [path, buffer], [sender])
+
+func broadcast_file_remove(path: String, sender := 0) -> void:
+	print("[SERVER] Broadcasting file remove to clients: ", path)
+	auth_rpc(main.client.sync_file_remove, [path], [sender])
 
 func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []) -> void:
 	for i in get_authenticated_ids(false):

@@ -4,9 +4,10 @@ class_name GDTChangeDetector
 
 signal scene_changed
 signal node_properties_changed(node: Node, changed_keys: Array)
-#signal node_property_changed(node: Node, key: String)
 signal node_removed(node: Node)
 signal node_added(node: Node)
+signal node_renamed(node: Node, old_name: String, new_name: String)
+signal node_reparented(node: Node, old_parent: Node, new_parent: Node)
 
 enum ResourceType {
 	LOCAL,
@@ -46,6 +47,10 @@ var incoming_nodes := {
 var refrate: Timer = Timer.new()
 
 var last_scene := ""
+
+var filesystem_watcher: Timer = Timer.new()
+var cached_file_hashes := {}
+var suppress_filesystem_sync := false
 
 static func get_ignored_properties(obj: Object) -> Array:
 	for key in IGNORED_PROPERTIES.keys():
@@ -166,40 +171,64 @@ func _ready() -> void:
 	
 	add_child(refrate)
 	refrate.start()
+	
+	filesystem_watcher.wait_time = 1.0
+	filesystem_watcher.timeout.connect(_check_filesystem_changes)
+	add_child(filesystem_watcher)
+	filesystem_watcher.start()
+
+	EditorInterface.get_resource_filesystem().filesystem_changed.connect(_filesystem_changed)
 
 func _cycle() -> void:
 	var root := EditorInterface.get_edited_scene_root()
-	
+
 	if not main: return
 	if not root: return
-	
+
 	var current_scene_path := root.scene_file_path
 	if last_scene != current_scene_path:
 		last_scene = current_scene_path
 		scene_changed.emit()
-	
+
 	for node in observed_nodes:
 		if not is_instance_valid(node):
-			continue # Freed nodes are automatically erased from arrays but not instantly
-		
+			continue
+
 		if not node.is_inside_tree():
 			continue
-		
+
 		var cached: Dictionary = observed_nodes_cache[node]
 		var current := get_property_hash_dict(node)
-		
+
 		var changed_keys: Array[String] = []
-		
+
 		for i in current.keys():
+			if i == "name":
+				if (i in cached) and (cached[i] != current[i]):
+					var old_name = observed_nodes[node]["name"]
+					if not supressed_nodes.has(node):
+						node_renamed.emit(node, old_name, node.name)
+					observed_nodes[node]["name"] = node.name
+
 			if (not i in cached) or (not i in current) or (cached[i] != current[i]):
-				#node_property_changed.emit(node, i)
 				changed_keys.append(i)
-				
+
 		if changed_keys.size() != 0:
 			if not supressed_nodes.has(node):
 				node_properties_changed.emit(node, changed_keys)
-			
+
 			observed_nodes_cache[node] = current
+
+func track_node_parent(node: Node) -> void:
+	if not "parent_tracker" in observed_nodes[node]:
+		observed_nodes[node]["parent_tracker"] = node.get_parent()
+	
+	var old_parent = observed_nodes[node]["parent_tracker"]
+	var current_parent = node.get_parent()
+	
+	if old_parent != current_parent and is_instance_valid(old_parent) and is_instance_valid(current_parent):
+		observed_nodes[node]["parent_tracker"] = current_parent
+		node_reparented.emit(node, old_parent, current_parent)
 
 func _node_added(node: Node) -> void:
 	var current_scene := EditorInterface.get_edited_scene_root()
@@ -262,7 +291,10 @@ func resume() -> void:
 
 func merge(node: Node, property_dict: Dictionary) -> void:
 	observe(node)
-	
+
+	if "name" in property_dict:
+		observed_nodes[node]["name"] = property_dict["name"]
+
 	for key in property_dict.keys():
 		observed_nodes_cache[node][key] = hash_value(node[key])
 
@@ -290,7 +322,9 @@ func observe(node: Node) -> void:
 	if node in observed_nodes: return
 
 	observed_nodes_cache[node] = get_property_hash_dict(node)
-	observed_nodes[node] = {}
+	observed_nodes[node] = {
+		"name": node.name
+	}
 
 	node.tree_exiting.connect(_node_exiting.bind(node))
 	node.child_entered_tree.connect(_node_added)
@@ -300,3 +334,53 @@ func observe_recursive(node: Node) -> void:
 	
 	for i in GDTUtils.get_descendants(node):
 		observe(i)
+
+func _filesystem_changed() -> void:
+	await get_tree().create_timer(0.5).timeout
+	_check_filesystem_changes()
+
+func _check_filesystem_changes() -> void:
+	if not main or not main.is_session_active(): return
+	if suppress_filesystem_sync: return
+	
+	var current_hashes = GDTFiles.get_file_tree_hashes()
+	
+	for path in current_hashes:
+		if not path in cached_file_hashes:
+			_file_added(path)
+		elif cached_file_hashes[path] != current_hashes[path]:
+			_file_modified(path)
+	
+	for path in cached_file_hashes:
+		if not path in current_hashes:
+			_file_removed(path)
+	
+	cached_file_hashes = current_hashes
+
+func _file_added(path: String) -> void:
+	if main.client.is_active():
+		var buffer = FileAccess.get_file_as_bytes(path)
+		if buffer:
+			print("[CLIENT] Sending file add: ", path)
+			main.server.file_add_from_client.rpc_id(1, path, buffer)
+	elif main.server.is_active():
+		print("[SERVER] Broadcasting file add: ", path)
+		main.server.broadcast_file_add(path)
+
+func _file_modified(path: String) -> void:
+	if main.client.is_active():
+		var buffer = FileAccess.get_file_as_bytes(path)
+		if buffer:
+			print("[CLIENT] Sending file modify: ", path)
+			main.server.file_modify_from_client.rpc_id(1, path, buffer)
+	elif main.server.is_active():
+		print("[SERVER] Broadcasting file modify: ", path)
+		main.server.broadcast_file_modify(path)
+
+func _file_removed(path: String) -> void:
+	if main.client.is_active():
+		print("[CLIENT] Sending file remove: ", path)
+		main.server.file_remove_from_client.rpc_id(1, path)
+	elif main.server.is_active():
+		print("[SERVER] Broadcasting file remove: ", path)
+		main.server.broadcast_file_remove(path)
