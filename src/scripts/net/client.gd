@@ -305,9 +305,12 @@ func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
 		var apply_removal = func(scene_root: Node):
 			var node = scene_root.get_node_or_null(node_path)
 			if not node: return false
+
 			node.get_parent().remove_child(node)
 			node.queue_free()
+
 			return true
+		
 		_apply_change_to_unloaded_scene(scene_path, apply_removal)
 		return
 
@@ -329,6 +332,7 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 			var parent_path = node_path.slice(0, path_size - 1)
 			var parent = scene_root.get_node_or_null(parent_path)
 			if parent_path.is_empty(): parent = scene_root
+
 			if not parent: return false
 
 			var node: Node = ClassDB.instantiate(node_type)
@@ -338,11 +342,15 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 
 			for key in properties.keys():
 				if key == "name": continue
+
 				var value = properties[key]
+				
 				if GDTChangeDetector.is_encoded_resource(value):
 					value = GDTChangeDetector.decode_resource(value)
+				
 				node[key] = value
 			return true
+
 		_apply_change_to_unloaded_scene(scene_path, apply_add)
 		return
 
@@ -378,9 +386,11 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 	if properties.size() > 0:
 		for key in properties.keys():
 			if key == "name": continue
+
 			var value = properties[key]
 			if GDTChangeDetector.is_encoded_resource(value):
 				value = GDTChangeDetector.decode_resource(value)
+			
 			node[key] = value
 
 		main.change_detector.merge(node, properties)
@@ -399,6 +409,7 @@ func receive_node_rename(scene_path: String, old_path: NodePath, new_name: Strin
 		return
 
 	var node = current_scene.get_node_or_null(old_path)
+
 	if not node: 
 		print("Node to rename not found: %s" % old_path)
 		return
@@ -417,6 +428,7 @@ func receive_node_reparent(scene_path: String, node_path: NodePath, new_parent_p
 			var node = scene_root.get_node_or_null(node_path)
 			var new_parent = scene_root.get_node_or_null(new_parent_path)
 			if new_parent_path.is_empty(): new_parent = scene_root
+
 			if not node or not new_parent: return false
 
 			var old_parent = node.get_parent()
@@ -424,6 +436,7 @@ func receive_node_reparent(scene_path: String, node_path: NodePath, new_parent_p
 			new_parent.add_child(node)
 			new_parent.move_child(node, new_index)
 			return true
+		
 		_apply_change_to_unloaded_scene(scene_path, apply_reparent)
 		return
 
