@@ -244,8 +244,10 @@ func submit_node_reparent(scene_path: String, node_path: NodePath, new_parent_pa
 @rpc("any_peer", "call_remote", "reliable")
 func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 	var id = multiplayer.get_remote_sender_id()
+
 	if not id_has_permission(id, GodotTogether.Permission.ADD_CUSTOM_FILES): return
-	
+	if not GDTValidator.is_path_safe(path): return
+
 	print("[SERVER] Received file add from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	
@@ -266,8 +268,10 @@ func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
 	var id = multiplayer.get_remote_sender_id()
+
 	if not id_has_permission(id, GodotTogether.Permission.MODIFY_CUSTOM_FILES): return
-	
+	if not GDTValidator.is_path_safe(path): return
+
 	print("[SERVER] Received file modify from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	
@@ -288,8 +292,10 @@ func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func file_remove_from_client(path: String) -> void:
 	var id = multiplayer.get_remote_sender_id()
+
 	if not id_has_permission(id, GodotTogether.Permission.DELETE_SCRIPTS): return
-	
+	if not GDTValidator.is_path_safe(path): return
+
 	print("[SERVER] Received file remove from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	main.change_detector.cached_file_hashes.erase(path)
