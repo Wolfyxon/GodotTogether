@@ -104,7 +104,6 @@ func auth_successful() -> void:
 	main.change_detector.clear()
 	main.server.project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
 
-
 @rpc("authority", "call_remote", "reliable")
 func receive_user_list(user_dicts: Array) -> void:
 	var users: Array[GDTUser]
@@ -177,18 +176,110 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 		_project_files_downloaded()
 
 @rpc("authority", "call_remote", "reliable")
+func sync_file_add(path: String, buffer: PackedByteArray) -> void:
+	if not GDTValidator.is_path_safe(path): return
+
+	print("[CLIENT] Receiving file add: ", path)
+	main.change_detector.suppress_filesystem_sync = true
+	
+	var new_hash = buffer.get_string_from_utf8().sha256_text()
+	main.change_detector.cached_file_hashes[path] = new_hash
+
+	var f = FileAccess.open(path, FileAccess.WRITE)
+	if f:
+		f.store_buffer(buffer)
+		f.close()
+
+	EditorInterface.get_resource_filesystem().scan()
+
+	main.change_detector.suppress_filesystem_sync = false
+
+@rpc("authority", "call_remote", "reliable")
+func sync_file_modify(path: String, buffer: PackedByteArray) -> void:
+	if not GDTValidator.is_path_safe(path): return
+
+	print("[CLIENT] Receiving file modify: ", path)
+	main.change_detector.suppress_filesystem_sync = true
+
+	var new_hash = buffer.get_string_from_utf8().sha256_text()
+	main.change_detector.cached_file_hashes[path] = new_hash
+	
+	var f = FileAccess.open(path, FileAccess.WRITE)
+	if f:
+		f.store_buffer(buffer)
+		f.close()
+	
+	EditorInterface.get_resource_filesystem().scan()
+	
+	main.change_detector.suppress_filesystem_sync = false
+
+@rpc("authority", "call_remote", "reliable")
+func sync_file_remove(path: String) -> void:
+	if not GDTValidator.is_path_safe(path): return
+
+	print("[CLIENT] Receiving file remove: ", path)
+	main.change_detector.suppress_filesystem_sync = true
+	main.change_detector.cached_file_hashes.erase(path)
+
+	if FileAccess.file_exists(path):
+		DirAccess.remove_absolute(path)
+
+	EditorInterface.get_resource_filesystem().scan()
+
+	await get_tree().create_timer(1.0).timeout
+	main.change_detector.suppress_filesystem_sync = false
+
+func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -> void:
+	if not FileAccess.file_exists(scene_path):
+		push_error("Scene file not found for background update: " + scene_path)
+		return
+
+	var packed_scene: PackedScene = load(scene_path)
+	if not packed_scene:
+		push_error("Failed to load scene for background update: " + scene_path)
+		return
+
+	var scene_instance = packed_scene.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE)
+	if not scene_instance:
+		push_error("Failed to instantiate scene for background update: " + scene_path)
+		return
+
+	var success = apply_func.call(scene_instance)
+
+	if success:
+		var new_packed_scene = PackedScene.new()
+		var result = new_packed_scene.pack(scene_instance)
+
+		if result == OK:
+			ResourceSaver.save(new_packed_scene, scene_path)
+		else:
+			push_error("Failed to pack scene after background update: " + scene_path)
+
+	scene_instance.queue_free()
+
+@rpc("authority", "call_remote", "reliable")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary) -> void:
 	var current_scene = EditorInterface.get_edited_scene_root()
-	
+
 	if not current_scene or current_scene.scene_file_path != scene_path:
-		print("NOT IMPLEMENTED YET. Node outside of current scene, not updating.")
+		var apply_changes = func(scene_root: Node):
+			var node = scene_root.get_node_or_null(node_path)
+			if not node: return false
+
+			for key in property_dict.keys():
+				var value = property_dict[key]
+				if GDTChangeDetector.is_encoded_resource(value):
+					value = GDTChangeDetector.decode_resource(value)
+				node.set(key, value)
+			return true
+
+		_apply_change_to_unloaded_scene(scene_path, apply_changes)
 		return
-	
+
 	var node = current_scene.get_node_or_null(node_path)
 	if not node: return
 
-	main.change_detector.set_node_supression(node, true)	
-	main.change_detector.merge(node, property_dict)
+	main.change_detector.set_node_supression(node, true)
 
 	for key in property_dict.keys():
 		if key in ignored_node_properties:
@@ -201,17 +292,23 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 
 		node[key] = value
 	
-	await get_tree().create_timer(0.1).timeout # Temporary fix, not great
+	main.change_detector.merge(node, property_dict)
+
+	await get_tree().create_timer(0.1).timeout
 	main.change_detector.set_node_supression(node, false)
 
 @rpc("authority", "call_remote", "reliable")
 func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
-	# Freeing nodes during scene reloading / in removed scenes seems to be the cause of crash during join
-
 	var current_scene = EditorInterface.get_edited_scene_root()
-	
+
 	if not current_scene or current_scene.scene_file_path != scene_path:
-		print("NOT IMPLEMENTED YET. Node outside of current scene, not removing.")
+		var apply_removal = func(scene_root: Node):
+			var node = scene_root.get_node_or_null(node_path)
+			if not node: return false
+			node.get_parent().remove_child(node)
+			node.queue_free()
+			return true
+		_apply_change_to_unloaded_scene(scene_path, apply_removal)
 		return
 
 	var node = current_scene.get_node_or_null(node_path)
@@ -220,42 +317,135 @@ func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
 	prints("rm", node_path)
 	node.queue_free()
 
-var fuse = 0
-
 @rpc("authority", "call_remote", "reliable")
-func receive_node_add(scene_path: String, node_path: NodePath, node_type: String) -> void:
-	assert(fuse < 10, "NODE OVERFLOW (temporary safety measure)")
-	fuse += 1
-
+func receive_node_add(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary) -> void:
 	var current_scene = EditorInterface.get_edited_scene_root()
-	
+
 	if not current_scene or current_scene.scene_file_path != scene_path:
-		print("NOT IMPLEMENTED YET. Node outside of current scene, not adding.")
+		var apply_add = func(scene_root: Node):
+			if scene_root.get_node_or_null(node_path): return false
+
+			var path_size = node_path.get_name_count()
+			var parent_path = node_path.slice(0, path_size - 1)
+			var parent = scene_root.get_node_or_null(parent_path)
+			if parent_path.is_empty(): parent = scene_root
+			if not parent: return false
+
+			var node: Node = ClassDB.instantiate(node_type)
+			node.name = node_path.get_name(path_size - 1)
+			parent.add_child(node)
+			node.owner = scene_root
+
+			for key in properties.keys():
+				if key == "name": continue
+				var value = properties[key]
+				if GDTChangeDetector.is_encoded_resource(value):
+					value = GDTChangeDetector.decode_resource(value)
+				node[key] = value
+			return true
+		_apply_change_to_unloaded_scene(scene_path, apply_add)
 		return
 
 	var existing = current_scene.get_node_or_null(node_path)
+
+	if existing:
+		print("Node %s already exists, not adding" % node_path)
+		return
+
 	var path_size = node_path.get_name_count()
-	
 	var parent_path = node_path.slice(0, path_size - 1)
 	var parent: Node = current_scene.get_node_or_null(parent_path)
 
 	if parent_path.is_empty():
 		parent = current_scene
 
-	if existing:
-		assert(false, "Node %s already exists, not adding" % node_path)
+	if not parent:
+		print("Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
+		return
 
-	assert(parent, "Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
-	
 	var node: Node = ClassDB.instantiate(node_type)
 	node.name = node_path.get_name(path_size - 1)
 
 	main.change_detector.suppress_add_signal(scene_path, node_path)
-	
+
 	await get_tree().process_frame
 
 	parent.add_child(node)
 	node.owner = current_scene
+
+	main.change_detector.observe(node)
+
+	if properties.size() > 0:
+		for key in properties.keys():
+			if key == "name": continue
+			var value = properties[key]
+			if GDTChangeDetector.is_encoded_resource(value):
+				value = GDTChangeDetector.decode_resource(value)
+			node[key] = value
+
+		main.change_detector.merge(node, properties)
+
+@rpc("authority", "call_remote", "reliable")
+func receive_node_rename(scene_path: String, old_path: NodePath, new_name: String) -> void:
+	var current_scene = EditorInterface.get_edited_scene_root()
+
+	if not current_scene or current_scene.scene_file_path != scene_path:
+		var apply_rename = func(scene_root: Node):
+			var node = scene_root.get_node_or_null(old_path)
+			if not node: return false
+			node.name = new_name
+			return true
+		_apply_change_to_unloaded_scene(scene_path, apply_rename)
+		return
+
+	var node = current_scene.get_node_or_null(old_path)
+	if not node: 
+		print("Node to rename not found: %s" % old_path)
+		return
+
+	main.change_detector.set_node_supression(node, true)
+	node.name = new_name
+	await get_tree().create_timer(0.1).timeout
+	main.change_detector.set_node_supression(node, false)
+
+@rpc("authority", "call_remote", "reliable")
+func receive_node_reparent(scene_path: String, node_path: NodePath, new_parent_path: NodePath, new_index: int) -> void:
+	var current_scene = EditorInterface.get_edited_scene_root()
+
+	if not current_scene or current_scene.scene_file_path != scene_path:
+		var apply_reparent = func(scene_root: Node):
+			var node = scene_root.get_node_or_null(node_path)
+			var new_parent = scene_root.get_node_or_null(new_parent_path)
+			if new_parent_path.is_empty(): new_parent = scene_root
+			if not node or not new_parent: return false
+
+			var old_parent = node.get_parent()
+			old_parent.remove_child(node)
+			new_parent.add_child(node)
+			new_parent.move_child(node, new_index)
+			return true
+		_apply_change_to_unloaded_scene(scene_path, apply_reparent)
+		return
+
+	var node = current_scene.get_node_or_null(node_path)
+	var new_parent = current_scene.get_node_or_null(new_parent_path)
+
+	if new_parent_path.is_empty():
+		new_parent = current_scene
+
+	if not node or not new_parent:
+		print("Node or parent not found for reparenting")
+		return
+
+	main.change_detector.set_node_supression(node, true)
+
+	var old_parent = node.get_parent()
+	old_parent.remove_child(node)
+	new_parent.add_child(node)
+	new_parent.move_child(node, new_index)
+
+	await get_tree().create_timer(0.1).timeout
+	main.change_detector.set_node_supression(node, false)
 
 func is_active() -> bool:
 	return client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
