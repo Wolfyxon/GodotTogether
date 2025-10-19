@@ -397,6 +397,7 @@ text = "Actions"
 layout_mode = 2
 
 [node name="user" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox"]
+visible = false
 layout_mode = 2
 script = ExtResource("9_ymxdp")
 
@@ -511,6 +512,122 @@ layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "*You have unsaved changes"
+
+[node name="Pending Users" type="ScrollContainer" parent="mainMenu/main/session/tabs"]
+visible = false
+layout_mode = 2
+script = ExtResource("7_nhpql")
+metadata/_tab_index = 2
+metadata/is_pending = true
+
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Pending Users"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="header" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox"]
+layout_mode = 2
+
+[node name="color" type="Control" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="name" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="id" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ID"
+
+[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="name" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header/ip"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "IP address"
+
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/header/ip"]
+layout_mode = 2
+icon = ExtResource("7_1sjc5")
+flat = true
+
+[node name="actions" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Actions"
+
+[node name="sep" type="HSeparator" parent="mainMenu/main/session/tabs/Pending Users/vbox"]
+layout_mode = 2
+
+[node name="user" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox"]
+visible = false
+layout_mode = 2
+script = ExtResource("9_ymxdp")
+
+[node name="color" type="ColorRect" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="name" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cool person"
+placeholder_text = "error"
+editable = false
+
+[node name="id" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "123"
+placeholder_text = "error"
+editable = false
+
+[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/ip"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "127.0.0.1"
+placeholder_text = "error"
+editable = false
+secret = true
+
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/ip"]
+layout_mode = 2
+icon = ExtResource("7_1sjc5")
+flat = true
+
+[node name="rank" type="OptionButton" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+disabled = true
+selected = 0
+item_count = 1
+popup/item_0/text = "error"
+popup/item_0/id = 0
+
+[node name="actions" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Kick"
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu"]
 visible = false
@@ -801,3 +918,5 @@ text = "close"
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/close" to="mainMenu/settings" method="hide"]
+[connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Pending Users" method="toggle_all_ips"]
+[connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Pending Users/vbox/user" method="toggle_ip_visibility"]

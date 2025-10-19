@@ -12,6 +12,7 @@ func _ready() -> void:
 	menu_window.gui = self
 	menu.gui = self
 	menu.users.gui = self
+	menu.get_node("session/tabs/Pending Users").gui = self
 	disclaimer.gui = self
 	
 	if main:
@@ -49,30 +50,6 @@ func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 	popup.confirmed.connect(popup.queue_free)
 
 	return popup
-
-func show_user_approval_request(user: GDTUser) -> void:
-	var dialog = ConfirmationDialog.new()
-	dialog.dialog_text = "User '%s' (ID: %d) wants to join.\nApprove connection?" % [user.name, user.id]
-	dialog.title = "Connection Request"
-	dialog.dialog_autowrap = true
-	
-	add_child(dialog)
-	dialog.popup_centered()
-	
-	dialog.confirmed.connect(func():
-		main.server.approve_pending_user(user)
-		dialog.queue_free()
-	)
-	
-	dialog.canceled.connect(func():
-		main.server.reject_pending_user(user)
-		dialog.queue_free()
-	)
-	
-	dialog.close_requested.connect(func():
-		main.server.reject_pending_user(user)
-		dialog.queue_free()
-	)
 
 func confirm(text: String) -> bool:
 	var p := ConfirmationDialog.new()

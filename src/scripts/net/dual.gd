@@ -97,14 +97,16 @@ func _user_connected(user: GDTUser) -> void:
 	user_connected.emit(user)
 	
 	if should_notify_user_connection():
-		main.toaster.push_toast("User %s (%s) joined" % [user.name, user.id])
+		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		main.toaster.push_toast("User %s (%s) joined" % [user.name, ip])
 
 func _user_disconnected(user: GDTUser) -> void:
 	users.erase(user)
 	user_disconnected.emit(user)
 	
 	if should_notify_user_connection():
-		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, user.id])
+		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, ip])
 
 func _users_listed(users: Array[GDTUser]) -> void:
 	self.users = users
@@ -145,13 +147,17 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 	elif main.server.is_active():
 		main.server.submit_node_update(scene_path, node_path, dict)
 
-func _node_removed(node: Node) -> void:
+func _node_removed(node: Node, node_path: NodePath) -> void:
+	await get_tree().process_frame
+	if is_instance_valid(node) and node.is_inside_tree():
+		return
+
 	if not should_update(node): return
 	
 	var scene = EditorInterface.get_edited_scene_root()
+	if not is_instance_valid(scene): return
 	
 	var scene_path = scene.scene_file_path
-	var node_path = scene.get_path_to(node)
 
 	if main.client.is_active():
 		main.server.node_removal_request.rpc_id(1, scene_path, node_path)
@@ -173,7 +179,7 @@ func _node_added(node: Node) -> void:
 		properties[key] = value
 
 	if main.client.is_active():
-		main.server.node_add_request.rpc_id(0, scene_path, node_path, node.get_class(), properties)
+		main.server.node_add_request.rpc_id(1, scene_path, node_path, node.get_class(), properties)
 	elif main.server.is_active():
 		main.server.submit_node_add(scene_path, node_path, node.get_class(), properties)
 
@@ -196,7 +202,13 @@ func _node_reparented(node: Node, old_parent: Node, new_parent: Node) -> void:
 	
 	var scene = EditorInterface.get_edited_scene_root()
 	var scene_path = scene.scene_file_path
-	var node_path = scene.get_path_to(node)
+	
+	var old_path_str = scene.get_path_to(old_parent).get_concatenated_subnames()
+	if old_path_str != "":
+		old_path_str += "/"
+	old_path_str += node.name
+	var node_path = NodePath(old_path_str)
+
 	var new_parent_path = scene.get_path_to(new_parent)
 	var new_index = node.get_index()
 

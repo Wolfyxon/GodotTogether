@@ -11,9 +11,16 @@ var gui: GodotTogetherGUI
 @onready var ip_toggle = $vbox/header/ip/toggle
 
 var global_ip_visible := false
+var is_pending_tab := false
 
 func _ready() -> void:
 	await get_tree().process_frame
+
+	if has_meta("is_pending"):
+		is_pending_tab = get_meta("is_pending")
+	
+	if not gui: return
+	if not gui.visuals_available(): return
 	
 	if not gui: return
 	if not gui.visuals_available(): return
@@ -28,24 +35,54 @@ func _ready() -> void:
 		)
 	
 	if gui.main:
-		gui.main.dual.users_listed.connect(_users_listed)
-		gui.main.dual.user_connected.connect(add_user)
-		gui.main.dual.user_disconnected.connect(remove_user)
-
+		if is_pending_tab:
+			var refresh_timer = Timer.new()
+			refresh_timer.wait_time = 1.0
+			refresh_timer.timeout.connect(_refresh_pending_users)
+			add_child(refresh_timer)
+			refresh_timer.start()
+		else:
+			gui.main.dual.users_listed.connect(_users_listed)
+			gui.main.dual.user_connected.connect(add_user)
+			gui.main.dual.user_disconnected.connect(remove_user)
+		
 	template.hide()
+
+func _refresh_pending_users() -> void:
+	if not gui or not gui.main: return
+	
+	for user in gui.main.server.pending_users:
+		if not get_entry(user):
+			add_pending_user(user)
+	
+	for entry in get_entries():
+		var user = entry.user
+		if user and not user in gui.main.server.pending_users:
+			entry.queue_free()
+
+func add_pending_user(user: GDTUser) -> void:
+	if get_entry(user):
+		return
+	
+	var clone: GDTGUIUser = template.duplicate()
+	clone.visible = true
+	clone.name = "pending_" + str(user.id)
+	clone.is_pending = true
+	
+	$vbox.add_child(clone)
+	clone.set_user(user)
 
 func _users_listed(users: Array[GDTUser]) -> void:
 	clear()
-
 	for user in users:
 		add_user(user)
 
 func add_user(user: GDTUser) -> void:
 	if get_entry(user):
-		push_warning("User %s alreay on the list" % user.id)
+		push_warning("User %s already on the list" % user.id)
 		return
 	
-	var clone: GDTGUIUser = $vbox/user.duplicate()
+	var clone: GDTGUIUser = template.duplicate()
 	clone.visible = true
 	clone.name = str(user.id)
 	
@@ -71,7 +108,6 @@ func get_entry_by_id(id: int) -> GDTGUIUser:
 
 func remove_by_id(id: int) -> void:
 	var entry = get_entry_by_id(id)
-
 	if entry:
 		entry.queue_free()
 
