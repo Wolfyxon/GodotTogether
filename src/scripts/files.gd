@@ -38,6 +38,17 @@ static func get_file_tree_hashes(root := "res://") -> Dictionary:
 	
 	return res
 
+static func get_directory_hashes() -> Dictionary:
+	var res = {}
+	for dir in ["res://scripts", "res://scenes", "res://resources"]:
+		if DirAccess.dir_exists_absolute(dir):
+			for path in get_file_tree(dir):
+				var f = FileAccess.open(path, FileAccess.READ)
+				if f:
+					res[path] = f.get_sha256(path)
+					f.close()
+	return res
+
 static func get_files(path: String) -> Array[String]:
 	var res: Array[String] = []
 	
