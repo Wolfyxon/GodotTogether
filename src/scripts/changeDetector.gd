@@ -335,13 +335,16 @@ func observe_recursive(node: Node) -> void:
 	for i in GDTUtils.get_descendants(node):
 		observe(i)
 
+func can_sync_files() -> bool:
+	return not refrate.paused and not suppress_filesystem_sync
+
 func _filesystem_changed() -> void:
 	await get_tree().create_timer(0.5).timeout
 	_check_filesystem_changes()
 
 func _check_filesystem_changes() -> void:
 	if not main or not main.is_session_active(): return
-	if suppress_filesystem_sync: return
+	if not can_sync_files(): return
 	
 	var current_hashes = GDTFiles.get_file_tree_hashes()
 	
