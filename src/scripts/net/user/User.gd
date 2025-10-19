@@ -36,7 +36,11 @@ var authenticated_at := -1.0
 var authenticated := false
 
 var permissions: Array[GodotTogether.Permission] = [
-	GodotTogether.Permission.EDIT_SCENES
+    GodotTogether.Permission.EDIT_SCENES,
+    GodotTogether.Permission.EDIT_SCRIPTS,
+    GodotTogether.Permission.ADD_CUSTOM_FILES,
+    GodotTogether.Permission.MODIFY_CUSTOM_FILES,
+    GodotTogether.Permission.DELETE_SCRIPTS
 ]
 
 func _init(id: int, peer: ENetPacketPeer = null, main: GodotTogether = null):
