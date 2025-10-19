@@ -31,6 +31,8 @@ func _ready() -> void:
 	main.change_detector.node_properties_changed.connect(_node_properties_changed)
 	main.change_detector.node_removed.connect(_node_removed)
 	main.change_detector.node_added.connect(_node_added)
+	main.change_detector.node_renamed.connect(_node_renamed)
+	main.change_detector.node_reparented.connect(_node_reparented)
 	
 	update_timer.timeout.connect(_update)
 	update_timer.one_shot = false
@@ -43,16 +45,33 @@ func _update() -> void:
 	if not main.is_session_active(): return
 	
 	var viewport_2d = EditorInterface.get_editor_viewport_2d()
+	if not viewport_2d: return
+	
 	var mPos = viewport_2d.get_mouse_position() / Vector2(viewport_2d.size)
 	
 	if mPos != prev_mouse_pos and DisplayServer.window_is_focused():
 		prev_mouse_pos = mPos
 		update_2d_avatar.rpc(mPos)
-		
+	
+	var viewport_3d = EditorInterface.get_editor_viewport_3d()
+	if not viewport_3d: return
+	
+	var new_camera = viewport_3d.get_camera_3d()
+	if not new_camera or not is_instance_valid(new_camera): 
+		return
+	
+	if new_camera != camera:
+		camera = new_camera
+		prev_3d_pos = Vector3.ZERO
+		prev_3d_rot = Vector3.ZERO
+		return
+	
+	if camera.position == Vector3.ZERO and camera.rotation == Vector3.ZERO:
+		return
+	
 	if camera.position != prev_3d_pos or camera.rotation != prev_3d_rot:
 		prev_3d_pos = camera.position
 		prev_3d_rot = camera.rotation
-		
 		update_3d_avatar.rpc(camera.position, camera.rotation)
 
 func _peer_connected(id: int) -> void:
@@ -122,7 +141,7 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 		dict[key] = value
 	
 	if main.client.is_active():
-		main.server.node_update_request.rpc_id(0, scene_path, node_path, dict)
+		main.server.node_update_request.rpc_id(1, scene_path, node_path, dict)
 	elif main.server.is_active():
 		main.server.submit_node_update(scene_path, node_path, dict)
 
@@ -135,7 +154,7 @@ func _node_removed(node: Node) -> void:
 	var node_path = scene.get_path_to(node)
 
 	if main.client.is_active():
-		main.server.node_removal_request.rpc_id(0, scene_path, node_path)
+		main.server.node_removal_request.rpc_id(1, scene_path, node_path)
 	elif main.server.is_active():
 		main.server.submit_node_removal(scene_path, node_path)
 
@@ -145,11 +164,46 @@ func _node_added(node: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	var scene_path = scene.scene_file_path
 	var node_path = scene.get_path_to(node)
+	
+	var properties = {}
+	for key in GDTChangeDetector.get_property_keys(node):
+		var value = node[key]
+		if value is Resource:
+			value = GDTChangeDetector.encode_resource(value)
+		properties[key] = value
 
 	if main.client.is_active():
-		main.server.node_add_request.rpc_id(0, scene_path, node_path, node.get_class())
+		main.server.node_add_request.rpc_id(0, scene_path, node_path, node.get_class(), properties)
 	elif main.server.is_active():
-		main.server.submit_node_add(scene_path, node_path, node.get_class())
+		main.server.submit_node_add(scene_path, node_path, node.get_class(), properties)
+
+func _node_renamed(node: Node, old_name: String, new_name: String) -> void:
+	if not should_update(node): return
+	
+	var scene = EditorInterface.get_edited_scene_root()
+	var parent = node.get_parent()
+	
+	var old_path = scene.get_path_to(parent).get_concatenated_names() + "/" + old_name
+	var old_node_path = NodePath(old_path)
+	
+	if main.client.is_active():
+		main.server.node_rename_request.rpc_id(1, scene.scene_file_path, old_node_path, new_name)
+	elif main.server.is_active():
+		main.server.submit_node_rename(scene.scene_file_path, old_node_path, new_name)
+
+func _node_reparented(node: Node, old_parent: Node, new_parent: Node) -> void:
+	if not should_update(node): return
+	
+	var scene = EditorInterface.get_edited_scene_root()
+	var scene_path = scene.scene_file_path
+	var node_path = scene.get_path_to(node)
+	var new_parent_path = scene.get_path_to(new_parent)
+	var new_index = node.get_index()
+
+	if main.client.is_active():
+		main.server.node_reparent_request.rpc_id(1, scene_path, node_path, new_parent_path, new_index)
+	elif main.server.is_active():
+		main.server.submit_node_reparent(scene_path, node_path, new_parent_path, new_index)
 
 func get_user_by_id(id: int) -> GDTUser:
 	for i in users:
@@ -229,6 +283,7 @@ func update_2d_avatar(vector: Vector2) -> void:
 @rpc("any_peer")
 func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:
 	if not main: return
+	if position == Vector3.ZERO and rotation == Vector3.ZERO: return
 	
 	var marker = get_avatar_3d(multiplayer.get_remote_sender_id())
 	if not marker: return
