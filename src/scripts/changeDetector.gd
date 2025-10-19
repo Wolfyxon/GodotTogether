@@ -347,6 +347,9 @@ func _check_filesystem_changes() -> void:
 	if not main or not main.is_session_active(): return
 	if not can_sync_files(): return
 	
+	if main.client.is_active() and not main.client.is_fully_synced:
+		return
+	
 	var current_hashes = GDTFiles.get_file_tree_hashes()
 	
 	for path in current_hashes:
