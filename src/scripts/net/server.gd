@@ -144,7 +144,8 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	
 	if GDTSettings.get_setting("server/require_approval"):
 		pending_users.append(user)
-		main.gui.show_user_approval_request(user)
+		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		main.toaster.push_toast("User %s (%s) wants to join. Check Pending Users tab." % [user.name, ip])
 		return
 	
 	_approve_user(user)
@@ -163,6 +164,8 @@ func _approve_user(user: GDTUser) -> void:
 	auth_rpc(main.client.user_connected, [user_dict], [user.id])
 	main.client.receive_user_list.rpc_id(user.id, get_user_dicts())
 	main.dual._user_connected(user)
+	
+	main.toaster.push_toast("User %s (%s) approved and joined" % [user.name, user.id])
 
 	for i in get_authenticated_users():
 		if i.id == user.id: continue
