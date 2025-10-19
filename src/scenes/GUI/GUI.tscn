@@ -529,13 +529,16 @@ horizontal_alignment = 1
 [node name="text" type="RichTextLabel" parent="mainMenu/disclaimer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
-text = "This plugin is NOT COMPLETE.  You are going to encounter various bugs and unfinished features.
+text = "[indent]
+• Do not use the plugin with people you don't fully trust.
+• You may end up getting hacked with malicious scripts in the projects. 
+• Backup your projects before any use or you may end up breaking them.
+• The plugin is NOT complete and is still under development.
+• You will encounter bugs and half-working features.
+[/indent]
 
-For now, don't use this plugin outside of testing as editing only works on a basic level.
-
-Do not collaborate with people you don't fully trust as you might be infected with malware and your project files may be stolen.
-Currently the plugin does not have any security measures to protect against malicious project scripts (including tool scripts which run in the editor).
 [center]
 [url=https://github.com/Wolfyxon/GodotTogether/issues/1]TODO list[/url] | [url=https://github.com/Wolfyxon/GodotTogether/issues/new]Report bugs[/url] | [url=https://github.com/Wolfyxon/GodotTogether]Source code[/url] | [url=https://discord.com/invite/RztUGCK]Discord server[/url]
 [/center]"
