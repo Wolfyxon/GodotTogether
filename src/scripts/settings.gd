@@ -13,7 +13,8 @@ const default_data = {
 		"whitelist": ["127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1"], # IP address whitelist
 		"blacklist": [], # blocked IP addresses
 		"whitelist_enabled": false,
-		"allow_external_connections": true # allow connections outside of the local network (if the user has open ports) 
+		"allow_external_connections": true, # allow connections outside of the local network (if the user has open ports) 
+		"require_approval": false
 	},
 
 	"notifications": {

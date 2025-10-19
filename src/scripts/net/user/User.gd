@@ -11,7 +11,8 @@ enum DisconnectReason {
 	UNKNOWN,
 	KICKED,
 	BANNED,
-	PASSWORD_INVALID
+	PASSWORD_INVALID,
+	REJECTED
 }
 
 const FIELDS = [
@@ -120,6 +121,8 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 			return "You are banned"
 		DisconnectReason.PASSWORD_INVALID:
 			return "Invalid password"
+		DisconnectReason.REJECTED:
+			return "Connection rejected by host"
 	
 	return "Connection lost"
 

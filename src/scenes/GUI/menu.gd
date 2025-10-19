@@ -36,6 +36,7 @@ func _host() -> void:
 		session_cancel.visible = false
 		
 		GDTSettings.set_setting("server/password", host_password.text)
+		GDTSettings.set_setting("server/require_approval", $sessionInit/start/host/approveUsers.button_pressed)
 		
 		await RenderingServer.frame_post_draw
 		
@@ -108,7 +109,6 @@ func _joined() -> void:
 	
 	$session/top/status.text = "Connected"
 	$session/top/end.text = "Disconnect"
-
 
 func set_session_init_cover(text: String = "") -> void:
 	if text == "":
