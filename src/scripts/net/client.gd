@@ -19,6 +19,8 @@ var target_file_count := 0
 var connection_cancelled := false
 var disconnect_reason: GDTUser.DisconnectReason = 0
 
+var is_fully_synced := false
+
 func _ready() -> void:
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
@@ -41,6 +43,8 @@ func _disconnected() -> void:
 	if multiplayer.is_server(): return
 
 	print("Disconnected from server")
+	
+	is_fully_synced = false
 
 	main.gui.alert(
 		GDTUser.disconnect_reason_to_string(disconnect_reason),
@@ -78,6 +82,7 @@ func _handle_connecting() -> void:
 func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()
 	connection_cancelled = false
+	is_fully_synced = false
 
 	var err = client_peer.create_client(ip, port)
 	if err: return err
@@ -130,6 +135,9 @@ func _project_files_downloaded() -> void:
 
 	EditorInterface.get_resource_filesystem().scan()
 
+	await get_tree().create_timer(1.0).timeout
+	
+	is_fully_synced = true
 	main.change_detector.resume()
 	main.change_detector.observe_current_scene()
 
