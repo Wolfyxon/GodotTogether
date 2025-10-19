@@ -97,14 +97,16 @@ func _user_connected(user: GDTUser) -> void:
 	user_connected.emit(user)
 	
 	if should_notify_user_connection():
-		main.toaster.push_toast("User %s (%s) joined" % [user.name, user.id])
+		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		main.toaster.push_toast("User %s (%s) joined" % [user.name, ip])
 
 func _user_disconnected(user: GDTUser) -> void:
 	users.erase(user)
 	user_disconnected.emit(user)
 	
 	if should_notify_user_connection():
-		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, user.id])
+		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, ip])
 
 func _users_listed(users: Array[GDTUser]) -> void:
 	self.users = users
@@ -200,7 +202,12 @@ func _node_reparented(node: Node, old_parent: Node, new_parent: Node) -> void:
 	
 	var scene = EditorInterface.get_edited_scene_root()
 	var scene_path = scene.scene_file_path
-	var node_path = (scene.get_path_to(old_parent) as NodePath).get_concatenated_subnames() + node.name
+	
+	var old_path_str = scene.get_path_to(old_parent).get_concatenated_subnames()
+	if old_path_str != "":
+		old_path_str += "/"
+	old_path_str += node.name
+	var node_path = NodePath(old_path_str)
 
 	var new_parent_path = scene.get_path_to(new_parent)
 	var new_index = node.get_index()
