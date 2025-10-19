@@ -235,12 +235,15 @@ func node_add_request(scene_path: String, node_path: NodePath, node_type: String
 	submit_node_add(scene_path, node_path, node_type, properties)
 
 func submit_node_removal(scene_path: String, node_path: NodePath, sender := 0) -> void:
+	main.client.receive_node_removal(scene_path, node_path)
 	auth_rpc(main.client.receive_node_removal, [scene_path, node_path], [sender])
 
 func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary, sender := 0) -> void:
+	main.client.receive_node_updates(scene_path, node_path, property_dict)
 	auth_rpc(main.client.receive_node_updates, [scene_path, node_path, property_dict], [sender])
 
 func submit_node_add(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary, sender := 0) -> void:
+	main.client.receive_node_add(scene_path, node_path, node_type, properties)
 	auth_rpc(main.client.receive_node_add, [scene_path, node_path, node_type, properties], [sender])
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -256,9 +259,11 @@ func node_reparent_request(scene_path: String, node_path: NodePath, new_parent_p
 	submit_node_reparent(scene_path, node_path, new_parent_path, new_index)
 
 func submit_node_rename(scene_path: String, old_path: NodePath, new_name: String, sender := 0) -> void:
+	main.client.receive_node_rename(scene_path, old_path, new_name)
 	auth_rpc(main.client.receive_node_rename, [scene_path, old_path, new_name], [sender])
 
 func submit_node_reparent(scene_path: String, node_path: NodePath, new_parent_path: NodePath, new_index: int, sender := 0) -> void:
+	main.client.receive_node_reparent(scene_path, node_path, new_parent_path, new_index)
 	auth_rpc(main.client.receive_node_reparent, [scene_path, node_path, new_parent_path, new_index], [sender])
 
 @rpc("any_peer", "call_remote", "reliable")
