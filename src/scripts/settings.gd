@@ -17,6 +17,10 @@ const default_data = {
 		"require_approval": false
 	},
 
+	"advanced": {
+		"real_time_file_sync": true
+	},
+
 	"notifications": {
 		"users": true
 	},

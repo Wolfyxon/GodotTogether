@@ -811,18 +811,20 @@ text = "Special thanks to: Zastinian, ImmortalOctogen"
 autowrap_mode = 3
 
 [node name="settings" type="PopupPanel" parent="mainMenu"]
+oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 1
 size = Vector2i(500, 400)
+visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings"]
-offset_left = 9.0
-offset_top = 9.0
-offset_right = 491.0
-offset_bottom = 391.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = 487.0
+offset_bottom = 387.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
 layout_mode = 2
@@ -836,7 +838,7 @@ size_flags_vertical = 3
 [node name="HSeparator" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="lblGeneral" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "General"
@@ -851,7 +853,7 @@ metadata/setting = "notifications/users"
 [node name="HSeparator2" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="lblSecurity" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Security"
@@ -877,7 +879,32 @@ text = "Accept tool scripts"
 [node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="lblAdvanced" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Advanced"
+
+[node name="advancedWarn" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8580836, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "These settings are meant for plugin developers and should not be touched.
+Leave everything enabled."
+autowrap_mode = 3
+
+[node name="realTimeFileSync" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+tooltip_text = "Enable real time file synchronization.
+When disabled, helps test the plugin more quickly when file syncing isn't necessary."
+button_pressed = true
+text = "Enable real time file sync"
+metadata/setting = "advanced/real_time_file_sync"
+
+[node name="HSeparator4" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+
+[node name="lblActions" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Actions"
