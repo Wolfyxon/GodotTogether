@@ -36,18 +36,10 @@ static func get_absolute_path() -> String:
 	return ProjectSettings.globalize_path(FILE_PATH)
 
 static func make_editable(dict: Dictionary) -> Dictionary:
-	if not dict.is_read_only(): return dict
+	if not dict.is_read_only(): 
+		return dict
 	
-	var res = {}
-	for key in dict.keys():
-		var value = dict[key]
-		
-		if value is Dictionary:
-			value = make_editable(value)
-		
-		res[key] = value
-	
-	return res
+	return dict.duplicate(true)
 
 static func write_settings(data: Dictionary) -> void:
 	var f = FileAccess.open(FILE_PATH, FileAccess.WRITE)
