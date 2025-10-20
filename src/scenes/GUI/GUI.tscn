@@ -61,6 +61,7 @@ text = "About"
 icon = ExtResource("3_gc6ii")
 
 [node name="sessionInit" type="Control" parent="mainMenu/main"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -304,7 +305,6 @@ text = "Cancel"
 icon = ExtResource("9_4c4b3")
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -396,7 +396,6 @@ text = "Actions"
 layout_mode = 2
 
 [node name="user" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox"]
-visible = false
 layout_mode = 2
 script = ExtResource("9_ymxdp")
 
@@ -757,8 +756,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 9.0
 offset_top = 9.0
-offset_right = -9.0
-offset_bottom = -9.0
+offset_right = 491.0
+offset_bottom = 241.0
 grow_horizontal = 2
 grow_vertical = 2
 
