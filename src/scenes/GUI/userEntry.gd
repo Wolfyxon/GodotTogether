@@ -17,7 +17,7 @@ func set_user(user: GDTUser, gui_ref: GodotTogetherGUI, is_pending_entry: bool =
 	if user.peer:
 		$ip/value.text = user.peer.get_remote_address()
 	else:
-		$actions/kick.disabled = true
+		$actions/normal/kick.disabled = true
 		$ip/toggle.disabled = true
 		$ip/value.secret = false
 
@@ -29,28 +29,12 @@ func set_user(user: GDTUser, gui_ref: GodotTogetherGUI, is_pending_entry: bool =
 	var rank: OptionButton = $rank
 	rank.selected = user.type
 	
-	if is_pending:
-		setup_pending_actions()
-	else:
-		setup_normal_actions()
+	$actions/normal.visible = not is_pending
+	$actions/pending.visible = is_pending
 
-func setup_pending_actions() -> void:
-	var actions = $actions
-	var kick_btn = $actions/kick
-	
-	kick_btn.text = "Approve"
-	kick_btn.pressed.disconnect(_on_kick_pressed)
-	kick_btn.pressed.connect(_on_approve_pressed)
-	
-	var reject_btn = Button.new()
-	reject_btn.text = "Reject"
-	reject_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	reject_btn.pressed.connect(_on_reject_pressed)
-	actions.add_child(reject_btn)
-
-func setup_normal_actions() -> void:
-	if not $actions/kick.pressed.is_connected(_on_kick_pressed):
-		$actions/kick.pressed.connect(_on_kick_pressed)
+	$actions/normal/kick.pressed.connect(_on_kick_pressed)
+	$actions/pending/approve.pressed.connect(_on_approve_pressed)
+	$actions/pending/reject.pressed.connect(_on_reject_pressed)
 
 func set_ip_visible(state: bool) -> void:
 	if $ip/toggle.disabled:

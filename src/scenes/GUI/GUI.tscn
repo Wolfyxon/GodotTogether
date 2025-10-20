@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene load_steps=20 format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" uid="uid://pxi6vqp6q3d0" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="9_4c4b3"]
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/userEntry.gd" id="9_ymxdp"]
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
+[ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="13_u8ku5"]
 [ext_resource type="Script" uid="uid://don784mnkl7xf" path="res://addons/GodotTogether/src/scenes/GUI/settingsError.gd" id="14_a4cyb"]
 [ext_resource type="Texture2D" uid="uid://bpui0o3t80my5" path="res://addons/GodotTogether/src/img/script.svg" id="15_bvn1h"]
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
@@ -447,15 +448,50 @@ item_count = 1
 popup/item_0/text = "error"
 popup/item_0/id = 0
 
-[node name="actions" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user"]
+[node name="actions" type="Control" parent="mainMenu/main/session/tabs/Users/vbox/user"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="normal" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user/actions"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions"]
+[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/normal"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Kick the user from the session."
 text = "Kick"
+
+[node name="pending" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user/actions"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="approve" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/pending"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Let the user in,"
+icon = ExtResource("13_u8ku5")
+icon_alignment = 1
+
+[node name="reject" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/pending"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Don't allow the user to join."
+icon = ExtResource("9_4c4b3")
+icon_alignment = 1
 
 [node name="Pending Users" type="ScrollContainer" parent="mainMenu/main/session/tabs"]
 visible = false
@@ -563,15 +599,50 @@ item_count = 1
 popup/item_0/text = "error"
 popup/item_0/id = 0
 
-[node name="actions" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+[node name="actions" type="Control" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="normal" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions"]
+[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/normal"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Kick the user from the session."
 text = "Kick"
+
+[node name="pending" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="approve" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/pending"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Let the user in,"
+icon = ExtResource("13_u8ku5")
+icon_alignment = 1
+
+[node name="reject" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/pending"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Don't allow the user to join."
+icon = ExtResource("9_4c4b3")
+icon_alignment = 1
 
 [node name="Server settings" type="VBoxContainer" parent="mainMenu/main/session/tabs"]
 visible = false
