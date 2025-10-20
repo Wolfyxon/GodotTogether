@@ -6,17 +6,10 @@ var user: GDTUser
 var gui: GodotTogetherGUI
 var is_pending := false
 
-func _ready() -> void:
-	var parent = get_parent()
-	while parent:
-		if parent is GDTUserList:
-			gui = parent.gui
-			is_pending = parent.is_pending_tab
-			break
-		parent = parent.get_parent()
-
-func set_user(user: GDTUser) -> void:
+func set_user(user: GDTUser, gui_ref: GodotTogetherGUI, is_pending_entry: bool = false) -> void:
 	self.user = user
+	self.gui = gui_ref
+	self.is_pending = is_pending_entry
 	$color.color = user.color
 	$name.text = user.name
 	$id.text = str(user.id)
@@ -70,11 +63,11 @@ func _on_kick_pressed() -> void:
 		user.kick()
 
 func _on_approve_pressed() -> void:
-	if gui and gui.main:
-		gui.main.server.approve_pending_user(user)
+	if gui and gui.main and user:
+		user.approve(gui.main)
 		queue_free()
 
 func _on_reject_pressed() -> void:
-	if gui and gui.main:
-		gui.main.server.reject_pending_user(user)
+	if gui and gui.main and user:
+		user.reject()
 		queue_free()
