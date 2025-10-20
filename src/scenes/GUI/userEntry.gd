@@ -70,7 +70,7 @@ func _on_kick_pressed() -> void:
 
 func _on_approve_pressed() -> void:
 	if gui and gui.main and user:
-		user.approve(gui.main)
+		user.approve()
 		queue_free()
 
 func _on_reject_pressed() -> void:
