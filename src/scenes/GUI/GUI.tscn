@@ -457,65 +457,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Kick"
 
-[node name="Server settings" type="VBoxContainer" parent="mainMenu/main/session/tabs"]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="scroll" type="ScrollContainer" parent="mainMenu/main/session/tabs/Server settings"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
-layout_mode = 2
-text = "Server password:"
-
-[node name="password" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
-layout_mode = 2
-
-[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password"]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "No password set..."
-clear_button_enabled = true
-secret = true
-
-[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password"]
-layout_mode = 2
-icon = ExtResource("7_1sjc5")
-flat = true
-
-[node name="approve" type="CheckBox" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
-layout_mode = 2
-button_pressed = true
-text = "Approve users before they join"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings"]
-layout_mode = 2
-
-[node name="apply" type="Button" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Apply"
-
-[node name="unsavedWarning" type="Label" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer"]
-visible = false
-layout_mode = 2
-theme = ExtResource("5_dxbrh")
-theme_type_variation = &"WarningLabel"
-text = "*You have unsaved changes"
-
 [node name="Pending Users" type="ScrollContainer" parent="mainMenu/main/session/tabs"]
 visible = false
 layout_mode = 2
 script = ExtResource("7_nhpql")
-metadata/_tab_index = 2
+metadata/_tab_index = 1
 metadata/is_pending = true
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Pending Users"]
@@ -626,6 +572,60 @@ size_flags_vertical = 4
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Kick"
+
+[node name="Server settings" type="VBoxContainer" parent="mainMenu/main/session/tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="scroll" type="ScrollContainer" parent="mainMenu/main/session/tabs/Server settings"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
+layout_mode = 2
+text = "Server password:"
+
+[node name="password" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
+layout_mode = 2
+
+[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "No password set..."
+clear_button_enabled = true
+secret = true
+
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password"]
+layout_mode = 2
+icon = ExtResource("7_1sjc5")
+flat = true
+
+[node name="approve" type="CheckBox" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
+layout_mode = 2
+button_pressed = true
+text = "Approve users before they join"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings"]
+layout_mode = 2
+
+[node name="apply" type="Button" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Apply"
+
+[node name="unsavedWarning" type="Label" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("5_dxbrh")
+theme_type_variation = &"WarningLabel"
+text = "*You have unsaved changes"
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu"]
 visible = false
@@ -815,16 +815,15 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 1
 size = Vector2i(500, 400)
-visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings"]
-offset_left = 13.0
-offset_top = 13.0
-offset_right = 487.0
-offset_bottom = 387.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 491.0
+offset_bottom = 391.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
 layout_mode = 2
@@ -897,7 +896,6 @@ autowrap_mode = 3
 layout_mode = 2
 tooltip_text = "Enable real time file synchronization.
 When disabled, helps test the plugin more quickly when file syncing isn't necessary."
-button_pressed = true
 text = "Enable real time file sync"
 metadata/setting = "advanced/real_time_file_sync"
 
