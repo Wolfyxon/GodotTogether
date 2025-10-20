@@ -162,8 +162,6 @@ func approve() -> void:
 	main.client.receive_user_list.rpc_id(id, main.server.get_user_dicts())
 	main.dual._user_connected(self)
 	
-	main.toaster.push_toast("User %s (%s) approved and joined" % [name, id])
-
 	for i in main.server.get_authenticated_users():
 		if i.id == id: continue
 		var dict = i.to_dict()
