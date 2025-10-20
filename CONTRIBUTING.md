@@ -110,3 +110,16 @@ func greet(other_person: Person) -> String:
 ```
 
 For more info see [the Godot's documentation](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/static_typing.html).
+
+#### Use class prefixes
+All defined classes should start with the `GDT` prefix to make sure the plugin doesn't conflict with users' projects.
+
+❌ **Bad**:
+```gdscript
+class_name User
+```
+
+✅ **Good**:
+```gdscript
+class_name GDTUser
+```
