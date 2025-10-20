@@ -188,7 +188,6 @@ min_value = 1.0
 value = 5.0
 
 [node name="approveUsers" type="CheckButton" parent="mainMenu/main/sessionInit/start/host"]
-visible = true
 layout_mode = 2
 text = "Approve users before join"
 
@@ -746,6 +745,7 @@ text = "When you're done, please restart the plugin"
 horizontal_alignment = 1
 
 [node name="about" type="PopupPanel" parent="mainMenu"]
+oversampling_override = 1.0
 title = "About Godot Together"
 initial_position = 4
 size = Vector2i(500, 250)
@@ -757,8 +757,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 9.0
 offset_top = 9.0
-offset_right = 491.0
-offset_bottom = 241.0
+offset_right = -9.0
+offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -773,7 +773,7 @@ text = "Version: %s"
 
 [node name="author" type="Label" parent="mainMenu/about/scroll/vbox"]
 layout_mode = 2
-text = "by Wolfyxon"
+text = "by Wolfyxon & contributors"
 
 [node name="description" type="Label" parent="mainMenu/about/scroll/vbox"]
 custom_minimum_size = Vector2(0, 20)
@@ -800,6 +800,16 @@ uri = "https://github.com/Wolfyxon/GodotTogether/issues"
 layout_mode = 2
 text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
+
+[node name="sep" type="Control" parent="mainMenu/about/scroll/vbox"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="credits" type="Label" parent="mainMenu/about/scroll/vbox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+text = "Special thanks to: Zastinian, ImmortalOctogen"
+autowrap_mode = 3
 
 [node name="settings" type="PopupPanel" parent="mainMenu"]
 title = "GodotTogether - settings"
@@ -913,6 +923,8 @@ text = "close"
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Users/vbox/user" method="toggle_ip_visibility"]
+[connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Pending Users" method="toggle_all_ips"]
+[connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Pending Users/vbox/user" method="toggle_ip_visibility"]
 [connection signal="meta_clicked" from="mainMenu/disclaimer/text" to="mainMenu/disclaimer" method="_on_text_meta_clicked"]
 [connection signal="pressed" from="mainMenu/disclaimer/btnProceed" to="mainMenu/disclaimer" method="_on_btn_proceed_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/openGd" to="mainMenu/settingsError" method="_on_open_gd_pressed"]
@@ -921,5 +933,3 @@ text = "close"
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/close" to="mainMenu/settings" method="hide"]
-[connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Pending Users" method="toggle_all_ips"]
-[connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Pending Users/vbox/user" method="toggle_ip_visibility"]
