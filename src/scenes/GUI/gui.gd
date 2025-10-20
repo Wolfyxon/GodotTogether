@@ -12,6 +12,7 @@ func _ready() -> void:
 	menu_window.gui = self
 	menu.gui = self
 	menu.users.gui = self
+	menu.get_node("session/tabs/Pending Users").gui = self
 	disclaimer.gui = self
 	
 	if main:

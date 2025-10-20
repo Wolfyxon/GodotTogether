@@ -4,7 +4,7 @@ class_name GDTChangeDetector
 
 signal scene_changed
 signal node_properties_changed(node: Node, changed_keys: Array)
-signal node_removed(node: Node)
+signal node_removed(node: Node, path: NodePath)
 signal node_added(node: Node)
 signal node_renamed(node: Node, old_name: String, new_name: String)
 signal node_reparented(node: Node, old_parent: Node, new_parent: Node)
@@ -197,6 +197,8 @@ func _cycle() -> void:
 		if not node.is_inside_tree():
 			continue
 
+		track_node_parent(node)
+
 		var cached: Dictionary = observed_nodes_cache[node]
 		var current := get_property_hash_dict(node)
 
@@ -248,11 +250,11 @@ func _node_added(node: Node) -> void:
 
 func _node_exiting(node: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
-	if not scene: return
+	if not scene or not is_instance_valid(node): return
 
 	if scene.is_ancestor_of(node):
-		# TODO: Fix nodes being detected as deleted upon reloading scene (last time I tried to fix that I broke everything else instead :'3 )
-		node_removed.emit(node)
+		var node_path = scene.get_path_to(node)
+		node_removed.emit(node, node_path)
 
 func observe_current_scene() -> void:
 	var scene = EditorInterface.get_edited_scene_root()
@@ -346,6 +348,9 @@ func _filesystem_changed() -> void:
 func _check_filesystem_changes() -> void:
 	if not main or not main.is_session_active(): return
 	if not can_sync_files(): return
+	
+	if main.client.is_active() and not main.client.is_fully_synced:
+		return
 	
 	var current_hashes = GDTFiles.get_file_tree_hashes()
 	

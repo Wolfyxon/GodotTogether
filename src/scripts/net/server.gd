@@ -139,27 +139,58 @@ func receive_join_data(data_dict: Dictionary) -> void:
 		user.kick(GDTUser.DisconnectReason.PASSWORD_INVALID)
 		return
 
-	user.auth()
 	user.name = data.username
-
-	print("User %d authenticated as '%s'" % [id, data.username])
-	main.client.auth_successful.rpc_id(id)
+	
+	if GDTSettings.get_setting("server/require_approval"):
+		user.pending = true
+		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		main.toaster.push_toast("User %s (%s) wants to join. Check Pending Users tab." % [user.name, ip])
+		return
+	
+	user.auth()
+	
+	print("User %d authenticated as '%s'" % [user.id, user.name])
+	main.client.auth_successful.rpc_id(user.id)
 
 	var user_dict = user.to_dict()
 
 	main.dual.create_avatar_2d(user_dict)
 	main.dual.create_avatar_3d(user_dict)
 
-	auth_rpc(main.client.user_connected, [user_dict], [id])
-	main.client.receive_user_list.rpc_id(id, get_user_dicts())
+	auth_rpc(main.client.user_connected, [user_dict], [user.id])
+	main.client.receive_user_list.rpc_id(user.id, get_user_dicts())
 	main.dual._user_connected(user)
 
 	for i in get_authenticated_users():
-		if i.id == id: continue
+		if i.id == user.id: continue
 		var dict = i.to_dict()
 
-		main.dual.create_avatar_2d.rpc_id(id, dict)
-		main.dual.create_avatar_3d.rpc_id(id, dict)
+		main.dual.create_avatar_2d.rpc_id(user.id, dict)
+		main.dual.create_avatar_3d.rpc_id(user.id, dict)
+
+func _approve_user(user: GDTUser) -> void:
+	user.auth()
+	
+	print("User %d authenticated as '%s'" % [user.id, user.name])
+	main.client.auth_successful.rpc_id(user.id)
+
+	var user_dict = user.to_dict()
+
+	main.dual.create_avatar_2d(user_dict)
+	main.dual.create_avatar_3d(user_dict)
+
+	auth_rpc(main.client.user_connected, [user_dict], [user.id])
+	main.client.receive_user_list.rpc_id(user.id, get_user_dicts())
+	main.dual._user_connected(user)
+	
+	main.toaster.push_toast("User %s (%s) approved and joined" % [user.name, user.id])
+
+	for i in get_authenticated_users():
+		if i.id == user.id: continue
+		var dict = i.to_dict()
+
+		main.dual.create_avatar_2d.rpc_id(user.id, dict)
+		main.dual.create_avatar_3d.rpc_id(user.id, dict)
 
 @rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary) -> void:
@@ -215,12 +246,15 @@ func node_add_request(scene_path: String, node_path: NodePath, node_type: String
 	submit_node_add(scene_path, node_path, node_type, properties)
 
 func submit_node_removal(scene_path: String, node_path: NodePath, sender := 0) -> void:
+	main.client.receive_node_removal(scene_path, node_path)
 	auth_rpc(main.client.receive_node_removal, [scene_path, node_path], [sender])
 
 func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary, sender := 0) -> void:
+	main.client.receive_node_updates(scene_path, node_path, property_dict)
 	auth_rpc(main.client.receive_node_updates, [scene_path, node_path, property_dict], [sender])
 
 func submit_node_add(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary, sender := 0) -> void:
+	main.client.receive_node_add(scene_path, node_path, node_type, properties)
 	auth_rpc(main.client.receive_node_add, [scene_path, node_path, node_type, properties], [sender])
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -236,9 +270,11 @@ func node_reparent_request(scene_path: String, node_path: NodePath, new_parent_p
 	submit_node_reparent(scene_path, node_path, new_parent_path, new_index)
 
 func submit_node_rename(scene_path: String, old_path: NodePath, new_name: String, sender := 0) -> void:
+	main.client.receive_node_rename(scene_path, old_path, new_name)
 	auth_rpc(main.client.receive_node_rename, [scene_path, old_path, new_name], [sender])
 
 func submit_node_reparent(scene_path: String, node_path: NodePath, new_parent_path: NodePath, new_index: int, sender := 0) -> void:
+	main.client.receive_node_reparent(scene_path, node_path, new_parent_path, new_index)
 	auth_rpc(main.client.receive_node_reparent, [scene_path, node_path, new_parent_path, new_index], [sender])
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -358,3 +394,12 @@ static func is_local(ip: String) -> bool:
 	if a == 192 and b == 168: return true
 	
 	return false
+
+func get_pending_users() -> Array[GDTUser]:
+	var res: Array[GDTUser] = []
+	
+	for i in main.dual.users:
+		if i.pending and (not i.peer or i.is_peer_connected()):
+			res.append(i)
+	
+	return res
