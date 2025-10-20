@@ -209,8 +209,10 @@ func _cycle() -> void:
 			if i == "name":
 				if (i in cached) and (cached[i] != current[i]):
 					var old_name = observed_nodes[node]["name"]
+					
 					if not supressed_nodes.has(node):
 						node_renamed.emit(node, old_name, node.name)
+					
 					observed_nodes[node]["name"] = node.name
 
 			if (not i in cached) or (not i in current) or (cached[i] != current[i]):
@@ -347,7 +349,8 @@ func _filesystem_changed() -> void:
 	_check_filesystem_changes()
 
 func _check_filesystem_changes() -> void:
-	if not main or not main.is_session_active(): return
+	if not main: return
+	if not main.is_session_active(): return
 	if not can_sync_files(): return
 	
 	if main.client.is_active() and not main.client.is_fully_synced:
@@ -370,9 +373,11 @@ func _check_filesystem_changes() -> void:
 func _file_added(path: String) -> void:
 	if main.client.is_active():
 		var buffer = FileAccess.get_file_as_bytes(path)
+		
 		if buffer:
 			print("[CLIENT] Sending file add: ", path)
 			main.server.file_add_from_client.rpc_id(1, path, buffer)
+
 	elif main.server.is_active():
 		print("[SERVER] Broadcasting file add: ", path)
 		main.server.broadcast_file_add(path)
@@ -380,9 +385,11 @@ func _file_added(path: String) -> void:
 func _file_modified(path: String) -> void:
 	if main.client.is_active():
 		var buffer = FileAccess.get_file_as_bytes(path)
+		
 		if buffer:
 			print("[CLIENT] Sending file modify: ", path)
 			main.server.file_modify_from_client.rpc_id(1, path, buffer)
+
 	elif main.server.is_active():
 		print("[SERVER] Broadcasting file modify: ", path)
 		main.server.broadcast_file_modify(path)
@@ -391,6 +398,7 @@ func _file_removed(path: String) -> void:
 	if main.client.is_active():
 		print("[CLIENT] Sending file remove: ", path)
 		main.server.file_remove_from_client.rpc_id(1, path)
+	
 	elif main.server.is_active():
 		print("[SERVER] Broadcasting file remove: ", path)
 		main.server.broadcast_file_remove(path)
