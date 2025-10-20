@@ -17,6 +17,7 @@ func set_user(user: GDTUser, gui_ref: GodotTogetherGUI, is_pending_entry: bool =
 	if user.peer:
 		$ip/value.text = user.peer.get_remote_address()
 	else:
+		$actions/kick.disabled = true
 		$ip/toggle.disabled = true
 		$ip/value.secret = false
 		$ip/value.text = "local"
