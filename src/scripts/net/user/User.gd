@@ -63,8 +63,29 @@ func has_permission(permission: GodotTogether.Permission) -> bool:
 func auth() -> void:
 	assert(not authenticated, "User %d (%s) already authenticated" % [id, name])
 
+	print("User %d authenticated as '%s'" % [id, name])
+
 	authenticated = true
 	authenticated_at = Time.get_unix_time_from_system()
+
+	if type != Type.HOST:
+		main.client.auth_successful.rpc_id(id)
+
+		var user_dict = to_dict()
+		
+		main.dual.create_avatar_2d(user_dict)
+		main.dual.create_avatar_3d(user_dict)
+
+		main.server.auth_rpc(main.client.user_connected, [user_dict], [id])
+		main.client.receive_user_list.rpc_id(id, main.server.get_user_dicts())
+		main.dual._user_connected(self)
+		
+		for i in main.server.get_authenticated_users():
+			if i.id == id: continue
+			var dict = i.to_dict()
+
+			main.dual.create_avatar_2d.rpc_id(id, dict)
+			main.dual.create_avatar_3d.rpc_id(id, dict)
 
 func kick(reason: DisconnectReason = DisconnectReason.UNKNOWN) -> void:
 	assert(peer, "Unable to kick user %s: missing peer" % id)
@@ -150,25 +171,6 @@ func approve() -> void:
 	pending = false
 	auth()
 	
-	print("User %d authenticated as '%s'" % [id, name])
-	main.client.auth_successful.rpc_id(id)
-
-	var user_dict = to_dict()
-
-	main.dual.create_avatar_2d(user_dict)
-	main.dual.create_avatar_3d(user_dict)
-
-	main.server.auth_rpc(main.client.user_connected, [user_dict], [id])
-	main.client.receive_user_list.rpc_id(id, main.server.get_user_dicts())
-	main.dual._user_connected(self)
-	
-	for i in main.server.get_authenticated_users():
-		if i.id == id: continue
-		var dict = i.to_dict()
-
-		main.dual.create_avatar_2d.rpc_id(id, dict)
-		main.dual.create_avatar_3d.rpc_id(id, dict)
-
 func reject(reason: DisconnectReason = DisconnectReason.REJECTED) -> void:
 	assert(pending, "User %d (%s) is not pending" % [id, name])
 	pending = false

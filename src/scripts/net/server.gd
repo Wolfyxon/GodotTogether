@@ -46,6 +46,7 @@ func create_server_user() -> GDTUser:
 
 	user.name = GDTSettings.get_setting("username")
 	user.type = GDTUser.Type.HOST
+	user.main = main
 	user.id = 1
 
 	user.auth()
@@ -148,25 +149,6 @@ func receive_join_data(data_dict: Dictionary) -> void:
 		return
 	
 	user.auth()
-	
-	print("User %d authenticated as '%s'" % [user.id, user.name])
-	main.client.auth_successful.rpc_id(user.id)
-
-	var user_dict = user.to_dict()
-
-	main.dual.create_avatar_2d(user_dict)
-	main.dual.create_avatar_3d(user_dict)
-
-	auth_rpc(main.client.user_connected, [user_dict], [user.id])
-	main.client.receive_user_list.rpc_id(user.id, get_user_dicts())
-	main.dual._user_connected(user)
-
-	for i in get_authenticated_users():
-		if i.id == user.id: continue
-		var dict = i.to_dict()
-
-		main.dual.create_avatar_2d.rpc_id(user.id, dict)
-		main.dual.create_avatar_3d.rpc_id(user.id, dict)
 
 @rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary) -> void:
