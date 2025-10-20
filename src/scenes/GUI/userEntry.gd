@@ -20,7 +20,11 @@ func set_user(user: GDTUser, gui_ref: GodotTogetherGUI, is_pending_entry: bool =
 		$actions/kick.disabled = true
 		$ip/toggle.disabled = true
 		$ip/value.secret = false
-		$ip/value.text = "local"
+
+		if gui.main.server.is_active():
+			$ip/value.text = "local"
+		else:
+			$ip/value.text = "N/A"
 	
 	var rank: OptionButton = $rank
 	rank.selected = user.type
