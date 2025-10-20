@@ -1,3 +1,4 @@
+@tool
 class_name GDTUtils
 
 static func join(array: Array, separator := "\n") -> String:
