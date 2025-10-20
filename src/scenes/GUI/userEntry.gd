@@ -17,7 +17,9 @@ func set_user(user: GDTUser, gui_ref: GodotTogetherGUI, is_pending_entry: bool =
 	if user.peer:
 		$ip/value.text = user.peer.get_remote_address()
 	else:
-		$ip/value.text = "Local"
+		$ip/toggle.disabled = true
+		$ip/value.secret = false
+		$ip/value.text = "local"
 	
 	var rank: OptionButton = $rank
 	rank.selected = user.type
@@ -46,6 +48,9 @@ func setup_normal_actions() -> void:
 		$actions/kick.pressed.connect(_on_kick_pressed)
 
 func set_ip_visible(state: bool) -> void:
+	if $ip/toggle.disabled:
+		return
+
 	$ip/value.secret = not state
 	
 	if state:
