@@ -51,13 +51,15 @@ func _ready() -> void:
 func _refresh_pending_users() -> void:
 	if not gui or not gui.main: return
 	
-	for user in gui.main.server.pending_users:
+	var pending_users = gui.main.server.get_pending_users()
+	
+	for user in pending_users:
 		if not get_entry(user):
 			add_pending_user(user)
 	
 	for entry in get_entries():
 		var user = entry.user
-		if user and not user in gui.main.server.pending_users:
+		if user and not user in pending_users:
 			entry.queue_free()
 
 func add_pending_user(user: GDTUser) -> void:
@@ -67,10 +69,9 @@ func add_pending_user(user: GDTUser) -> void:
 	var clone: GDTGUIUser = template.duplicate()
 	clone.visible = true
 	clone.name = "pending_" + str(user.id)
-	clone.is_pending = true
 	
 	$vbox.add_child(clone)
-	clone.set_user(user)
+	clone.set_user(user, gui, true)
 
 func _users_listed(users: Array[GDTUser]) -> void:
 	clear()
@@ -87,7 +88,7 @@ func add_user(user: GDTUser) -> void:
 	clone.name = str(user.id)
 	
 	$vbox.add_child(clone)
-	clone.set_user(user)
+	clone.set_user(user, gui, false)
 
 func remove_user(user: GDTUser) -> void:
 	remove_by_id(user.id)

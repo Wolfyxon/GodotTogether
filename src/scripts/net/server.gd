@@ -12,7 +12,6 @@ const LOCALHOST := [
 ]
 
 var server_peer = ENetMultiplayerPeer.new()
-var pending_users: Array[GDTUser] = []
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_connected)
@@ -143,12 +142,31 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	user.name = data.username
 	
 	if GDTSettings.get_setting("server/require_approval"):
-		pending_users.append(user)
+		user.pending = true
 		var ip = user.peer.get_remote_address() if user.peer else "Local"
 		main.toaster.push_toast("User %s (%s) wants to join. Check Pending Users tab." % [user.name, ip])
 		return
 	
-	_approve_user(user)
+	user.auth()
+	
+	print("User %d authenticated as '%s'" % [user.id, user.name])
+	main.client.auth_successful.rpc_id(user.id)
+
+	var user_dict = user.to_dict()
+
+	main.dual.create_avatar_2d(user_dict)
+	main.dual.create_avatar_3d(user_dict)
+
+	auth_rpc(main.client.user_connected, [user_dict], [user.id])
+	main.client.receive_user_list.rpc_id(user.id, get_user_dicts())
+	main.dual._user_connected(user)
+
+	for i in get_authenticated_users():
+		if i.id == user.id: continue
+		var dict = i.to_dict()
+
+		main.dual.create_avatar_2d.rpc_id(user.id, dict)
+		main.dual.create_avatar_3d.rpc_id(user.id, dict)
 
 func _approve_user(user: GDTUser) -> void:
 	user.auth()
@@ -173,16 +191,6 @@ func _approve_user(user: GDTUser) -> void:
 
 		main.dual.create_avatar_2d.rpc_id(user.id, dict)
 		main.dual.create_avatar_3d.rpc_id(user.id, dict)
-
-func approve_pending_user(user: GDTUser) -> void:
-	if user in pending_users:
-		pending_users.erase(user)
-		_approve_user(user)
-
-func reject_pending_user(user: GDTUser) -> void:
-	if user in pending_users:
-		pending_users.erase(user)
-		user.kick(GDTUser.DisconnectReason.REJECTED)
 
 @rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary) -> void:
@@ -386,3 +394,12 @@ static func is_local(ip: String) -> bool:
 	if a == 192 and b == 168: return true
 	
 	return false
+
+func get_pending_users() -> Array[GDTUser]:
+	var res: Array[GDTUser] = []
+	
+	for i in main.dual.users:
+		if i.pending and (not i.peer or i.is_peer_connected()):
+			res.append(i)
+	
+	return res
