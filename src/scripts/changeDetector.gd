@@ -44,13 +44,14 @@ var observed_nodes_cache := {}
 var incoming_nodes := {
 	# scene path: Array[NodePath]
 }
-var refrate: Timer = Timer.new()
+
+var node_watcher: Timer = Timer.new()
 
 var last_scene := ""
 
 var filesystem_watcher: Timer = Timer.new()
-var cached_file_hashes := {}
 var suppress_filesystem_sync := false
+var cached_file_hashes := {}
 
 static func get_ignored_properties(obj: Object) -> Array:
 	for key in IGNORED_PROPERTIES.keys():
@@ -165,12 +166,12 @@ static func decode_resource(dict: Dictionary) -> Resource:
 	return resource
 
 func _ready() -> void:
-	refrate.wait_time = REFRESH_RATE
+	node_watcher.wait_time = REFRESH_RATE
 	
-	refrate.timeout.connect(_cycle)
+	node_watcher.timeout.connect(_cycle)
 	
-	add_child(refrate)
-	refrate.start()
+	add_child(node_watcher)
+	node_watcher.start()
 	
 	filesystem_watcher.wait_time = 1.0
 	filesystem_watcher.timeout.connect(_check_filesystem_changes)
@@ -287,10 +288,10 @@ func clear() -> void:
 	incoming_nodes.clear()
 
 func pause() -> void:
-	refrate.paused = true
+	node_watcher.paused = true
 
 func resume() -> void:
-	refrate.paused = false
+	node_watcher.paused = false
 
 func merge(node: Node, property_dict: Dictionary) -> void:
 	observe(node)
@@ -339,7 +340,7 @@ func observe_recursive(node: Node) -> void:
 		observe(i)
 
 func can_sync_files() -> bool:
-	return not refrate.paused and not suppress_filesystem_sync and GDTSettings.get_setting("advanced/real_time_file_sync")
+	return not node_watcher.paused and not suppress_filesystem_sync and GDTSettings.get_setting("advanced/real_time_file_sync")
 
 func _filesystem_changed() -> void:
 	await get_tree().create_timer(0.5).timeout
