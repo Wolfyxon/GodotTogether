@@ -12,7 +12,8 @@ enum DisconnectReason {
 	KICKED,
 	BANNED,
 	PASSWORD_INVALID,
-	REJECTED
+	REJECTED,
+	JOINING_TOO_FAST
 }
 
 const FIELDS = [
@@ -145,6 +146,8 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 			return "Invalid password"
 		DisconnectReason.REJECTED:
 			return "Connection rejected by host"
+		DisconnectReason.JOINING_TOO_FAST:
+			return "You are joining too quickly"
 	
 	return "Connection lost"
 

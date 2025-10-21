@@ -4,6 +4,7 @@ class_name GDTServer
 
 signal hosting_started
 
+const JOIN_DELAY: float = 5
 const LOCALHOST := [
 	"0:0:0:0:0:0:0:1", 
 	"127.0.0.1", 
@@ -12,18 +13,35 @@ const LOCALHOST := [
 ]
 
 var server_peer = ENetMultiplayerPeer.new()
+var ip_join_times = {}
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
 
 func _connected(id: int) -> void:
-	if not multiplayer.is_server(): return
+	if not multiplayer.is_server(): 
+		return
 
+	var now = Time.get_unix_time_from_system()
 	var peer = server_peer.get_peer(id)
 	var user = GDTUser.new(id, peer, main)
+	var ip = peer.get_remote_address()
 
 	print("New connection from %s ID: %d" % [peer.get_remote_address(), id])
+
+	if ip in ip_join_times:
+		var last_join = ip_join_times[ip]
+		prints(last_join, now, last_join + JOIN_DELAY, JOIN_DELAY)
+
+		if now < last_join + JOIN_DELAY:
+			print("User joined too quickly, refusing connection")
+			user.kick(GDTUser.DisconnectReason.JOINING_TOO_FAST)
+
+			ip_join_times[ip] = now
+			return
+		
+	ip_join_times[ip] = now
 
 	# The user needs to be added early
 	main.dual.users.append(user) 
