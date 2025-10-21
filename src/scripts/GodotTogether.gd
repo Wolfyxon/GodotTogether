@@ -77,10 +77,11 @@ func pre_start_check() -> bool:
 	if OS.has_feature("standalone"):
 		printerr(
 			"GodotTogether ended up in your exported game. \n" +
+			"It only wastes space and could slow it down. \n" +
 			"Please update your export presets: \n" + 
 			"Project -> Export -> <select> -> Resources -> Filters to exclude... -> Add `addons/GodotTogether/*`"
 		)
-		
+
 		return false
 
 	return true
