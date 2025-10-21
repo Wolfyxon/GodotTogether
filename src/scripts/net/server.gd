@@ -202,7 +202,8 @@ func broadcast_restart():
 	for user in main.dual.users:
 		main.dual.restart.rpc_id(user.id)
 	
-	await get_tree().process_frame
+	await get_tree().create_timer(0.5).timeout
+	
 	main.dual.restart()
 
 @rpc("any_peer", "call_remote", "reliable")

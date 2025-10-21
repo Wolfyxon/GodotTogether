@@ -62,15 +62,11 @@ func _exit_tree() -> void:
 	queue_free()
 
 func restart() -> void:
-	var tree = get_tree()
-
 	close_connection()
-	await tree.process_frame
-	
-	EditorInterface.set_plugin_enabled("GodotTogether", false)
-	await tree.process_frame
-	
-	EditorInterface.set_plugin_enabled("GodotTogether", true)
+
+	EditorInterface.get_base_control().add_child(
+		GDTRestarter.new()
+	)
 
 func is_session_active() -> bool:
 	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint() and (
