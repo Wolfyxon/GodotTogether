@@ -257,6 +257,27 @@ func create_avatar_2d(user_dict: Dictionary) -> GDTAvatar2D:
 	
 	return avatar
 
+@rpc("authority", "call_remote", "reliable")
+func restart() -> void:
+	if not GDTSettings.get_setting("dev/restart_broadcast"):
+		return
+
+	var id = multiplayer.get_remote_sender_id()
+
+	print("==================================")
+	print("! RESTART BROADCAST !")
+	print("Sender ID: %s" % id)
+	print("A plugin restart broadcast was activated. If this happened unintentionally please turn it off:")
+	print("GodotTogether menu -> Settings -> Advanced -> 'Enable restart broadcast'")
+	print("==================================")
+
+	EditorInterface.get_editor_toaster().push_toast(
+		"Restart broadcast received. Check console.", 
+		EditorToaster.SEVERITY_WARNING
+	)
+
+	main.restart()
+
 func get_avatar_2d(id: int) -> GDTAvatar2D:
 	for i in avatar_2d_markers:
 		if is_instance_valid(i) and i.id == id and i.is_inside_tree(): 

@@ -195,6 +195,17 @@ func project_files_request(hashes: Dictionary) -> void:
 	#main.client.project_files_downloaded.rpc_id(id)
 
 @rpc("any_peer", "call_remote", "reliable")
+func broadcast_restart():
+	if not GDTSettings.get_setting("dev/restart_broadcast"):
+		return
+
+	for user in main.dual.users:
+		main.dual.restart.rpc_id(user.id)
+	
+	await get_tree().process_frame
+	main.dual.restart()
+
+@rpc("any_peer", "call_remote", "reliable")
 func node_update_request(scene_path: String, node_path: NodePath, property_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	

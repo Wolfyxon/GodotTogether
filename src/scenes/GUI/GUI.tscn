@@ -319,6 +319,12 @@ size_flags_vertical = 0
 theme_override_font_sizes/font_size = 11
 text = "Stop server"
 
+[node name="restart" type="Button" parent="mainMenu/main/session/top"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "Broadcast plugin restart"
+
 [node name="showJoin" type="Button" parent="mainMenu/main/session/top"]
 visible = false
 layout_mode = 2
@@ -699,6 +705,9 @@ theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "*You have unsaved changes"
 
+[node name="update" type="Timer" parent="mainMenu/main"]
+autostart = true
+
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu"]
 visible = false
 offset_left = 13.0
@@ -979,6 +988,15 @@ Helps test basic networking when this feature isn't needed."
 text = "Disable node scanning"
 metadata/setting = "dev/disable_node_scanning"
 
+[node name="restartBroadcast" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+tooltip_text = "Do not use when using the plugin normally. This is meant for easier development. 
+Enable sending and receiving a restart signal that restarts the plugin for everyone in the server with this setting enabled.
+"
+button_pressed = true
+text = "Enable restart broadcast"
+metadata/setting = "dev/restart_broadcast"
+
 [node name="HSeparator4" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 
@@ -1025,10 +1043,12 @@ text = "close"
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/cancel" to="mainMenu/main" method="main_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/cover/vbox/btnCancel" to="mainMenu/main" method="_on_btn_cancel_pressed"]
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
+[connection signal="pressed" from="mainMenu/main/session/top/restart" to="mainMenu/main" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Users/vbox/user" method="toggle_ip_visibility"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Pending Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Pending Users/vbox/user" method="toggle_ip_visibility"]
+[connection signal="timeout" from="mainMenu/main/update" to="mainMenu/main" method="_on_update_timeout"]
 [connection signal="meta_clicked" from="mainMenu/disclaimer/text" to="mainMenu/disclaimer" method="_on_text_meta_clicked"]
 [connection signal="pressed" from="mainMenu/disclaimer/btnProceed" to="mainMenu/disclaimer" method="_on_btn_proceed_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/openGd" to="mainMenu/settingsError" method="_on_open_gd_pressed"]

@@ -171,3 +171,14 @@ func _on_btn_cancel_pressed() -> void:
 	if main:
 		main.close_connection()
 		set_session_init_cover()
+
+func _on_restart_pressed() -> void:
+	if main:
+		if main.server.is_active():
+			main.server.broadcast_restart()
+		else:
+			main.server.broadcast_restart.rpc_id(1)
+
+func _on_update_timeout() -> void:
+	if visuals_available():
+		$session/top/restart.visible = GDTSettings.get_setting("dev/restart_broadcast")

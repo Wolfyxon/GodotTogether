@@ -19,8 +19,10 @@ const DEFAULT_DATA = {
 	},
 
 	"dev": {
+		# Everything here should be `false` by default
 		"disable_real_time_file_sync": false,
-		"disable_node_scanning": false
+		"disable_node_scanning": false,
+		"restart_broadcast": false
 	},
 
 	"notifications": {
