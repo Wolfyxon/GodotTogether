@@ -39,16 +39,10 @@ func _enter_tree() -> void:
 	for i in components:
 		root.add_child(i)
 	
-	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
-	
-	button.get_parent().move_child(button, 1)
-	button.pressed.connect(open_menu)
-	
-	await get_tree().process_frame
+	setup_menu_button()
 
-	chat.main = self
-	var chat_btn = add_control_to_bottom_panel(chat, "Chat")
-	chat_btn.tooltip_text = "Toggle GodotTogether chat"
+	await get_tree().process_frame
+	setup_chat()
 
 func _exit_tree() -> void:
 	close_connection()
@@ -62,6 +56,18 @@ func is_session_active() -> bool:
 		GDTUtils.is_peer_connected(client.client_peer) or 
 		GDTUtils.is_peer_connected(server.server_peer)
 	)
+
+func setup_menu_button() -> void:
+	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
+	
+	button.get_parent().move_child(button, 1)
+	button.pressed.connect(open_menu)
+
+func setup_chat() -> void:
+	chat.main = self
+
+	var chat_btn = add_control_to_bottom_panel(chat, "Chat")
+	chat_btn.tooltip_text = "Toggle GodotTogether chat"
 
 func open_menu() -> void:
 	gui.get_menu_window().popup()
