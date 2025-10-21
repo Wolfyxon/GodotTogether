@@ -63,9 +63,13 @@ func _exit_tree() -> void:
 
 func restart() -> void:
 	var tree = get_tree()
-	EditorInterface.set_plugin_enabled("GodotTogether", false)
-	
+
+	close_connection()
 	await tree.process_frame
+	
+	EditorInterface.set_plugin_enabled("GodotTogether", false)
+	await tree.process_frame
+	
 	EditorInterface.set_plugin_enabled("GodotTogether", true)
 
 func is_session_active() -> bool:
@@ -118,6 +122,8 @@ func close_connection() -> void:
 func post_session_end() -> void:
 	button.reset()
 	dual.clear_avatars()
+
 	gui.get_menu().users.clear()
+	gui.get_menu().main_menu()
 
 	session_ended.emit()
