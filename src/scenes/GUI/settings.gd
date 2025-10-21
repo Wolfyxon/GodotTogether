@@ -46,9 +46,11 @@ func _on_reset_pressed() -> void:
 		"",
 		"The plugin will turn off and you'll need to reenable it manually."
 	], "\n")):
-		GDTSettings.write_settings(GDTSettings.DEFAULT_DATA)
-		EditorInterface.set_plugin_enabled("GodotTogether", false)
 
+		GDTSettings.write_settings(GDTSettings.DEFAULT_DATA)
+		gui.get_menu_window().hide() # For some reason it resets to the default state and doesn't hide after a reset
+		
+		EditorInterface.set_plugin_enabled("GodotTogether", false)
 
 func _on_show_file_pressed() -> void:
 	OS.shell_show_in_file_manager(GDTSettings.get_absolute_path())
