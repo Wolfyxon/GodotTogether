@@ -886,16 +886,15 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 1
 size = Vector2i(600, 400)
-visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings"]
-offset_left = 13.0
-offset_top = 13.0
-offset_right = 587.0
-offset_bottom = 387.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 591.0
+offset_bottom = 391.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
 layout_mode = 2
