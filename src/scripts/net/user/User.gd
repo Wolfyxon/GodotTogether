@@ -87,7 +87,7 @@ func auth() -> void:
 			main.dual.create_avatar_2d.rpc_id(id, dict)
 			main.dual.create_avatar_3d.rpc_id(id, dict)
 
-func kick(reason: DisconnectReason = DisconnectReason.UNKNOWN) -> void:
+func kick(reason: DisconnectReason = DisconnectReason.KICKED) -> void:
 	assert(peer, "Unable to kick user %s: missing peer" % id)
 	
 	authenticated = false
