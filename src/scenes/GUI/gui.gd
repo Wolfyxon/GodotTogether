@@ -17,6 +17,7 @@ func _ready() -> void:
 	
 	if main:
 		menu_window.visible = false
+		menu_window.main = main
 		menu.main = main
 		
 func _process(delta: float) -> void:
