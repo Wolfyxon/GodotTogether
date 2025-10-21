@@ -186,7 +186,7 @@ func _cycle() -> void:
 	if not main: return
 	if not root: return
 	
-	if not GDTSettings.get_setting("advanced/node_scanning"): 
+	if not GDTSettings.get_setting("dev/node_scanning"): 
 		return
 
 	var current_scene_path := root.scene_file_path
@@ -346,7 +346,7 @@ func observe_recursive(node: Node) -> void:
 		observe(i)
 
 func can_sync_files() -> bool:
-	return not node_watcher.paused and not suppress_filesystem_sync and GDTSettings.get_setting("advanced/real_time_file_sync")
+	return not node_watcher.paused and not suppress_filesystem_sync and GDTSettings.get_setting("dev/real_time_file_sync")
 
 func _filesystem_changed() -> void:
 	await get_tree().create_timer(0.5).timeout

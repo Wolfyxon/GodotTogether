@@ -950,12 +950,12 @@ text = "Accept tool scripts"
 [node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 
-[node name="lblAdvanced" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="lblDev" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
-text = "Advanced"
+text = "Developer"
 
-[node name="advancedWarn" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="devWarn" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.8580836, 0, 1)
@@ -968,15 +968,17 @@ autowrap_mode = 3
 layout_mode = 2
 tooltip_text = "Enable real time file synchronization.
 When disabled, helps test the plugin more quickly when file syncing isn't necessary."
+button_pressed = true
 text = "Enable real time file sync"
-metadata/setting = "advanced/real_time_file_sync"
+metadata/setting = "dev/real_time_file_sync"
 
 [node name="nodeScanning" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
 tooltip_text = "Enables scanning for node changes and replicating them to other clients.
 Fundemal feature of the plugin."
+button_pressed = true
 text = "Enable node scanning"
-metadata/setting = "advanced/node_scanning"
+metadata/setting = "dev/node_scanning"
 
 [node name="HSeparator4" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2

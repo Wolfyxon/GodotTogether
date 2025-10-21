@@ -18,7 +18,7 @@ const DEFAULT_DATA = {
 		"require_approval": false
 	},
 
-	"advanced": {
+	"dev": {
 		"real_time_file_sync": true,
 		"node_scanning": true
 	},
