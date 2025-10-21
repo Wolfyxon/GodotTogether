@@ -916,7 +916,8 @@ text = "General"
 
 [node name="userNotif" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
-tooltip_text = "Show a notification when a user joins or leaves the editing session."
+tooltip_text = "Show a notification when a user joins or leaves the editing session.
+Doesn't apply to join request notifications."
 button_pressed = true
 text = "User join/leave notifications"
 metadata/setting = "notifications/users"
