@@ -92,7 +92,7 @@ func _join() -> void:
 
 			return
 
-	set_session_init_cover("Authenticating...")
+	set_session_init_cover("Waiting for host's approval...")
 	
 	await main.client.auth_succeed
 
