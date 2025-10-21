@@ -19,8 +19,8 @@ const DEFAULT_DATA = {
 	},
 
 	"dev": {
-		"real_time_file_sync": true,
-		"node_scanning": true
+		"disable_real_time_file_sync": false,
+		"disable_node_scanning": false
 	},
 
 	"notifications": {
