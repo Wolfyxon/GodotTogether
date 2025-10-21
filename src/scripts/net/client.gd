@@ -81,6 +81,8 @@ func _handle_connecting() -> void:
 
 func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()
+
+	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
 	connection_cancelled = false
 	is_fully_synced = false
 
