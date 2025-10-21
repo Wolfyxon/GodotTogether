@@ -12,6 +12,7 @@ Here are things you can do to contribute to the development of Godot Together.
  		- [No AI generated code](#no-ai-generated-code) 
 		- [Code style](#code-style)
 		- [Typing](#typing)
+        - [Use class prefixes](#use-class-prefixes) 
 
 ## Bugs and suggesions
 If you've found a bug or would like to suggest a change or a new feature, you can use [issues](https://github.com/Wolfyxon/GodotTogether/issues).
