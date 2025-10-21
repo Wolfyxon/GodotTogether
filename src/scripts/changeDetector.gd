@@ -185,8 +185,12 @@ func _cycle() -> void:
 
 	if not main: return
 	if not root: return
+	
+	if not GDTSettings.get_setting("advanced/node_scanning"): 
+		return
 
 	var current_scene_path := root.scene_file_path
+	
 	if last_scene != current_scene_path:
 		last_scene = current_scene_path
 		scene_changed.emit()

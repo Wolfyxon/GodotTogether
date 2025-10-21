@@ -19,7 +19,8 @@ const default_data = {
 	},
 
 	"advanced": {
-		"real_time_file_sync": true
+		"real_time_file_sync": true,
+		"node_scanning": true
 	},
 
 	"notifications": {

@@ -886,15 +886,16 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 1
 size = Vector2i(500, 400)
+visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings"]
-offset_left = 9.0
-offset_top = 9.0
-offset_right = 491.0
-offset_bottom = 391.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = 487.0
+offset_bottom = 387.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
 layout_mode = 2
@@ -969,6 +970,13 @@ tooltip_text = "Enable real time file synchronization.
 When disabled, helps test the plugin more quickly when file syncing isn't necessary."
 text = "Enable real time file sync"
 metadata/setting = "advanced/real_time_file_sync"
+
+[node name="nodeScanning" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+layout_mode = 2
+tooltip_text = "Enables scanning for node changes and replicating them to other clients.
+Fundemal feature of the plugin."
+text = "Enable node scanning"
+metadata/setting = "advanced/node_scanning"
 
 [node name="HSeparator4" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
