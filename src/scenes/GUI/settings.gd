@@ -52,5 +52,7 @@ func _on_reset_pressed() -> void:
 		
 		EditorInterface.set_plugin_enabled("GodotTogether", false)
 
+		gui.alert("Reset complete. Please enable the plugin again.")
+
 func _on_show_file_pressed() -> void:
 	OS.shell_show_in_file_manager(GDTSettings.get_absolute_path())
