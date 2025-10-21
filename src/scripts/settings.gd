@@ -65,6 +65,16 @@ static func get_settings_json() -> JSON:
 
 	return json
 
+static func merge(a: Dictionary, b: Dictionary) -> Dictionary:
+	for key in b.keys():
+		if not key in a:
+			a[key] = b[key]
+
+		if (a[key] is Dictionary) and (b[key] is Dictionary):
+			a[key] = merge(a[key], b[key])
+
+	return a
+
 static func get_settings() -> Dictionary:
 	if settings_exist():
 		var json = get_settings_json()
@@ -79,11 +89,9 @@ static func get_settings() -> Dictionary:
 			push_error("Parsing settings failed at line %s: %s Returning default data." % [json.get_error_line(), json.get_error_message()])
 			return make_editable(default_data)
 		
-		for key in default_data.keys():
-			if not parsed.has(key):
-				parsed[key] = default_data[key]
-		
-		return make_editable(parsed)
+		parsed = make_editable(parsed)
+
+		return merge(parsed, default_data) 
 		
 	else:
 		return make_editable(default_data)
