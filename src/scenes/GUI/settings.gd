@@ -46,7 +46,7 @@ func _on_reset_pressed() -> void:
 		"",
 		"The plugin will turn off and you'll need to reenable it manually."
 	], "\n")):
-		GDTSettings.write_settings(GDTSettings.default_data)
+		GDTSettings.write_settings(GDTSettings.DEFAULT_DATA)
 		EditorInterface.set_plugin_enabled("GodotTogether", false)
 
 
