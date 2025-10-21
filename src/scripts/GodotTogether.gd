@@ -26,16 +26,23 @@ var chat: GDTChat = preload("res://addons/GodotTogether/src/scenes/GUI/chat/chat
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
+var plugin_started := false
 var components = [
 	client, server, dual, change_detector, gui
 ]
 
 func _enter_tree() -> void:
-	var root = get_tree().root
-	
+	if not pre_start_check():
+		printerr("GodotTogether will not run.")
+		return
+
+	plugin_started = true
+
 	name = "GodotTogether"
 	gui.main = self
 
+	var root = get_tree().root
+	
 	for i in components:
 		root.add_child(i)
 	
@@ -45,6 +52,9 @@ func _enter_tree() -> void:
 	setup_chat()
 
 func _exit_tree() -> void:
+	if not plugin_started:
+		return
+
 	close_connection()
 	button.queue_free()
 	remove_control_from_bottom_panel(chat)
@@ -62,6 +72,18 @@ func setup_menu_button() -> void:
 	
 	button.get_parent().move_child(button, 1)
 	button.pressed.connect(open_menu)
+
+func pre_start_check() -> bool:
+	if OS.has_feature("standalone"):
+		printerr(
+			"GodotTogether ended up in your exported game. \n" +
+			"Please update your export presets: \n" + 
+			"Project -> Export -> <select> -> Resources -> Filters to exclude... -> Add `addons/GodotTogether/*`"
+		)
+		
+		return false
+
+	return true
 
 func setup_chat() -> void:
 	chat.main = self
