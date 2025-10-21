@@ -10,4 +10,4 @@ func _init(main: GodotTogether, name: String = "") -> void:
 	if name != "":
 		self.name = "GodotTogether_" + name
 
-	main.tree_exited.connect(queue_free)
+	main.tree_exiting.connect(queue_free)
