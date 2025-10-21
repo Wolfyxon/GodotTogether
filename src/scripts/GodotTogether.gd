@@ -61,6 +61,13 @@ func _exit_tree() -> void:
 	chat.queue_free()
 	queue_free()
 
+func restart() -> void:
+	var tree = get_tree()
+	EditorInterface.set_plugin_enabled("GodotTogether", false)
+	
+	await tree.process_frame
+	EditorInterface.set_plugin_enabled("GodotTogether", true)
+
 func is_session_active() -> bool:
 	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint() and (
 		GDTUtils.is_peer_connected(client.client_peer) or 
