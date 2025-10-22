@@ -909,6 +909,7 @@ offset_bottom = 396.0
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
 layout_mode = 2
 size_flags_vertical = 3
+scroll_vertical = 144
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll"]
 layout_mode = 2
@@ -1004,8 +1005,9 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Actions"
 
-[node name="actions" type="HBoxContainer" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="actions" type="GridContainer" parent="mainMenu/settings/main/scroll/vbox"]
 layout_mode = 2
+columns = 2
 
 [node name="reset" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
 layout_mode = 2
@@ -1018,6 +1020,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Show settings file"
 icon = ExtResource("16_8pkel")
+
+[node name="shutdown" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
+layout_mode = 2
+text = "Shutdown plugin"
+icon = ExtResource("9_4c4b3")
+
+[node name="restart" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
+layout_mode = 2
+text = "Restart plugin"
+icon = ExtResource("17_u8ku5")
 
 [node name="Label" type="Label" parent="mainMenu/settings/main"]
 layout_mode = 2
@@ -1055,4 +1067,6 @@ text = "close"
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/shutdown" to="mainMenu/settings" method="_on_shutdown_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/restart" to="mainMenu/settings" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/close" to="mainMenu/settings" method="hide"]

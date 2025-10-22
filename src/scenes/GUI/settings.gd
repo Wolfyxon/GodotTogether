@@ -55,3 +55,11 @@ func _on_reset_pressed() -> void:
 
 func _on_show_file_pressed() -> void:
 	OS.shell_show_in_file_manager(GDTSettings.get_absolute_path())
+
+func _on_shutdown_pressed() -> void:
+	if await gui.confirm("Are you sure you want to shut down and disable the plugin?"):
+		EditorInterface.set_plugin_enabled("GodotTogether", false)
+
+func _on_restart_pressed() -> void:
+	if await gui.confirm("Are you sure you want to restart the plugin?"):
+		gui.main.restart()
