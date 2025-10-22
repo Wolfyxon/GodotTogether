@@ -38,10 +38,10 @@ script = ExtResource("2_dm08s")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = -13.0
+offset_bottom = -13.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_1pnv7")
@@ -316,12 +316,14 @@ layout_mode = 2
 [node name="end" type="Button" parent="mainMenu/main/session/top"]
 layout_mode = 2
 size_flags_vertical = 0
+tooltip_text = "Stop the server, ending the editing session for everyone."
 theme_override_font_sizes/font_size = 11
 text = "Stop server"
 
 [node name="restart" type="Button" parent="mainMenu/main/session/top"]
 layout_mode = 2
 size_flags_vertical = 0
+tooltip_text = "Restart the plugin for all users and then yourself. Everyone needs to have the restart broadcast setting enabled."
 theme_override_font_sizes/font_size = 11
 text = "Broadcast plugin restart"
 
@@ -710,10 +712,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu"]
 visible = false
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 700.0
-offset_bottom = 396.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = 691.0
+offset_bottom = 387.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer"]
@@ -757,10 +759,10 @@ text = "Proceed"
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu"]
 visible = false
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 700.0
-offset_bottom = 396.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = 691.0
+offset_bottom = 387.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError"]
@@ -835,10 +837,10 @@ borderless = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 496.0
-offset_bottom = 246.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 491.0
+offset_bottom = 241.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -901,15 +903,15 @@ borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings"]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 596.0
-offset_bottom = 396.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 591.0
+offset_bottom = 391.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 144
+scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll"]
 layout_mode = 2
@@ -1012,22 +1014,26 @@ columns = 2
 [node name="reset" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Reset all settings."
 text = "Factory reset"
 icon = ExtResource("17_u8ku5")
 
 [node name="showFile" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Show where the settings.json file is."
 text = "Show settings file"
 icon = ExtResource("16_8pkel")
 
 [node name="shutdown" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
 layout_mode = 2
+tooltip_text = "Shut down and disable the plugin. You'll have to reenable it manually."
 text = "Shutdown plugin"
 icon = ExtResource("9_4c4b3")
 
 [node name="restart" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
 layout_mode = 2
+tooltip_text = "Shut down and restart the plugin. Useful for development."
 text = "Restart plugin"
 icon = ExtResource("17_u8ku5")
 
