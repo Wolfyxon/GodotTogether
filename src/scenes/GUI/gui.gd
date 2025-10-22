@@ -30,6 +30,18 @@ func get_menu() -> GDTMenu:
 func get_menu_window() -> GDTMenuWindow:
 	return $mainMenu
 
+func add_window(window: Window) -> void:
+	var menu_w = get_menu_window()
+	var settings_w = $mainMenu/settings
+	
+	if menu_w.visible:
+		if settings_w.visible:
+			settings_w.add_child(window)
+		else:
+			menu_w.add_child(window)
+	else:
+		add_child(window)
+
 func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 	var popup := AcceptDialog.new()
 	
@@ -38,13 +50,7 @@ func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 	popup.min_size.x = 300
 	popup.always_on_top = true
 	
-	var menu_w = get_menu_window()
-	
-	if menu_w.visible:
-		menu_w.add_child(popup)
-	else:
-		add_child(popup)
-	
+	add_window(popup)
 	popup.popup_centered()
 
 	popup.canceled.connect(popup.queue_free)
@@ -60,13 +66,7 @@ func confirm(text: String) -> bool:
 	p.confirmed.connect(p.set_meta.bind("status", true))
 	p.canceled.connect(p.set_meta.bind("status", false))
 	
-	var menu_w = get_menu_window()
-	
-	if menu_w.visible:
-		menu_w.add_child(p)
-	else:
-		add_child(p)
-
+	add_window(p)
 	p.popup_centered()
 	
 	while not p.has_meta("status"):
