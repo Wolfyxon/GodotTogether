@@ -54,11 +54,12 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	if not plugin_started:
 		return
-
+	
 	close_connection()
 	button.queue_free()
 	remove_control_from_bottom_panel(chat)
 	chat.queue_free()
+	gui.queue_free()
 	queue_free()
 
 func restart() -> void:

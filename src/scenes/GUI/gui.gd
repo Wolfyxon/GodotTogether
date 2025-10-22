@@ -1,8 +1,6 @@
 @tool
-extends Node
+extends GDTComponent
 class_name GodotTogetherGUI
-
-var main: GodotTogether
 
 func _ready() -> void:
 	var menu_window = get_menu_window()
