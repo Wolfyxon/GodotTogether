@@ -10,6 +10,9 @@ var controls: Array[Control] = []
 func _ready() -> void:
 	await get_tree().process_frame
 	
+	if not gui: return
+	if not gui.visuals_available(): return
+	
 	# Use GDTUtils.get_descendants() if the controls are nested
 	for i in vbox.get_children():
 		if i.has_meta("setting"):
