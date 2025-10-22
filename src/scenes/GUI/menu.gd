@@ -19,7 +19,10 @@ func _ready() -> void:
 	if main:
 		main_menu()
 		
-		main.client.disconnected.connect(session_start_menu.bind("join"))
+		main.client.disconnected.connect(func():
+			await get_tree().process_frame
+			session_start_menu("join")
+		)
 
 	if visuals_available():
 		set_session_init_cover()
