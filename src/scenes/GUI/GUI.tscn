@@ -27,7 +27,7 @@ script = ExtResource("1_73joy")
 oversampling_override = 1.0
 title = "GodotTogether"
 initial_position = 4
-size = Vector2i(700, 400)
+size = Vector2i(704, 400)
 visible = true
 unresizable = false
 borderless = false
@@ -38,10 +38,10 @@ script = ExtResource("2_dm08s")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 13.0
-offset_top = 13.0
-offset_right = -13.0
-offset_bottom = -13.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_1pnv7")
@@ -710,10 +710,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu"]
 visible = false
-offset_left = 13.0
-offset_top = 13.0
-offset_right = 687.0
-offset_bottom = 387.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 700.0
+offset_bottom = 396.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer"]
@@ -757,10 +757,10 @@ text = "Proceed"
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu"]
 visible = false
-offset_left = 13.0
-offset_top = 13.0
-offset_right = 687.0
-offset_bottom = 387.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 700.0
+offset_bottom = 396.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError"]
@@ -835,10 +835,10 @@ borderless = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 9.0
-offset_top = 9.0
-offset_right = 491.0
-offset_bottom = 241.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 496.0
+offset_bottom = 246.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -894,17 +894,17 @@ autowrap_mode = 3
 [node name="settings" type="PopupPanel" parent="mainMenu"]
 oversampling_override = 1.0
 title = "GodotTogether - settings"
-initial_position = 1
+initial_position = 4
 size = Vector2i(600, 400)
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings"]
-offset_left = 9.0
-offset_top = 9.0
-offset_right = 591.0
-offset_bottom = 391.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 596.0
+offset_bottom = 396.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
 layout_mode = 2
@@ -993,7 +993,6 @@ layout_mode = 2
 tooltip_text = "Do not use when using the plugin normally. This is meant for easier development. 
 Enable sending and receiving a restart signal that restarts the plugin for everyone in the server with this setting enabled.
 "
-button_pressed = true
 text = "Enable restart broadcast"
 metadata/setting = "dev/restart_broadcast"
 
