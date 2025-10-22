@@ -59,7 +59,7 @@ func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 func confirm(text: String) -> bool:
 	var p := ConfirmationDialog.new()
 	p.dialog_text = text
-	
+	p.always_on_top = true
 	
 	p.confirmed.connect(p.set_meta.bind("status", true))
 	p.canceled.connect(p.set_meta.bind("status", false))
