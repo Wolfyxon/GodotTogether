@@ -26,6 +26,7 @@ func _ready() -> void:
 		
 		username_input.text = GDTSettings.get_setting("username")
 		host_password.text = GDTSettings.get_setting("server/password")
+		$sessionInit/start/host/approveUsers.button_pressed = GDTSettings.get_setting("server/require_approval")
 
 func _host() -> void:
 	if main:
