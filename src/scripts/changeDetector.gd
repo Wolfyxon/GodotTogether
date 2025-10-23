@@ -46,6 +46,7 @@ var incoming_nodes := {
 }
 
 var node_watcher: Timer = Timer.new()
+var rescan_timer: Timer = Timer.new()
 
 var last_scene := ""
 
@@ -166,13 +167,17 @@ static func decode_resource(dict: Dictionary) -> Resource:
 	return resource
 
 func _ready() -> void:
+	
 	node_watcher.wait_time = REFRESH_RATE
-	
 	node_watcher.timeout.connect(_cycle)
-	
 	add_child(node_watcher)
 	node_watcher.start()
 	
+	rescan_timer.wait_time = 3
+	rescan_timer.timeout.connect(observe_current_scene)
+	add_child(rescan_timer)
+	node_watcher.start()
+
 	filesystem_watcher.wait_time = 1.0
 	filesystem_watcher.timeout.connect(_check_filesystem_changes)
 	add_child(filesystem_watcher)
