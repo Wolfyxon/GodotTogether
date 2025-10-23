@@ -20,6 +20,7 @@ var connection_cancelled := false
 var disconnect_reason: GDTUser.DisconnectReason = 0
 
 var is_fully_synced := false
+var last_open_scenes: PackedStringArray = []
 
 func _ready() -> void:
 	multiplayer.connected_to_server.connect(_connected)
@@ -109,6 +110,12 @@ func auth_successful() -> void:
 
 	main.change_detector.pause()
 	main.change_detector.clear()
+
+	last_open_scenes = EditorInterface.get_open_scenes().duplicate()
+	GDTUtils.close_all_scenes()
+	
+	await get_tree().create_timer(0.25).timeout
+
 	main.server.project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
 
 @rpc("authority", "call_remote", "reliable")
@@ -134,10 +141,12 @@ func user_disconnected(user_dict: Dictionary) -> void:
 
 func _project_files_downloaded() -> void:
 	print("Project files downloaded")
+	
+	EditorInterface.get_resource_filesystem() # reloads the script, breaking await ._.
 
-	EditorInterface.get_resource_filesystem().scan()
-
-	await get_tree().create_timer(1.0).timeout
+	for scene_path in last_open_scenes:
+		EditorInterface.open_scene_from_path(scene_path)
+		await get_tree().process_frame
 	
 	is_fully_synced = true
 	main.change_detector.resume()
