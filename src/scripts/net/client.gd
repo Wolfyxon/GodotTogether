@@ -311,9 +311,9 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 
 @rpc("authority", "call_remote", "reliable")
 func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
-	var current_scene = EditorInterface.get_edited_scene_root()
+	var scene = EditorInterface.get_edited_scene_root()
 
-	if not current_scene or current_scene.scene_file_path != scene_path:
+	if not scene:
 		var apply_removal = func(scene_root: Node):
 			var node = scene_root.get_node_or_null(node_path)
 			if not node: return false
@@ -326,7 +326,7 @@ func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
 		_apply_change_to_unloaded_scene(scene_path, apply_removal)
 		return
 
-	var node = current_scene.get_node_or_null(node_path)
+	var node = scene.get_node_or_null(node_path)
 	if not node: return
 
 	prints("rm", node_path)
@@ -334,9 +334,9 @@ func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func receive_node_add(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary) -> void:
-	var current_scene = EditorInterface.get_edited_scene_root()
+	var scene = GDTUtils.get_loaded_scene_root(scene_path)
 
-	if not current_scene or current_scene.scene_file_path != scene_path:
+	if not scene:
 		var apply_add = func(scene_root: Node):
 			if scene_root.get_node_or_null(node_path): return false
 
@@ -366,7 +366,7 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 		_apply_change_to_unloaded_scene(scene_path, apply_add)
 		return
 
-	var existing = current_scene.get_node_or_null(node_path)
+	var existing = scene.get_node_or_null(node_path)
 
 	if existing:
 		print("Node %s already exists, not adding" % node_path)
@@ -374,10 +374,10 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 
 	var path_size = node_path.get_name_count()
 	var parent_path = node_path.slice(0, path_size - 1)
-	var parent: Node = current_scene.get_node_or_null(parent_path)
+	var parent: Node = scene.get_node_or_null(parent_path)
 
 	if parent_path.is_empty():
-		parent = current_scene
+		parent = scene
 
 	if not parent:
 		print("Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
@@ -391,7 +391,7 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 	await get_tree().process_frame
 
 	parent.add_child(node)
-	node.owner = current_scene
+	node.owner = scene
 
 	main.change_detector.observe(node)
 
@@ -409,9 +409,9 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 
 @rpc("authority", "call_remote", "reliable")
 func receive_node_rename(scene_path: String, old_path: NodePath, new_name: String) -> void:
-	var current_scene = EditorInterface.get_edited_scene_root()
+	var scene = GDTUtils.get_loaded_scene_root(scene_path)
 
-	if not current_scene or current_scene.scene_file_path != scene_path:
+	if not scene:
 		var apply_rename = func(scene_root: Node):
 			var node = scene_root.get_node_or_null(old_path)
 			if not node: return false
@@ -420,7 +420,7 @@ func receive_node_rename(scene_path: String, old_path: NodePath, new_name: Strin
 		_apply_change_to_unloaded_scene(scene_path, apply_rename)
 		return
 
-	var node = current_scene.get_node_or_null(old_path)
+	var node = scene.get_node_or_null(old_path)
 
 	if not node: 
 		print("Node to rename not found: %s" % old_path)
@@ -433,9 +433,9 @@ func receive_node_rename(scene_path: String, old_path: NodePath, new_name: Strin
 
 @rpc("authority", "call_remote", "reliable")
 func receive_node_reparent(scene_path: String, node_path: NodePath, new_parent_path: NodePath, new_index: int) -> void:
-	var current_scene = EditorInterface.get_edited_scene_root()
+	var scene = EditorInterface.get_edited_scene_root()
 
-	if not current_scene or current_scene.scene_file_path != scene_path:
+	if not scene:
 		var apply_reparent = func(scene_root: Node):
 			var node = scene_root.get_node_or_null(node_path)
 			var new_parent = scene_root.get_node_or_null(new_parent_path)
@@ -452,11 +452,11 @@ func receive_node_reparent(scene_path: String, node_path: NodePath, new_parent_p
 		_apply_change_to_unloaded_scene(scene_path, apply_reparent)
 		return
 
-	var node = current_scene.get_node_or_null(node_path)
-	var new_parent = current_scene.get_node_or_null(new_parent_path)
+	var node = scene.get_node_or_null(node_path)
+	var new_parent = scene.get_node_or_null(new_parent_path)
 
 	if new_parent_path.is_empty():
-		new_parent = current_scene
+		new_parent = scene
 
 	if not node or not new_parent:
 		print("Node or parent not found for reparenting")
