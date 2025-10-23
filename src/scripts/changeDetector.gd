@@ -271,6 +271,9 @@ func _node_exiting(node: Node) -> void:
 func observe_current_scene() -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
+
+	if scene.scene_file_path.begins_with("res://addons/GodotTogether/"):
+		return
 	
 	main.change_detector.observe_recursive(scene)
 
