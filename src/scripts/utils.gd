@@ -54,6 +54,13 @@ static func set_nested(dict: Dictionary, path: String, value, separator:= "/") -
 
 	current[levels[-1]] = value
 
+static func get_loaded_scene_root(path: String) -> Node:
+	for i in EditorInterface.get_open_scene_roots():
+		if i.scene_file_path == path:
+			return i
+
+	return null
+
 static func get_descendants(node: Node, include_internal := false) -> Array[Node]:
 	var res: Array[Node] = []
 	
