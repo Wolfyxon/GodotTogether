@@ -54,8 +54,11 @@ static func set_nested(dict: Dictionary, path: String, value, separator:= "/") -
 
 	current[levels[-1]] = value
 
+static func get_tree() -> SceneTree:
+	return EditorInterface.get_base_control().get_tree()
+
 static func try_open_scene(scene_path: String, tries := 100) -> void:
-	var tree = EditorInterface.get_base_control().get_tree()
+	var tree = get_tree()
 
 	for i in 100:
 		var f = FileAccess.open(scene_path, FileAccess.READ)
@@ -69,10 +72,9 @@ static func try_open_scene(scene_path: String, tries := 100) -> void:
 
 			break
 
-
 static func close_all_scenes() -> void:
 	var scene = EditorInterface.get_edited_scene_root()
-	var tree = EditorInterface.get_base_control().get_tree()
+	var tree = get_tree()
 	
 	while EditorInterface.get_edited_scene_root():
 		EditorInterface.close_scene()
