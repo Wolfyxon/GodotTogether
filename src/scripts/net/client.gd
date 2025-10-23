@@ -113,7 +113,7 @@ func auth_successful() -> void:
 
 	last_open_scenes = EditorInterface.get_open_scenes().duplicate()
 	GDTUtils.close_all_scenes()
-	
+
 	await get_tree().create_timer(0.25).timeout
 
 	main.server.project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
@@ -145,7 +145,7 @@ func _project_files_downloaded() -> void:
 	EditorInterface.get_resource_filesystem() # reloads the script, breaking await ._.
 
 	for scene_path in last_open_scenes:
-		EditorInterface.open_scene_from_path(scene_path)
+		await GDTUtils.try_open_scene(scene_path)
 		await get_tree().process_frame
 	
 	is_fully_synced = true
