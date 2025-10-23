@@ -269,9 +269,9 @@ func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -
 
 @rpc("authority", "call_remote", "reliable")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary) -> void:
-	var current_scene = EditorInterface.get_edited_scene_root()
+	var scene = GDTUtils.get_loaded_scene_root(scene_path)
 
-	if not current_scene or current_scene.scene_file_path != scene_path:
+	if not scene:
 		var apply_changes = func(scene_root: Node):
 			var node = scene_root.get_node_or_null(node_path)
 			if not node: return false
@@ -286,8 +286,10 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 		_apply_change_to_unloaded_scene(scene_path, apply_changes)
 		return
 
-	var node = current_scene.get_node_or_null(node_path)
-	if not node: return
+	var node = scene.get_node_or_null(node_path)
+	
+	if not node: 
+		return
 
 	main.change_detector.set_node_supression(node, true)
 
