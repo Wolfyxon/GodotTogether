@@ -47,7 +47,7 @@ func _update() -> void:
 	var viewport_2d = EditorInterface.get_editor_viewport_2d()
 	if not viewport_2d: return
 	
-	var mPos = viewport_2d.get_mouse_position() / Vector2(viewport_2d.size)
+	var mPos = viewport_2d.get_mouse_position()
 	
 	if mPos != prev_mouse_pos and DisplayServer.window_is_focused():
 		prev_mouse_pos = mPos
@@ -305,13 +305,13 @@ func clear_avatars() -> void:
 	avatar_3d_markers.clear()
 
 @rpc("any_peer")
-func update_2d_avatar(vector: Vector2) -> void:
+func update_2d_avatar(position: Vector2) -> void:
 	if not main: return
 	
 	var marker = get_avatar_2d(multiplayer.get_remote_sender_id())
 	if not marker: return
 	
-	marker.set_position_percent(vector)
+	marker.global_position = position
 
 @rpc("any_peer")
 func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:

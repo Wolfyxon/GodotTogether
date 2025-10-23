@@ -12,6 +12,3 @@ func set_user(user: GDTUser) -> void:
 	
 	txt.get_node("name").text = user.name
 	txt.get_node("class").text = user.get_type_as_string()
-
-func set_position_percent(vector: Vector2) -> void:
-	global_position = Vector2(EditorInterface.get_editor_viewport_2d().size) * Vector2(vector)
