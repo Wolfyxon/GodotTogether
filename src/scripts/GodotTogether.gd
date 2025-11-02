@@ -31,7 +31,7 @@ var components = [
 	client, server, dual, change_detector, gui
 ]
 
-func _enter_tree() -> void:
+func _enter_tree() -> void:	
 	if not pre_start_check():
 		printerr("GodotTogether will not run.")
 		return
@@ -47,7 +47,9 @@ func _enter_tree() -> void:
 		root.add_child(i)
 	
 	setup_menu_button()
-
+	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
+	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
+	
 	await get_tree().process_frame
 	setup_chat()
 
