@@ -203,7 +203,7 @@ func _node_reparented(node: Node, old_parent: Node, new_parent: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	var scene_path = scene.scene_file_path
 	
-	var old_path_str = scene.get_path_to(old_parent).get_concatenated_subnames()
+	var old_path_str = scene.get_path_to(old_parent).get_concatenated_names()
 	if old_path_str != "":
 		old_path_str += "/"
 	old_path_str += node.name
