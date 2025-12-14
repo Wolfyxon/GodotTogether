@@ -211,6 +211,8 @@ func sync_file_add(path: String, buffer: PackedByteArray) -> void:
 
 	EditorInterface.get_resource_filesystem().scan()
 
+	await get_tree().create_timer(0.5).timeout
+	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
 	main.change_detector.suppress_filesystem_sync = false
 
 @rpc("authority", "call_remote", "reliable")
@@ -229,7 +231,9 @@ func sync_file_modify(path: String, buffer: PackedByteArray) -> void:
 		f.close()
 	
 	EditorInterface.get_resource_filesystem().scan()
-	
+
+	await get_tree().create_timer(0.5).timeout
+	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
 	main.change_detector.suppress_filesystem_sync = false
 
 @rpc("authority", "call_remote", "reliable")
@@ -246,6 +250,7 @@ func sync_file_remove(path: String) -> void:
 	EditorInterface.get_resource_filesystem().scan()
 
 	await get_tree().create_timer(1.0).timeout
+	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
 	main.change_detector.suppress_filesystem_sync = false
 
 func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -> void:
