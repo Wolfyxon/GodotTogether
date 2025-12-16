@@ -219,19 +219,23 @@ func node_update_request(scene_path: String, node_path: NodePath, property_dict:
 func node_removal_request(scene_path: String, node_path: NodePath) -> void:
 	var id = multiplayer.get_remote_sender_id()
 
-	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
+	if not id_has_permission(id, GodotTogether.Permission.EDIT_SCENES): return
 
+	main.client.receive_node_removal(scene_path, node_path)
 	submit_node_removal(scene_path, node_path, id)
 
 @rpc("any_peer", "call_remote", "reliable")
 func node_add_request(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary) -> void:
+	var id = multiplayer.get_remote_sender_id()
+
 	if not ClassDB.class_exists(node_type):
 		print("Invalid node type: %s" % node_type)
 		return
 	
-	if not id_has_permission(multiplayer.get_remote_sender_id(), GodotTogether.Permission.EDIT_SCENES): return
+	if not id_has_permission(id, GodotTogether.Permission.EDIT_SCENES): return
 
-	submit_node_add(scene_path, node_path, node_type, properties)
+	main.client.receive_node_add(scene_path, node_path, node_type, properties)
+	submit_node_add(scene_path, node_path, node_type, properties, id)
 
 func submit_node_removal(scene_path: String, node_path: NodePath, sender := 0) -> void:
 	main.client.receive_node_removal(scene_path, node_path)
@@ -275,9 +279,6 @@ func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 	print("[SERVER] Received file add from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	
-	var new_hash = buffer.get_string_from_utf8().sha256_text()
-	main.change_detector.cached_file_hashes[path] = new_hash
-	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
@@ -285,6 +286,8 @@ func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 	
 	EditorInterface.get_resource_filesystem().scan()
 	
+	await get_tree().create_timer(0.5).timeout
+	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
 	main.change_detector.suppress_filesystem_sync = false
 	
 	broadcast_file_add_with_buffer(path, buffer, id)
@@ -299,9 +302,6 @@ func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
 	print("[SERVER] Received file modify from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	
-	var new_hash = buffer.get_string_from_utf8().sha256_text()
-	main.change_detector.cached_file_hashes[path] = new_hash
-	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
@@ -309,6 +309,8 @@ func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
 	
 	EditorInterface.get_resource_filesystem().scan()
 	
+	await get_tree().create_timer(0.5).timeout
+	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
 	main.change_detector.suppress_filesystem_sync = false
 	
 	broadcast_file_modify_with_buffer(path, buffer, id)
@@ -322,7 +324,6 @@ func file_remove_from_client(path: String) -> void:
 
 	print("[SERVER] Received file remove from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
-	main.change_detector.cached_file_hashes.erase(path)
 	
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
@@ -330,6 +331,7 @@ func file_remove_from_client(path: String) -> void:
 	EditorInterface.get_resource_filesystem().scan()
 	
 	await get_tree().create_timer(1.0).timeout
+	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
 	main.change_detector.suppress_filesystem_sync = false
 	
 	broadcast_file_remove(path, id)
