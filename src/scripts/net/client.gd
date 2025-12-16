@@ -22,6 +22,11 @@ var disconnect_reason: GDTUser.DisconnectReason = 0
 var is_fully_synced := false
 var last_open_scenes: PackedStringArray = []
 
+func _ensure_dir_exists(path: String) -> void:
+	var dir = path.get_base_dir()
+	if dir != "" and not DirAccess.dir_exists_absolute(dir):
+		DirAccess.make_dir_recursive_absolute(dir)
+
 func _ready() -> void:
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
@@ -173,6 +178,7 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 	
 	print("Downloading " + path)
 	
+	_ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	var err = FileAccess.get_open_error()
 
@@ -204,6 +210,7 @@ func sync_file_add(path: String, buffer: PackedByteArray) -> void:
 	var new_hash = buffer.get_string_from_utf8().sha256_text()
 	main.change_detector.cached_file_hashes[path] = new_hash
 
+	_ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
@@ -225,6 +232,7 @@ func sync_file_modify(path: String, buffer: PackedByteArray) -> void:
 	var new_hash = buffer.get_string_from_utf8().sha256_text()
 	main.change_detector.cached_file_hashes[path] = new_hash
 	
+	_ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)

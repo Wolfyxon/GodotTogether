@@ -15,6 +15,11 @@ const LOCALHOST := [
 var server_peer = ENetMultiplayerPeer.new()
 var ip_join_times = {}
 
+func _ensure_dir_exists(path: String) -> void:
+	var dir = path.get_base_dir()
+	if dir != "" and not DirAccess.dir_exists_absolute(dir):
+		DirAccess.make_dir_recursive_absolute(dir)
+
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
@@ -279,6 +284,7 @@ func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 	print("[SERVER] Received file add from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	
+	_ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
@@ -302,6 +308,7 @@ func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
 	print("[SERVER] Received file modify from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	
+	_ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
