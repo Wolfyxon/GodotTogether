@@ -279,6 +279,7 @@ func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 	print("[SERVER] Received file add from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	
+	GDTFiles.ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
@@ -302,6 +303,7 @@ func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
 	print("[SERVER] Received file modify from client %d: %s" % [id, path])
 	main.change_detector.suppress_filesystem_sync = true
 	
+	GDTFiles.ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)

@@ -173,6 +173,7 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 	
 	print("Downloading " + path)
 	
+	GDTFiles.ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	var err = FileAccess.get_open_error()
 
@@ -204,6 +205,7 @@ func sync_file_add(path: String, buffer: PackedByteArray) -> void:
 	var new_hash = buffer.get_string_from_utf8().sha256_text()
 	main.change_detector.cached_file_hashes[path] = new_hash
 
+	GDTFiles.ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
@@ -225,6 +227,7 @@ func sync_file_modify(path: String, buffer: PackedByteArray) -> void:
 	var new_hash = buffer.get_string_from_utf8().sha256_text()
 	main.change_detector.cached_file_hashes[path] = new_hash
 	
+	GDTFiles.ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
