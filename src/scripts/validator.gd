@@ -31,7 +31,6 @@ static func is_path_safe(path: String) -> bool:
 	var local_path = ProjectSettings.localize_path(path)
 	
 	if local_path.begins_with("res://addons/"):
-		print("unsafe")
 		return false
 	
 	return true
