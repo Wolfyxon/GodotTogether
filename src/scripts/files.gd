@@ -23,17 +23,27 @@ static func is_path_in_project(path: String) -> bool:
 	
 	return ProjectSettings.globalize_path(path).begins_with(ProjectSettings.globalize_path("res://"))
 
-static func get_file_tree(root := "res://") -> Array[String]:
+static func get_file_tree(root := "res://", include_unsafe := false) -> Array[String]:
 	if root in ignored_dirs: return []
 	
 	var res: Array[String] = []
 	
+	var _check_append = func(path: String) -> void:
+		if include_unsafe or GDTValidator.is_path_safe(path):
+			res.append(path)
+
 	for file in get_files(root):
-		res.append(root.path_join(file))
+		var path = root.path_join(file)
+		_check_append.call(path)
 	
 	for dir in get_dirs(root):
-		for path in get_file_tree(root.path_join(dir)):
-			res.append(path)
+		var dir_path = root.path_join(dir)
+
+		if not include_unsafe and GDTValidator.is_path_safe(dir_path):
+			continue
+
+		for path in get_file_tree(dir_path):
+			_check_append.call(path)
 	
 	return res
 
