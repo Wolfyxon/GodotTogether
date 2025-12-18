@@ -15,6 +15,9 @@ static func ensure_dir_exists(path: String) -> void:
 	if dir != "" and not DirAccess.dir_exists_absolute(dir):
 		DirAccess.make_dir_recursive_absolute(dir)
 
+static func has_traversal(path: String) -> bool:
+	return path.contains("..")
+
 static func is_path_in_project(path: String) -> bool:
 	if not path.begins_with("res://"): return false
 	

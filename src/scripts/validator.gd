@@ -25,7 +25,7 @@ static func is_path_safe(path: String) -> bool:
 	if not GDTFiles.is_path_in_project(path):
 		return false
 	
-	if path.contains(".."):
+	if GDTFiles.has_traversal(path):
 		return false
 	
 	var local_path = ProjectSettings.localize_path(path)
