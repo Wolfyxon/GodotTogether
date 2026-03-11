@@ -13,6 +13,10 @@ config_version=5
 config/name="GDTogether"
 config/features=PackedStringArray("4.6")
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GodotTogether/plugin.cfg")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
@@ -20,3 +24,5 @@ config/features=PackedStringArray("4.6")
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

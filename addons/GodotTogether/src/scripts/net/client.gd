@@ -287,7 +287,6 @@ func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -
 @rpc("authority", "call_remote", "reliable")
 func receive_node_updates(scene_path: String, node_path: NodePath, property_dict: Dictionary) -> void:
 	var scene = GDTUtils.get_loaded_scene_root(scene_path)
-
 	if not scene:
 		var apply_changes = func(scene_root: Node):
 			var node = scene_root.get_node_or_null(node_path)
@@ -304,10 +303,11 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 		return
 
 	var node = scene.get_node_or_null(node_path)
-	
+
 	if not node: 
 		return
 
+	main.change_detector.pause()
 	main.change_detector.set_node_supression(node, true)
 
 	for key in property_dict.keys():
@@ -320,11 +320,12 @@ func receive_node_updates(scene_path: String, node_path: NodePath, property_dict
 			value = GDTChangeDetector.decode_resource(value)
 
 		node[key] = value
-	
+
 	main.change_detector.merge(node, property_dict)
 
 	await get_tree().create_timer(0.1).timeout
 	main.change_detector.set_node_supression(node, false)
+	main.change_detector.resume()
 
 @rpc("authority", "call_remote", "reliable")
 func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
@@ -352,7 +353,6 @@ func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
 @rpc("authority", "call_remote", "reliable")
 func receive_node_add(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary) -> void:
 	var scene = GDTUtils.get_loaded_scene_root(scene_path)
-
 	if not scene:
 		var apply_add = func(scene_root: Node):
 			if scene_root.get_node_or_null(node_path): return false
@@ -364,7 +364,7 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 
 			if not parent: return false
 
-			var node: Node = ClassDB.instantiate(node_type)
+			var node : Node = ClassDB.instantiate(node_type)
 			node.name = node_path.get_name(path_size - 1)
 			parent.add_child(node)
 			node.owner = scene_root
@@ -386,7 +386,7 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 	var existing = scene.get_node_or_null(node_path)
 
 	if existing:
-		print("Node %s already exists, not adding" % node_path)
+		print("Node %s already exists, not adding " % node_path)
 		return
 
 	var path_size = node_path.get_name_count()
@@ -397,19 +397,18 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 		parent = scene
 
 	if not parent:
-		print("Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
+		print("Node add failed: Parent (%s) not found for (%s) " % [parent_path, node_path])
 		return
 
 	var node: Node = ClassDB.instantiate(node_type)
 	node.name = node_path.get_name(path_size - 1)
 
-	main.change_detector.suppress_add_signal(scene_path, node_path)
-
+	main.change_detector.pause()
+	
 	await get_tree().process_frame
 
 	parent.add_child(node)
 	node.owner = scene
-
 	main.change_detector.observe(node)
 
 	if properties.size() > 0:
@@ -423,6 +422,9 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 			node[key] = value
 
 		main.change_detector.merge(node, properties)
+	
+	await get_tree().create_timer(0.1).timeout
+	main.change_detector.resume()
 
 @rpc("authority", "call_remote", "reliable")
 func receive_node_rename(scene_path: String, old_path: NodePath, new_name: String) -> void:

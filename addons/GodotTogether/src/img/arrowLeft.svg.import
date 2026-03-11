@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsgcxdfojdd82"
-path="res://.godot/imported/hidden.svg-d013096fde02800c0c372eeb0c5e4ca5.ctex"
+uid="uid://c8t20ydugw0ia"
+path="res://.godot/imported/arrowLeft.svg-5d510a9680b5d14d08da000e57ea9b7f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/GDTogether/src/img/hidden.svg"
-dest_files=["res://.godot/imported/hidden.svg-d013096fde02800c0c372eeb0c5e4ca5.ctex"]
+source_file="res://addons/GodotTogether/src/img/arrowLeft.svg"
+dest_files=["res://.godot/imported/arrowLeft.svg-5d510a9680b5d14d08da000e57ea9b7f.ctex"]
 
 [params]
 

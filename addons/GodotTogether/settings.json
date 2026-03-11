@@ -1,0 +1,29 @@
+{
+ "dev": {
+  "disable_node_scanning": false,
+  "disable_real_time_file_sync": false,
+  "restart_broadcast": false
+ },
+ "format_version": 1.0,
+ "last_port": 5017.0,
+ "last_server": "",
+ "notifications": {
+  "users": true
+ },
+ "seen": {
+  "disclaimer": true
+ },
+ "server": {
+  "allow_external_connections": true,
+  "blacklist": [],
+  "password": "",
+  "require_approval": false,
+  "whitelist": [
+   "127.0.0.1",
+   "0.0.0.0",
+   "0:0:0:0:0:0:0:1"
+  ],
+  "whitelist_enabled": false
+ },
+ "username": "Cool person"
+}
