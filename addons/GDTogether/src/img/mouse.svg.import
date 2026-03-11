@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfcvv3x5wslnt"
-path="res://.godot/imported/disconnected.svg-fb1275b249c4861f1d4fcd05023d5c66.ctex"
+uid="uid://btimsnam5ve1r"
+path="res://.godot/imported/mouse.svg-713b45b79377444584c19c225819dc0f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/GodotTogether/src/img/disconnected.svg"
-dest_files=["res://.godot/imported/disconnected.svg-fb1275b249c4861f1d4fcd05023d5c66.ctex"]
+source_file="res://addons/GDTogether/src/img/mouse.svg"
+dest_files=["res://.godot/imported/mouse.svg-713b45b79377444584c19c225819dc0f.ctex"]
 
 [params]
 
@@ -38,6 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
+svg/scale=10.0
 editor/scale_with_editor_scale=false
 editor/convert_colors_with_editor_theme=false

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bti5j1lw5a1cc"]
+[gd_scene format=3 uid="uid://bti5j1lw5a1cc"]
 
-[ext_resource type="Script" uid="uid://c0xq7s6u5sxa5" path="res://addons/GodotTogether/src/scenes/Avatar2D/Avatar2D.gd" id="1_sptkx"]
-[ext_resource type="Texture2D" uid="uid://btimsnam5ve1r" path="res://addons/GodotTogether/src/img/mouse.svg" id="2_8nie3"]
+[ext_resource type="Script" path="res://addons/GodotTogether/src/scenes/Avatar2D/Avatar2D.gd" id="1_sptkx"]
+[ext_resource type="Texture2D" path="res://addons/GodotTogether/src/img/mouse.svg" id="2_8nie3"]
+
 
 [node name="Avatar2D" type="Control"]
 z_index = 4096
