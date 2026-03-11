@@ -1,7 +1,0 @@
-[gd_scene format=3 uid="uid://brnsotxv01sei"]
-
-[node name="Test" type="Node3D" unique_id=334389811]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1832087553]
-
-[node name="@AnimationPlayer@50736" type="AnimationPlayer" parent="." unique_id=1599367384]

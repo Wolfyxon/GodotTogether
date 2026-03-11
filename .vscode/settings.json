@@ -1,6 +1,0 @@
-{
-    "editor.insertSpaces": false,
-    "files.exclude": {
-        "**/*.uid": true,
-    }
-}

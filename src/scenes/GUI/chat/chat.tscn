@@ -1,0 +1,185 @@
+[gd_scene format=3 uid="uid://bt7xho72ewnem"]
+
+[ext_resource type="Script" uid="uid://c4fyt053t343v" path="res://GodotTogether/src/scenes/GUI/chat/chat.gd" id="1_fubo5"]
+[ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://GodotTogether/src/img/play.svg" id="2_sr26q"]
+[ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://GodotTogether/src/img/extLink.svg" id="3_6unrw"]
+
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fubo5"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fubo5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sr26q"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.196078)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Chat" type="Control"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 3
+anchors_preset = 0
+offset_top = 37.0
+offset_right = 976.0
+offset_bottom = 337.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_fubo5")
+
+[node name="main" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="scroll" type="ScrollContainer" parent="main"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="msgs" type="VBoxContainer" parent="main/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 1
+
+[node name="userHeader" type="HBoxContainer" parent="main/scroll/msgs"]
+layout_mode = 2
+
+[node name="sep" type="Control" parent="main/scroll/msgs/userHeader"]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+
+[node name="icon" type="Panel" parent="main/scroll/msgs/userHeader"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_fubo5")
+
+[node name="name" type="Label" parent="main/scroll/msgs/userHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Someone"
+
+[node name="VSeparator" type="VSeparator" parent="main/scroll/msgs/userHeader"]
+layout_mode = 2
+
+[node name="id" type="Label" parent="main/scroll/msgs/userHeader"]
+layout_mode = 2
+text = "12345"
+
+[node name="msg" type="HBoxContainer" parent="main/scroll/msgs"]
+layout_mode = 2
+mouse_default_cursor_shape = 1
+
+[node name="time" type="Label" parent="main/scroll/msgs/msg"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 8
+text = "00:00"
+
+[node name="content" type="RichTextLabel" parent="main/scroll/msgs/msg"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+focus_mode = 2
+mouse_default_cursor_shape = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_fubo5")
+text = "hello there"
+fit_content = true
+scroll_active = false
+selection_enabled = true
+
+[node name="systemMsg" type="Label" parent="main/scroll/msgs"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_sr26q")
+text = "System message"
+
+[node name="userNotif" type="HBoxContainer" parent="main/scroll/msgs"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="icon" type="TextureRect" parent="main/scroll/msgs/userNotif"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_sr26q")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="main/scroll/msgs/userNotif"]
+layout_mode = 2
+text = "User"
+
+[node name="user" type="Label" parent="main/scroll/msgs/userNotif"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Username (123)"
+
+[node name="status" type="Label" parent="main/scroll/msgs/userNotif"]
+layout_mode = 2
+text = "joined"
+
+[node name="controls" type="HBoxContainer" parent="main"]
+layout_mode = 2
+
+[node name="inputContainer" type="VBoxContainer" parent="main/controls"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="input" type="TextEdit" parent="main/controls/inputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter message..."
+wrap_mode = 1
+scroll_fit_content_height = true
+
+[node name="send" type="Button" parent="main/controls"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "send"
+
+[node name="cover" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.443137)
+
+[node name="vbox" type="VBoxContainer" parent="cover"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="title" type="Label" parent="cover/vbox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Join or start a server to use the GodotTogether chat"
+horizontal_alignment = 1
+
+[node name="btnMenu" type="Button" parent="cover/vbox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Open menu"
+icon = ExtResource("3_6unrw")
+
+[connection signal="pressed" from="main/controls/send" to="." method="_send"]
