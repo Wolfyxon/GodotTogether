@@ -202,10 +202,11 @@ func sync_file_add(path: String, buffer: PackedByteArray) -> void:
 	print("[CLIENT] Receiving file add: ", path)
 	main.change_detector.suppress_filesystem_sync = true
 	
-	var new_hash = buffer.get_string_from_utf8().sha256_text()
+	var new_hash = GDTUtils.sha256_of_buffer(buffer)
 	main.change_detector.cached_file_hashes[path] = new_hash
 
 	GDTFiles.ensure_dir_exists(path)
+	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
@@ -224,7 +225,7 @@ func sync_file_modify(path: String, buffer: PackedByteArray) -> void:
 	print("[CLIENT] Receiving file modify: ", path)
 	main.change_detector.suppress_filesystem_sync = true
 
-	var new_hash = buffer.get_string_from_utf8().sha256_text()
+	var new_hash = GDTUtils.sha256_of_buffer(buffer)
 	main.change_detector.cached_file_hashes[path] = new_hash
 	
 	GDTFiles.ensure_dir_exists(path)

@@ -1,6 +1,12 @@
 @tool
 class_name GDTUtils
 
+static func sha256_of_buffer(buffer: PackedByteArray) -> String:
+	var hasher = HashingContext.new()
+	hasher.update(buffer)
+	
+	return hasher.finish().hex_encode()
+
 static func join(array: Array, separator := "\n") -> String:
 	var res = ""
 	var ln = array.size()

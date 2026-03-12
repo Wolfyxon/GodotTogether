@@ -51,9 +51,7 @@ static func get_file_tree_hashes(root := "res://") -> Dictionary:
 	var res = {}
 	
 	for path in get_file_tree():
-		var f = FileAccess.open(path, FileAccess.READ)
-		res[path] = f.get_as_text().sha256_text()
-		f.close()
+		res[path] = FileAccess.get_sha256(path)
 	
 	return res
 
