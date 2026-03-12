@@ -8,12 +8,10 @@ An **experimental** plugin for real-time collaboration over the network for Godo
 > This plugin is **not ready for use.**  
 > Many important features have not are not implemented or are buggy.  
 > You are also risking **breaking your project** so make sure to **make a backup**.
->
+> 
+> Also, NEVER edit projects with someone you don't trust as the plugin allows **remotely executing malicious code**.
+> 
 > See the [TODO list](https://github.com/wolfyxon/godotTogether/issues/1) to see the current progress.
-
-> [!CAUTION]
-> Never EVER join or host projects to people you don't trust.  
-> Your project can be very easily stolen and someone can remotely execute malicious code with tool scripts. 
 
 ## Installation
 First create a folder called `addons` in your project's directory.
