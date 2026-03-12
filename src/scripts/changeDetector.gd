@@ -345,7 +345,6 @@ func suppress_add_signal(scene_path: String, node_path: NodePath) -> void:
 func observe(node: Node) -> void:
 	if node in observed_nodes: return
 	
-	# Проверяем не находится ли нода в процессе синхронизации
 	if node_watcher.paused:
 		observed_nodes_cache[node] = get_property_hash_dict(node)
 		observed_nodes[node] = {
