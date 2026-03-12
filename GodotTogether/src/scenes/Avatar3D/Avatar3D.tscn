@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b5bmcyyb6did7"]
 
-[ext_resource type="Script" uid="uid://mqy1dbfo1wl2" path="res://GodotTogether/src/scenes/Avatar3D/Avatar3D.gd" id="1_kun10"]
-[ext_resource type="Material" uid="uid://ddflrrq43ph57" path="res://GodotTogether/src/scenes/Avatar3D/material.tres" id="2_gl4nl"]
+[ext_resource type="Script" path="res://GodotTogether/src/scenes/Avatar3D/Avatar3D.gd" id="1_kun10"]
+[ext_resource type="Material" path="res://GodotTogether/src/scenes/Avatar3D/material.tres" id="2_gl4nl"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_u7t51"]
 material = ExtResource("2_gl4nl")
