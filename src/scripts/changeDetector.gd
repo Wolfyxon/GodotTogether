@@ -186,11 +186,13 @@ func _ready() -> void:
 	EditorInterface.get_resource_filesystem().filesystem_changed.connect(_filesystem_changed)
 
 func _cycle() -> void:
+	if node_watcher.paused:
+		return
+	
 	var root := EditorInterface.get_edited_scene_root()
-
 	if not main: return
 	if not root: return
-	
+
 	if GDTSettings.get_setting("dev/disable_node_scanning"): 
 		return
 
@@ -245,9 +247,12 @@ func track_node_parent(node: Node) -> void:
 		node_reparented.emit(node, old_parent, current_parent)
 
 func _node_added(node: Node) -> void:
+	if node_watcher.paused:
+		return
+	
 	var current_scene := EditorInterface.get_edited_scene_root()
-	var scene_path := current_scene.scene_file_path
-
+	var scene_path := current_scene.scene_file_path if current_scene else ""
+	
 	if scene_path in incoming_nodes:
 		var incoming = incoming_nodes[scene_path]
 		var node_path = node.get_path_to(current_scene)
@@ -259,6 +264,7 @@ func _node_added(node: Node) -> void:
 	if not node in observed_nodes:
 		observe_recursive(node)
 		node_added.emit(node)
+
 
 func _node_exiting(node: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
@@ -338,7 +344,14 @@ func suppress_add_signal(scene_path: String, node_path: NodePath) -> void:
 
 func observe(node: Node) -> void:
 	if node in observed_nodes: return
-
+	
+	if node_watcher.paused:
+		observed_nodes_cache[node] = get_property_hash_dict(node)
+		observed_nodes[node] = {
+			"name": node.name
+		}
+		return
+	
 	observed_nodes_cache[node] = get_property_hash_dict(node)
 	observed_nodes[node] = {
 		"name": node.name

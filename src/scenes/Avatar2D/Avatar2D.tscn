@@ -1,9 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://bti5j1lw5a1cc"]
+[gd_scene format=3 uid="uid://bti5j1lw5a1cc"]
 
 [ext_resource type="Script" uid="uid://c0xq7s6u5sxa5" path="res://addons/GodotTogether/src/scenes/Avatar2D/Avatar2D.gd" id="1_sptkx"]
 [ext_resource type="Texture2D" uid="uid://btimsnam5ve1r" path="res://addons/GodotTogether/src/img/mouse.svg" id="2_8nie3"]
 
-[node name="Avatar2D" type="Control"]
+[sub_resource type="LabelSettings" id="LabelSettings_8nie3"]
+font_size = 10
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_2yir3"]
+font_size = 8
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Avatar2D" type="Control" unique_id=1395508630]
 z_index = 4096
 layout_mode = 3
 anchors_preset = 15
@@ -14,38 +24,40 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_sptkx")
 
-[node name="cursor" type="TextureRect" parent="."]
+[node name="cursor" type="TextureRect" parent="." unique_id=469316447]
 layout_mode = 0
-offset_right = 30.0
-offset_bottom = 39.0
+offset_right = 24.0
+offset_bottom = 31.199999
 mouse_filter = 2
 texture = ExtResource("2_8nie3")
 expand_mode = 1
 
-[node name="txt" type="VBoxContainer" parent="."]
+[node name="txt" type="VBoxContainer" parent="." unique_id=808653309]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0217014
-anchor_top = 0.0432099
-anchor_right = 0.298611
-anchor_bottom = 0.117284
+anchor_left = 0.019965278
+anchor_top = 0.024691358
+anchor_right = 0.29687488
+anchor_bottom = 0.098765455
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = -5
 metadata/_edit_use_anchors_ = true
 
-[node name="name" type="Label" parent="txt"]
+[node name="name" type="Label" parent="txt" unique_id=2024813732]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 21
 text = "Username"
+label_settings = SubResource("LabelSettings_8nie3")
 
-[node name="class" type="Label" parent="txt"]
+[node name="class" type="Label" parent="txt" unique_id=1137606886]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 text = "Guest"
+label_settings = SubResource("LabelSettings_2yir3")

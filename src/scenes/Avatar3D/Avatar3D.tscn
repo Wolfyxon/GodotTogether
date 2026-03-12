@@ -1,45 +1,42 @@
-[gd_scene load_steps=6 format=3 uid="uid://b5bmcyyb6did7"]
+[gd_scene format=3 uid="uid://b5bmcyyb6did7"]
 
 [ext_resource type="Script" uid="uid://mqy1dbfo1wl2" path="res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.gd" id="1_kun10"]
 [ext_resource type="Material" uid="uid://ddflrrq43ph57" path="res://addons/GodotTogether/src/scenes/Avatar3D/material.tres" id="2_gl4nl"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_u7t51"]
 material = ExtResource("2_gl4nl")
+radius = 0.3
+height = 0.6
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_0cjbq"]
 material = ExtResource("2_gl4nl")
+top_radius = 0.0
+height = 3.0
 
-[sub_resource type="PrismMesh" id="PrismMesh_wlo86"]
-material = ExtResource("2_gl4nl")
-
-[node name="Avatar3D" type="Node3D"]
+[node name="Avatar3D" type="Node3D" unique_id=1108145093]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00312996, 0, -0.00445247)
 script = ExtResource("1_kun10")
 
-[node name="model" type="Node3D" parent="."]
+[node name="model" type="Node3D" parent="." unique_id=1149882133]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="ball" type="MeshInstance3D" parent="model"]
+[node name="ball" type="MeshInstance3D" parent="model" unique_id=570658820]
 transform = Transform3D(0.713497, 0, 0, 0, 0.713497, 0, 0, 0, 0.713497, 0, 0, -0.0037308)
 mesh = SubResource("SphereMesh_u7t51")
 skeleton = NodePath("../..")
 
-[node name="cylinder" type="MeshInstance3D" parent="model"]
-transform = Transform3D(0.154417, 0, 0, 0, -4.56293e-09, 0.154417, 0, -0.104388, -6.74979e-09, 0, 0, 0.459719)
+[node name="cylinder" type="MeshInstance3D" parent="model" unique_id=545910496]
+transform = Transform3D(0.154417, 0, 0, 0, -4.56293e-09, 0.154417, 0, -0.104388, -6.74979e-09, 0.0030128914, 0, 0.1512422)
 mesh = SubResource("CylinderMesh_0cjbq")
 
-[node name="prism" type="MeshInstance3D" parent="model"]
-transform = Transform3D(-0.247998, 2.17801e-08, 5.74564e-16, 0, -1.089e-08, 0.150355, 2.16806e-08, 0.249135, 6.57224e-09, 0, 0, 0.71841)
-mesh = SubResource("PrismMesh_wlo86")
-
-[node name="ui" type="Control" parent="."]
+[node name="ui" type="Control" parent="." unique_id=1246286979]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 275.0
 offset_bottom = 74.0
 mouse_filter = 2
 
-[node name="txt" type="VBoxContainer" parent="ui"]
+[node name="txt" type="VBoxContainer" parent="ui" unique_id=1765501088]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,7 +46,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = -5
 
-[node name="name" type="Label" parent="ui/txt"]
+[node name="name" type="Label" parent="ui/txt" unique_id=1480052036]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
@@ -57,7 +54,7 @@ theme_override_font_sizes/font_size = 21
 text = "Username"
 horizontal_alignment = 1
 
-[node name="class" type="Label" parent="ui/txt"]
+[node name="class" type="Label" parent="ui/txt" unique_id=373475359]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
