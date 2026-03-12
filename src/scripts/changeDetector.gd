@@ -113,7 +113,7 @@ static func is_encoded_resource(value) -> bool:
 	return value is Dictionary and "_gdtRes" in value
 
 static func is_file_resource(resource: Resource) -> bool:
-	return resource.resource_path and not resource.resource_path.contains("::")
+	return not resource.resource_path.is_empty() and not resource.resource_path.contains("::")
 
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
