@@ -14,7 +14,6 @@ top_radius = 0.0
 height = 3.0
 
 [node name="Avatar3D" type="Node3D" unique_id=1108145093]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00312996, 0, -0.00445247)
 script = ExtResource("1_kun10")
 
 [node name="model" type="Node3D" parent="." unique_id=1149882133]
