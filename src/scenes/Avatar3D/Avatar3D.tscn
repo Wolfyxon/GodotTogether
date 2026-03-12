@@ -24,8 +24,8 @@ transform = Transform3D(0.713497, 0, 0, 0, 0.713497, 0, 0, 0, 0.713497, 0, 0, -0
 mesh = SubResource("SphereMesh_u7t51")
 skeleton = NodePath("../..")
 
-[node name="cylinder" type="MeshInstance3D" parent="model" unique_id=545910496]
-transform = Transform3D(0.154417, 0, 0, 0, -4.56293e-09, 0.154417, 0, -0.104388, -6.74979e-09, 0.0030128914, 0, 0.1512422)
+[node name="cone" type="MeshInstance3D" parent="model" unique_id=545910496]
+transform = Transform3D(0.154417, 0, 0, 0, -4.5629442e-09, -0.154417, 0, 0.104388, -6.749781e-09, 0.003012876, 0, 0.3282837)
 mesh = SubResource("CylinderMesh_0cjbq")
 
 [node name="ui" type="Control" parent="." unique_id=1246286979]
