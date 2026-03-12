@@ -336,10 +336,12 @@ func receive_node_removal(scene_path: String, node_path: NodePath) -> void:
 		var apply_removal = func(scene_root: Node):
 			var node = scene_root.get_node_or_null(node_path)
 			if not node: return false
-
+			
+			EditorInterface.get_selection().remove_node(node)
+			
 			node.get_parent().remove_child(node)
 			node.queue_free()
-
+			
 			return true
 		
 		_apply_change_to_unloaded_scene(scene_path, apply_removal)
