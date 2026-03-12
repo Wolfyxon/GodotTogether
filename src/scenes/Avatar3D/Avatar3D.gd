@@ -25,7 +25,7 @@ func _process(delta) -> void:
 	if not main: return
 
 	var cam = EditorInterface.get_editor_viewport_3d().get_camera_3d()
-	var dist = cam.position.distance_to(position)
+	var dist = cam.position.distance_to(position) + 0.01 # Extra distance to prevent division by 0
 	
 	ui.visible = cam.is_position_in_frustum(position)
 	ui.position = cam.unproject_position(position) - ui.size / 2 - (Vector2(0, 200) / dist)
