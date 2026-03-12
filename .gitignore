@@ -1,8 +1,11 @@
+# Directories
 .godot
 .import
 .idea
 
+# File types
 *~
 *.tmp
 
+# Specific files
 /settings.json
