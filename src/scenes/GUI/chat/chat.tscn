@@ -1,9 +1,8 @@
-[gd_scene format=3 uid="uid://bt7xho72ewnem"]
+[gd_scene load_steps=7 format=3 uid="uid://bt7xho72ewnem"]
 
-[ext_resource type="Script" path="res://GodotTogether/src/scenes/GUI/chat/chat.gd" id="1_fubo5"]
-[ext_resource type="Texture2D" path="res://GodotTogether/src/img/play.svg" id="2_sr26q"]
-[ext_resource type="Texture2D" path="res://GodotTogether/src/img/extLink.svg" id="3_6unrw"]
-
+[ext_resource type="Script" uid="uid://c4fyt053t343v" path="res://addons/GodotTogether/src/scenes/GUI/chat/chat.gd" id="1_fubo5"]
+[ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="2_sr26q"]
+[ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="3_6unrw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fubo5"]
 bg_color = Color(1, 1, 1, 1)
