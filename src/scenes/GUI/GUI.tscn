@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://mpskc3ethpxo"]
+[gd_scene format=3 uid="uid://mpskc3ethpxo"]
 
 [ext_resource type="Script" uid="uid://pxi6vqp6q3d0" path="res://addons/GodotTogether/src/scenes/GUI/gui.gd" id="1_73joy"]
 [ext_resource type="Texture2D" uid="uid://doipv6fg6us5n" path="res://addons/GodotTogether/src/img/tools.svg" id="2_3dfl6"]
@@ -20,53 +20,53 @@
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
 [ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings.gd" id="18_8pkel"]
 
-[node name="GUI" type="Node"]
+[node name="GUI" type="Node" unique_id=954488947]
 script = ExtResource("1_73joy")
 
-[node name="mainMenu" type="PopupPanel" parent="."]
+[node name="mainMenu" type="PopupPanel" parent="." unique_id=1424307119]
 oversampling_override = 1.0
 title = "GodotTogether"
 initial_position = 4
-size = Vector2i(704, 400)
+size = Vector2i(800, 550)
 visible = true
 unresizable = false
 borderless = false
 min_size = Vector2i(500, 400)
 script = ExtResource("2_dm08s")
 
-[node name="main" type="VBoxContainer" parent="mainMenu"]
+[node name="main" type="VBoxContainer" parent="mainMenu" unique_id=870651427]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 13.0
-offset_top = 13.0
-offset_right = -13.0
-offset_bottom = -13.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_1pnv7")
 
-[node name="topBar" type="HBoxContainer" parent="mainMenu/main"]
+[node name="topBar" type="HBoxContainer" parent="mainMenu/main" unique_id=875120071]
 layout_mode = 2
 
-[node name="settings" type="Button" parent="mainMenu/main/topBar"]
+[node name="settings" type="Button" parent="mainMenu/main/topBar" unique_id=532562325]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Settings"
 icon = ExtResource("2_3dfl6")
 
-[node name="about" type="Button" parent="mainMenu/main/topBar"]
+[node name="about" type="Button" parent="mainMenu/main/topBar" unique_id=166589419]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "About"
 icon = ExtResource("3_gc6ii")
 
-[node name="sessionInit" type="Control" parent="mainMenu/main"]
+[node name="sessionInit" type="Control" parent="mainMenu/main" unique_id=231653915]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit"]
+[node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=1445063953]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -77,53 +77,53 @@ grow_vertical = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="mainMenu/main/sessionInit/pre"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=1329198942]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Welcome to Godot Together"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/pre"]
+[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=1865473635]
 layout_mode = 2
 text = "Your username:"
 horizontal_alignment = 1
 
-[node name="username" type="LineEdit" parent="mainMenu/main/sessionInit/pre"]
+[node name="username" type="LineEdit" parent="mainMenu/main/sessionInit/pre" unique_id=1070169555]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Error"
 placeholder_text = "Your username..."
 
-[node name="usernameError" type="Label" parent="mainMenu/main/sessionInit/pre"]
+[node name="usernameError" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=1797140404]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.26, 0.26, 1)
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 
-[node name="sep" type="Control" parent="mainMenu/main/sessionInit/pre"]
+[node name="sep" type="Control" parent="mainMenu/main/sessionInit/pre" unique_id=26911429]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="join" type="Button" parent="mainMenu/main/sessionInit/pre"]
+[node name="join" type="Button" parent="mainMenu/main/sessionInit/pre" unique_id=2000365754]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Join someone's project"
 icon = ExtResource("4_lrlm7")
 
-[node name="host" type="Button" parent="mainMenu/main/sessionInit/pre"]
+[node name="host" type="Button" parent="mainMenu/main/sessionInit/pre" unique_id=708806217]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Host your project"
 icon = ExtResource("4_lrlm7")
 
-[node name="sep2" type="Control" parent="mainMenu/main/sessionInit/pre"]
+[node name="sep2" type="Control" parent="mainMenu/main/sessionInit/pre" unique_id=606229289]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="warning" type="Label" parent="mainMenu/main/sessionInit/pre"]
+[node name="warning" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=295890328]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
@@ -134,7 +134,7 @@ This plugin is currently insecure and may allow hackers to run malicious code on
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit"]
+[node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=538657352]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -145,28 +145,28 @@ offset_right = 109.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="host" type="VBoxContainer" parent="mainMenu/main/sessionInit/start"]
+[node name="host" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=1857833292]
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host" unique_id=1357696801]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Host your project"
 horizontal_alignment = 1
 
-[node name="port" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/host"]
+[node name="port" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/host" unique_id=1807026856]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host/port"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host/port" unique_id=1238513077]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Server port"
 
-[node name="value" type="SpinBox" parent="mainMenu/main/sessionInit/start/host/port"]
+[node name="value" type="SpinBox" parent="mainMenu/main/sessionInit/start/host/port" unique_id=1953811689]
 layout_mode = 2
 size_flags_horizontal = 4
 min_value = 1024.0
@@ -174,35 +174,35 @@ max_value = 49151.0
 value = 5017.0
 prefix = ":"
 
-[node name="users" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/host"]
+[node name="users" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/host" unique_id=757000712]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host/users"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/host/users" unique_id=299341755]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Max users"
 
-[node name="value" type="SpinBox" parent="mainMenu/main/sessionInit/start/host/users"]
+[node name="value" type="SpinBox" parent="mainMenu/main/sessionInit/start/host/users" unique_id=1497121190]
 layout_mode = 2
 size_flags_horizontal = 4
 min_value = 1.0
 value = 5.0
 
-[node name="approveUsers" type="CheckButton" parent="mainMenu/main/sessionInit/start/host"]
+[node name="approveUsers" type="CheckButton" parent="mainMenu/main/sessionInit/start/host" unique_id=728586070]
 layout_mode = 2
 text = "Approve users before join"
 
-[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/host"]
+[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/host" unique_id=1191938903]
 layout_mode = 2
 placeholder_text = "Server password..."
 
-[node name="start" type="Button" parent="mainMenu/main/sessionInit/start/host"]
+[node name="start" type="Button" parent="mainMenu/main/sessionInit/start/host" unique_id=483789471]
 layout_mode = 2
 text = "Start server"
 icon = ExtResource("4_lrlm7")
 
-[node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/host"]
+[node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/host" unique_id=437267011]
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
@@ -210,35 +210,35 @@ text = "Back up your project before using!
 Do not let untrusted people join!"
 horizontal_alignment = 1
 
-[node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start"]
+[node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=985925737]
 visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/join"]
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=811761042]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Join a project"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/start/join"]
+[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=733905196]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Server address"
 
-[node name="address" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/join"]
+[node name="address" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/join" unique_id=1545648784]
 layout_mode = 2
 alignment = 1
 
-[node name="ip" type="LineEdit" parent="mainMenu/main/sessionInit/start/join/address"]
+[node name="ip" type="LineEdit" parent="mainMenu/main/sessionInit/start/join/address" unique_id=1447670201]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "localhost"
 placeholder_text = "IP address..."
 
-[node name="port" type="SpinBox" parent="mainMenu/main/sessionInit/start/join/address"]
+[node name="port" type="SpinBox" parent="mainMenu/main/sessionInit/start/join/address" unique_id=276160018]
 layout_mode = 2
 size_flags_horizontal = 4
 min_value = 1024.0
@@ -246,17 +246,17 @@ max_value = 49151.0
 value = 5017.0
 prefix = ":"
 
-[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/join"]
+[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/join" unique_id=1542456302]
 layout_mode = 2
 placeholder_text = "Password..."
 secret = true
 
-[node name="join" type="Button" parent="mainMenu/main/sessionInit/start/join"]
+[node name="join" type="Button" parent="mainMenu/main/sessionInit/start/join" unique_id=1389095608]
 layout_mode = 2
 text = "Join server"
 icon = ExtResource("4_lrlm7")
 
-[node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/join"]
+[node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=1410746964]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
@@ -266,12 +266,12 @@ All data in this project will be OVERWRITTEN with their version."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="cancel" type="Button" parent="mainMenu/main/sessionInit/start"]
+[node name="cancel" type="Button" parent="mainMenu/main/sessionInit/start" unique_id=2056842978]
 layout_mode = 2
 text = "Cancel"
 icon = ExtResource("6_8e3fv")
 
-[node name="cover" type="ColorRect" parent="mainMenu/main/sessionInit"]
+[node name="cover" type="ColorRect" parent="mainMenu/main/sessionInit" unique_id=475283929]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -281,7 +281,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.376471)
 
-[node name="vbox" type="VBoxContainer" parent="mainMenu/main/sessionInit/cover"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/sessionInit/cover" unique_id=823876667]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -296,125 +296,125 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="title" type="Label" parent="mainMenu/main/sessionInit/cover/vbox"]
+[node name="title" type="Label" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=885951761]
 layout_mode = 2
 text = "Starting server"
 
-[node name="btnCancel" type="Button" parent="mainMenu/main/sessionInit/cover/vbox"]
+[node name="btnCancel" type="Button" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=1520441617]
 layout_mode = 2
 text = "Cancel"
 icon = ExtResource("9_4c4b3")
 
-[node name="session" type="VBoxContainer" parent="mainMenu/main"]
+[node name="session" type="VBoxContainer" parent="mainMenu/main" unique_id=1691298689]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="top" type="HBoxContainer" parent="mainMenu/main/session"]
+[node name="top" type="HBoxContainer" parent="mainMenu/main/session" unique_id=826240278]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="end" type="Button" parent="mainMenu/main/session/top"]
+[node name="end" type="Button" parent="mainMenu/main/session/top" unique_id=1445258068]
 layout_mode = 2
 size_flags_vertical = 0
 tooltip_text = "Stop the server, ending the editing session for everyone."
 theme_override_font_sizes/font_size = 11
 text = "Stop server"
 
-[node name="restart" type="Button" parent="mainMenu/main/session/top"]
+[node name="restart" type="Button" parent="mainMenu/main/session/top" unique_id=285500935]
 layout_mode = 2
 size_flags_vertical = 0
 tooltip_text = "Restart the plugin for all users and then yourself. Everyone needs to have the restart broadcast setting enabled."
 theme_override_font_sizes/font_size = 11
 text = "Broadcast plugin restart"
 
-[node name="showJoin" type="Button" parent="mainMenu/main/session/top"]
+[node name="showJoin" type="Button" parent="mainMenu/main/session/top" unique_id=213104742]
 visible = false
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 11
 text = "Show join data"
 
-[node name="sep" type="VSeparator" parent="mainMenu/main/session/top"]
+[node name="sep" type="VSeparator" parent="mainMenu/main/session/top" unique_id=1139311752]
 layout_mode = 2
 
-[node name="status" type="Label" parent="mainMenu/main/session/top"]
+[node name="status" type="Label" parent="mainMenu/main/session/top" unique_id=2070832868]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 16
 text = "Connected"
 
-[node name="tabs" type="TabContainer" parent="mainMenu/main/session"]
+[node name="tabs" type="TabContainer" parent="mainMenu/main/session" unique_id=1920763686]
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Users" type="ScrollContainer" parent="mainMenu/main/session/tabs"]
+[node name="Users" type="ScrollContainer" parent="mainMenu/main/session/tabs" unique_id=1656797439]
 layout_mode = 2
 script = ExtResource("7_nhpql")
 metadata/_tab_index = 0
 
-[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Users"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Users" unique_id=452052504]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="header" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox"]
+[node name="header" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox" unique_id=198455278]
 layout_mode = 2
 
-[node name="color" type="Control" parent="mainMenu/main/session/tabs/Users/vbox/header"]
+[node name="color" type="Control" parent="mainMenu/main/session/tabs/Users/vbox/header" unique_id=667987341]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="name" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header"]
+[node name="name" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header" unique_id=1705296266]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Name"
 
-[node name="id" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header"]
+[node name="id" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header" unique_id=1312017985]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "ID"
 
-[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/header"]
+[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/header" unique_id=1644731597]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="name" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header/ip"]
+[node name="name" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header/ip" unique_id=1545473438]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "IP address"
 
-[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/header/ip"]
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/header/ip" unique_id=313696335]
 layout_mode = 2
 icon = ExtResource("7_1sjc5")
 flat = true
 
-[node name="rank" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header"]
+[node name="rank" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header" unique_id=315244959]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Rank"
 
-[node name="actions" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header"]
+[node name="actions" type="Label" parent="mainMenu/main/session/tabs/Users/vbox/header" unique_id=32448227]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Actions"
 
-[node name="sep" type="HSeparator" parent="mainMenu/main/session/tabs/Users/vbox"]
+[node name="sep" type="HSeparator" parent="mainMenu/main/session/tabs/Users/vbox" unique_id=675580301]
 layout_mode = 2
 
-[node name="user" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox"]
+[node name="user" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox" unique_id=39142422]
 layout_mode = 2
 script = ExtResource("9_ymxdp")
 
-[node name="color" type="ColorRect" parent="mainMenu/main/session/tabs/Users/vbox/user"]
+[node name="color" type="ColorRect" parent="mainMenu/main/session/tabs/Users/vbox/user" unique_id=299317126]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="name" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user"]
+[node name="name" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user" unique_id=1489860313]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -422,19 +422,19 @@ text = "Cool person"
 placeholder_text = "error"
 editable = false
 
-[node name="id" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user"]
+[node name="id" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user" unique_id=65769384]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "123"
 placeholder_text = "error"
 editable = false
 
-[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user"]
+[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user" unique_id=1540724126]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user/ip"]
+[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Users/vbox/user/ip" unique_id=1450169343]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "127.0.0.1"
@@ -442,12 +442,12 @@ placeholder_text = "error"
 editable = false
 secret = true
 
-[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/ip"]
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/ip" unique_id=471681622]
 layout_mode = 2
 icon = ExtResource("7_1sjc5")
 flat = true
 
-[node name="rank" type="OptionButton" parent="mainMenu/main/session/tabs/Users/vbox/user"]
+[node name="rank" type="OptionButton" parent="mainMenu/main/session/tabs/Users/vbox/user" unique_id=1926577695]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -457,11 +457,11 @@ item_count = 1
 popup/item_0/text = "error"
 popup/item_0/id = 0
 
-[node name="actions" type="Control" parent="mainMenu/main/session/tabs/Users/vbox/user"]
+[node name="actions" type="Control" parent="mainMenu/main/session/tabs/Users/vbox/user" unique_id=1541774645]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="normal" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user/actions"]
+[node name="normal" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user/actions" unique_id=1344823289]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -471,13 +471,13 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/normal"]
+[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/normal" unique_id=1319446505]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Kick the user from the session."
 text = "Kick"
 
-[node name="pending" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user/actions"]
+[node name="pending" type="HBoxContainer" parent="mainMenu/main/session/tabs/Users/vbox/user/actions" unique_id=1063680980]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -488,84 +488,84 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="approve" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/pending"]
+[node name="approve" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/pending" unique_id=1001056353]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Let the user in,"
 icon = ExtResource("13_u8ku5")
 icon_alignment = 1
 
-[node name="reject" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/pending"]
+[node name="reject" type="Button" parent="mainMenu/main/session/tabs/Users/vbox/user/actions/pending" unique_id=1098144592]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Don't allow the user to join."
 icon = ExtResource("9_4c4b3")
 icon_alignment = 1
 
-[node name="Pending Users" type="ScrollContainer" parent="mainMenu/main/session/tabs"]
+[node name="Pending Users" type="ScrollContainer" parent="mainMenu/main/session/tabs" unique_id=1148757756]
 visible = false
 layout_mode = 2
 script = ExtResource("7_nhpql")
 metadata/_tab_index = 1
 metadata/is_pending = true
 
-[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Pending Users"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Pending Users" unique_id=154401685]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="header" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox"]
+[node name="header" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox" unique_id=151616429]
 layout_mode = 2
 
-[node name="color" type="Control" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+[node name="color" type="Control" parent="mainMenu/main/session/tabs/Pending Users/vbox/header" unique_id=1349800762]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="name" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+[node name="name" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header" unique_id=556272395]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Name"
 
-[node name="id" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+[node name="id" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header" unique_id=939824058]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "ID"
 
-[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/header" unique_id=1310072250]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="name" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header/ip"]
+[node name="name" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header/ip" unique_id=1437580021]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "IP address"
 
-[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/header/ip"]
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/header/ip" unique_id=159600606]
 layout_mode = 2
 icon = ExtResource("7_1sjc5")
 flat = true
 
-[node name="actions" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header"]
+[node name="actions" type="Label" parent="mainMenu/main/session/tabs/Pending Users/vbox/header" unique_id=525283727]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Actions"
 
-[node name="sep" type="HSeparator" parent="mainMenu/main/session/tabs/Pending Users/vbox"]
+[node name="sep" type="HSeparator" parent="mainMenu/main/session/tabs/Pending Users/vbox" unique_id=2093861003]
 layout_mode = 2
 
-[node name="user" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox"]
+[node name="user" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox" unique_id=734699690]
 visible = false
 layout_mode = 2
 script = ExtResource("9_ymxdp")
 
-[node name="color" type="ColorRect" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+[node name="color" type="ColorRect" parent="mainMenu/main/session/tabs/Pending Users/vbox/user" unique_id=803542848]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="name" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+[node name="name" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user" unique_id=645604258]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -573,19 +573,19 @@ text = "Cool person"
 placeholder_text = "error"
 editable = false
 
-[node name="id" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+[node name="id" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user" unique_id=1848406057]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "123"
 placeholder_text = "error"
 editable = false
 
-[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+[node name="ip" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user" unique_id=948182375]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/ip"]
+[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/ip" unique_id=1990438538]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "127.0.0.1"
@@ -593,12 +593,12 @@ placeholder_text = "error"
 editable = false
 secret = true
 
-[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/ip"]
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/ip" unique_id=763318314]
 layout_mode = 2
 icon = ExtResource("7_1sjc5")
 flat = true
 
-[node name="rank" type="OptionButton" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+[node name="rank" type="OptionButton" parent="mainMenu/main/session/tabs/Pending Users/vbox/user" unique_id=1990961908]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -608,11 +608,11 @@ item_count = 1
 popup/item_0/text = "error"
 popup/item_0/id = 0
 
-[node name="actions" type="Control" parent="mainMenu/main/session/tabs/Pending Users/vbox/user"]
+[node name="actions" type="Control" parent="mainMenu/main/session/tabs/Pending Users/vbox/user" unique_id=2130331744]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="normal" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions"]
+[node name="normal" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions" unique_id=1419389534]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -622,13 +622,13 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/normal"]
+[node name="kick" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/normal" unique_id=750453226]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Kick the user from the session."
 text = "Kick"
 
-[node name="pending" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions"]
+[node name="pending" type="HBoxContainer" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions" unique_id=1601476622]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -639,92 +639,92 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="approve" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/pending"]
+[node name="approve" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/pending" unique_id=1425210359]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Let the user in,"
 icon = ExtResource("13_u8ku5")
 icon_alignment = 1
 
-[node name="reject" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/pending"]
+[node name="reject" type="Button" parent="mainMenu/main/session/tabs/Pending Users/vbox/user/actions/pending" unique_id=876159288]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Don't allow the user to join."
 icon = ExtResource("9_4c4b3")
 icon_alignment = 1
 
-[node name="Server settings" type="VBoxContainer" parent="mainMenu/main/session/tabs"]
+[node name="Server settings" type="VBoxContainer" parent="mainMenu/main/session/tabs" unique_id=1749968292]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="scroll" type="ScrollContainer" parent="mainMenu/main/session/tabs/Server settings"]
+[node name="scroll" type="ScrollContainer" parent="mainMenu/main/session/tabs/Server settings" unique_id=399316403]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll" unique_id=1901014036]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
+[node name="Label" type="Label" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox" unique_id=929898000]
 layout_mode = 2
 text = "Server password:"
 
-[node name="password" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
+[node name="password" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox" unique_id=1514774956]
 layout_mode = 2
 
-[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password"]
+[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password" unique_id=840628592]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "No password set..."
 clear_button_enabled = true
 secret = true
 
-[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password"]
+[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password" unique_id=1765041623]
 layout_mode = 2
 icon = ExtResource("7_1sjc5")
 flat = true
 
-[node name="approve" type="CheckBox" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox"]
+[node name="approve" type="CheckBox" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox" unique_id=374127864]
 layout_mode = 2
 button_pressed = true
 text = "Approve users before they join"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings"]
+[node name="HBoxContainer" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings" unique_id=1255772356]
 layout_mode = 2
 
-[node name="apply" type="Button" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer"]
+[node name="apply" type="Button" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer" unique_id=441991143]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Apply"
 
-[node name="unsavedWarning" type="Label" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer"]
+[node name="unsavedWarning" type="Label" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer" unique_id=2110602252]
 visible = false
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "*You have unsaved changes"
 
-[node name="update" type="Timer" parent="mainMenu/main"]
+[node name="update" type="Timer" parent="mainMenu/main" unique_id=819551473]
 autostart = true
 
-[node name="disclaimer" type="VBoxContainer" parent="mainMenu"]
+[node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=1830113211]
 visible = false
-offset_left = 13.0
-offset_top = 13.0
-offset_right = 691.0
-offset_bottom = 387.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 796.0
+offset_bottom = 546.0
 script = ExtResource("12_tagic")
 
-[node name="header" type="Label" parent="mainMenu/disclaimer"]
+[node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2035823589]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Hold up!"
 horizontal_alignment = 1
 
-[node name="text" type="RichTextLabel" parent="mainMenu/disclaimer"]
+[node name="text" type="RichTextLabel" parent="mainMenu/disclaimer" unique_id=2050182596]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 16
@@ -742,191 +742,191 @@ text = "[indent]
 [/center]"
 shortcut_keys_enabled = false
 
-[node name="checks" type="VBoxContainer" parent="mainMenu/disclaimer"]
+[node name="checks" type="VBoxContainer" parent="mainMenu/disclaimer" unique_id=1119845510]
 layout_mode = 2
 
-[node name="check" type="CheckBox" parent="mainMenu/disclaimer/checks"]
+[node name="check" type="CheckBox" parent="mainMenu/disclaimer/checks" unique_id=1770975096]
 layout_mode = 2
 text = "I understand the plugin is not complete and buggy"
 
-[node name="check2" type="CheckBox" parent="mainMenu/disclaimer/checks"]
+[node name="check2" type="CheckBox" parent="mainMenu/disclaimer/checks" unique_id=1570616819]
 layout_mode = 2
 text = "I'm aware of the security risk and I won't use it with people I don't fully trust"
 
-[node name="btnProceed" type="Button" parent="mainMenu/disclaimer"]
+[node name="btnProceed" type="Button" parent="mainMenu/disclaimer" unique_id=1921979466]
 layout_mode = 2
 text = "Proceed"
 
-[node name="settingsError" type="VBoxContainer" parent="mainMenu"]
+[node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=1858632000]
 visible = false
-offset_left = 13.0
-offset_top = 13.0
-offset_right = 691.0
-offset_bottom = 387.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 796.0
+offset_bottom = 546.0
 script = ExtResource("14_a4cyb")
 
-[node name="header" type="Label" parent="mainMenu/settingsError"]
+[node name="header" type="Label" parent="mainMenu/settingsError" unique_id=176630790]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.8, 0, 1)
 theme_override_font_sizes/font_size = 31
 text = "Failed to parse settings"
 horizontal_alignment = 1
 
-[node name="description" type="Label" parent="mainMenu/settingsError"]
+[node name="description" type="Label" parent="mainMenu/settingsError" unique_id=1745728305]
 layout_mode = 2
 text = "There's a problem with the plugin's settings file that's preventing the plugin from working.
 Please fix the file manually or reset it."
 horizontal_alignment = 1
 
-[node name="error" type="Label" parent="mainMenu/settingsError"]
+[node name="error" type="Label" parent="mainMenu/settingsError" unique_id=1651436317]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Error: %s"
 
-[node name="line" type="Label" parent="mainMenu/settingsError"]
+[node name="line" type="Label" parent="mainMenu/settingsError" unique_id=931360441]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Line: %s"
 
-[node name="path" type="Label" parent="mainMenu/settingsError"]
+[node name="path" type="Label" parent="mainMenu/settingsError" unique_id=1439771432]
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Path: %s"
 autowrap_mode = 3
 
-[node name="sep" type="Control" parent="mainMenu/settingsError"]
+[node name="sep" type="Control" parent="mainMenu/settingsError" unique_id=1180249051]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="actions" type="HBoxContainer" parent="mainMenu/settingsError"]
+[node name="actions" type="HBoxContainer" parent="mainMenu/settingsError" unique_id=1657792220]
 layout_mode = 2
 
-[node name="openGd" type="Button" parent="mainMenu/settingsError/actions"]
+[node name="openGd" type="Button" parent="mainMenu/settingsError/actions" unique_id=1088161738]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Open in Godot"
 icon = ExtResource("15_bvn1h")
 
-[node name="showFile" type="Button" parent="mainMenu/settingsError/actions"]
+[node name="showFile" type="Button" parent="mainMenu/settingsError/actions" unique_id=1112566125]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Show in file manager"
 icon = ExtResource("16_8pkel")
 
-[node name="reset" type="Button" parent="mainMenu/settingsError/actions"]
+[node name="reset" type="Button" parent="mainMenu/settingsError/actions" unique_id=815454675]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Reset to default"
 icon = ExtResource("17_u8ku5")
 
-[node name="Label" type="Label" parent="mainMenu/settingsError"]
+[node name="Label" type="Label" parent="mainMenu/settingsError" unique_id=355785356]
 layout_mode = 2
 text = "When you're done, please restart the plugin"
 horizontal_alignment = 1
 
-[node name="about" type="PopupPanel" parent="mainMenu"]
+[node name="about" type="PopupPanel" parent="mainMenu" unique_id=1799427924]
 oversampling_override = 1.0
 title = "About Godot Together"
 initial_position = 4
-size = Vector2i(500, 250)
+size = Vector2i(700, 400)
 borderless = false
 
-[node name="scroll" type="ScrollContainer" parent="mainMenu/about"]
+[node name="scroll" type="ScrollContainer" parent="mainMenu/about" unique_id=225125899]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 9.0
-offset_top = 9.0
-offset_right = 491.0
-offset_bottom = 241.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="vbox" type="VBoxContainer" parent="mainMenu/about/scroll"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/about/scroll" unique_id=1771867050]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="version" type="Label" parent="mainMenu/about/scroll/vbox"]
+[node name="version" type="Label" parent="mainMenu/about/scroll/vbox" unique_id=698136228]
 layout_mode = 2
 text = "Version: %s"
 
-[node name="author" type="Label" parent="mainMenu/about/scroll/vbox"]
+[node name="author" type="Label" parent="mainMenu/about/scroll/vbox" unique_id=1894257750]
 layout_mode = 2
 text = "by Wolfyxon & contributors"
 
-[node name="description" type="Label" parent="mainMenu/about/scroll/vbox"]
+[node name="description" type="Label" parent="mainMenu/about/scroll/vbox" unique_id=658373036]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 text = "GodotTogether is an open source plugin for live editing Godot projects with multiple people at the same time over the network.
 This plugin is in early development so expect bugs!"
 autowrap_mode = 3
 
-[node name="links" type="HBoxContainer" parent="mainMenu/about/scroll/vbox"]
-layout_mode = 2
-alignment = 1
-
-[node name="repo" type="LinkButton" parent="mainMenu/about/scroll/vbox/links"]
-layout_mode = 2
-text = "Source code"
-uri = "https://github.com/Wolfyxon/GodotTogether"
-
-[node name="issues" type="LinkButton" parent="mainMenu/about/scroll/vbox/links"]
-layout_mode = 2
-text = "Bugs and proposals"
-uri = "https://github.com/Wolfyxon/GodotTogether/issues"
-
-[node name="help" type="LinkButton" parent="mainMenu/about/scroll/vbox/links"]
-layout_mode = 2
-text = "Help & wiki"
-uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
-
-[node name="sep" type="Control" parent="mainMenu/about/scroll/vbox"]
+[node name="sep" type="Control" parent="mainMenu/about/scroll/vbox" unique_id=555055255]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="credits" type="Label" parent="mainMenu/about/scroll/vbox"]
+[node name="credits" type="Label" parent="mainMenu/about/scroll/vbox" unique_id=691340410]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 text = "Special thanks to: Zastinian, ImmortalOctogen"
 autowrap_mode = 3
 
-[node name="settings" type="PopupPanel" parent="mainMenu"]
+[node name="links" type="HBoxContainer" parent="mainMenu/about/scroll/vbox" unique_id=1573332718]
+layout_mode = 2
+alignment = 1
+
+[node name="repo" type="LinkButton" parent="mainMenu/about/scroll/vbox/links" unique_id=1946731073]
+layout_mode = 2
+text = "Source code"
+uri = "https://github.com/Wolfyxon/GodotTogether"
+
+[node name="issues" type="LinkButton" parent="mainMenu/about/scroll/vbox/links" unique_id=479909808]
+layout_mode = 2
+text = "Bugs and proposals"
+uri = "https://github.com/Wolfyxon/GodotTogether/issues"
+
+[node name="help" type="LinkButton" parent="mainMenu/about/scroll/vbox/links" unique_id=1833290996]
+layout_mode = 2
+text = "Help & wiki"
+uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
+
+[node name="settings" type="PopupPanel" parent="mainMenu" unique_id=312523764]
 oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
-size = Vector2i(600, 400)
+size = Vector2i(750, 500)
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
-[node name="main" type="VBoxContainer" parent="mainMenu/settings"]
-offset_left = 9.0
-offset_top = 9.0
-offset_right = 591.0
-offset_bottom = 391.0
+[node name="main" type="VBoxContainer" parent="mainMenu/settings" unique_id=1901404815]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 746.0
+offset_bottom = 496.0
 
-[node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main"]
+[node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1703076360]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 100
+scroll_vertical = 24
 
-[node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll"]
+[node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll" unique_id=458976492]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HSeparator" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="HSeparator" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=334805456]
 layout_mode = 2
 
-[node name="lblGeneral" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="lblGeneral" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=716541033]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "General"
 
-[node name="userNotif" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="userNotif" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=71937256]
 layout_mode = 2
 tooltip_text = "Show a notification when a user joins or leaves the editing session.
 Doesn't apply to join request notifications."
@@ -934,15 +934,15 @@ button_pressed = true
 text = "User join/leave notifications"
 metadata/setting = "notifications/users"
 
-[node name="HSeparator2" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="HSeparator2" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=1786850672]
 layout_mode = 2
 
-[node name="lblSecurity" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="lblSecurity" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=876007654]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Security"
 
-[node name="acceptScripts" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="acceptScripts" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=1007139774]
 layout_mode = 2
 tooltip_text = "Not implemented.
 
@@ -951,7 +951,7 @@ disabled = true
 button_pressed = true
 text = "Accept scripts"
 
-[node name="acceptToolScripts" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="acceptToolScripts" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=1503579189]
 layout_mode = 2
 tooltip_text = "Not implemented.
 
@@ -960,15 +960,15 @@ disabled = true
 button_pressed = true
 text = "Accept tool scripts"
 
-[node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=1938210387]
 layout_mode = 2
 
-[node name="lblDev" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="lblDev" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=1184615649]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Developer"
 
-[node name="devWarn" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="devWarn" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=1378539640]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.8580836, 0, 1)
@@ -977,21 +977,21 @@ text = "These settings are meant for plugin developers and should not be touched
 Leave everything off."
 autowrap_mode = 3
 
-[node name="realTimeFileSync" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="realTimeFileSync" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=512780720]
 layout_mode = 2
 tooltip_text = "Disables real time file synchronization.
 Helps test the plugin more quickly when file syncing isn't necessary."
 text = "Disable real time file sync"
 metadata/setting = "dev/disable_real_time_file_sync"
 
-[node name="nodeScanning" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="nodeScanning" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=1272944025]
 layout_mode = 2
 tooltip_text = "Disables the core plugin's feature: scanning for changes to replicate.
 Helps test basic networking when this feature isn't needed."
 text = "Disable node scanning"
 metadata/setting = "dev/disable_node_scanning"
 
-[node name="restartBroadcast" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="restartBroadcast" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=1967301747]
 layout_mode = 2
 tooltip_text = "Do not use when using the plugin normally. This is meant for easier development. 
 Enable sending and receiving a restart signal that restarts the plugin for everyone in the server with this setting enabled.
@@ -999,50 +999,50 @@ Enable sending and receiving a restart signal that restarts the plugin for every
 text = "Enable restart broadcast"
 metadata/setting = "dev/restart_broadcast"
 
-[node name="HSeparator4" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="HSeparator4" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=172706585]
 layout_mode = 2
 
-[node name="lblActions" type="Label" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="lblActions" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=104060935]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Actions"
 
-[node name="actions" type="GridContainer" parent="mainMenu/settings/main/scroll/vbox"]
+[node name="actions" type="GridContainer" parent="mainMenu/settings/main/scroll/vbox" unique_id=1586208945]
 layout_mode = 2
 columns = 2
 
-[node name="reset" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
+[node name="reset" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions" unique_id=562253987]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Reset all settings."
 text = "Factory reset"
 icon = ExtResource("17_u8ku5")
 
-[node name="showFile" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
+[node name="showFile" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions" unique_id=2013318164]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Show where the settings.json file is."
 text = "Show settings file"
 icon = ExtResource("16_8pkel")
 
-[node name="shutdown" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
+[node name="shutdown" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions" unique_id=136401699]
 layout_mode = 2
 tooltip_text = "Shut down and disable the plugin. You'll have to reenable it manually."
 text = "Shutdown plugin"
 icon = ExtResource("9_4c4b3")
 
-[node name="restart" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions"]
+[node name="restart" type="Button" parent="mainMenu/settings/main/scroll/vbox/actions" unique_id=1410170792]
 layout_mode = 2
 tooltip_text = "Shut down and restart the plugin. Useful for development."
 text = "Restart plugin"
 icon = ExtResource("17_u8ku5")
 
-[node name="Label" type="Label" parent="mainMenu/settings/main"]
+[node name="Label" type="Label" parent="mainMenu/settings/main" unique_id=734762205]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Hover over a setting to see what it does."
 
-[node name="close" type="Button" parent="mainMenu/settings/main"]
+[node name="close" type="Button" parent="mainMenu/settings/main" unique_id=1030384315]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
