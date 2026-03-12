@@ -397,7 +397,7 @@ func receive_node_add(scene_path: String, node_path: NodePath, node_type: String
 		parent = scene
 
 	if not parent:
-		print("Node add failed: Parent (%s) not found for (%s) " % [parent_path, node_path])
+		print("Node add failed: Parent (%s) not found for (%s)" % [parent_path, node_path])
 		return
 
 	var node: Node = ClassDB.instantiate(node_type)
