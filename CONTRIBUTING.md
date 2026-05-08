@@ -86,6 +86,11 @@ You must have full understanding of the code you write and thus using AI generat
 #### Code style
 The [default GDScript style](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html) is used in the project.
 
+The general rules include:
+- `snake_case_naming` for variables and functions
+- `UpperCamelCaseNaming` for classes
+- Newline separations between sections of code 
+
 However, you should use one line statements if using `return` to stop the function and if the condition is short.
 ```gdscript
 func some_function():
@@ -95,7 +100,7 @@ func some_function():
 	do_stuff()
 ```
 
-#### Typing
+#### Type hints
 All variables, function return values and function arguments must have types assigned to them.
 
 For example:
@@ -107,7 +112,6 @@ var age: int
 
 func greet(other_person: Person) -> String:
 	return "Hello, %s. My name is %s" % [other_person.name, name]
-
 ```
 
 For more info see [the Godot's documentation](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/static_typing.html).
@@ -123,4 +127,16 @@ class_name User
 ✅ **Good**:
 ```gdscript
 class_name GDTUser
+```
+
+#### No author comments
+Please don't add comments saying which features were made by you.
+
+If you make a significant contribution, you will be put in the special thanks section in the plugin's about menu.
+Also most likely you and your PR will be mentioned on the release page (when a stable version is released).
+
+```gdscript
+# Some feature by XYZ
+func some_function():
+	...
 ```
