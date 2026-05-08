@@ -11,20 +11,20 @@ const DEFAULT_DATA = {
 	
 	"server": {
 		"password": "",
-		"whitelist": ["127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1"], # IP address whitelist
-		"blacklist": [], # blocked IP addresses
+		"whitelist": ["127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1"],
+		"blacklist": [],
 		"whitelist_enabled": false,
-		"allow_external_connections": true, # allow connections outside of the local network (if the user has open ports) 
+		"allow_external_connections": true,
 		"require_approval": false
 	},
-
+	"sync": {
+		"node_refresh_rate": 0.1  # Refresh rate setting -AramCZ <3
+	},
 	"dev": {
-		# Everything here should be `false` by default
 		"disable_real_time_file_sync": false,
 		"disable_node_scanning": false,
 		"restart_broadcast": false
 	},
-
 	"notifications": {
 		"users": true
 	},

@@ -13,7 +13,6 @@ func _ready() -> void:
 	if not gui: return
 	if not gui.visuals_available(): return
 	
-	# Use GDTUtils.get_descendants() if the controls are nested
 	for i in vbox.get_children():
 		if i.has_meta("setting"):
 			register_control(i)
@@ -24,6 +23,8 @@ func register_control(node: Control) -> void:
 	
 	if node is Button:
 		node.toggled.connect(set_setting.bind(path))
+	elif node is SpinBox:
+		node.value_changed.connect(set_setting.bind(path))
 	else:
 		push_error("Unsupported control %s %s" % [node.get_class(), get_path_to(node)])
 		return
@@ -36,6 +37,8 @@ func update_control(node: Control) -> void:
 	
 	if node is Button:
 		node.button_pressed = value
+	elif node is SpinBox:
+		node.value = value
 
 func set_setting(value, path: String) -> void:
 	GDTSettings.set_setting(path, value)
@@ -49,9 +52,8 @@ func _on_reset_pressed() -> void:
 		"",
 		"The plugin will restart."
 	], "\n")):
-
 		GDTSettings.write_settings(GDTSettings.DEFAULT_DATA)
-		gui.get_menu_window().hide() # For some reason it resets to the default state and doesn't hide after a reset
+		gui.get_menu_window().hide()
 		
 		if gui.main:
 			gui.main.restart()

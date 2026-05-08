@@ -839,8 +839,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_right = 696.0
+offset_bottom = 396.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -911,7 +911,7 @@ offset_bottom = 496.0
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 100
+scroll_vertical = 59
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll" unique_id=2018662387]
 layout_mode = 2
@@ -933,6 +933,19 @@ Doesn't apply to join request notifications."
 button_pressed = true
 text = "User join/leave notifications"
 metadata/setting = "notifications/users"
+
+[node name="nodeSyncRefreshTitle" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=296999219]
+layout_mode = 2
+text = "Real time file sync refresh rate"
+
+[node name="nodeSyncRefresh" type="SpinBox" parent="mainMenu/settings/main/scroll/vbox" unique_id=-1060399406]
+layout_mode = 2
+tooltip_text = "How often to check for node changes (in seconds). Lower = faster syncing, higher = better performance on complex scenes. Default: 0.1"
+min_value = 0.05
+max_value = 1000.0
+step = 0.05
+value = 0.1
+metadata/setting = "sync/node_refresh_rate"
 
 [node name="HSeparator2" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=1860984121]
 layout_mode = 2
