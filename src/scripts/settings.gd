@@ -18,9 +18,10 @@ const _DEFAULT_DATA = {
 		"require_approval": false
 	},
 	"sync": {
-		"node_refresh_rate": 0.1  # Refresh rate setting -AramCZ <3
+		"node_refresh_rate": 0.1
 	},
 	"dev": {
+		# Everything here should be false by default
 		"disable_real_time_file_sync": false,
 		"disable_node_scanning": false,
 		"restart_broadcast": false

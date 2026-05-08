@@ -13,6 +13,7 @@ func _ready() -> void:
 	if not gui: return
 	if not gui.visuals_available(): return
 	
+	# Use GDTUtils.get_descendants() if the controls get nested
 	for i in vbox.get_children():
 		if i.has_meta("setting"):
 			register_control(i)
@@ -52,8 +53,8 @@ func _on_reset_pressed() -> void:
 		"",
 		"The plugin will restart."
 	], "\n")):
-		GDTSettings.write_settings(GDTSettings.DEFAULT_DATA)
-		gui.get_menu_window().hide()
+		GDTSettings.write_settings(GDTSettings._DEFAULT_DATA)
+		gui.get_menu_window().hide()  # For some reason it resets to the default state and doesn't hide after a reset
 		
 		if gui.main:
 			gui.main.restart()
