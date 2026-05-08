@@ -898,6 +898,7 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
 size = Vector2i(650, 500)
+visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
@@ -936,7 +937,7 @@ metadata/setting = "notifications/users"
 
 [node name="nodeSyncRefreshTitle" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=296999219]
 layout_mode = 2
-text = "Real time file sync refresh rate"
+text = "Node sync rate"
 
 [node name="nodeSyncRefresh" type="SpinBox" parent="mainMenu/settings/main/scroll/vbox" unique_id=-1060399406]
 layout_mode = 2
