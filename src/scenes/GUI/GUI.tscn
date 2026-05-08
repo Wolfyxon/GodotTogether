@@ -839,8 +839,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 696.0
-offset_bottom = 396.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -898,7 +898,6 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
 size = Vector2i(650, 500)
-visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
@@ -935,7 +934,7 @@ button_pressed = true
 text = "User join/leave notifications"
 metadata/setting = "notifications/users"
 
-[node name="Label" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=296999219]
+[node name="nodeSyncRefreshTitle" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=296999219]
 layout_mode = 2
 text = "Real time file sync refresh rate"
 
@@ -943,7 +942,7 @@ text = "Real time file sync refresh rate"
 layout_mode = 2
 tooltip_text = "How often to check for node changes (in seconds). Lower = faster syncing, higher = better performance on complex scenes. Default: 0.1"
 min_value = 0.05
-max_value = 5.0
+max_value = 1000.0
 step = 0.05
 value = 0.1
 metadata/setting = "sync/node_refresh_rate"
