@@ -2,7 +2,7 @@
 extends Node
 class_name GDTSettings
 
-const DEFAULT_DATA = {
+const _DEFAULT_DATA = {
 	"username": "Cool person",
 	"format_version": 1,
 	
@@ -49,7 +49,10 @@ static func settings_exist() -> bool:
 	return FileAccess.file_exists(FILE_PATH)
 
 static func create_settings() -> void:
-	write_settings(DEFAULT_DATA)
+	write_settings(_DEFAULT_DATA)
+
+static func get_default_settings() -> Dictionary:
+	return _DEFAULT_DATA.duplicate(true)
 
 static func get_settings_json() -> JSON:
 	var file = FileAccess.open(FILE_PATH, FileAccess.READ)
@@ -68,20 +71,20 @@ static func get_settings() -> Dictionary:
 
 		if not json:
 			push_error("Unable to access the settings file. Returning default data")
-			return GDTUtils.make_editable(DEFAULT_DATA)
+			return get_default_settings()
 
 		var parsed = json.data
 		
 		if not parsed:
 			push_error("Parsing settings failed at line %s: %s Returning default data." % [json.get_error_line(), json.get_error_message()])
-			return GDTUtils.make_editable(DEFAULT_DATA)
+			return get_default_settings()
 		
-		parsed = GDTUtils.make_editable(parsed)
+		parsed = parsed.duplicate(true)
 
-		return GDTUtils.merge(parsed, DEFAULT_DATA) 
+		return GDTUtils.merge(parsed, _DEFAULT_DATA) 
 		
 	else:
-		return GDTUtils.make_editable(DEFAULT_DATA)
+		return get_default_settings()
 
 static func get_setting(path: String):
 	return GDTUtils.get_nested(get_settings(), path)

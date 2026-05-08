@@ -29,12 +29,6 @@ static func merge(a: Dictionary, b: Dictionary) -> Dictionary:
 
 	return a
 
-static func make_editable(dict: Dictionary) -> Dictionary:
-	if not dict.is_read_only(): 
-		return dict
-	
-	return dict.duplicate(true)
-
 static func get_nested(dict: Dictionary, path:String, separator := "/"):
 	var levels = path.split(separator)
 	var current = dict
