@@ -34,7 +34,7 @@ const IGNORED_PROPERTIES: Dictionary = {
 	]
 }
 
-const REFRESH_RATE: float = 0.1
+const DEFAULT_REFRESH_RATE: float = 0.1
 
 # Dicts are faster than arrays apparently
 var observed_nodes := {}
@@ -167,12 +167,10 @@ static func decode_resource(dict: Dictionary) -> Resource:
 	return resource
 
 func _ready() -> void:
-	
-	node_watcher.wait_time = REFRESH_RATE
 	node_watcher.timeout.connect(_cycle)
 	add_child(node_watcher)
 	node_watcher.start()
-	
+
 	rescan_timer.wait_time = 3
 	rescan_timer.timeout.connect(observe_current_scene)
 	add_child(rescan_timer)
@@ -184,6 +182,13 @@ func _ready() -> void:
 	filesystem_watcher.start()
 
 	EditorInterface.get_resource_filesystem().filesystem_changed.connect(_filesystem_changed)
+
+	var refresh_rate: float = GDTSettings.get_setting("sync/node_refresh_rate")
+	
+	node_watcher.wait_time = refresh_rate
+	node_watcher.timeout.connect(_cycle)
+	add_child(node_watcher)
+	node_watcher.start()
 
 func _cycle() -> void:
 	if node_watcher.paused:
