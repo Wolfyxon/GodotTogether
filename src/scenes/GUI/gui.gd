@@ -47,6 +47,7 @@ func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 	popup.title = title
 	popup.min_size.x = 300
 	popup.always_on_top = true
+	popup.unresizable = true
 	
 	add_window(popup)
 	popup.popup_centered()
@@ -60,6 +61,7 @@ func confirm(text: String) -> bool:
 	var p := ConfirmationDialog.new()
 	p.dialog_text = text
 	p.always_on_top = true
+	p.unresizable = true
 	
 	p.confirmed.connect(p.set_meta.bind("status", true))
 	p.canceled.connect(p.set_meta.bind("status", false))
