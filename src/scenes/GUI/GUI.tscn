@@ -986,7 +986,7 @@ custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.8580836, 0, 1)
 theme_override_font_sizes/font_size = 12
-text = "These settings are meant for plugin developers and should not be touched.
+text = "These settings are meant for testing the plugin and should not be touched.
 Leave everything off."
 autowrap_mode = 3
 
