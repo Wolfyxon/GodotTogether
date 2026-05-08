@@ -16,8 +16,8 @@ enum ResourceType {
 
 const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_NONE,
-	PROPERTY_USAGE_GROUP, 
-	PROPERTY_USAGE_CATEGORY, 
+	PROPERTY_USAGE_GROUP,
+	PROPERTY_USAGE_CATEGORY,
 	PROPERTY_USAGE_SUBGROUP,
 	PROPERTY_USAGE_INTERNAL,
 	PROPERTY_USAGE_READ_ONLY
@@ -58,17 +58,17 @@ static func get_ignored_properties(obj: Object) -> Array:
 	for key in IGNORED_PROPERTIES.keys():
 		if obj.is_class(key):
 			return IGNORED_PROPERTIES[key]
-	
+
 	return []
 
 static func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
-	
+
 	var ignored = get_ignored_properties(obj)
 
 	for i in obj.get_property_list():
 		var con := true
-		
+
 		if i.name in ignored:
 			continue
 
@@ -76,18 +76,18 @@ static func get_property_keys(obj: Object) -> Array[String]:
 			if i.usage & usage:
 				con = false
 				break
-			
+
 		if not con: continue
 		res.append(i.name)
-		
+
 	return res
 
 static func get_property_dict(obj: Object) -> Dictionary:
 	var res := {}
-	
+
 	for i in get_property_keys(obj):
 		var value = obj[i]
-		
+
 		if value is Resource:
 			value = encode_resource(value)
 
@@ -104,7 +104,7 @@ static func hash_value(value) -> int:
 static func get_property_hash_dict(obj: Object) -> Dictionary:
 	var res := {}
 
-	for i in get_property_keys(obj):		
+	for i in get_property_keys(obj):
 		res[i] = hash_value(obj[i])
 
 	return res
@@ -144,7 +144,7 @@ static func encode_resource(resource: Resource) -> Dictionary:
 
 static func decode_resource(dict: Dictionary) -> Resource:
 	assert(is_encoded_resource(dict), "Provided dict isn't a resource dict")
-	
+
 	var resource: Resource
 
 	if "path" in dict:
@@ -154,7 +154,7 @@ static func decode_resource(dict: Dictionary) -> Resource:
 	elif "buf" in dict:
 		resource = bytes_to_var_with_objects(dict["buf"])
 		assert(resource is Resource, "Decoded resource isn't a resource")
-	
+
 		if "sub" in dict:
 			var sub = dict["sub"]
 
@@ -167,6 +167,9 @@ static func decode_resource(dict: Dictionary) -> Resource:
 	return resource
 
 func _ready() -> void:
+	var refresh_rate: float = GDTSettings.get_setting("sync/node_refresh_rate")
+
+	node_watcher.wait_time = refresh_rate
 	node_watcher.timeout.connect(_cycle)
 	add_child(node_watcher)
 	node_watcher.start()
@@ -174,7 +177,7 @@ func _ready() -> void:
 	rescan_timer.wait_time = 3
 	rescan_timer.timeout.connect(observe_current_scene)
 	add_child(rescan_timer)
-	node_watcher.start()
+	rescan_timer.start()
 
 	filesystem_watcher.wait_time = 1.0
 	filesystem_watcher.timeout.connect(_check_filesystem_changes)
@@ -183,26 +186,19 @@ func _ready() -> void:
 
 	EditorInterface.get_resource_filesystem().filesystem_changed.connect(_filesystem_changed)
 
-	var refresh_rate: float = GDTSettings.get_setting("sync/node_refresh_rate")
-	
-	node_watcher.wait_time = refresh_rate
-	node_watcher.timeout.connect(_cycle)
-	add_child(node_watcher)
-	node_watcher.start()
-
 func _cycle() -> void:
 	if node_watcher.paused:
 		return
-	
+
 	var root := EditorInterface.get_edited_scene_root()
 	if not main: return
 	if not root: return
 
-	if GDTSettings.get_setting("dev/disable_node_scanning"): 
+	if GDTSettings.get_setting("dev/disable_node_scanning"):
 		return
 
 	var current_scene_path := root.scene_file_path
-	
+
 	if last_scene != current_scene_path:
 		last_scene = current_scene_path
 		scene_changed.emit()
@@ -225,10 +221,10 @@ func _cycle() -> void:
 			if i == "name":
 				if (i in cached) and (cached[i] != current[i]):
 					var old_name = observed_nodes[node]["name"]
-					
+
 					if not supressed_nodes.has(node):
 						node_renamed.emit(node, old_name, node.name)
-					
+
 					observed_nodes[node]["name"] = node.name
 
 			if (not i in cached) or (not i in current) or (cached[i] != current[i]):
@@ -243,10 +239,10 @@ func _cycle() -> void:
 func track_node_parent(node: Node) -> void:
 	if not "parent_tracker" in observed_nodes[node]:
 		observed_nodes[node]["parent_tracker"] = node.get_parent()
-	
+
 	var old_parent = observed_nodes[node]["parent_tracker"]
 	var current_parent = node.get_parent()
-	
+
 	if old_parent != current_parent and is_instance_valid(old_parent) and is_instance_valid(current_parent):
 		observed_nodes[node]["parent_tracker"] = current_parent
 		node_reparented.emit(node, old_parent, current_parent)
@@ -254,10 +250,10 @@ func track_node_parent(node: Node) -> void:
 func _node_added(node: Node) -> void:
 	if node_watcher.paused:
 		return
-	
+
 	var current_scene := EditorInterface.get_edited_scene_root()
 	var scene_path := current_scene.scene_file_path if current_scene else ""
-	
+
 	if scene_path in incoming_nodes:
 		var incoming = incoming_nodes[scene_path]
 		var node_path = node.get_path_to(current_scene)
@@ -285,7 +281,7 @@ func observe_current_scene() -> void:
 
 	if scene.scene_file_path.begins_with("res://addons/GodotTogether/"):
 		return
-	
+
 	main.change_detector.observe_recursive(scene)
 
 	if not scene.tree_exiting.is_connected(delayed_observe_current_scene):
@@ -307,7 +303,7 @@ func clear() -> void:
 	for node in observed_nodes.keys():
 		disconnect_signal_from_self(node.tree_exiting)
 		disconnect_signal_from_self(node.child_entered_tree)
-	
+
 	observed_nodes.clear()
 	observed_nodes_cache.clear()
 	incoming_nodes.clear()
@@ -349,14 +345,14 @@ func suppress_add_signal(scene_path: String, node_path: NodePath) -> void:
 
 func observe(node: Node) -> void:
 	if node in observed_nodes: return
-	
+
 	if node_watcher.paused:
 		observed_nodes_cache[node] = get_property_hash_dict(node)
 		observed_nodes[node] = {
 			"name": node.name
 		}
 		return
-	
+
 	observed_nodes_cache[node] = get_property_hash_dict(node)
 	observed_nodes[node] = {
 		"name": node.name
@@ -367,7 +363,7 @@ func observe(node: Node) -> void:
 
 func observe_recursive(node: Node) -> void:
 	observe(node)
-	
+
 	for i in GDTUtils.get_descendants(node):
 		observe(i)
 
@@ -382,28 +378,28 @@ func _check_filesystem_changes() -> void:
 	if not main: return
 	if not main.is_session_active(): return
 	if not can_sync_files(): return
-	
+
 	if main.client.is_active() and not main.client.is_fully_synced:
 		return
-	
+
 	var current_hashes = GDTFiles.get_file_tree_hashes()
-	
+
 	for path in current_hashes:
 		if not path in cached_file_hashes:
 			_file_added(path)
 		elif cached_file_hashes[path] != current_hashes[path]:
 			_file_modified(path)
-	
+
 	for path in cached_file_hashes:
 		if not path in current_hashes:
 			_file_removed(path)
-	
+
 	cached_file_hashes = current_hashes
 
 func _file_added(path: String) -> void:
 	if main.client.is_active():
 		var buffer = FileAccess.get_file_as_bytes(path)
-		
+
 		if buffer:
 			print("[CLIENT] Sending file add: ", path)
 			main.server.file_add_from_client.rpc_id(1, path, buffer)
@@ -415,7 +411,7 @@ func _file_added(path: String) -> void:
 func _file_modified(path: String) -> void:
 	if main.client.is_active():
 		var buffer = FileAccess.get_file_as_bytes(path)
-		
+
 		if buffer:
 			print("[CLIENT] Sending file modify: ", path)
 			main.server.file_modify_from_client.rpc_id(1, path, buffer)
@@ -428,7 +424,7 @@ func _file_removed(path: String) -> void:
 	if main.client.is_active():
 		print("[CLIENT] Sending file remove: ", path)
 		main.server.file_remove_from_client.rpc_id(1, path)
-	
+
 	elif main.server.is_active():
 		print("[SERVER] Broadcasting file remove: ", path)
 		main.server.broadcast_file_remove(path)
