@@ -15,6 +15,7 @@ body:
       label: Godot version
       description: The version of Godot you're running
       placeholder: ex. v4.4.1.stable.arch_linux
+      required: true
   - type: checkboxes
     id: checks
     attributes:
