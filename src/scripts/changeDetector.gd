@@ -401,9 +401,9 @@ func _file_added(path: String) -> void:
 		var buffer = FileAccess.get_file_as_bytes(path)
 		
 		if path.ends_with(".gd") and buffer.get_string_from_utf8().begins_with("@tool"): # Detects if there is a tool script
-			print("Warning: Tool Script detected! This can corrupt your game.")
+			print("Warning: Tool Script detected! This can corrupt your game. Or even worse damage your computer!")
 			if main and main.gui:
-				main.gui.alert("Warning: Tool Script detected!\nThis can corrupt your game.")
+				main.gui.alert("Warning: Tool Script detected!\nThis can corrupt your game. Or even worse damage your computer!")
 		
 		if buffer:
 			print("[CLIENT] Sending file add: ", path)
