@@ -13,6 +13,8 @@ func _ready() -> void:
 	menu_window.gui = self
 	menu.gui = self
 	menu.users.gui = self
+	menu.host_settings.gui = self
+	menu.server_settings_tab.gui = self
 	menu.get_node("session/tabs/Pending Users").gui = self
 	disclaimer.gui = self
 	
@@ -78,7 +80,6 @@ func confirm(text: String) -> bool:
 	p.queue_free()
 	
 	return p.get_meta("status")
-	
 
 func visuals_available() -> bool:
 	return main or not Engine.is_editor_hint() 

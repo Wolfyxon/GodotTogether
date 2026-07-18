@@ -10,12 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="6_8e3fv"]
 [ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_1sjc5"]
 [ext_resource type="Script" uid="uid://42xnckjjvo6" path="res://addons/GodotTogether/src/scenes/GUI/users.gd" id="7_nhpql"]
+[ext_resource type="PackedScene" uid="uid://j86rllgmi5d0" path="res://addons/GodotTogether/src/scenes/GUI/serverSettings/serverSettings.tscn" id="8_jfeym"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="9_4c4b3"]
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/userEntry.gd" id="9_ymxdp"]
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
 [ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="13_u8ku5"]
 [ext_resource type="Script" uid="uid://don784mnkl7xf" path="res://addons/GodotTogether/src/scenes/GUI/settingsError.gd" id="14_a4cyb"]
-[ext_resource type="Script" uid="uid://ccoxfagh8skw8" path="res://addons/GodotTogether/src/scenes/GUI/server_settings.gd" id="14_jl6du"]
 [ext_resource type="Texture2D" uid="uid://bpui0o3t80my5" path="res://addons/GodotTogether/src/img/script.svg" id="15_bvn1h"]
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
@@ -28,7 +28,7 @@ script = ExtResource("1_73joy")
 oversampling_override = 1.0
 title = "GodotTogether"
 initial_position = 4
-size = Vector2i(800, 550)
+size = Vector2i(970, 600)
 visible = true
 unresizable = false
 borderless = false
@@ -39,15 +39,16 @@ script = ExtResource("2_dm08s")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_1pnv7")
 
 [node name="topBar" type="HBoxContainer" parent="mainMenu/main" unique_id=1800698495]
+custom_maximum_size = Vector2(-1, 40)
 layout_mode = 2
 
 [node name="settings" type="Button" parent="mainMenu/main/topBar" unique_id=1308903326]
@@ -63,12 +64,10 @@ text = "About"
 icon = ExtResource("3_gc6ii")
 
 [node name="sessionInit" type="Control" parent="mainMenu/main" unique_id=346473724]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=1491207414]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -107,14 +106,14 @@ custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
 [node name="join" type="Button" parent="mainMenu/main/sessionInit/pre" unique_id=45273872]
-custom_minimum_size = Vector2(210, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Join someone's project"
 icon = ExtResource("4_lrlm7")
 
 [node name="host" type="Button" parent="mainMenu/main/sessionInit/pre" unique_id=1952326604]
-custom_minimum_size = Vector2(210, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Host your project"
@@ -129,13 +128,14 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 17
 text = "Only collaborate with people you absolutely trust!
-This plugin is currently insecure and may allow hackers to run malicious code on your system!"
+The plugin may allow for malicious remote code execution!"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=2132209178]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -158,7 +158,11 @@ theme_override_font_sizes/font_size = 26
 text = "Host your project"
 horizontal_alignment = 1
 
+[node name="settings" parent="mainMenu/main/sessionInit/start/host" unique_id=2024323547 instance=ExtResource("8_jfeym")]
+layout_mode = 2
+
 [node name="port" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/host" unique_id=1256782649]
+visible = false
 layout_mode = 2
 alignment = 1
 
@@ -176,6 +180,7 @@ value = 5017.0
 prefix = ":"
 
 [node name="users" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/host" unique_id=1349005612]
+visible = false
 layout_mode = 2
 alignment = 1
 
@@ -191,10 +196,12 @@ min_value = 1.0
 value = 5.0
 
 [node name="approveUsers" type="CheckButton" parent="mainMenu/main/sessionInit/start/host" unique_id=1764190606]
+visible = false
 layout_mode = 2
 text = "Approve users before join"
 
 [node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/host" unique_id=975769375]
+visible = false
 layout_mode = 2
 placeholder_text = "Server password..."
 
@@ -307,6 +314,7 @@ text = "Cancel"
 icon = ExtResource("9_4c4b3")
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main" unique_id=1582343068]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -348,10 +356,9 @@ text = "Connected"
 [node name="tabs" type="TabContainer" parent="mainMenu/main/session" unique_id=1051081182]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 2
+current_tab = 0
 
 [node name="Users" type="ScrollContainer" parent="mainMenu/main/session/tabs" unique_id=125670837]
-visible = false
 layout_mode = 2
 script = ExtResource("7_nhpql")
 metadata/_tab_index = 0
@@ -655,70 +662,21 @@ tooltip_text = "Don't allow the user to join."
 icon = ExtResource("9_4c4b3")
 icon_alignment = 1
 
-[node name="Server settings" type="VBoxContainer" parent="mainMenu/main/session/tabs" unique_id=1752214407]
-layout_mode = 2
-script = ExtResource("14_jl6du")
-metadata/_tab_index = 2
-
-[node name="scroll" type="ScrollContainer" parent="mainMenu/main/session/tabs/Server settings" unique_id=1913052988]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="vbox" type="VBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll" unique_id=351772408]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox" unique_id=244821845]
-layout_mode = 2
-text = "Server password:"
-
-[node name="password" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox" unique_id=1190799515]
-layout_mode = 2
-
-[node name="value" type="LineEdit" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password" unique_id=612263816]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "No password set..."
-clear_button_enabled = true
-secret = true
-
-[node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password" unique_id=1853819210]
-layout_mode = 2
-toggle_mode = true
-icon = ExtResource("7_1sjc5")
-flat = true
-
-[node name="approve" type="CheckBox" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox" unique_id=339625755]
-layout_mode = 2
-button_pressed = true
-text = "Approve users before they join"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="mainMenu/main/session/tabs/Server settings" unique_id=1240628792]
-layout_mode = 2
-
-[node name="apply" type="Button" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer" unique_id=1895598292]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Apply"
-
-[node name="unsavedWarning" type="Label" parent="mainMenu/main/session/tabs/Server settings/HBoxContainer" unique_id=1680818531]
+[node name="Server settings" parent="mainMenu/main/session/tabs" unique_id=1053847854 instance=ExtResource("8_jfeym")]
 visible = false
 layout_mode = 2
-theme = ExtResource("5_dxbrh")
-theme_type_variation = &"WarningLabel"
-text = "*You have unsaved changes"
+server_active = true
+metadata/_tab_index = 2
 
 [node name="update" type="Timer" parent="mainMenu/main" unique_id=1758738351]
 autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
 visible = false
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 796.0
-offset_bottom = 546.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -762,10 +720,10 @@ text = "Proceed"
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 796.0
-offset_bottom = 546.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -840,10 +798,10 @@ borderless = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 696.0
-offset_bottom = 396.0
+offset_left = 21.0
+offset_top = 21.0
+offset_right = 679.0
+offset_bottom = 379.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -906,10 +864,10 @@ borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings" unique_id=661741475]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 746.0
-offset_bottom = 646.0
+offset_left = 21.0
+offset_top = 21.0
+offset_right = 729.0
+offset_bottom = 629.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
@@ -1079,7 +1037,6 @@ text = "close"
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Pending Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Pending Users/vbox/user" method="toggle_ip_visibility"]
-[connection signal="toggled" from="mainMenu/main/session/tabs/Server settings/scroll/vbox/password/toggle" to="mainMenu/main/session/tabs/Server settings" method="set_password_visible"]
 [connection signal="timeout" from="mainMenu/main/update" to="mainMenu/main" method="_on_update_timeout"]
 [connection signal="meta_clicked" from="mainMenu/disclaimer/text" to="mainMenu/disclaimer" method="_on_text_meta_clicked"]
 [connection signal="pressed" from="mainMenu/disclaimer/btnProceed" to="mainMenu/disclaimer" method="_on_btn_proceed_pressed"]

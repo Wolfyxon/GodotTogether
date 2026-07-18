@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://j86rllgmi5d0"]
+
+[ext_resource type="Script" uid="uid://bofkewtcxhcjk" path="res://addons/GodotTogether/src/scenes/GUI/serverSettings/server_settings.gd" id="1_k3a1t"]
+[ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="2_rknon"]
+
+[node name="ServerSettings" type="VBoxContainer" unique_id=2024323547]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k3a1t")
+
+[node name="port" type="HBoxContainer" parent="." unique_id=112406854]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="port" unique_id=758276949]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Server port"
+
+[node name="value" type="SpinBox" parent="port" unique_id=2066705420]
+layout_mode = 2
+size_flags_horizontal = 4
+min_value = 1024.0
+max_value = 49151.0
+value = 5017.0
+prefix = ":"
+
+[node name="max_users" type="HBoxContainer" parent="." unique_id=1409179127]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="max_users" unique_id=922593499]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Max users"
+
+[node name="value" type="SpinBox" parent="max_users" unique_id=1637685564]
+layout_mode = 2
+size_flags_horizontal = 4
+min_value = 1.0
+value = 5.0
+
+[node name="approveUsers" type="CheckButton" parent="." unique_id=639144164]
+layout_mode = 2
+text = "Approve users before join"
+
+[node name="password" type="HBoxContainer" parent="." unique_id=386999169]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="value" type="LineEdit" parent="password" unique_id=658503027]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Server password..."
+secret = true
+
+[node name="toggle" type="Button" parent="password" unique_id=407731187]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("2_rknon")
+flat = true
+expand_icon = true
+
+[connection signal="toggled" from="password/toggle" to="." method="_on_password_toggled"]
