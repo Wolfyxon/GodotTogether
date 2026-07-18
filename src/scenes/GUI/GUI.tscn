@@ -28,7 +28,7 @@ script = ExtResource("1_73joy")
 oversampling_override = 1.0
 title = "GodotTogether"
 initial_position = 4
-size = Vector2i(961, 550)
+size = Vector2i(970, 600)
 visible = true
 unresizable = false
 borderless = false
@@ -48,6 +48,7 @@ grow_vertical = 2
 script = ExtResource("3_1pnv7")
 
 [node name="topBar" type="HBoxContainer" parent="mainMenu/main" unique_id=1800698495]
+custom_maximum_size = Vector2(-1, 40)
 layout_mode = 2
 
 [node name="settings" type="Button" parent="mainMenu/main/topBar" unique_id=1308903326]
@@ -67,7 +68,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=1491207414]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -106,14 +106,14 @@ custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
 [node name="join" type="Button" parent="mainMenu/main/sessionInit/pre" unique_id=45273872]
-custom_minimum_size = Vector2(210, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Join someone's project"
 icon = ExtResource("4_lrlm7")
 
 [node name="host" type="Button" parent="mainMenu/main/sessionInit/pre" unique_id=1952326604]
-custom_minimum_size = Vector2(210, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Host your project"
@@ -128,13 +128,14 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 17
 text = "Only collaborate with people you absolutely trust!
-This plugin is currently insecure and may allow hackers to run malicious code on your system!"
+The plugin may allow for malicious remote code execution!"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=2132209178]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -674,8 +675,8 @@ autostart = true
 visible = false
 offset_left = 25.0
 offset_top = 25.0
-offset_right = 936.0
-offset_bottom = 525.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -721,8 +722,8 @@ text = "Proceed"
 visible = false
 offset_left = 25.0
 offset_top = 25.0
-offset_right = 936.0
-offset_bottom = 525.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
