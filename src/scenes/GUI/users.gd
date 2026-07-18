@@ -2,9 +2,6 @@
 extends ScrollContainer
 class_name GDTUserList
 
-const IMG_IP_HIDDEN = preload("res://addons/GodotTogether/src/img/hidden.svg")
-const IMG_IP_VISIBLE = preload("res://addons/GodotTogether/src/img/visible.svg")
-
 var gui: GodotTogetherGUI
 
 @onready var template = $vbox/user
@@ -134,9 +131,9 @@ func set_all_ip_visible(state: bool) -> void:
 
 func update_ip_toggle() -> void:
 	if global_ip_visible:
-		ip_toggle.icon = IMG_IP_VISIBLE
+		ip_toggle.icon = GodotTogetherGUI.IMG_VISIBLE
 	else:
-		ip_toggle.icon = IMG_IP_HIDDEN
+		ip_toggle.icon = GodotTogetherGUI.IMG_HIDDEN
 
 func toggle_all_ips() -> void:
 	set_all_ip_visible(not global_ip_visible)

@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
 [ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="13_u8ku5"]
 [ext_resource type="Script" uid="uid://don784mnkl7xf" path="res://addons/GodotTogether/src/scenes/GUI/settingsError.gd" id="14_a4cyb"]
+[ext_resource type="Script" uid="uid://ccoxfagh8skw8" path="res://addons/GodotTogether/src/scenes/GUI/server_settings.gd" id="14_jl6du"]
 [ext_resource type="Texture2D" uid="uid://bpui0o3t80my5" path="res://addons/GodotTogether/src/img/script.svg" id="15_bvn1h"]
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
@@ -347,9 +348,10 @@ text = "Connected"
 [node name="tabs" type="TabContainer" parent="mainMenu/main/session" unique_id=1051081182]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 2
 
 [node name="Users" type="ScrollContainer" parent="mainMenu/main/session/tabs" unique_id=125670837]
+visible = false
 layout_mode = 2
 script = ExtResource("7_nhpql")
 metadata/_tab_index = 0
@@ -654,8 +656,8 @@ icon = ExtResource("9_4c4b3")
 icon_alignment = 1
 
 [node name="Server settings" type="VBoxContainer" parent="mainMenu/main/session/tabs" unique_id=1752214407]
-visible = false
 layout_mode = 2
+script = ExtResource("14_jl6du")
 metadata/_tab_index = 2
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/main/session/tabs/Server settings" unique_id=1913052988]
@@ -683,6 +685,7 @@ secret = true
 
 [node name="toggle" type="Button" parent="mainMenu/main/session/tabs/Server settings/scroll/vbox/password" unique_id=1853819210]
 layout_mode = 2
+toggle_mode = true
 icon = ExtResource("7_1sjc5")
 flat = true
 
@@ -898,7 +901,6 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
 size = Vector2i(750, 650)
-visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
@@ -1075,9 +1077,9 @@ text = "close"
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
 [connection signal="pressed" from="mainMenu/main/session/top/restart" to="mainMenu/main" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Users" method="toggle_all_ips"]
-[connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Users/vbox/user" method="toggle_ip_visibility"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Pending Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Pending Users/vbox/user" method="toggle_ip_visibility"]
+[connection signal="toggled" from="mainMenu/main/session/tabs/Server settings/scroll/vbox/password/toggle" to="mainMenu/main/session/tabs/Server settings" method="set_password_visible"]
 [connection signal="timeout" from="mainMenu/main/update" to="mainMenu/main" method="_on_update_timeout"]
 [connection signal="meta_clicked" from="mainMenu/disclaimer/text" to="mainMenu/disclaimer" method="_on_text_meta_clicked"]
 [connection signal="pressed" from="mainMenu/disclaimer/btnProceed" to="mainMenu/disclaimer" method="_on_btn_proceed_pressed"]

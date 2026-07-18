@@ -2,6 +2,9 @@
 extends GDTComponent
 class_name GodotTogetherGUI
 
+const IMG_HIDDEN = preload("res://addons/GodotTogether/src/img/hidden.svg")
+const IMG_VISIBLE = preload("res://addons/GodotTogether/src/img/visible.svg")
+
 func _ready() -> void:
 	var menu_window = get_menu_window()
 	var menu = get_menu()
