@@ -190,14 +190,17 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 	
 	print("Saved successfully")
 	
-	if path.get_extension() == "gd" and "@tool" in buffer.get_string_from_utf8():
-		var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
-		
-		push_warning(warning_message)
-		print(warning_message)
+	if path.get_extension() == "tscn":
+		var current_scene = EditorInterface.get_edited_scene_root()
 
-		if main and main.gui:
-			main.gui.alert(warning_message)
+		if current_scene and current_scene.scene_file_path == path:
+			EditorInterface.mark_scene_as_unsaved()
+
+		EditorInterface.reload_scene_from_path(path)
+
+	if target_file_count != 0 and downloaded_file_count >= target_file_count:
+		target_file_count = 0
+		_project_files_downloaded()
 
 @rpc("authority", "call_remote", "reliable")
 func sync_file_add(path: String, buffer: PackedByteArray) -> void:
