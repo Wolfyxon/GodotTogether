@@ -5,13 +5,16 @@ class_name GDTMenu
 var main: GodotTogether
 var gui: GodotTogetherGUI
 
-@onready var users: GDTUserList = $session/tabs/Users
 @onready var username_input = $sessionInit/pre/username
 @onready var session_init_cover = $sessionInit/cover
 @onready var session_cancel = $sessionInit/cover/vbox/btnCancel
 
 @onready var join_password = $sessionInit/start/join/password
-@onready var host_password = $sessionInit/start/host/password
+
+@onready var users: GDTUserList = $session/tabs/Users
+@onready var server_settings_tab = $"session/tabs/Server settings"
+
+@onready var host_settings = $sessionInit/start/host/settings
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -28,19 +31,17 @@ func _ready() -> void:
 		set_session_init_cover()
 		
 		username_input.text = GDTSettings.get_setting("username")
-		host_password.text = GDTSettings.get_setting("server/password")
-		$sessionInit/start/host/approveUsers.button_pressed = GDTSettings.get_setting("server/require_approval")
-
+	
 func _host() -> void:
 	if main:
-		var port = $sessionInit/start/host/port/value.value
-		var max_clients = $sessionInit/start/host/users/value.value
+		var port = host_settings.port_input.value
+		var max_clients = host_settings.max_users_input.value
 		
 		set_session_init_cover("Starting server...")
 		session_cancel.visible = false
 		
-		GDTSettings.set_setting("server/password", host_password.text)
-		GDTSettings.set_setting("server/require_approval", $sessionInit/start/host/approveUsers.button_pressed)
+		#GDTSettings.set_setting("server/password", host_password.text)
+		#GDTSettings.set_setting("server/require_approval", $sessionInit/start/host/approveUsers.button_pressed)
 		
 		await RenderingServer.frame_post_draw
 		
@@ -50,14 +51,14 @@ func _host() -> void:
 			set_session_init_cover()
 			gui.alert("Failed to start server: %s" % error_string(err), "Failed to start server")
 			return
-
+		
+		server_settings_tab.load_settings()
 		main.dual.get_server_user().name = username_input.text
 
 	session_menu()
 	
 	$session/top/status.text = "You are hosting"
 	$session/top/end.text = "Stop server"
-	
 
 func _join() -> void:
 	if main.client:
@@ -141,6 +142,8 @@ func main_menu() -> void:
 	$sessionInit/start/host.hide()
 	$sessionInit/start/join.hide()
 	$session.hide()
+	
+	host_settings.load_settings()
 
 func session_start_menu(tab: String = "") -> void:
 	set_session_init_cover()

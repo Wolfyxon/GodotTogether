@@ -11,6 +11,8 @@ const _DEFAULT_DATA = {
 	
 	"server": {
 		"password": "",
+		"port": 5017,
+		"max_users": 10,
 		"whitelist": ["127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1"],
 		"blacklist": [],
 		"whitelist_enabled": false,
@@ -95,3 +97,27 @@ static func set_setting(path: String, value) -> void:
 
 	GDTUtils.set_nested(data, path, value)
 	write_settings(data)
+
+static func _set_setting_reverse(value, path: String) -> void:
+	set_setting(path, value)
+
+static func make_setting_control(node: Control, path: String) -> void:
+	if node is Button:
+		if not node.toggle_mode:
+			push_error("Button %s must have toggle_mode enabled" % node.name)
+		
+		node.toggled.connect(_set_setting_reverse.bind(path))
+	elif node is SpinBox:
+		node.value_changed.connect(_set_setting_reverse.bind(path))
+	elif node is LineEdit:
+		node.text_changed.connect(_set_setting_reverse.bind(path))
+	else:
+		push_error("Unsupported control type: %s '%s'" % [node.get_class(), node.name])
+		return
+	
+	update_control(node, path)
+
+static func update_control(node: Control, path: String) -> void:
+	var value = get_setting(path)
+	
+	GDTUtils.set_control_value(node, value)

@@ -98,3 +98,16 @@ static func get_descendants(node: Node, include_internal := false) -> Array[Node
 	
 static func is_peer_connected(peer: MultiplayerPeer) -> bool:
 	return peer.get_connection_status() == peer.CONNECTION_CONNECTED
+
+static func set_control_value(node: Control, value) -> void:
+	if node is Button:
+		if not node.toggle_mode:
+			push_error("Button %s must have toggle_mode enabled" % node.name)
+		
+		node.button_pressed = value
+	elif node is SpinBox:
+		node.value = value
+	elif node is LineEdit:
+		node.text = value
+	else:
+		push_error("Unsupported control type %s '%s'" % [node.get_class(), node.name])

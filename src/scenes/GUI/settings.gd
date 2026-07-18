@@ -22,27 +22,7 @@ func register_control(node: Control) -> void:
 	var path = node.get_meta("setting")
 	controls.append(node)
 	
-	if node is Button:
-		node.toggled.connect(set_setting.bind(path))
-	elif node is SpinBox:
-		node.value_changed.connect(set_setting.bind(path))
-	else:
-		push_error("Unsupported control %s %s" % [node.get_class(), get_path_to(node)])
-		return
-	
-	update_control(node)
-
-func update_control(node: Control) -> void:
-	var path = node.get_meta("setting")
-	var value = GDTSettings.get_setting(path)
-	
-	if node is Button:
-		node.button_pressed = value
-	elif node is SpinBox:
-		node.value = value
-
-func set_setting(value, path: String) -> void:
-	GDTSettings.set_setting(path, value)
+	GDTSettings.make_setting_control(node, path)
 
 func _on_reset_pressed() -> void:
 	if not gui: return
