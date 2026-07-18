@@ -43,9 +43,9 @@ func set_ip_visible(state: bool) -> void:
 	$ip/value.secret = not state
 	
 	if state:
-		$ip/toggle.icon = GDTUserList.IMG_IP_VISIBLE
+		$ip/toggle.icon = GodotTogetherGUI.IMG_VISIBLE
 	else:
-		$ip/toggle.icon = GDTUserList.IMG_IP_HIDDEN
+		$ip/toggle.icon = GodotTogetherGUI.IMG_HIDDEN
 
 func toggle_ip_visibility() -> void:
 	set_ip_visible($ip/value.secret)
