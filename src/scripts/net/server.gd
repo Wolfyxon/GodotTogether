@@ -278,12 +278,13 @@ func receive_file_from_client(path: String, buffer: PackedByteArray) -> void:
 	if not id_has_permission(id, GodotTogether.Permission.ADD_CUSTOM_FILES): return
 	if not GDTValidator.is_path_safe(path): return
 
-	print("[SERVER] Received file add from client %d: %s" % [id, path])
+	print("[SERVER] Received file from client %d: %s" % [id, path])
 	main.file_sync.pause()
 	
 	GDTFiles.ensure_dir_exists(path)
 	
 	var f = FileAccess.open(path, FileAccess.WRITE)
+	
 	if f:
 		f.store_buffer(buffer)
 		f.close()
