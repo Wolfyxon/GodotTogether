@@ -12,6 +12,7 @@ const ignored_dirs = [
 
 static func ensure_dir_exists(path: String) -> void:
 	var dir = path.get_base_dir()
+	
 	if dir != "" and not DirAccess.dir_exists_absolute(dir):
 		DirAccess.make_dir_recursive_absolute(dir)
 

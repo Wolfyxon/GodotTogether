@@ -50,10 +50,6 @@ var rescan_timer: Timer = Timer.new()
 
 var last_scene := ""
 
-var filesystem_watcher: Timer = Timer.new()
-var suppress_filesystem_sync := false
-var cached_file_hashes := {}
-
 static func get_ignored_properties(obj: Object) -> Array:
 	for key in IGNORED_PROPERTIES.keys():
 		if obj.is_class(key):
@@ -178,13 +174,6 @@ func _ready() -> void:
 	rescan_timer.timeout.connect(observe_current_scene)
 	add_child(rescan_timer)
 	rescan_timer.start()
-
-	filesystem_watcher.wait_time = 1.0
-	filesystem_watcher.timeout.connect(_check_filesystem_changes)
-	add_child(filesystem_watcher)
-	filesystem_watcher.start()
-
-	EditorInterface.get_resource_filesystem().filesystem_changed.connect(_filesystem_changed)
 
 func _cycle() -> void:
 	if node_watcher.paused:
@@ -366,65 +355,3 @@ func observe_recursive(node: Node) -> void:
 
 	for i in GDTUtils.get_descendants(node):
 		observe(i)
-
-func can_sync_files() -> bool:
-	return not node_watcher.paused and not suppress_filesystem_sync and not GDTSettings.get_setting("dev/disable_real_time_file_sync")
-
-func _filesystem_changed() -> void:
-	await get_tree().create_timer(0.5).timeout
-	_check_filesystem_changes()
-
-func _check_filesystem_changes() -> void:
-	if not main: return
-	if not main.is_session_active(): return
-	if not can_sync_files(): return
-
-	if main.client.is_active() and not main.client.is_fully_synced:
-		return
-
-	var current_hashes = GDTFiles.get_file_tree_hashes()
-
-	for path in current_hashes:
-		if not path in cached_file_hashes:
-			_file_added(path)
-		elif cached_file_hashes[path] != current_hashes[path]:
-			_file_modified(path)
-
-	for path in cached_file_hashes:
-		if not path in current_hashes:
-			_file_removed(path)
-
-	cached_file_hashes = current_hashes
-
-func _file_added(path: String) -> void:
-	if main.client.is_active():
-		var buffer = FileAccess.get_file_as_bytes(path)
-		
-		if buffer:
-			print("[CLIENT] Sending file add: ", path)
-			main.server.file_add_from_client.rpc_id(1, path, buffer)
-	
-	elif main.server.is_active():
-		print("[SERVER] Broadcasting file add: ", path)
-		main.server.broadcast_file_add(path)
-
-func _file_modified(path: String) -> void:
-	if main.client.is_active():
-		var buffer = FileAccess.get_file_as_bytes(path)
-
-		if buffer:
-			print("[CLIENT] Sending file modify: ", path)
-			main.server.file_modify_from_client.rpc_id(1, path, buffer)
-
-	elif main.server.is_active():
-		print("[SERVER] Broadcasting file modify: ", path)
-		main.server.broadcast_file_modify(path)
-
-func _file_removed(path: String) -> void:
-	if main.client.is_active():
-		print("[CLIENT] Sending file remove: ", path)
-		main.server.file_remove_from_client.rpc_id(1, path)
-
-	elif main.server.is_active():
-		print("[SERVER] Broadcasting file remove: ", path)
-		main.server.broadcast_file_remove(path)

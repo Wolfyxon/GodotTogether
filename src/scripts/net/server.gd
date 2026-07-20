@@ -110,6 +110,8 @@ func start_hosting(port: int, max_clients := 10) -> int:
 	return err
 
 func _post_start() -> void:
+	main.file_sync.resume()
+	
 	await get_tree().process_frame
 
 	main.button.set_session_icon(GDTMenuButton.ICON_SERVER)
@@ -277,9 +279,10 @@ func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 	if not GDTValidator.is_path_safe(path): return
 
 	print("[SERVER] Received file add from client %d: %s" % [id, path])
-	main.change_detector.suppress_filesystem_sync = true
+	main.file_sync.pause()
 	
 	GDTFiles.ensure_dir_exists(path)
+	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_buffer(buffer)
@@ -288,8 +291,7 @@ func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 	EditorInterface.get_resource_filesystem().scan()
 	
 	await get_tree().create_timer(0.5).timeout
-	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
-	main.change_detector.suppress_filesystem_sync = false
+	main.file_sync.resume()
 	
 	broadcast_file_add_with_buffer(path, buffer, id)
 
@@ -301,7 +303,7 @@ func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
 	if not GDTValidator.is_path_safe(path): return
 
 	print("[SERVER] Received file modify from client %d: %s" % [id, path])
-	main.change_detector.suppress_filesystem_sync = true
+	main.file_sync.pause()
 	
 	GDTFiles.ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
@@ -312,8 +314,8 @@ func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
 	EditorInterface.get_resource_filesystem().scan()
 	
 	await get_tree().create_timer(0.5).timeout
-	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
-	main.change_detector.suppress_filesystem_sync = false
+
+	main.file_sync.resume()
 	
 	broadcast_file_modify_with_buffer(path, buffer, id)
 
@@ -325,7 +327,7 @@ func file_remove_from_client(path: String) -> void:
 	if not GDTValidator.is_path_safe(path): return
 
 	print("[SERVER] Received file remove from client %d: %s" % [id, path])
-	main.change_detector.suppress_filesystem_sync = true
+	main.file_sync.pause()
 	
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
@@ -333,8 +335,8 @@ func file_remove_from_client(path: String) -> void:
 	EditorInterface.get_resource_filesystem().scan()
 	
 	await get_tree().create_timer(1.0).timeout
-	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
-	main.change_detector.suppress_filesystem_sync = false
+
+	main.file_sync.resume()
 	
 	broadcast_file_remove(path, id)
 

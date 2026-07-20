@@ -207,10 +207,10 @@ func sync_file_add(path: String, buffer: PackedByteArray) -> void:
 	if not GDTValidator.is_path_safe(path): return
 
 	print("[CLIENT] Receiving file add: ", path)
-	main.change_detector.suppress_filesystem_sync = true
+	main.file_sync.pause()
 	
 	var new_hash = GDTUtils.sha256_of_buffer(buffer)
-	main.change_detector.cached_file_hashes[path] = new_hash
+	main.file_sync.file_hashes[path] = new_hash
 
 	GDTFiles.ensure_dir_exists(path)
 	
@@ -222,18 +222,18 @@ func sync_file_add(path: String, buffer: PackedByteArray) -> void:
 	EditorInterface.get_resource_filesystem().scan()
 
 	await get_tree().create_timer(0.5).timeout
-	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
-	main.change_detector.suppress_filesystem_sync = false
+
+	main.file_sync.resume()
 
 @rpc("authority", "call_remote", "reliable")
 func sync_file_modify(path: String, buffer: PackedByteArray) -> void:
 	if not GDTValidator.is_path_safe(path): return
 
 	print("[CLIENT] Receiving file modify: ", path)
-	main.change_detector.suppress_filesystem_sync = true
+	main.file_sync.pause()
 
 	var new_hash = GDTUtils.sha256_of_buffer(buffer)
-	main.change_detector.cached_file_hashes[path] = new_hash
+	main.file_sync.file_hashes[path] = new_hash
 	
 	GDTFiles.ensure_dir_exists(path)
 	var f = FileAccess.open(path, FileAccess.WRITE)
@@ -244,16 +244,16 @@ func sync_file_modify(path: String, buffer: PackedByteArray) -> void:
 	EditorInterface.get_resource_filesystem().scan()
 
 	await get_tree().create_timer(0.5).timeout
-	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
-	main.change_detector.suppress_filesystem_sync = false
+
+	main.file_sync.resume()
 
 @rpc("authority", "call_remote", "reliable")
 func sync_file_remove(path: String) -> void:
 	if not GDTValidator.is_path_safe(path): return
 
 	print("[CLIENT] Receiving file remove: ", path)
-	main.change_detector.suppress_filesystem_sync = true
-	main.change_detector.cached_file_hashes.erase(path)
+	
+	main.file_sync.pause()
 
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
@@ -261,8 +261,8 @@ func sync_file_remove(path: String) -> void:
 	EditorInterface.get_resource_filesystem().scan()
 
 	await get_tree().create_timer(1.0).timeout
-	main.change_detector.cached_file_hashes = GDTFiles.get_file_tree_hashes()
-	main.change_detector.suppress_filesystem_sync = false
+
+	main.file_sync.resume()
 
 func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -> void:
 	if not FileAccess.file_exists(scene_path):
