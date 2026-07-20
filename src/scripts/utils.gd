@@ -104,9 +104,9 @@ static func set_control_value(node: Control, value) -> void:
 		if not node.toggle_mode:
 			push_error("Button %s must have toggle_mode enabled" % node.name)
 		
-		node.button_pressed = value
+		node.set_pressed_no_signal(value)
 	elif node is SpinBox:
-		node.value = value
+		node.set_value_no_signal(value)
 	elif node is LineEdit:
 		node.text = value
 	else:

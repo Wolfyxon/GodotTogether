@@ -33,7 +33,7 @@ func _on_reset_pressed() -> void:
 		"",
 		"The plugin will restart."
 	], "\n")):
-		GDTSettings.write_settings(GDTSettings._DEFAULT_DATA)
+		GDTSettings.create_settings()
 		gui.get_menu_window().hide()  # For some reason it resets to the default state and doesn't hide after a reset
 		
 		if gui.main:
