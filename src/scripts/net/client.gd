@@ -107,9 +107,10 @@ func auth_successful() -> void:
 	print("Server accepted connection, requesting files (if needed)")
 	
 	auth_succeed.emit()
-
+	
 	main.change_detector.pause()
 	main.change_detector.clear()
+	main.file_sync.pause()
 
 	last_open_scenes = EditorInterface.get_open_scenes().duplicate()
 	GDTUtils.close_all_scenes()
@@ -149,8 +150,16 @@ func _project_files_downloaded() -> void:
 		await get_tree().process_frame
 	
 	is_fully_synced = true
-	main.change_detector.resume()
+	
+	await get_tree().process_frame
+	
 	main.change_detector.observe_current_scene()
+	
+	await get_tree().process_frame
+	
+	main.file_sync.resume()
+	main.change_detector.resume()
+	
 
 @rpc("authority", "reliable")
 func begin_project_files_download(file_count: int) -> void:

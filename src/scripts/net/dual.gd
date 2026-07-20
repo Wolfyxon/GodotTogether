@@ -149,9 +149,12 @@ func _node_properties_changed(node: Node, changed_keys: Array):
 
 func _node_removed(node: Node, node_path: NodePath) -> void:
 	await get_tree().process_frame
+	
 	if is_instance_valid(node) and node.is_inside_tree():
 		return
-
+	
+	if not node: return
+	if not is_instance_valid(node): return # the amount of checks I have to make is crazy
 	if not should_update(node): return
 	
 	var scene = EditorInterface.get_edited_scene_root()
