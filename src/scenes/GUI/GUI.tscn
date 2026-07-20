@@ -9,6 +9,7 @@
 [ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="5_dxbrh"]
 [ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="6_8e3fv"]
 [ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_1sjc5"]
+[ext_resource type="Texture2D" uid="uid://b2srdea385vtr" path="res://addons/GodotTogether/src/img/server.svg" id="7_jfeym"]
 [ext_resource type="Script" uid="uid://42xnckjjvo6" path="res://addons/GodotTogether/src/scenes/GUI/users.gd" id="7_nhpql"]
 [ext_resource type="PackedScene" uid="uid://j86rllgmi5d0" path="res://addons/GodotTogether/src/scenes/GUI/serverSettings/serverSettings.tscn" id="8_jfeym"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="9_4c4b3"]
@@ -33,6 +34,7 @@ visible = true
 unresizable = false
 borderless = false
 min_size = Vector2i(500, 400)
+theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
@@ -45,23 +47,25 @@ offset_right = -25.0
 offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 script = ExtResource("3_1pnv7")
 
 [node name="topBar" type="HBoxContainer" parent="mainMenu/main" unique_id=1800698495]
-custom_maximum_size = Vector2(-1, 40)
+custom_maximum_size = Vector2(-1, 45)
 layout_mode = 2
+alignment = 1
 
 [node name="settings" type="Button" parent="mainMenu/main/topBar" unique_id=1308903326]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Settings"
 icon = ExtResource("2_3dfl6")
+flat = true
 
 [node name="about" type="Button" parent="mainMenu/main/topBar" unique_id=1100326616]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "About"
 icon = ExtResource("3_gc6ii")
+flat = true
 
 [node name="sessionInit" type="Control" parent="mainMenu/main" unique_id=346473724]
 layout_mode = 2
@@ -77,13 +81,14 @@ grow_vertical = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=595637705]
+[node name="header" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=595637705]
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_type_variation = &"HeaderLarge"
+theme_override_constants/outline_size = 2
 text = "Welcome to Godot Together"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=2097603758]
+[node name="usernameLabel" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=2097603758]
 layout_mode = 2
 text = "Your username:"
 horizontal_alignment = 1
@@ -117,7 +122,7 @@ custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Host your project"
-icon = ExtResource("4_lrlm7")
+icon = ExtResource("7_jfeym")
 
 [node name="sep2" type="Control" parent="mainMenu/main/sessionInit/pre" unique_id=2025548821]
 custom_minimum_size = Vector2(0, 10)
@@ -126,7 +131,6 @@ layout_mode = 2
 [node name="warning" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=663261338]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 17
 text = "Only collaborate with people you absolutely trust!
@@ -214,8 +218,8 @@ icon = ExtResource("4_lrlm7")
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
-text = "Back up your project before using!
-Do not let untrusted people join!"
+text = "Do not let untrusted people join!
+Back up your project before using!"
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=1313580569]
@@ -270,12 +274,14 @@ layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 text = "Make sure you trust the host!
-All data in this project will be OVERWRITTEN with their version."
+Also this project will be overwritten."
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="cancel" type="Button" parent="mainMenu/main/sessionInit/start" unique_id=187268904]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Cancel"
 icon = ExtResource("6_8e3fv")
 
@@ -326,14 +332,14 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 0
 tooltip_text = "Stop the server, ending the editing session for everyone."
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 16
 text = "Stop server"
 
 [node name="restart" type="Button" parent="mainMenu/main/session/top" unique_id=873807020]
 layout_mode = 2
 size_flags_vertical = 0
 tooltip_text = "Restart the plugin for all users and then yourself. Everyone needs to have the restart broadcast setting enabled."
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 16
 text = "Broadcast plugin restart"
 
 [node name="showJoin" type="Button" parent="mainMenu/main/session/top" unique_id=1245990506]
@@ -349,9 +355,10 @@ layout_mode = 2
 [node name="status" type="Label" parent="mainMenu/main/session/top" unique_id=641757752]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
+size_flags_vertical = 1
 theme_override_font_sizes/font_size = 16
 text = "Connected"
+vertical_alignment = 1
 
 [node name="tabs" type="TabContainer" parent="mainMenu/main/session" unique_id=1051081182]
 layout_mode = 2
@@ -688,7 +695,7 @@ horizontal_alignment = 1
 [node name="text" type="RichTextLabel" parent="mainMenu/disclaimer" unique_id=242571705]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "[indent]
 • Do not use the plugin with people you don't fully trust.
@@ -728,7 +735,7 @@ script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.8, 0, 1)
+theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 31
 text = "Failed to parse settings"
 horizontal_alignment = 1
@@ -791,74 +798,80 @@ horizontal_alignment = 1
 oversampling_override = 1.0
 title = "About Godot Together"
 initial_position = 4
-size = Vector2i(700, 400)
+size = Vector2i(750, 500)
 borderless = false
 
-[node name="scroll" type="ScrollContainer" parent="mainMenu/about" unique_id=858069687]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
 offset_left = 21.0
 offset_top = 21.0
-offset_right = 679.0
-offset_bottom = 379.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 729.0
+offset_bottom = 479.0
+alignment = 1
 
-[node name="vbox" type="VBoxContainer" parent="mainMenu/about/scroll" unique_id=1783536203]
+[node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="vbox" type="VBoxContainer" parent="mainMenu/about/main/scroll" unique_id=1783536203]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="version" type="Label" parent="mainMenu/about/scroll/vbox" unique_id=19583657]
+[node name="version" type="Label" parent="mainMenu/about/main/scroll/vbox" unique_id=19583657]
 layout_mode = 2
 text = "Version: %s"
 
-[node name="author" type="Label" parent="mainMenu/about/scroll/vbox" unique_id=1339112038]
+[node name="author" type="Label" parent="mainMenu/about/main/scroll/vbox" unique_id=1339112038]
 layout_mode = 2
 text = "by Wolfyxon & contributors"
 
-[node name="description" type="Label" parent="mainMenu/about/scroll/vbox" unique_id=2113516241]
+[node name="description" type="Label" parent="mainMenu/about/main/scroll/vbox" unique_id=2113516241]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 text = "GodotTogether is an open source plugin for live editing Godot projects with multiple people at the same time over the network.
 This plugin is in early development so expect bugs!"
 autowrap_mode = 3
 
-[node name="sep" type="Control" parent="mainMenu/about/scroll/vbox" unique_id=1193467184]
+[node name="sep" type="Control" parent="mainMenu/about/main/scroll/vbox" unique_id=1193467184]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="credits" type="Label" parent="mainMenu/about/scroll/vbox" unique_id=654784212]
+[node name="credits" type="Label" parent="mainMenu/about/main/scroll/vbox" unique_id=654784212]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 text = "Special thanks to: Zastinian, ImmortalOctogen"
 autowrap_mode = 3
 
-[node name="links" type="HBoxContainer" parent="mainMenu/about/scroll/vbox" unique_id=384160411]
+[node name="links" type="HBoxContainer" parent="mainMenu/about/main/scroll/vbox" unique_id=384160411]
 layout_mode = 2
 alignment = 1
 
-[node name="repo" type="LinkButton" parent="mainMenu/about/scroll/vbox/links" unique_id=6863443]
+[node name="repo" type="LinkButton" parent="mainMenu/about/main/scroll/vbox/links" unique_id=6863443]
 layout_mode = 2
 text = "Source code"
 uri = "https://github.com/Wolfyxon/GodotTogether"
 
-[node name="issues" type="LinkButton" parent="mainMenu/about/scroll/vbox/links" unique_id=1122133260]
+[node name="issues" type="LinkButton" parent="mainMenu/about/main/scroll/vbox/links" unique_id=1122133260]
 layout_mode = 2
 text = "Bugs and proposals"
 uri = "https://github.com/Wolfyxon/GodotTogether/issues"
 
-[node name="help" type="LinkButton" parent="mainMenu/about/scroll/vbox/links" unique_id=693735688]
+[node name="help" type="LinkButton" parent="mainMenu/about/main/scroll/vbox/links" unique_id=693735688]
 layout_mode = 2
 text = "Help & wiki"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki"
+
+[node name="btnClose" type="Button" parent="mainMenu/about/main" unique_id=632938425]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Close"
+icon = ExtResource("9_4c4b3")
 
 [node name="settings" type="PopupPanel" parent="mainMenu" unique_id=177260155]
 oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
-size = Vector2i(750, 650)
+size = Vector2i(800, 700)
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
@@ -866,8 +879,8 @@ script = ExtResource("18_8pkel")
 [node name="main" type="VBoxContainer" parent="mainMenu/settings" unique_id=661741475]
 offset_left = 21.0
 offset_top = 21.0
-offset_right = 729.0
-offset_bottom = 629.0
+offset_right = 779.0
+offset_bottom = 679.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
@@ -908,6 +921,7 @@ value = 0.1
 metadata/setting = "sync/node_refresh_rate"
 
 [node name="HSeparator2" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=1860984121]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="lblSecurity" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=1694916815]
@@ -934,6 +948,7 @@ button_pressed = true
 text = "Accept tool scripts"
 
 [node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=985936473]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="lblDev" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=657163383]
@@ -945,7 +960,7 @@ text = "Developer"
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.8580836, 0, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 16
 text = "These settings are meant for testing the plugin and should not be touched.
 Leave everything off."
 autowrap_mode = 3
@@ -973,6 +988,7 @@ text = "Enable restart broadcast"
 metadata/setting = "dev/restart_broadcast"
 
 [node name="HSeparator4" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=896762126]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="lblActions" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=1284711791]
@@ -1012,14 +1028,15 @@ icon = ExtResource("17_u8ku5")
 
 [node name="Label" type="Label" parent="mainMenu/settings/main" unique_id=448454228]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "Hover over a setting to see what it does."
 
 [node name="close" type="Button" parent="mainMenu/settings/main" unique_id=633600438]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "close"
+text = "Close"
+icon = ExtResource("9_4c4b3")
 
 [connection signal="pressed" from="mainMenu/main/topBar/settings" to="mainMenu/settings" method="popup"]
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
@@ -1043,6 +1060,7 @@ text = "close"
 [connection signal="pressed" from="mainMenu/settingsError/actions/openGd" to="mainMenu/settingsError" method="_on_open_gd_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/showFile" to="mainMenu/settingsError" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
+[connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/shutdown" to="mainMenu/settings" method="_on_shutdown_pressed"]

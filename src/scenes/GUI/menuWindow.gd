@@ -9,7 +9,7 @@ func _ready() -> void:
 	await get_tree().physics_frame
 	
 	if main:
-		$about/scroll/vbox/version.text = "Version: " + main.get_plugin_version()
+		$about/main/scroll/vbox/version.text = "Version: " + main.get_plugin_version()
 
 	if gui.visuals_available():
 		var settings_json = GDTSettings.get_settings_json()
