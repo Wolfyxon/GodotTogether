@@ -3,6 +3,7 @@ class_name GDTUtils
 
 static func sha256_of_buffer(buffer: PackedByteArray) -> String:
 	var hasher = HashingContext.new()
+	hasher.start(HashingContext.HASH_SHA256)
 	hasher.update(buffer)
 	
 	return hasher.finish().hex_encode()
