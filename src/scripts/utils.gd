@@ -111,3 +111,7 @@ static func set_control_value(node: Control, value) -> void:
 		node.text = value
 	else:
 		push_error("Unsupported control type %s '%s'" % [node.get_class(), node.name])
+
+static func is_file_resource(resource: Resource) -> bool:
+	return not resource.resource_path.is_empty() and not resource.resource_path.contains("::")
+	

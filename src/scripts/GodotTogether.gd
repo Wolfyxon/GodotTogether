@@ -20,7 +20,9 @@ var server = GDTServer.new(self, "server")
 var dual = GDTDual.new(self, "dual")
 
 var change_detector = GDTChangeDetector.new(self, "changeDetector")
+
 var file_sync = GDTFileSync.new(self)
+var node_sync = GDTNodeSync.new(self)
 
 var gui: GodotTogetherGUI = preload("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
 var chat: GDTChat = preload("res://addons/GodotTogether/src/scenes/GUI/chat/chat.tscn").instantiate()
@@ -31,7 +33,7 @@ var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 var plugin_started := false
 
 var components = [
-	client, server, dual, change_detector, file_sync, gui
+	client, server, dual, change_detector, file_sync, node_sync, gui
 ]
 
 func _enter_tree() -> void:
