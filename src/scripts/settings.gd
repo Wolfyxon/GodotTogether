@@ -45,7 +45,7 @@ static func get_absolute_path() -> String:
 static func write_settings(data: Dictionary) -> void:
 	var f = FileAccess.open(FILE_PATH, FileAccess.WRITE)
 
-	f.store_string(JSON.stringify(data," "))
+	f.store_string(JSON.stringify(data,"	"))
 	f.close()
 
 static func settings_exist() -> bool:
