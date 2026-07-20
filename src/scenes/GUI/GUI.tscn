@@ -38,6 +38,7 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -726,7 +727,6 @@ layout_mode = 2
 text = "Proceed"
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
-visible = false
 offset_left = 25.0
 offset_top = 25.0
 offset_right = 945.0

@@ -36,9 +36,12 @@ func _on_show_file_pressed() -> void:
 func _on_reset_pressed() -> void:
 	if not gui: return
 	
-	if await gui.confirm("Reset GodotTogether settings to default?"):
+	if await gui.confirm(GDTUtils.join([
+		"Reset GodotTogether settings to default? Your settings will be lost!",
+		"The plugin will restart."
+	],"\n")):
 		GDTSettings.create_settings()
-		gui.alert("Settings reset, please restart the plugin.")
+		gui.main.restart()
 
 func _on_restart_pressed() -> void:
 	if not gui: return
