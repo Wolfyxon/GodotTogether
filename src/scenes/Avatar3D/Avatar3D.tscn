@@ -26,7 +26,7 @@ mesh = SubResource("SphereMesh_u7t51")
 skeleton = NodePath("../..")
 
 [node name="cylinder" type="MeshInstance3D" parent="model" unique_id=545910496]
-transform = Transform3D(0.154417, 0, 0, 0, -4.5629442e-09, -0.154417, 0, 0.104388, -6.749781e-09, 0.003012877, 0, 0.31784752)
+transform = Transform3D(0.154417, 0, 0, 0, -4.5629442e-09, -0.154417, 0, 0.104388, -6.749781e-09, 0.0030128695, 0, 0.4033254)
 mesh = SubResource("CylinderMesh_0cjbq")
 
 [node name="ui" type="Control" parent="." unique_id=1246286979]
