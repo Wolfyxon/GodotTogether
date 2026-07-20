@@ -39,3 +39,8 @@ func _on_reset_pressed() -> void:
 	if await gui.confirm("Reset GodotTogether settings to default?"):
 		GDTSettings.create_settings()
 		gui.alert("Settings reset, please restart the plugin.")
+
+func _on_restart_pressed() -> void:
+	if not gui: return
+	
+	gui.main.restart()

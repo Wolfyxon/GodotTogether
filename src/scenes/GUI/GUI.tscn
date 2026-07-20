@@ -787,6 +787,12 @@ icon = ExtResource("16_8pkel")
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Reset to default"
+icon = ExtResource("9_4c4b3")
+
+[node name="restart" type="Button" parent="mainMenu/settingsError/actions" unique_id=21118358]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Restart plugin"
 icon = ExtResource("17_u8ku5")
 
 [node name="Label" type="Label" parent="mainMenu/settingsError" unique_id=1949670076]
@@ -1060,6 +1066,7 @@ icon = ExtResource("9_4c4b3")
 [connection signal="pressed" from="mainMenu/settingsError/actions/openGd" to="mainMenu/settingsError" method="_on_open_gd_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/showFile" to="mainMenu/settingsError" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
+[connection signal="pressed" from="mainMenu/settingsError/actions/restart" to="mainMenu/settingsError" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
