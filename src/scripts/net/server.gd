@@ -272,7 +272,7 @@ func submit_node_reparent(scene_path: String, node_path: NodePath, new_parent_pa
 	auth_rpc(main.client.receive_node_reparent, [scene_path, node_path, new_parent_path, new_index], [sender])
 
 @rpc("any_peer", "call_remote", "reliable")
-func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
+func receive_file_from_client(path: String, buffer: PackedByteArray) -> void:
 	var id = multiplayer.get_remote_sender_id()
 
 	if not id_has_permission(id, GodotTogether.Permission.ADD_CUSTOM_FILES): return
@@ -293,31 +293,7 @@ func file_add_from_client(path: String, buffer: PackedByteArray) -> void:
 	await get_tree().create_timer(0.5).timeout
 	main.file_sync.resume()
 	
-	broadcast_file_add_with_buffer(path, buffer, id)
-
-@rpc("any_peer", "call_remote", "reliable")
-func file_modify_from_client(path: String, buffer: PackedByteArray) -> void:
-	var id = multiplayer.get_remote_sender_id()
-
-	if not id_has_permission(id, GodotTogether.Permission.MODIFY_CUSTOM_FILES): return
-	if not GDTValidator.is_path_safe(path): return
-
-	print("[SERVER] Received file modify from client %d: %s" % [id, path])
-	main.file_sync.pause()
-	
-	GDTFiles.ensure_dir_exists(path)
-	var f = FileAccess.open(path, FileAccess.WRITE)
-	if f:
-		f.store_buffer(buffer)
-		f.close()
-	
-	EditorInterface.get_resource_filesystem().scan()
-	
-	await get_tree().create_timer(0.5).timeout
-
-	main.file_sync.resume()
-	
-	broadcast_file_modify_with_buffer(path, buffer, id)
+	broadcast_file_with_buffer(path, buffer, id)
 
 @rpc("any_peer", "call_remote", "reliable")
 func file_remove_from_client(path: String) -> void:
@@ -340,23 +316,19 @@ func file_remove_from_client(path: String) -> void:
 	
 	broadcast_file_remove(path, id)
 
-func broadcast_file_add(path: String, sender := 0) -> void:
-	var buffer = FileAccess.get_file_as_bytes(path)
-	if buffer:
-		broadcast_file_add_with_buffer(path, buffer, sender)
-
 func broadcast_file_add_with_buffer(path: String, buffer: PackedByteArray, sender := 0) -> void:
 	print("[SERVER] Broadcasting file add to clients: ", path)
-	auth_rpc(main.client.sync_file_add, [path, buffer], [sender])
+	auth_rpc(main.client.receive_file, [path, buffer], [sender])
 
-func broadcast_file_modify(path: String, sender := 0) -> void:
+func broadcast_file_at_path(path: String, sender := 0) -> void:
 	var buffer = FileAccess.get_file_as_bytes(path)
+	
 	if buffer:
-		broadcast_file_modify_with_buffer(path, buffer, sender)
+		broadcast_file_with_buffer(path, buffer, sender)
 
-func broadcast_file_modify_with_buffer(path: String, buffer: PackedByteArray, sender := 0) -> void:
+func broadcast_file_with_buffer(path: String, buffer: PackedByteArray, sender := 0) -> void:
 	print("[SERVER] Broadcasting file modify to clients: ", path)
-	auth_rpc(main.client.sync_file_modify, [path, buffer], [sender])
+	auth_rpc(main.client.receive_file, [path, buffer], [sender])
 
 func broadcast_file_remove(path: String, sender := 0) -> void:
 	print("[SERVER] Broadcasting file remove to clients: ", path)

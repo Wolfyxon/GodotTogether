@@ -58,11 +58,11 @@ func _file_added(path: String) -> void:
 		
 		if buffer:
 			print("[CLIENT] Sending file add: ", path)
-			main.server.file_add_from_client.rpc_id(1, path, buffer)
+			main.server.receive_file_from_client.rpc_id(1, path, buffer)
 	
 	elif main.server.is_active():
 		print("[SERVER] Broadcasting file add: ", path)
-		main.server.broadcast_file_add(path)
+		main.server.broadcast_file_at_path(path)
 
 func _file_changed(path: String) -> void:
 	if main.client.is_active():
@@ -70,11 +70,11 @@ func _file_changed(path: String) -> void:
 
 		if buffer:
 			print("[CLIENT] Sending file modify: ", path)
-			main.server.file_modify_from_client.rpc_id(1, path, buffer)
+			main.server.receive_file_from_client.rpc_id(1, path, buffer)
 
 	elif main.server.is_active():
 		print("[SERVER] Broadcasting file modify: ", path)
-		main.server.broadcast_file_modify(path)
+		main.server.broadcast_file_at_path(path)
 
 func _file_removed(path: String) -> void:
 	if main.client.is_active():

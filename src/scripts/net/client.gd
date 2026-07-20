@@ -164,7 +164,9 @@ func begin_project_files_download(file_count: int) -> void:
 
 @rpc("authority", "reliable")
 func receive_file(path: String, buffer: PackedByteArray) -> void:
-	downloaded_file_count += 1
+	if not is_fully_synced:
+		downloaded_file_count += 1
+		
 	file_received.emit(path)
 
 	if not GDTValidator.is_path_safe(path):
@@ -174,6 +176,17 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 	print("Downloading " + path)
 	
 	GDTFiles.ensure_dir_exists(path)
+	
+	if FileAccess.file_exists(path):
+		var current_buf = FileAccess.get_file_as_bytes(path)
+		
+		var current_hash = GDTUtils.sha256_of_buffer(current_buf)
+		var new_hash = GDTUtils.sha256_of_buffer(buffer)
+		
+		if current_hash == new_hash:
+			print("File didn't change. Not writing")
+			return
+	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	var err = FileAccess.get_open_error()
 
@@ -198,71 +211,9 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 
 		EditorInterface.reload_scene_from_path(path)
 
-	if target_file_count != 0 and downloaded_file_count >= target_file_count:
+	if not is_fully_synced and target_file_count != 0 and downloaded_file_count >= target_file_count:
 		target_file_count = 0
 		_project_files_downloaded()
-
-@rpc("authority", "call_remote", "reliable")
-func sync_file_add(path: String, buffer: PackedByteArray) -> void:
-	if not GDTValidator.is_path_safe(path): return
-
-	print("[CLIENT] Receiving file add: ", path)
-	main.file_sync.pause()
-	
-	var new_hash = GDTUtils.sha256_of_buffer(buffer)
-	main.file_sync.file_hashes[path] = new_hash
-
-	GDTFiles.ensure_dir_exists(path)
-	
-	var f = FileAccess.open(path, FileAccess.WRITE)
-	if f:
-		f.store_buffer(buffer)
-		f.close()
-
-	EditorInterface.get_resource_filesystem().scan()
-
-	await get_tree().create_timer(0.5).timeout
-
-	main.file_sync.resume()
-
-@rpc("authority", "call_remote", "reliable")
-func sync_file_modify(path: String, buffer: PackedByteArray) -> void:
-	if not GDTValidator.is_path_safe(path): return
-
-	print("[CLIENT] Receiving file modify: ", path)
-	main.file_sync.pause()
-
-	var new_hash = GDTUtils.sha256_of_buffer(buffer)
-	main.file_sync.file_hashes[path] = new_hash
-	
-	GDTFiles.ensure_dir_exists(path)
-	var f = FileAccess.open(path, FileAccess.WRITE)
-	if f:
-		f.store_buffer(buffer)
-		f.close()
-	
-	EditorInterface.get_resource_filesystem().scan()
-
-	await get_tree().create_timer(0.5).timeout
-
-	main.file_sync.resume()
-
-@rpc("authority", "call_remote", "reliable")
-func sync_file_remove(path: String) -> void:
-	if not GDTValidator.is_path_safe(path): return
-
-	print("[CLIENT] Receiving file remove: ", path)
-	
-	main.file_sync.pause()
-
-	if FileAccess.file_exists(path):
-		DirAccess.remove_absolute(path)
-
-	EditorInterface.get_resource_filesystem().scan()
-
-	await get_tree().create_timer(1.0).timeout
-
-	main.file_sync.resume()
 
 func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -> void:
 	if not FileAccess.file_exists(scene_path):
