@@ -181,6 +181,13 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 	
 	f.store_buffer(buffer)
 	
+	if path.get_extension() == "gd" and "@tool" in buffer.get_string_from_utf8():
+		var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
+		print(warning_message)
+
+		if main and main.gui:
+			main.gui.alert(warning_message)
+	
 	print("Saved successfully")
 	
 	if path.get_extension() == "tscn":
