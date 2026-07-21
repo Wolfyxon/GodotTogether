@@ -11,8 +11,7 @@ const DOWNLOAD_DIR = "GodotTogetherUpdater"
 const DOWNLOAD_FILE = "update.zip"
 
 const USER_AGENT = "GodotTogether Updater"
-#const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/GodotTogether/releases/latest"
-const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/release-test/releases/latest"
+const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/GodotTogether/releases/latest"
 const GITHUB_AUTHOR_ID = 58263600
 
 const API_TIMEOUT = 10
