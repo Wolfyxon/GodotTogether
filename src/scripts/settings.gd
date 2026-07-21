@@ -23,6 +23,8 @@ const _DEFAULT_DATA = {
 		"node_refresh_rate": 0.1
 	},
 	"update": {
+		"latest_version": null,
+		"download_url": null,
 		"last_check": 0,
 		"check_interval_hours": 720, # monthly
 		"auto_check_enabled": true

@@ -2,6 +2,8 @@
 extends GDTComponent
 class_name GDTUpdater
 
+signal update_detected
+
 const LAST_CHECK_SETTING_PATH = "update/last_check"
 
 const ROOT = "user://"
@@ -17,15 +19,46 @@ const API_TIMEOUT = 10
 const DOWNLOAD_TIMEOUT = 0
 
 var http = HTTPRequest.new()
+var latest_result: GDTUpdateCheckResult = null
 
 func _ready() -> void:
 	add_child(http)
 
-func conditional_check() -> GDTUpdateCheckResult:
-	if not is_time_to_check():
-		return null
+func check_cached() -> GDTUpdateCheckResult:
+	var cached = GDTUpdateCheckResult.get_from_settings()
 	
-	return await check()
+	if not cached:
+		latest_result = GDTUpdateCheckResult.status_latest()
+		return latest_result
+		
+	if cached.version != get_current_version():
+		cached.type = GDTUpdateCheckResult.ResultType.UpdateAvailable
+	else:
+		cached.type = GDTUpdateCheckResult.ResultType.RunningLatest
+	
+	latest_result = cached
+	_check_result()
+	
+	return cached
+
+func conditional_check() -> GDTUpdateCheckResult:
+	if is_time_to_check():
+		await check()
+		
+		if latest_result:
+			return
+	
+	check_cached()
+	
+	return latest_result
+
+func _check_result() -> void:
+	if not latest_result:
+		return
+	
+	if latest_result.type == GDTUpdateCheckResult.ResultType.UpdateAvailable:
+		update_detected.emit(latest_result)
+		print("[GodotTogether] Update detected! %s" % latest_result.version)
 
 func get_current_version() -> String:
 	return main.get_plugin_version()
@@ -67,6 +100,19 @@ func get_unauthorized_user_warning(user_name: String, version: String) -> String
 	], "\n")
 
 func check() -> GDTUpdateCheckResult:
+	var res = await _check_from_api()
+	
+	latest_result = res
+	_check_result()
+	
+	if not res or res.type == GDTUpdateCheckResult.ResultType.RunningLatest:
+		print("[GodotTogether] No updates available")
+	
+	latest_result.save_to_settings()
+	
+	return res
+
+func _check_from_api() -> GDTUpdateCheckResult:
 	if not main:
 		printerr("Unable to check for updates: main is null")
 		return
@@ -220,11 +266,18 @@ func download_update_zip(url: String) -> String:
 	http.download_file = ""
 	return ""
 
-func begin_update(update: GDTUpdateCheckResult) -> void:
+func begin_update(update: GDTUpdateCheckResult = null) -> void:
 	if not main:
 		return
 	
 	main.close_connection()
+	
+	if not update:
+		update = latest_result
+		
+	if not update:
+		printerr("Update data not available. Call check() or specify GDTUpdateCheckResult")
+		return
 	
 	var download_err = await download_update_zip(update.download_url)
 	
@@ -235,6 +288,8 @@ func begin_update(update: GDTUpdateCheckResult) -> void:
 	apply_update()
 
 func apply_update() -> void:
+	GDTUpdateCheckResult.clear_cache()
+	
 	var installer = GDTUpdateInstaller.new()
 	var zip_err = installer.open_zip(ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE)
 	

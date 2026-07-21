@@ -5,6 +5,8 @@ class_name GDTMenu
 var main: GodotTogether
 var gui: GodotTogetherGUI
 
+@onready var update_btn = $topBar/update
+
 @onready var username_input = $sessionInit/pre/username
 @onready var session_init_cover = $sessionInit/cover
 @onready var session_cancel = $sessionInit/cover/vbox/btnCancel
@@ -22,6 +24,8 @@ func _ready() -> void:
 	if main:
 		main_menu()
 		
+		main.updater.update_detected.connect(_update_available, CONNECT_ONE_SHOT)
+		
 		main.client.disconnected.connect(func():
 			await get_tree().process_frame
 			session_start_menu("join")
@@ -29,9 +33,17 @@ func _ready() -> void:
 
 	if visuals_available():
 		set_session_init_cover()
-		
 		username_input.text = GDTSettings.get_setting("username")
+
+func _update_available(update: GDTUpdateCheckResult) -> void:
+	update_btn.text = "Update to v.%s" % update.version
+	update_btn.visible = true
+	update_btn.pressed.connect(_query_update)
 	
+func _query_update() -> void:
+	if await gui.confirm("Download and install the latest update?"):
+		main.updater.begin_update()
+
 func _host() -> void:
 	if main:
 		var port = host_settings.port_input.value
