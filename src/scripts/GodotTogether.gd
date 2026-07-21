@@ -30,10 +30,12 @@ var chat: GDTChat = preload("res://addons/GodotTogether/src/scenes/GUI/chat/chat
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
+var updater = GDTUpdater.new(self)
+
 var plugin_started := false
 
 var components = [
-	client, server, dual, change_detector, file_sync, node_sync, gui
+	client, server, dual, change_detector, file_sync, node_sync, gui, updater
 ]
 
 func _enter_tree() -> void:
@@ -57,6 +59,8 @@ func _enter_tree() -> void:
 	setup_menu_button()
 	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
 	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
+	
+	updater.conditional_check()
 	
 	await get_tree().process_frame
 	setup_chat()

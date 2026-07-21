@@ -68,6 +68,11 @@ text = "About"
 icon = ExtResource("3_gc6ii")
 flat = true
 
+[node name="update" type="Button" parent="mainMenu/main/topBar" unique_id=852543716]
+visible = false
+layout_mode = 2
+text = "Update to v.0.0.0 error"
+
 [node name="sessionInit" type="Control" parent="mainMenu/main" unique_id=346473724]
 layout_mode = 2
 size_flags_vertical = 3
@@ -892,6 +897,7 @@ offset_bottom = 679.0
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
 size_flags_vertical = 3
+scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll" unique_id=2018662387]
 layout_mode = 2
@@ -955,6 +961,62 @@ button_pressed = true
 text = "Accept tool scripts"
 
 [node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=985936473]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="lblUpdate" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=1532798809]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Updates"
+
+[node name="autoCheckUpdates" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=1533970669]
+layout_mode = 2
+tooltip_text = "Not implemented.
+
+Same as the setting above, but only applies to @tool scripts which can run in Godot without running the game."
+button_pressed = true
+text = "Automatically check for updates"
+metadata/setting = "update/check_interval_hours"
+
+[node name="updateCheckInterval" type="HBoxContainer" parent="mainMenu/settings/main/scroll/vbox" unique_id=617782896]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="mainMenu/settings/main/scroll/vbox/updateCheckInterval" unique_id=479630822]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Check interval"
+
+[node name="value" type="OptionButton" parent="mainMenu/settings/main/scroll/vbox/updateCheckInterval" unique_id=2020541214]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 4
+popup/item_0/text = "Monthly (30 days)"
+popup/item_0/id = 720
+popup/item_1/text = "Weekly"
+popup/item_1/id = 168
+popup/item_2/text = "3 days"
+popup/item_2/id = 72
+popup/item_3/text = "Daily"
+popup/item_3/id = 12
+metadata/setting = "update/check_interval_hours"
+
+[node name="updateCheckTimeHbox" type="HBoxContainer" parent="mainMenu/settings/main/scroll/vbox" unique_id=2007539503]
+layout_mode = 2
+
+[node name="lblLastCheck" type="Label" parent="mainMenu/settings/main/scroll/vbox/updateCheckTimeHbox" unique_id=1645930099]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Last check: <value>"
+metadata/setting = "update/last_check"
+
+[node name="btnCheckUpdateNow" type="Button" parent="mainMenu/settings/main/scroll/vbox/updateCheckTimeHbox" unique_id=181044858]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Check for updates now"
+icon = ExtResource("4_lrlm7")
+
+[node name="HSeparator5" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=964053785]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
@@ -1075,6 +1137,7 @@ icon = ExtResource("9_4c4b3")
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/restart" to="mainMenu/settingsError" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow" to="mainMenu/settings" method="_on_btn_check_update_now_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/shutdown" to="mainMenu/settings" method="_on_shutdown_pressed"]

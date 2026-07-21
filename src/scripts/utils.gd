@@ -120,7 +120,12 @@ static func is_peer_connected(peer: MultiplayerPeer) -> bool:
 	return peer.get_connection_status() == peer.CONNECTION_CONNECTED
 
 static func set_control_value(node: Control, value) -> void:
-	if node is Button:
+	node.set_block_signals(true)
+	
+	if node is OptionButton:
+		var idx = node.get_item_index(value)
+		node.select(idx)
+	elif node is Button:
 		if not node.toggle_mode:
 			push_error("Button %s must have toggle_mode enabled" % node.name)
 		
@@ -129,8 +134,17 @@ static func set_control_value(node: Control, value) -> void:
 		node.set_value_no_signal(value)
 	elif node is LineEdit:
 		node.text = value
+	elif node is Label:
+		const VALUE_PLACEHHOLDER = "<value>"
+		# TODO: time placeholder
+		if node.text.contains(VALUE_PLACEHHOLDER):
+			node.text = node.text.replace(VALUE_PLACEHHOLDER, str(value))
+		else:
+			node.text = str(value)
 	else:
 		push_error("Unsupported control type %s '%s'" % [node.get_class(), node.name])
+	
+	node.set_block_signals(false)
 
 static func is_file_resource(resource: Resource) -> bool:
 	return not resource.resource_path.is_empty() and not resource.resource_path.contains("::")

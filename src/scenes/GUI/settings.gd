@@ -3,6 +3,7 @@ extends PopupPanel
 class_name GDTSettingsGUI
 
 @onready var vbox = $main/scroll/vbox
+@onready var update_check_btn = $main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow
 
 var gui: GodotTogetherGUI
 var controls: Array[Control] = []
@@ -13,8 +14,7 @@ func _ready() -> void:
 	if not gui: return
 	if not gui.visuals_available(): return
 	
-	# Use GDTUtils.get_descendants() if the controls get nested
-	for i in vbox.get_children():
+	for i in GDTUtils.get_descendants(vbox):
 		if i.has_meta("setting"):
 			register_control(i)
 
@@ -49,3 +49,26 @@ func _on_shutdown_pressed() -> void:
 func _on_restart_pressed() -> void:
 	if await gui.confirm("Are you sure you want to restart the plugin?"):
 		gui.main.restart()
+
+func _on_btn_check_update_now_pressed() -> void:
+	if not gui: return
+	update_check_btn.disabled = true
+	
+	var res = await gui.main.updater.check()
+	update_check_btn.disabled = false
+	
+	if not res:
+		gui.alert("Unknown error. Update checker did not respond.", "Unable to check for updates")
+		return
+	
+	if res.type == GDTUpdateCheckResult.ResultType.RunningLatest:
+		gui.alert("No new updates detected")
+		return
+	
+	if res.type == GDTUpdateCheckResult.ResultType.Fail:
+		gui.alert(res.error, "Error while checking for updates")
+		return
+	
+	if await gui.confirm("New version available: '%s'! Update now?" % res.version):
+		pass
+	

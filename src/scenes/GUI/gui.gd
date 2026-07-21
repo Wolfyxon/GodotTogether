@@ -50,7 +50,7 @@ func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 	
 	popup.dialog_text = text
 	popup.title = title
-	popup.min_size.x = 300
+	popup.min_size.x = 400
 	popup.always_on_top = true
 	popup.unresizable = true
 	

@@ -22,6 +22,11 @@ const _DEFAULT_DATA = {
 	"sync": {
 		"node_refresh_rate": 0.1
 	},
+	"update": {
+		"last_check": 0,
+		"check_interval_hours": 720, # monthly
+		"auto_check_enabled": true
+	},
 	"dev": {
 		# Everything here should be false by default
 		"run_tests_on_start": false,
@@ -100,10 +105,16 @@ static func set_setting(path: String, value) -> void:
 	write_settings(data)
 
 static func _set_setting_reverse(value, path: String) -> void:
+	prints(value, path)
 	set_setting(path, value)
 
 static func make_setting_control(node: Control, path: String) -> void:
-	if node is Button:
+	if node is OptionButton:
+		node.item_selected.connect(func(idx):
+			var id = node.get_item_id(idx)
+			set_setting(path, id)
+		)
+	elif node is Button:
 		if not node.toggle_mode:
 			push_error("Button %s must have toggle_mode enabled" % node.name)
 		
@@ -112,9 +123,6 @@ static func make_setting_control(node: Control, path: String) -> void:
 		node.value_changed.connect(_set_setting_reverse.bind(path))
 	elif node is LineEdit:
 		node.text_changed.connect(_set_setting_reverse.bind(path))
-	else:
-		push_error("Unsupported control type: %s '%s'" % [node.get_class(), node.name])
-		return
 	
 	update_control(node, path)
 
