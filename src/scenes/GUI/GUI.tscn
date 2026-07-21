@@ -31,6 +31,7 @@ title = "GodotTogether"
 initial_position = 4
 size = Vector2i(970, 600)
 visible = true
+wrap_controls = false
 unresizable = false
 borderless = false
 min_size = Vector2i(500, 400)
