@@ -6,7 +6,7 @@ class_name GDTUpdateInstaller
 # This script must be independent
 
 const PLUGIN_DIR = "res://addons/GodotTogether"
-const SETTINGS_PATH = "res://addons/GodotTogether/settings.json"
+const SETTINGS_FILE = "settings.json"
 
 var zip_path: String = ""
 var zip: ZIPReader
@@ -16,13 +16,14 @@ var settings_buf = []
 func _ready() -> void:
 	await get_tree().process_frame # Wait for shutdown
 	
-	print("[GodotTogether] Removing current plugin version")
-	
 	save_settings()
-	#remove_dir_recursive("res://addons/GodotTogether")
+	
+	print("[GodotTogether] Removing current plugin version")
+	remove_dir_recursive(PLUGIN_DIR)
+	
 	unzip()
-	finish()
 	restore_settings()
+	finish()
 
 func unzip() -> void:
 	print("[GodotTogether] Writing files")
@@ -46,25 +47,27 @@ func unzip() -> void:
 	print("[GodotTogether] Update files extracted")
 
 func save_settings() -> void:
-	if FileAccess.file_exists(SETTINGS_PATH):
+	var settings_path = PLUGIN_DIR + "/" + SETTINGS_FILE
+	
+	if FileAccess.file_exists(settings_path):
 		print("[GodotTogether] Backing up settings")
 		
-		settings_buf = FileAccess.get_file_as_bytes(SETTINGS_PATH)
+		settings_buf = FileAccess.get_file_as_bytes(settings_path)
 		
 func restore_settings() -> void:
+	var settings_path = PLUGIN_DIR + "/" + SETTINGS_FILE
+	
 	if not settings_buf.is_empty():
 		print("[GodotTogether] Restoring settings")
 		
-		var file = FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
+		var file = FileAccess.open(settings_path, FileAccess.WRITE)
 		
 		if not file:
 			printerr("Unable to restore settings file")
 			return
 			
-		var err = file.store_buffer(settings_buf)
-		
-		if err != OK:
-			printerr("Unable to write settings: %s" % error_string(err))
+		if not file.store_buffer(settings_buf):
+			printerr("Unable to write settings")
 
 func validate() -> String:
 	var files = zip.get_files()

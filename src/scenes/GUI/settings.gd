@@ -71,4 +71,3 @@ func _on_btn_check_update_now_pressed() -> void:
 	
 	if await gui.confirm("New version available: '%s'! Update now?" % res.version):
 		gui.main.updater.begin_update(res)
-	
