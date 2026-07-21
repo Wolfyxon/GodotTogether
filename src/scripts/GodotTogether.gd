@@ -40,7 +40,10 @@ func _enter_tree() -> void:
 	if not pre_start_check():
 		printerr("GodotTogether will not run.")
 		return
-
+	
+	if GDTSettings.get_setting("dev/run_tests_on_start"):
+		GDTUnitTests.new().run_tests()
+	
 	plugin_started = true
 
 	name = "GodotTogether"

@@ -38,7 +38,6 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -727,6 +726,7 @@ layout_mode = 2
 text = "Proceed"
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
+visible = false
 offset_left = 25.0
 offset_top = 25.0
 offset_right = 945.0
@@ -970,6 +970,12 @@ theme_override_font_sizes/font_size = 16
 text = "These settings are meant for testing the plugin and should not be touched.
 Leave everything off."
 autowrap_mode = 3
+
+[node name="unitTests" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=906706618]
+layout_mode = 2
+tooltip_text = "Tests internal plugin's features on start and prints the results in the console"
+text = "Run unit tests on start"
+metadata/setting = "dev/run_tests_on_start"
 
 [node name="realTimeFileSync" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=1990226029]
 layout_mode = 2
