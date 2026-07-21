@@ -31,20 +31,18 @@ var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
 var updater = GDTUpdater.new(self)
+var tests = GDTUnitTests.new(self)
 
 var plugin_started := false
 
 var components = [
-	client, server, dual, change_detector, file_sync, node_sync, gui, updater
+	client, server, dual, change_detector, file_sync, node_sync, gui, updater, tests
 ]
 
 func _enter_tree() -> void:
 	if not pre_start_check():
 		printerr("GodotTogether will not run.")
 		return
-	
-	if GDTSettings.get_setting("dev/run_tests_on_start"):
-		GDTUnitTests.new().run_tests()
 	
 	plugin_started = true
 
@@ -59,6 +57,9 @@ func _enter_tree() -> void:
 	setup_menu_button()
 	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
 	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
+	
+	if GDTSettings.get_setting("dev/run_tests_on_start"):
+		tests.run_tests()
 	
 	await get_tree().process_frame
 	setup_chat()

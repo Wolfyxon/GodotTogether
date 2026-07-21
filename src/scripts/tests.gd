@@ -15,8 +15,13 @@ func exec_test(f: Callable) -> void:
 		fail_count += 1
 
 func run_tests() -> void:
+	if not main:
+		printerr("Cannot run tests without main")
+		return
+	
 	print("--- Running GodotTogether tests ---")
 	
+	exec_test(test_versions)
 	exec_test(test_sha256)
 	exec_test(test_sha256_file)
 	
@@ -26,6 +31,56 @@ func run_tests() -> void:
 	
 	print("------------------------------------")
 
+func check_version(ver: String) -> String:
+	if ver.is_empty():
+		return "Version cannot be empty"
+		
+	if ver == "unreleased":
+		return ""
+	
+	if not ver[0].is_valid_int():
+		return "Version must start with a number"
+	
+	const ALLOWED_CHARS = "1234567890.-qwertyuiopasdfghjklzxcvbnm"
+	
+	for i in ver:
+		if not ALLOWED_CHARS.contains(i):
+			return "Illegal character '%s'" % i
+	
+	return ""
+
+func test_versions() -> bool:
+	var valid = [
+		main.get_plugin_version(),
+		"1.0-alpha",
+		"2.5.1-beta",
+		"1.0",
+		"unreleased"
+	]
+	
+	var invalid = [
+		"v.1.0",
+		"1,4-alpha",
+		"test_version",
+	]
+	
+	var ok = true
+	
+	for i in valid:
+		var err = check_version(i)
+		
+		if not err.is_empty():
+			ok = false
+			printerr("%s: %s", i, err)
+	
+	for i in invalid:
+		var err = check_version(i)
+		
+		if err.is_empty():
+			ok = false
+			printerr("%s should be invalid" % i)
+	
+	return ok 
 func test_sha256() -> bool:
 	var a1 = [1, 2, 3, 4]
 	var a2 = [1, 2, 3, 4]
