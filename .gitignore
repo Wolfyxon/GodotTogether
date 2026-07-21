@@ -1,7 +1,8 @@
 # Directories
+build/
 .godot
-.import
-.idea
+.import/
+.idea/
 
 # File types
 *~
