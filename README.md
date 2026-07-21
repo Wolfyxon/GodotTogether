@@ -1,17 +1,17 @@
 # Godot Together
-[Wiki](https://github.com/Wolfyxon/GodotTogether/wiki/) |
-[Troubleshooting](https://github.com/Wolfyxon/GodotTogether/wiki/Troubleshooting)
+A **work in progress** plugin for real-time collaboration over the network for Godot Engine.
 
-An **experimental** plugin for real-time collaboration over the network for Godot Engine.
+[Wiki & help](https://github.com/Wolfyxon/GodotTogether/wiki/) |
+[Troubleshooting](https://github.com/Wolfyxon/GodotTogether/wiki/Troubleshooting) |
+[Report bugs](https://github.com/wolfyxon/godotTogether/issues/) |
+[Feature TODO list](https://github.com/wolfyxon/godotTogether/issues/1)
 
-> [!WARNING]
-> This plugin is **not ready for use.**  
-> Many important features have not are not implemented or are buggy.  
-> You are also risking **breaking your project** so make sure to **make a backup**.
+> [!CAUTION]
+> This plugin allows for **remote code execution**.  
+> Make sure to **never collaborate** with **people you don't FULLY trust**.
 > 
-> Also, NEVER edit projects with someone you don't trust as the plugin allows **remotely executing malicious code**.
-> 
-> See the [TODO list](https://github.com/wolfyxon/godotTogether/issues/1) to see the current progress.
+> There's also a risk of your projects becoming corrupted so
+> **always make backups** or/and **use version control** like **git**.
 
 ## Installation
 First create a folder called `addons` in your project's directory.
