@@ -54,9 +54,6 @@ func _on_btn_check_update_now_pressed() -> void:
 	if not gui: return
 	update_check_btn.disabled = true
 	
-	gui.main.updater.apply_update()
-	return
-	
 	var res = await gui.main.updater.check()
 	update_check_btn.disabled = false
 	

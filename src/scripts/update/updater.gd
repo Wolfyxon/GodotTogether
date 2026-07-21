@@ -4,8 +4,8 @@ class_name GDTUpdater
 
 const LAST_CHECK_SETTING_PATH = "update/last_check"
 
-const ROOT = "res://addons/GodotTogether"
-const DOWNLOAD_DIR = "temp"
+const ROOT = "user://"
+const DOWNLOAD_DIR = "GodotTogetherUpdater"
 const DOWNLOAD_FILE = "update.zip"
 
 const USER_AGENT = "GodotTogether Updater"
@@ -167,6 +167,9 @@ func delete_download_zip() -> void:
 	
 	var dir = DirAccess.open(path)
 	
+	if not dir:
+		return
+	
 	if not dir.file_exists(DOWNLOAD_FILE):
 		return
 	
@@ -176,7 +179,7 @@ func delete_download_zip() -> void:
 		printerr("Unable to delete old update file: %s: %s" % [DOWNLOAD_FILE, error_string(rm_err)])
 
 func prepare_dir() -> String:
-	var dir = DirAccess.open("res://addons/GodotTogether")
+	var dir = DirAccess.open(ROOT)
 	
 	if not dir:
 		return "Unable to access project directory"
