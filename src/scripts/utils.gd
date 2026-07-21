@@ -18,7 +18,12 @@ static func sha256_of_file(path: String) -> String:
 		printerr("Unable to hash file at %s" % path)
 		return ""
 	
-	hasher.update(file.get_buffer(128))
+	var file_len = file.get_length()
+	
+	while file.get_position() < file_len:
+		var rem = file.get_length() - file.get_position()
+		hasher.update(file.get_buffer(min(128, rem)))
+	
 	
 	return hasher.finish().hex_encode()
 
