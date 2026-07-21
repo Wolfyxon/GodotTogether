@@ -76,6 +76,9 @@ func _exit_tree() -> void:
 	gui.queue_free()
 	queue_free()
 
+func shutdown() -> void:
+	EditorInterface.set_plugin_enabled("GodotTogether", false)
+
 func restart() -> void:
 	close_connection()
 

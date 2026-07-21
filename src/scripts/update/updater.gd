@@ -4,15 +4,21 @@ class_name GDTUpdater
 
 const LAST_CHECK_SETTING_PATH = "update/last_check"
 
+const ROOT = "res://addons/GodotTogether"
+const DOWNLOAD_DIR = "temp"
+const DOWNLOAD_FILE = "update.zip"
+
 const USER_AGENT = "GodotTogether Updater"
 #const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/GodotTogether/releases/latest"
 const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/release-test/releases/latest"
 const GITHUB_AUTHOR_ID = 58263600
 
+const API_TIMEOUT = 10
+const DOWNLOAD_TIMEOUT = 0
+
 var http = HTTPRequest.new()
 
 func _ready() -> void:
-	http.timeout = 10
 	add_child(http)
 
 func conditional_check() -> GDTUpdateCheckResult:
@@ -67,6 +73,9 @@ func check() -> GDTUpdateCheckResult:
 	
 	print("[GodotTogether] Checking for updates...")
 	GDTSettings.set_setting(LAST_CHECK_SETTING_PATH, Time.get_unix_time_from_system())
+	
+	http.timeout = API_TIMEOUT
+	http.download_file = ""
 	
 	var err = http.request(GITHUB_RELEASE_URL, ["User-Agent: %s" % USER_AGENT])
 	
@@ -144,3 +153,101 @@ func check() -> GDTUpdateCheckResult:
 	res.download_url = asset["browser_download_url"]
 	
 	return res
+
+func get_download_progress_percent() -> int:
+	var size = http.get_body_size()
+	
+	if size == 0:
+		return 0
+	
+	return (http.get_downloaded_bytes() / size) * 100
+
+func delete_download_zip() -> void:
+	var path = ROOT + "/" + DOWNLOAD_DIR
+	
+	var dir = DirAccess.open(path)
+	
+	if not dir.file_exists(DOWNLOAD_FILE):
+		return
+	
+	var rm_err = dir.remove(DOWNLOAD_FILE)
+	
+	if rm_err != OK:
+		printerr("Unable to delete old update file: %s: %s" % [DOWNLOAD_FILE, error_string(rm_err)])
+
+func prepare_dir() -> String:
+	var dir = DirAccess.open("res://addons/GodotTogether")
+	
+	if not dir:
+		return "Unable to access project directory"
+	
+	if not dir.dir_exists(DOWNLOAD_DIR):
+		var err = dir.make_dir(DOWNLOAD_DIR)
+		
+		if err != OK:
+			return "Unable to create temp directory: %s" % error_string(err) 
+	
+	return ""
+
+func download_update_zip(url: String) -> String:
+	http.timeout = DOWNLOAD_TIMEOUT
+	http.download_file = ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE
+	
+	var dir_err = prepare_dir()
+	
+	if not dir_err.is_empty():
+		return dir_err
+	
+	print("[GodotTogether] Downloading %s to %s" % [url, http.download_file])
+	
+	delete_download_zip()
+	
+	http.request(url, ["User-Agent: %s" % USER_AGENT])
+	var params = await http.request_completed
+	var code = params[1]
+	
+	if code == 0:
+		return "No internet connection"
+	
+	if code != 200:
+		return "HTTP code %s" % code
+	
+	print("[GodotTogether] Successfully downloaded %s" % http.download_file)
+	
+	http.download_file = ""
+	return ""
+
+func begin_update(update: GDTUpdateCheckResult) -> void:
+	if not main:
+		return
+	
+	main.close_connection()
+	
+	var download_err = await download_update_zip(update.download_url)
+	
+	if not download_err.is_empty():
+		main.gui.alert(download_err, "Error downloading update")
+		return
+	
+	apply_update()
+
+func apply_update() -> void:
+	var installer = GDTUpdateInstaller.new()
+	var zip_err = installer.open_zip(ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE)
+	
+	if zip_err != OK:
+		main.gui.alert("Unable to open update file: %s" % error_string(zip_err), "Error applying update")
+		installer.queue_free()
+		return
+	
+	var valid_err = installer.validate()
+	
+	if not valid_err.is_empty():
+		main.gui.alert(valid_err, "Update file is invalid")
+		installer.queue_free()
+		return
+	
+	installer.start()
+	
+	print("[GodotTogether] Shutting down plugin for update")
+	main.shutdown()

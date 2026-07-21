@@ -44,7 +44,7 @@ func _on_show_file_pressed() -> void:
 
 func _on_shutdown_pressed() -> void:
 	if await gui.confirm("Are you sure you want to shut down and disable the plugin?"):
-		EditorInterface.set_plugin_enabled("GodotTogether", false)
+		gui.main.shutdown()
 
 func _on_restart_pressed() -> void:
 	if await gui.confirm("Are you sure you want to restart the plugin?"):
@@ -53,6 +53,9 @@ func _on_restart_pressed() -> void:
 func _on_btn_check_update_now_pressed() -> void:
 	if not gui: return
 	update_check_btn.disabled = true
+	
+	gui.main.updater.apply_update()
+	return
 	
 	var res = await gui.main.updater.check()
 	update_check_btn.disabled = false
@@ -70,5 +73,5 @@ func _on_btn_check_update_now_pressed() -> void:
 		return
 	
 	if await gui.confirm("New version available: '%s'! Update now?" % res.version):
-		pass
+		gui.main.updater.begin_update(res)
 	

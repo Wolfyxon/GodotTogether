@@ -1,4 +1,5 @@
 # Directories
+temp/
 build/
 .godot
 .import/

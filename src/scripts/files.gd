@@ -10,11 +10,13 @@ const ignored_dirs = [
 	"res://addons"
 ]
 
-static func ensure_dir_exists(path: String) -> void:
+static func ensure_dir_exists(path: String) -> int:
 	var dir = path.get_base_dir()
 	
 	if dir != "" and not DirAccess.dir_exists_absolute(dir):
-		DirAccess.make_dir_recursive_absolute(dir)
+		return DirAccess.make_dir_recursive_absolute(dir)
+		
+	return OK
 
 static func has_traversal(path: String) -> bool:
 	return path.contains("..")
