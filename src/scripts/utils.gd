@@ -1,6 +1,8 @@
 @tool
 class_name GDTUtils
 
+const DICT_PATH_SEPARATOR = "/"
+
 static func sha256_of_buffer(buffer: PackedByteArray) -> String:
 	var hasher = HashingContext.new()
 	hasher.start(HashingContext.HASH_SHA256)
@@ -49,7 +51,7 @@ static func merge(a: Dictionary, b: Dictionary) -> Dictionary:
 
 	return a
 
-static func get_nested(dict: Dictionary, path:String, separator := "/"):
+static func get_nested(dict: Dictionary, path:String, separator := DICT_PATH_SEPARATOR):
 	var levels = path.split(separator)
 	var current = dict
 	
@@ -59,7 +61,7 @@ static func get_nested(dict: Dictionary, path:String, separator := "/"):
 	
 	return current
 
-static func set_nested(dict: Dictionary, path: String, value, separator:= "/") -> void:
+static func set_nested(dict: Dictionary, path: String, value, separator := DICT_PATH_SEPARATOR) -> void:
 	assert(not dict.is_read_only(), "Dictionary is read only")
 	
 	var levels = path.split(separator)
@@ -73,6 +75,40 @@ static func set_nested(dict: Dictionary, path: String, value, separator:= "/") -
 		current = current[level]
 
 	current[levels[-1]] = value
+
+static func append_array_prefixed(array: Array, new_values: Array, prefix: String) -> void:
+	for i in new_values:
+		array.append(prefix + i)
+
+static func compare_dicts(a: Dictionary, b: Dictionary, depth := 16) -> Array:
+	var changed_paths = []
+	
+	for key in a.keys():
+		if not key in b:
+			changed_paths.append(key)
+			continue
+		
+		var val_a = a[key]
+		var val_b = b[key]
+		
+		if typeof(val_a) != typeof(val_b):
+			changed_paths.append(key)
+			continue
+			
+		if val_a is Dictionary and val_b is Dictionary and depth > 0:
+			var sub_changes = compare_dicts(val_a, val_b, depth - 1)
+			append_array_prefixed(changed_paths, sub_changes, key + DICT_PATH_SEPARATOR)
+			continue
+		
+		if val_a != val_b:
+			changed_paths.append(key)
+	
+	for key in b.keys():
+		if not key in a:
+			changed_paths.append(key)
+			continue
+	
+	return changed_paths
 
 static func get_tree() -> SceneTree:
 	return EditorInterface.get_base_control().get_tree()
