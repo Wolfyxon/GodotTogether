@@ -38,12 +38,14 @@ var authenticated_at := -1.0
 var authenticated := false
 var pending := false
 
+var _last_address: String = ""
+
 var permissions: Array[GodotTogether.Permission] = [
-    GodotTogether.Permission.EDIT_SCENES,
-    GodotTogether.Permission.EDIT_SCRIPTS,
-    GodotTogether.Permission.ADD_CUSTOM_FILES,
-    GodotTogether.Permission.MODIFY_CUSTOM_FILES,
-    GodotTogether.Permission.DELETE_SCRIPTS
+	GodotTogether.Permission.EDIT_SCENES,
+	GodotTogether.Permission.EDIT_SCRIPTS,
+	GodotTogether.Permission.ADD_CUSTOM_FILES,
+	GodotTogether.Permission.MODIFY_CUSTOM_FILES,
+	GodotTogether.Permission.DELETE_SCRIPTS
 ]
 
 func _init(id: int, peer: ENetPacketPeer = null, main: GodotTogether = null):
@@ -60,6 +62,22 @@ func _init(id: int, peer: ENetPacketPeer = null, main: GodotTogether = null):
 
 func has_permission(permission: GodotTogether.Permission) -> bool:
 	return authenticated and permission in permissions
+
+func get_address() -> String:
+	if not peer:
+		return "localhost"
+	
+	var res = peer.get_remote_address()
+	
+	if res.is_empty():
+		return _last_address
+	
+	if res in ["0:0:0:0:0:0:0:1", "::1", "127.0.0.1"]:
+		_last_address = "localhost"
+		return "localhost"
+	
+	_last_address = res
+	return res
 
 func auth() -> void:
 	assert(not authenticated, "User %d (%s) already authenticated" % [id, name])

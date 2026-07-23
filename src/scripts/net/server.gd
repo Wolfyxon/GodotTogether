@@ -164,7 +164,7 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	
 	if GDTSettings.get_setting("server/require_approval"):
 		user.pending = true
-		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) wants to join. Check Pending Users tab." % [user.name, ip])
 		return
 	

@@ -97,7 +97,7 @@ func _user_connected(user: GDTUser) -> void:
 	user_connected.emit(user)
 	
 	if should_notify_user_connection():
-		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) joined" % [user.name, ip])
 
 func _user_disconnected(user: GDTUser) -> void:
@@ -105,7 +105,7 @@ func _user_disconnected(user: GDTUser) -> void:
 	user_disconnected.emit(user)
 	
 	if should_notify_user_connection():
-		var ip = user.peer.get_remote_address() if user.peer else "Local"
+		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, ip])
 
 func _users_listed(users: Array[GDTUser]) -> void:
