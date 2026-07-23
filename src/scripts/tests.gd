@@ -25,6 +25,7 @@ func run_tests() -> void:
 	exec_test(test_sha256)
 	exec_test(test_sha256_file)
 	exec_test(test_compare_dicts)
+	exec_test(test_hash_dict)
 	
 	print()
 	print("Testing complete")
@@ -193,6 +194,38 @@ func test_compare_dicts() -> bool:
 	for i in ab_expected_diff:
 		if not i in ab_diff:
 			printerr("Missing diff entry '%s'. \n'%s' != \n'%s'" % [i, ab_diff, ab_expected_diff])
+			return false
+	
+	return true
+
+func test_hash_dict() -> bool:
+	var lbl = Label.new()
+	lbl.text = "Hello"
+	
+	var h1 = GDTNodeSync.get_hash_dict(lbl)
+	var h1_unchanged = GDTNodeSync.get_hash_dict(lbl)
+	
+	var diff_unchanged = GDTUtils.compare_dicts(h1, h1_unchanged)
+	
+	if not diff_unchanged.is_empty():
+		printerr("Hashes differ without changes: %s", diff_unchanged)
+		return false
+	
+	lbl.text = "Hello World"
+	lbl.visible = false
+	
+	var h2 = GDTNodeSync.get_hash_dict(lbl)
+	
+	var diff = GDTUtils.compare_dicts(h1, h2)
+	var expected_diff = ["text", "visible"]
+	
+	if diff.size() != expected_diff.size():
+		printerr("Diff wrong: '%s' != '%s'" % [expected_diff, diff])
+		return false
+	
+	for i in expected_diff:
+		if not i in diff:
+			printerr("Missing '%s' in diff: '%s' != '%s'" % [i, expected_diff, diff])
 			return false
 	
 	return true
