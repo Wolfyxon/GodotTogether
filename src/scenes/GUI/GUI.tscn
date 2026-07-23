@@ -69,9 +69,16 @@ icon = ExtResource("3_gc6ii")
 flat = true
 
 [node name="update" type="Button" parent="mainMenu/main/topBar" unique_id=852543716]
-visible = false
 layout_mode = 2
 text = "Update to v.0.0.0 error"
+
+[node name="versionWarning" type="Label" parent="mainMenu/main/topBar" unique_id=1312654565]
+layout_mode = 2
+tooltip_text = "You're running an outdated or not yet supported version of Godot.
+You may encounter issues with the plugin."
+mouse_filter = 0
+theme_type_variation = &"WarningLabel"
+text = "Plugin only supported on Godot stable"
 
 [node name="sessionInit" type="Control" parent="mainMenu/main" unique_id=346473724]
 layout_mode = 2

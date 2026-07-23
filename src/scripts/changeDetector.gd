@@ -1,4 +1,6 @@
 @tool
+##@deprecated
+
 extends GDTComponent
 class_name GDTChangeDetector
 
@@ -91,12 +93,14 @@ static func get_property_dict(obj: Object) -> Dictionary:
 
 	return res
 
+##@deprecated
 static func hash_value(value) -> int:
 	if value is Object:
 		return hash(value) + hash(get_property_hash_dict(value))
 	else:
 		return hash(value)
 
+##@deprecated
 static func get_property_hash_dict(obj: Object) -> Dictionary:
 	var res := {}
 

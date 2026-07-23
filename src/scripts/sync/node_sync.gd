@@ -76,8 +76,7 @@ func _check_node(node: Node, root: Node = null) -> void:
 	var last_hashes = property_hashes[node]
 	var new_hashes = get_hash_dict(node)
 	
-	
-	
+
 func ignore_last_changes() -> void:
 	var root = EditorInterface.get_edited_scene_root()
 	
