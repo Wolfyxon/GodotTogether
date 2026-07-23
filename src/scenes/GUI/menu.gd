@@ -6,6 +6,7 @@ var main: GodotTogether
 var gui: GodotTogetherGUI
 
 @onready var update_btn = $topBar/update
+@onready var version_warning = $topBar/versionWarning
 
 @onready var username_input = $sessionInit/pre/username
 @onready var session_init_cover = $sessionInit/cover
@@ -33,7 +34,9 @@ func _ready() -> void:
 
 	if visuals_available():
 		set_session_init_cover()
+		check_engine_version()
 		username_input.text = GDTSettings.get_setting("username")
+		update_btn.visible = false
 
 func _update_available(update: GDTUpdateCheckResult) -> void:
 	update_btn.text = "Update to v.%s" % update.version
@@ -181,6 +184,26 @@ func visuals_available() -> bool:
 		return false
 	
 	return gui.visuals_available()
+
+func check_engine_version() -> void:
+	var info = Engine.get_version_info()
+	var supported_info = GodotTogether.SUPPORTED_ENGINE_VERSION
+	
+	if info["status"] != "stable":
+		version_warning.visible = true
+		version_warning.text = "Plugin only supported on Godot stable"
+		return
+	
+	if (
+		info["major"] != supported_info[0] or
+		info["minor"] != supported_info[1] or
+		info["patch"] != supported_info[2]
+	):
+		version_warning.visible = true
+		version_warning.text = "Plugin only supported on Godot %s.%s.%s" % [supported_info[0], supported_info[1], supported_info[2]]
+		return
+	
+	version_warning.visible = false
 
 func _on_username_text_changed(text: String) -> void:
 	if visuals_available():

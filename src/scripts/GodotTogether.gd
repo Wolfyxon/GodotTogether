@@ -14,6 +14,7 @@ enum Permission {
 }
 
 const PROTOCOL_VERSION = 1
+const SUPPORTED_ENGINE_VERSION = [4, 7, 1]
 
 var client = GDTClient.new(self, "client")
 var server = GDTServer.new(self, "server")
@@ -36,7 +37,12 @@ var tests = GDTUnitTests.new(self)
 var plugin_started := false
 
 var components = [
-	client, server, dual, change_detector, file_sync, node_sync, gui, updater, tests
+	client, server, dual, 
+	change_detector, # deprecated, pending rewrite
+	file_sync, node_sync, 
+	gui,
+	updater, 
+	tests
 ]
 
 func _enter_tree() -> void:
