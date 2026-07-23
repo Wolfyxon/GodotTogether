@@ -43,6 +43,9 @@ var property_hashes = {
 var supressed_nodes = {}
 var last_scene_path: String = ""
 
+# NOTE: This script is currently NOT used.
+# It's an unfinished rewrite of changeDetector
+
 func _ready() -> void:
 	change_timer.wait_time = GDTSettings.get_setting("sync/node_refresh_rate")
 	change_timer.timeout.connect(_check_changes)
