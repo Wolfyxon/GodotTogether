@@ -107,7 +107,6 @@ static func set_setting(path: String, value) -> void:
 	write_settings(data)
 
 static func _set_setting_reverse(value, path: String) -> void:
-	prints(value, path)
 	set_setting(path, value)
 
 static func make_setting_control(node: Control, path: String) -> void:
