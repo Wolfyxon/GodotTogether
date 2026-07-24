@@ -28,7 +28,7 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"transform"
 	],
 	"Resource": [
-		"resource_path"
+		#"resource_path"
 	]
 }
 
@@ -210,12 +210,18 @@ func can_sync_nodes() -> bool:
 
 static func get_hash_dict(obj: Object, depth := 64) -> Dictionary:
 	var res = {}
-	
+	fill_hash_dict(res, obj, depth)
+	return res
+
+static func fill_hash_dict(res: Dictionary, obj: Object, depth := 64) -> Dictionary:
 	for key in get_property_keys(obj):
 		var value = obj[key]
 		
 		if value is Object and depth > 0:
-			res[key] = get_hash_dict(value, depth - 1)
+			res[key] = {
+				"." = hash(value)
+			} 
+			fill_hash_dict(res[key], value, depth - 1)
 		else:
 			res[key] = hash(value)
 		
@@ -225,13 +231,24 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	var res = {}
 	
 	for path in paths:
-		res[path] = GDTUtils.get_nested(obj, path)
-	
+		var true_path = path.replace(GDTUtils.DICT_PATH_SEPARATOR + ".", "")
+		var value = GDTUtils.get_nested(obj, true_path)
+		
+		if value is Resource:
+			res[true_path] = encode_resource(value)
+		else:
+			res[true_path] = value
+		
 	return res
 
 static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 	for path in dict.keys():
-		GDTUtils.set_nested(obj, path, dict[path])
+		var value = dict[path]
+		
+		if is_encoded_resource(value):
+			value = decode_resource(value)
+		
+		GDTUtils.set_nested(obj, path, value)
 
 static func is_encoded_resource(value) -> bool:
 	return value is Dictionary and "_gdtRes" in value
