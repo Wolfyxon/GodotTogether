@@ -20,6 +20,10 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"owner",
 		"multiplayer"
 	],
+	"Control": [
+		"offset_left", "offset_right",
+		"offset_top", "offset_bottom"
+	],
 	"Node3D": [
 		"transform"
 	],
@@ -43,16 +47,18 @@ var property_hashes = {
 var supressed_nodes = {}
 var last_scene_path: String = ""
 
-# NOTE: This script is currently NOT used.
-# It's an unfinished rewrite of changeDetector
-
 func _ready() -> void:
 	change_timer.wait_time = GDTSettings.get_setting("sync/node_refresh_rate")
 	change_timer.timeout.connect(_check_changes)
 	add_child(change_timer)
 	change_timer.start()
 	
-	ignore_last_changes()
+	rescan_timer.wait_time = 1
+	rescan_timer.timeout.connect(observe_current_scene)
+	add_child(rescan_timer)
+	rescan_timer.start()
+	
+	start()
 
 func _check_changes() -> void:
 	if not can_sync_nodes(): return
@@ -62,8 +68,8 @@ func _check_changes() -> void:
 	
 	for node in property_hashes:
 		_check_node(node, root)
-		
-func _check_node(node: Node, root: Node = null) -> void:
+
+func _check_node(node, root: Node = null) -> void:
 	if not is_node_valid(node):
 		return
 	
@@ -75,7 +81,72 @@ func _check_node(node: Node, root: Node = null) -> void:
 	
 	var last_hashes = property_hashes[node]
 	var new_hashes = get_hash_dict(node)
+	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
 	
+	if not diff.is_empty():
+		_node_properties_changed(node, diff)
+	
+	property_hashes[node] = new_hashes
+
+func _node_properties_changed(node: Node, property_paths: Array) -> void:
+	if not can_sync_nodes():
+		return
+	
+	if not is_node_valid(node):
+		return
+	
+	var scene = node.owner
+	
+	if scene.scene_file_path.is_empty():
+		return
+	
+	var node_path = scene.get_path_to(node)
+	var property_dict = get_select_property_dict(node, property_paths)
+	
+	if main.server.is_active():
+		server_broadcast_node_update(node_path, scene.scene_file_path, property_dict)
+	else:
+		_c2s_request_node_update.rpc_id(1, node_path, scene.scene_file_path, property_dict)
+
+@rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_node_update(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
+	if not main.server.validate_c2s(): 
+		return
+	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+	
+	var id = multiplayer.get_remote_sender_id()
+	
+	if not FileAccess.file_exists(scene_path):
+		printerr("Attempt to edit nonexistent scene: %s user: %s" % [scene_file_path, id])
+		return
+	
+	server_broadcast_node_update(node_path, scene_path, property_dict, id)
+	update_node_properties(node_path, scene_path, property_dict)
+
+@rpc("authority", "call_remote", "reliable")
+func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
+	if scene_path.is_empty():
+		return
+	
+	for scene in EditorInterface.get_open_scene_roots():
+		if scene.scene_file_path == scene_path:
+			var node = scene.get_node_or_null(node_path)
+			
+			if not node:
+				printerr("%s in scene %s not found" % [node_path, scene_path])
+				return
+			
+			set_node_supressed(node, true)
+			
+			apply_property_dict(node, property_dict)
+			ignore_last_changes_of_node(node)
+			
+			set_node_supressed(node, false)
+			break
+
+func server_broadcast_node_update(node_path: String, scene_path: String, property_dict: Dictionary, sender := 0) -> void:
+	main.server.auth_rpc(update_node_properties, [node_path, scene_path, property_dict], [sender])
 
 func ignore_last_changes() -> void:
 	var root = EditorInterface.get_edited_scene_root()
@@ -84,6 +155,12 @@ func ignore_last_changes() -> void:
 		return
 	
 	last_scene_path = root.scene_file_path
+	
+	for node in property_hashes:
+		ignore_last_changes_of_node(node)
+
+func ignore_last_changes_of_node(node: Node):
+	property_hashes[node] = get_hash_dict(node)
 
 func observe_node(node: Node) -> void:
 	if not is_node_valid(node):
@@ -91,6 +168,8 @@ func observe_node(node: Node) -> void:
 		
 	if node in property_hashes:
 		return
+		
+	property_hashes[node] = get_hash_dict(node)
 
 func set_node_supressed(node: Node, state: bool) -> void:
 	if state:
@@ -111,6 +190,14 @@ func observe_current_scene() -> void:
 		return
 		
 	observe_node_recursive(scene)
+
+func clear() -> void:
+	property_hashes.clear()
+	
+func start() -> void:
+	clear()
+	ignore_last_changes()
+	observe_current_scene()
 
 func can_sync_nodes() -> bool:
 	return (
@@ -133,6 +220,18 @@ static func get_hash_dict(obj: Object, depth := 64) -> Dictionary:
 			res[key] = hash(value)
 		
 	return res
+
+static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
+	var res = {}
+	
+	for path in paths:
+		res[path] = GDTUtils.get_nested(obj, path)
+	
+	return res
+
+static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
+	for path in dict.keys():
+		GDTUtils.set_nested(obj, path, dict[path])
 
 static func is_encoded_resource(value) -> bool:
 	return value is Dictionary and "_gdtRes" in value
@@ -216,7 +315,7 @@ static func get_property_keys(obj: Object) -> Array[String]:
 
 	return res
 
-static func is_node_valid(node: Node) -> bool:
+static func is_node_valid(node) -> bool:
 	return (
 		node and
 		is_instance_valid(node) and

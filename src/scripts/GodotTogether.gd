@@ -22,8 +22,8 @@ var dual = GDTDual.new(self, "dual")
 
 var change_detector = GDTChangeDetector.new(self, "changeDetector")
 
-var file_sync = GDTFileSync.new(self)
-var node_sync = GDTNodeSync.new(self)
+var file_sync = GDTFileSync.new(self, "file_sync")
+var node_sync = GDTNodeSync.new(self, "node_sync")
 
 var gui: GodotTogetherGUI = preload("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn").instantiate()
 var chat: GDTChat = preload("res://addons/GodotTogether/src/scenes/GUI/chat/chat.tscn").instantiate()

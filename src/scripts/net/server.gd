@@ -109,6 +109,25 @@ func start_hosting(port: int, max_clients := 10) -> int:
 
 	return err
 
+func validate_c2s() -> bool:
+	return (
+		is_active()
+	)
+
+func get_calling_user() -> GDTUser:
+	var id = multiplayer.get_remote_sender_id()
+	if id < 1: return
+	
+	return main.dual.get_user_by_id(id)
+
+func caller_has_permission(permission: GodotTogether.Permission) -> bool:
+	var id = multiplayer.get_remote_sender_id()
+	
+	if id < 1: 
+		return false
+	
+	return id_has_permission(id, permission)
+
 func _post_start() -> void:
 	main.file_sync.resume()
 	
@@ -239,14 +258,17 @@ func node_add_request(scene_path: String, node_path: NodePath, node_type: String
 	main.client.receive_node_add(scene_path, node_path, node_type, properties)
 	submit_node_add(scene_path, node_path, node_type, properties, id)
 
+##@deprecated
 func submit_node_removal(scene_path: String, node_path: NodePath, sender := 0) -> void:
 	main.client.receive_node_removal(scene_path, node_path)
 	auth_rpc(main.client.receive_node_removal, [scene_path, node_path], [sender])
 
+##@deprecated
 func submit_node_update(scene_path: String, node_path: NodePath, property_dict: Dictionary, sender := 0) -> void:
 	main.client.receive_node_updates(scene_path, node_path, property_dict)
 	auth_rpc(main.client.receive_node_updates, [scene_path, node_path, property_dict], [sender])
 
+##@deprecated
 func submit_node_add(scene_path: String, node_path: NodePath, node_type: String, properties: Dictionary, sender := 0) -> void:
 	main.client.receive_node_add(scene_path, node_path, node_type, properties)
 	auth_rpc(main.client.receive_node_add, [scene_path, node_path, node_type, properties], [sender])
@@ -263,6 +285,7 @@ func node_reparent_request(scene_path: String, node_path: NodePath, new_parent_p
 	
 	submit_node_reparent(scene_path, node_path, new_parent_path, new_index)
 
+##@deprecated
 func submit_node_rename(scene_path: String, old_path: NodePath, new_name: String, sender := 0) -> void:
 	main.client.receive_node_rename(scene_path, old_path, new_name)
 	auth_rpc(main.client.receive_node_rename, [scene_path, old_path, new_name], [sender])

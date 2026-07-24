@@ -177,6 +177,8 @@ func _ready() -> void:
 	rescan_timer.start()
 
 func _cycle() -> void:
+	return
+	
 	if node_watcher.paused:
 		return
 
