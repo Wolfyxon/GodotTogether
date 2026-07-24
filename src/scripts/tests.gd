@@ -27,6 +27,7 @@ func run_tests() -> void:
 	exec_test(test_compare_dicts)
 	exec_test(test_hash_dict)
 	exec_test(test_setget_nested)
+	exec_test(test_node_change_applying)
 	
 	print()
 	print("Testing complete")
@@ -203,6 +204,8 @@ func test_hash_dict() -> bool:
 	var lbl = Label.new()
 	lbl.text = "Hello"
 	
+	# -- Unchanged -- #
+	
 	var h1 = GDTNodeSync.get_hash_dict(lbl)
 	var h1_unchanged = GDTNodeSync.get_hash_dict(lbl)
 	
@@ -212,21 +215,42 @@ func test_hash_dict() -> bool:
 		printerr("Hashes differ without changes: %s", diff_unchanged)
 		return false
 	
+	# -- Changed -- #
+	
 	lbl.text = "Hello World"
 	lbl.visible = false
+	lbl.label_settings = LabelSettings.new()
 	
 	var h2 = GDTNodeSync.get_hash_dict(lbl)
 	
-	var diff = GDTUtils.compare_dicts(h1, h2)
-	var expected_diff = ["text", "visible"]
+	var diff2 = GDTUtils.compare_dicts(h1, h2)
+	var expected_diff2 = ["text", "visible", "label_settings"]
 	
-	if diff.size() != expected_diff.size():
-		printerr("Diff wrong: '%s' != '%s'" % [expected_diff, diff])
+	if diff2.size() != expected_diff2.size():
+		printerr("Diff wrong: '%s' != '%s'" % [expected_diff2, diff2])
 		return false
 	
-	for i in expected_diff:
-		if not i in diff:
-			printerr("Missing '%s' in diff: '%s' != '%s'" % [i, expected_diff, diff])
+	for i in expected_diff2:
+		if not i in diff2:
+			printerr("Missing '%s' in diff: '%s' != '%s'" % [i, expected_diff2, diff2])
+			return false
+	
+	# -- Object itself changed -- #
+	
+	lbl.label_settings = LabelSettings.new()
+	
+	var h3 = GDTNodeSync.get_hash_dict(lbl)
+	
+	var diff3 = GDTUtils.compare_dicts(h2, h3)
+	var expected_diff3 = ["label_settings/."]
+	
+	if diff3.size() != expected_diff3.size():
+		printerr("Diff wrong: '%s' != '%s'" % [expected_diff3, diff3])
+		return false
+	
+	for i in expected_diff3:
+		if not i in diff3:
+			printerr("Missing '%s' in diff: '%s' != '%s'" % [i, expected_diff3, diff3])
 			return false
 	
 	return true
@@ -255,6 +279,43 @@ static func test_setget_nested() -> bool:
 	
 	if font_size != 17:
 		printerr("font_size %s != %s" % [17, font_size])
+		return false
+	
+	return true
+
+static func test_node_change_applying() -> bool:
+	var lbl = Label.new()
+	lbl.label_settings = LabelSettings.new()
+	lbl.label_settings.font_size = 7
+	
+	var h1 = GDTNodeSync.get_hash_dict(lbl)
+	
+	lbl.text = "when the THE"
+	lbl.label_settings = LabelSettings.new()
+	lbl.label_settings.font_color = Color.RED
+	
+	var h2 = GDTNodeSync.get_hash_dict(lbl)
+	
+	var diff = GDTUtils.compare_dicts(h1, h2)
+	var props = GDTNodeSync.get_select_property_dict(lbl, diff)
+	
+	var lbl_output = Label.new()
+	GDTNodeSync.apply_property_dict(lbl_output, props)
+	
+	if lbl_output.text != lbl.text:
+		printerr("text wrong")
+		return false
+	
+	if not lbl_output.label_settings:
+		printerr("label_settings is null")
+		return false 
+	
+	if lbl_output.label_settings.font_color != lbl.label_settings.font_color:
+		printerr("font color wrong")
+		return false
+	
+	if lbl_output.label_settings.font_size != 16: # default font size
+		printerr("font size remained changed")
 		return false
 	
 	return true
