@@ -77,7 +77,10 @@ static func set_nested(obj, path: String, value, separator := DICT_PATH_SEPARATO
 			current[level] = {}
 		
 		current = current[level]
-
+	
+	if not current:
+		return
+	
 	current[levels[-1]] = value
 
 static func append_array_prefixed(array: Array, new_values: Array, prefix: String) -> void:
