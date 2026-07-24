@@ -51,25 +51,29 @@ static func merge(a: Dictionary, b: Dictionary) -> Dictionary:
 
 	return a
 
-static func get_nested(dict: Dictionary, path:String, separator := DICT_PATH_SEPARATOR):
+static func get_nested(obj, path: String, separator := DICT_PATH_SEPARATOR):
 	var levels = path.split(separator)
-	var current = dict
+	var current = obj
 	
 	for level in levels:
-		if not current.has(level): return
+		if current is Dictionary and not current.has(level): 
+			return
+		
 		current = current[level]
 	
 	return current
 
-static func set_nested(dict: Dictionary, path: String, value, separator := DICT_PATH_SEPARATOR) -> void:
-	assert(not dict.is_read_only(), "Dictionary is read only")
+static func set_nested(obj, path: String, value, separator := DICT_PATH_SEPARATOR) -> void:
+	if obj is Dictionary:
+		assert(not obj.is_read_only(), "Dictionary is read only")
 	
 	var levels = path.split(separator)
-	var current = dict
+	var current = obj
 
 	for i in range(levels.size() - 1):
 		var level = levels[i]
-		if not current.has(level):
+		
+		if current is Dictionary and not current.has(level):
 			current[level] = {}
 		
 		current = current[level]

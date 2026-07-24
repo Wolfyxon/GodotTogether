@@ -26,6 +26,7 @@ func run_tests() -> void:
 	exec_test(test_sha256_file)
 	exec_test(test_compare_dicts)
 	exec_test(test_hash_dict)
+	exec_test(test_setget_nested)
 	
 	print()
 	print("Testing complete")
@@ -227,5 +228,33 @@ func test_hash_dict() -> bool:
 		if not i in diff:
 			printerr("Missing '%s' in diff: '%s' != '%s'" % [i, expected_diff, diff])
 			return false
+	
+	return true
+
+static func test_setget_nested() -> bool:
+	var dict = {
+		"a": {
+			"b": null
+		}
+	}
+	
+	GDTUtils.set_nested(dict, "a/b", "c")
+	var dict_val = GDTUtils.get_nested(dict, "a/b")
+	
+	if dict_val != "c":
+		printerr("Dict 'c' != '%s'" % dict_val)
+		return false
+	
+	var lbl = Label.new()
+	var lbl_settings = LabelSettings.new()
+	lbl.label_settings = lbl_settings
+	
+	GDTUtils.set_nested(lbl, "label_settings/font_size", 17)
+	
+	var font_size = GDTUtils.get_nested(lbl, "label_settings/font_size")
+	
+	if font_size != 17:
+		printerr("font_size %s != %s" % [17, font_size])
+		return false
 	
 	return true
