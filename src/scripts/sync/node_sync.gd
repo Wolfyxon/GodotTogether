@@ -151,8 +151,7 @@ func _c2s_request_node_update(node_path: String, scene_path: String, property_di
 	
 	var id = multiplayer.get_remote_sender_id()
 	
-	if not FileAccess.file_exists(scene_path):
-		printerr("Attempt to edit nonexistent scene: %s user: %s" % [scene_file_path, id])
+	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
 	server_broadcast_node_update(node_path, scene_path, property_dict, id)
@@ -167,8 +166,7 @@ func _c2s_request_node_rename(old_node_path: String, scene_path: String, new_nam
 		
 	var id = multiplayer.get_remote_sender_id()
 	
-	if not FileAccess.file_exists(scene_path):
-		printerr("Attempt to edit nonexistent scene: %s user: %s" % [scene_file_path, id])
+	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
 	server_broadcast_node_rename(old_node_path, scene_path, new_name, id)
@@ -176,9 +174,9 @@ func _c2s_request_node_rename(old_node_path: String, scene_path: String, new_nam
 	
 @rpc("authority", "call_remote", "reliable")
 func rename_node(node_path: String, scene_path: String, new_name: String) -> void:
-	if scene_path.is_empty():
+	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
-		
+	
 	for scene in EditorInterface.get_open_scene_roots():
 		if scene.scene_file_path == scene_path:
 			var node = scene.get_node_or_null(node_path)
@@ -198,7 +196,7 @@ func rename_node(node_path: String, scene_path: String, new_name: String) -> voi
 
 @rpc("authority", "call_remote", "reliable")
 func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
-	if scene_path.is_empty():
+	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
 	for scene in EditorInterface.get_open_scene_roots():

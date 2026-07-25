@@ -34,7 +34,18 @@ static func is_path_safe(path: String) -> bool:
 		return false
 	
 	return true
+
+static func validate_existing_file_path(path: String) -> bool:
+	if not is_path_safe(path):
+		printerr("Unsafe file path: %s" % path)
+		return false
 	
+	if not FileAccess.file_exists(path):
+		printerr("File doesn't exist: %s" % path)
+		return false
+	
+	return true
+
 static func validate_username(username: String) -> TextError:
 	if username.length() > max_username_length: return TextError.TOO_LONG
 	if is_empty(username): return TextError.EMPTY
