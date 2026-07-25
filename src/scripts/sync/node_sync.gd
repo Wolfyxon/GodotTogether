@@ -35,13 +35,17 @@ const IGNORED_PROPERTIES: Dictionary = {
 var change_timer = Timer.new()
 var rescan_timer = Timer.new()
 
-var property_hashes = {
+# Using dictionary without objects for better performance
+var node_data = {
 	# [node]: {
-	#	[property]: hash,
-	#	[object]: {
-	#		[property]: hash
+	#	"hashes": {
+	#		[property]: hash,
+	#		[object]: {
+	#			".": hash of object instance,
+	#			[property]: hash
+	#		}
 	#	}
-	#} 
+	# } 
 }
 
 var supressed_nodes = {}
@@ -66,7 +70,7 @@ func _check_changes() -> void:
 	var root := EditorInterface.get_edited_scene_root()
 	if not root: return
 	
-	for node in property_hashes:
+	for node in node_data:
 		_check_node(node, root)
 
 func _check_node(node, root: Node = null) -> void:
@@ -79,14 +83,14 @@ func _check_node(node, root: Node = null) -> void:
 	if node.owner != root:
 		return # Belongs to another scene, ignore.
 	
-	var last_hashes = property_hashes[node]
+	var last_hashes = node_data[node]["hashes"]
 	var new_hashes = get_hash_dict(node)
 	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
 	
 	if not diff.is_empty():
 		_node_properties_changed(node, diff)
 	
-	property_hashes[node] = new_hashes
+	node_data[node]["hashes"] = new_hashes
 
 func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	if not can_sync_nodes():
@@ -140,7 +144,7 @@ func update_node_properties(node_path: String, scene_path: String, property_dict
 			set_node_supressed(node, true)
 			
 			apply_property_dict(node, property_dict)
-			ignore_last_changes_of_node(node)
+			apply_node_data(node)
 			
 			set_node_supressed(node, false)
 			break
@@ -156,20 +160,25 @@ func ignore_last_changes() -> void:
 	
 	last_scene_path = root.scene_file_path
 	
-	for node in property_hashes:
-		ignore_last_changes_of_node(node)
+	for node in node_data:
+		apply_node_data(node)
 
-func ignore_last_changes_of_node(node: Node):
-	property_hashes[node] = get_hash_dict(node)
+func apply_node_data(node: Node):
+	node_data[node] = get_node_data(node)
+
+func get_node_data(node: Node) -> Dictionary:
+	return {
+		"hashes": get_hash_dict(node)
+	}
 
 func observe_node(node: Node) -> void:
 	if not is_node_valid(node):
 		return
 		
-	if node in property_hashes:
+	if node in node_data:
 		return
 		
-	property_hashes[node] = get_hash_dict(node)
+	apply_node_data(node)
 
 func set_node_supressed(node: Node, state: bool) -> void:
 	if state:
@@ -192,7 +201,8 @@ func observe_current_scene() -> void:
 	observe_node_recursive(scene)
 
 func clear() -> void:
-	property_hashes.clear()
+	node_data.clear()
+	supressed_nodes.clear()
 	
 func start() -> void:
 	clear()
