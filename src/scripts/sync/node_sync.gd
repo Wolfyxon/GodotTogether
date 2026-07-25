@@ -44,7 +44,9 @@ var node_data = {
 	#			".": hash of object instance,
 	#			[property]: hash
 	#		}
-	#	}
+	#	},
+	#	"last_name": name,
+	#	"last_path": path
 	# } 
 }
 
@@ -73,6 +75,7 @@ func _check_changes() -> void:
 	for node in node_data:
 		_check_node(node, root)
 
+# "node" must be untyped to prevent freed nodes from stopping the code
 func _check_node(node, root: Node = null) -> void:
 	if not is_node_valid(node):
 		return
@@ -81,16 +84,43 @@ func _check_node(node, root: Node = null) -> void:
 		root = EditorInterface.get_edited_scene_root()
 	
 	if node.owner != root:
-		return # Belongs to another scene, ignore.
+		return # Belongs to non-current scene, ignore.
 	
-	var last_hashes = node_data[node]["hashes"]
+	var data = node_data[node]
+	
+	if not data:
+		return
+	
+	var last_hashes = data["hashes"]
 	var new_hashes = get_hash_dict(node)
 	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
+	
+	if "name" in diff:
+		_node_renamed(node, data["last_path"])
+		data["last_path"] = root.get_path_to(node)
+		data["last_name"] = node.name
 	
 	if not diff.is_empty():
 		_node_properties_changed(node, diff)
 	
-	node_data[node]["hashes"] = new_hashes
+	data["hashes"] = new_hashes
+
+func _node_renamed(node: Node, old_path: String) -> void:
+	if not can_sync_nodes():
+		return
+	
+	if not is_node_valid(node):
+		return
+	
+	var scene = node.owner
+	
+	if scene.scene_file_path.is_empty():
+		return
+	
+	if main.server.is_active():
+		server_broadcast_node_rename(old_path, scene.scene_file_path, node.name)
+	else:
+		_c2s_request_node_rename.rpc_id(1, old_path, scene.scene_file_path, node.name)
 
 func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	if not can_sync_nodes():
@@ -128,6 +158,44 @@ func _c2s_request_node_update(node_path: String, scene_path: String, property_di
 	server_broadcast_node_update(node_path, scene_path, property_dict, id)
 	update_node_properties(node_path, scene_path, property_dict)
 
+@rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_node_rename(old_node_path: String, scene_path: String, new_name: String) -> void:
+	if not main.server.validate_c2s(): 
+		return
+	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+		
+	var id = multiplayer.get_remote_sender_id()
+	
+	if not FileAccess.file_exists(scene_path):
+		printerr("Attempt to edit nonexistent scene: %s user: %s" % [scene_file_path, id])
+		return
+	
+	server_broadcast_node_rename(old_node_path, scene_path, new_name, id)
+	rename_node(old_node_path, scene_path, new_name)
+	
+@rpc("authority", "call_remote", "reliable")
+func rename_node(node_path: String, scene_path: String, new_name: String) -> void:
+	if scene_path.is_empty():
+		return
+		
+	for scene in EditorInterface.get_open_scene_roots():
+		if scene.scene_file_path == scene_path:
+			var node = scene.get_node_or_null(node_path)
+			
+			if not node:
+				return
+				
+			set_node_supressed(node, true)
+			
+			if node in node_data:
+				node_data[node]["hashes"]["name"] = hash(new_name)
+			
+			node.name = new_name
+			
+			set_node_supressed(node, false)
+	
+
 @rpc("authority", "call_remote", "reliable")
 func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
 	if scene_path.is_empty():
@@ -152,6 +220,9 @@ func update_node_properties(node_path: String, scene_path: String, property_dict
 func server_broadcast_node_update(node_path: String, scene_path: String, property_dict: Dictionary, sender := 0) -> void:
 	main.server.auth_rpc(update_node_properties, [node_path, scene_path, property_dict], [sender])
 
+func server_broadcast_node_rename(node_path: String, scene_path: String, new_name: String, sender := 0) -> void:
+	main.server.auth_rpc(rename_node, [node_path, scene_path, new_name], [sender])
+
 func ignore_last_changes() -> void:
 	var root = EditorInterface.get_edited_scene_root()
 	
@@ -167,7 +238,15 @@ func apply_node_data(node: Node):
 	node_data[node] = get_node_data(node)
 
 func get_node_data(node: Node) -> Dictionary:
+	var scene = node.owner
+	
+	if not scene:
+		printerr("Cannot create data of scene-less node")
+		return {}
+	
 	return {
+		"name": node.name,
+		"last_path": scene.get_path_to(node),
 		"hashes": get_hash_dict(node)
 	}
 
@@ -342,6 +421,7 @@ static func get_property_keys(obj: Object) -> Array[String]:
 
 	return res
 
+# "node" must be untyped to properly check freed nodes
 static func is_node_valid(node) -> bool:
 	return (
 		node and
