@@ -150,6 +150,13 @@ static func get_loaded_scene_root(path: String) -> Node:
 
 	return null
 
+static func get_node_in_scene(node_path: String, scene_path: String) -> Node:
+	for scene in EditorInterface.get_open_scene_roots():
+		if scene.scene_file_path == scene_path:
+			return scene.get_node_or_null(node_path)
+	
+	return
+
 static func get_descendants(node: Node, include_internal := false) -> Array[Node]:
 	var res: Array[Node] = []
 	

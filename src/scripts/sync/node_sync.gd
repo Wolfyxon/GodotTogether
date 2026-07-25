@@ -171,27 +171,23 @@ func _c2s_request_node_rename(old_node_path: String, scene_path: String, new_nam
 	
 	server_broadcast_node_rename(old_node_path, scene_path, new_name, id)
 	rename_node(old_node_path, scene_path, new_name)
-	
+
 @rpc("authority", "call_remote", "reliable")
 func rename_node(node_path: String, scene_path: String, new_name: String) -> void:
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
-	for scene in EditorInterface.get_open_scene_roots():
-		if scene.scene_file_path == scene_path:
-			var node = scene.get_node_or_null(node_path)
-			
-			if not node:
-				return
-				
-			set_node_supressed(node, true)
-			
-			if node in node_data_dict:
-				node_data_dict[node]["hashes"]["name"] = hash(new_name)
-			
-			node.name = new_name
-			
-			set_node_supressed(node, false)
+	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
+	if not node: return
+		
+	set_node_supressed(node, true)
+	
+	if node in node_data_dict:
+		node_data_dict[node]["hashes"]["name"] = hash(new_name)
+	
+	node.name = new_name
+	
+	set_node_supressed(node, false)
 	
 
 @rpc("authority", "call_remote", "reliable")
@@ -199,21 +195,15 @@ func update_node_properties(node_path: String, scene_path: String, property_dict
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
-	for scene in EditorInterface.get_open_scene_roots():
-		if scene.scene_file_path == scene_path:
-			var node = scene.get_node_or_null(node_path)
-			
-			if not node:
-				printerr("%s in scene %s not found" % [node_path, scene_path])
-				return
-			
-			set_node_supressed(node, true)
-			
-			apply_property_dict(node, property_dict)
-			apply_node_data(node)
-			
-			set_node_supressed(node, false)
-			break
+	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
+	if not node: return
+	
+	set_node_supressed(node, true)
+	
+	apply_property_dict(node, property_dict)
+	apply_node_data(node)
+	
+	set_node_supressed(node, false)
 
 func server_broadcast_node_update(node_path: String, scene_path: String, property_dict: Dictionary, sender := 0) -> void:
 	main.server.auth_rpc(update_node_properties, [node_path, scene_path, property_dict], [sender])
