@@ -169,12 +169,12 @@ func _ready() -> void:
 	node_watcher.wait_time = refresh_rate
 	node_watcher.timeout.connect(_cycle)
 	add_child(node_watcher)
-	node_watcher.start()
+	#node_watcher.start()
 
 	rescan_timer.wait_time = 3
 	rescan_timer.timeout.connect(observe_current_scene)
 	add_child(rescan_timer)
-	rescan_timer.start()
+	#rescan_timer.start()
 
 func _cycle() -> void:
 	return

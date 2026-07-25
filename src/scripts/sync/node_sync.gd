@@ -142,6 +142,32 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	else:
 		_c2s_request_node_update.rpc_id(1, node_path, scene.scene_file_path, property_dict)
 
+func _node_child_entered_tree(child: Node, parent: Node) -> void:
+	#if not is_node_valid(child): return
+	if not is_node_valid(parent): return
+	
+	if not is_node_observed(parent): return
+		
+	if is_node_observed(child): return
+	
+	var scene = parent.owner
+	if not scene: return
+	
+	child.owner = scene # Godot isn't fast enough
+	
+	var data_dict = observe_node(child)
+	
+	# Cursed. TODO: Optimize later
+	var prop_list = GDTUtils.compare_dicts(data_dict["hashes"], {})
+	var prop_dict = get_select_property_dict(child, prop_list)
+	
+	var parent_path = scene.get_path_to(parent)
+	
+	if main.server.is_active():
+		server_broadcast_node_add(parent_path, scene.scene_file_path, child.get_class(), prop_dict)
+	else:
+		_c2s_request_node_add.rpc_id(1, parent_path, scene.scene_file_path, child.get_class(), prop_dict)
+
 @rpc("any_peer", "call_remote", "reliable")
 func _c2s_request_node_update(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
 	if not main.server.validate_c2s(): 
@@ -172,6 +198,38 @@ func _c2s_request_node_rename(old_node_path: String, scene_path: String, new_nam
 	server_broadcast_node_rename(old_node_path, scene_path, new_name, id)
 	rename_node(old_node_path, scene_path, new_name)
 
+@rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_node_add(
+	parent_path: String, 
+	scene_path: String,
+	node_class: String,
+	property_dict: Dictionary
+) -> void:
+	if not main.server.validate_c2s(): 
+		return
+	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+	
+	var id = multiplayer.get_remote_sender_id()
+	
+	add_node(parent_path, scene_path, node_class, property_dict)
+	server_broadcast_node_add(parent_path, scene_path, node_class, property_dict, id)
+
+@rpc("authority", "call_remote", "reliable")
+func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+	
+	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
+	if not node: return
+	
+	set_node_supressed(node, true)
+	
+	apply_property_dict(node, property_dict)
+	apply_node_data(node)
+	
+	set_node_supressed(node, false)
+
 @rpc("authority", "call_remote", "reliable")
 func rename_node(node_path: String, scene_path: String, new_name: String) -> void:
 	if not GDTValidator.validate_existing_file_path(scene_path):
@@ -189,27 +247,59 @@ func rename_node(node_path: String, scene_path: String, new_name: String) -> voi
 	
 	set_node_supressed(node, false)
 	
-
 @rpc("authority", "call_remote", "reliable")
-func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
+func add_node(
+	parent_path: String, 
+	scene_path: String,
+	node_class: String,
+	property_dict: Dictionary
+) -> void:
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
-	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
-	if not node: return
+	var parent = GDTUtils.get_node_in_scene(parent_path, scene_path)
+	if not parent: return
 	
-	set_node_supressed(node, true)
+	var new_node = validate_and_create_node(node_class)
+	if not new_node: return
 	
-	apply_property_dict(node, property_dict)
-	apply_node_data(node)
+	set_node_supressed(parent, true)
+	set_node_supressed(new_node, true)
 	
-	set_node_supressed(node, false)
+	apply_property_dict(new_node, property_dict)
+	parent.add_child(new_node)
+	observe_node(new_node)
+	
+	set_node_supressed(parent, false)
+	set_node_supressed(new_node, false)
+
+func validate_and_create_node(node_class: String) -> Node:
+	if not ClassDB.class_exists(node_class):
+		printerr("Class '%s' doesn't exist" % node_class)
+		return
+	
+	var node = ClassDB.instantiate(node_class)
+	
+	if not node is Node:
+		printerr("Class '%s' is not a Node" % node_class)
+		return
+		
+	return node
 
 func server_broadcast_node_update(node_path: String, scene_path: String, property_dict: Dictionary, sender := 0) -> void:
 	main.server.auth_rpc(update_node_properties, [node_path, scene_path, property_dict], [sender])
 
 func server_broadcast_node_rename(node_path: String, scene_path: String, new_name: String, sender := 0) -> void:
 	main.server.auth_rpc(rename_node, [node_path, scene_path, new_name], [sender])
+
+func server_broadcast_node_add(
+	parent_path: String, 
+	scene_path: String,
+	node_class: String,
+	property_dict: Dictionary,
+	sender := 0
+) -> void:
+	main.server.auth_rpc(add_node, [parent_path, scene_path, node_class, property_dict], [sender])
 
 func ignore_last_changes() -> void:
 	var root = EditorInterface.get_edited_scene_root()
@@ -222,8 +312,11 @@ func ignore_last_changes() -> void:
 	for node in node_data_dict:
 		apply_node_data(node)
 
-func apply_node_data(node: Node):
-	node_data_dict[node] = get_node_data(node)
+func apply_node_data(node: Node) -> Dictionary:
+	var res = get_node_data(node)
+	node_data_dict[node] = res
+	
+	return res
 
 func get_node_data(node: Node) -> Dictionary:
 	var scene = node.owner
@@ -238,14 +331,22 @@ func get_node_data(node: Node) -> Dictionary:
 		"hashes": get_hash_dict(node)
 	}
 
-func observe_node(node: Node) -> void:
+func observe_node(node: Node) -> Dictionary:
 	if not is_node_valid(node):
-		return
+		return {}
 		
 	if node in node_data_dict:
-		return
+		return node_data_dict[node]
 		
-	apply_node_data(node)
+	node.child_entered_tree.connect(_node_child_entered_tree.bind(node))
+	
+	return apply_node_data(node)
+
+func is_node_observed(node: Node) -> bool:
+	if not is_node_valid(node):
+		return false
+		
+	return node in node_data_dict
 
 func set_node_supressed(node: Node, state: bool) -> void:
 	if state:
