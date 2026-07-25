@@ -36,7 +36,7 @@ var change_timer = Timer.new()
 var rescan_timer = Timer.new()
 
 # Using dictionary without objects for better performance
-var node_data = {
+var node_data_dict = {
 	# [node]: {
 	#	"hashes": {
 	#		[property]: hash,
@@ -72,7 +72,7 @@ func _check_changes() -> void:
 	var root := EditorInterface.get_edited_scene_root()
 	if not root: return
 	
-	for node in node_data:
+	for node in node_data_dict:
 		_check_node(node, root)
 
 # "node" must be untyped to prevent freed nodes from stopping the code
@@ -86,7 +86,7 @@ func _check_node(node, root: Node = null) -> void:
 	if node.owner != root:
 		return # Belongs to non-current scene, ignore.
 	
-	var data = node_data[node]
+	var data = node_data_dict[node]
 	
 	if not data:
 		return
@@ -186,8 +186,8 @@ func rename_node(node_path: String, scene_path: String, new_name: String) -> voi
 				
 			set_node_supressed(node, true)
 			
-			if node in node_data:
-				node_data[node]["hashes"]["name"] = hash(new_name)
+			if node in node_data_dict:
+				node_data_dict[node]["hashes"]["name"] = hash(new_name)
 			
 			node.name = new_name
 			
@@ -229,11 +229,11 @@ func ignore_last_changes() -> void:
 	
 	last_scene_path = root.scene_file_path
 	
-	for node in node_data:
+	for node in node_data_dict:
 		apply_node_data(node)
 
 func apply_node_data(node: Node):
-	node_data[node] = get_node_data(node)
+	node_data_dict[node] = get_node_data(node)
 
 func get_node_data(node: Node) -> Dictionary:
 	var scene = node.owner
@@ -252,7 +252,7 @@ func observe_node(node: Node) -> void:
 	if not is_node_valid(node):
 		return
 		
-	if node in node_data:
+	if node in node_data_dict:
 		return
 		
 	apply_node_data(node)
@@ -278,7 +278,7 @@ func observe_current_scene() -> void:
 	observe_node_recursive(scene)
 
 func clear() -> void:
-	node_data.clear()
+	node_data_dict.clear()
 	supressed_nodes.clear()
 	
 func start() -> void:
