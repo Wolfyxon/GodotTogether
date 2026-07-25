@@ -50,14 +50,13 @@ func _enter_tree() -> void:
 		printerr("GodotTogether will not run.")
 		return
 	
-	plugin_started = true
-
 	name = "GodotTogether"
-	gui.main = self
-
+	plugin_started = true
+	
 	var root = get_tree().root
 	
 	for i in components:
+		i.main = self
 		root.add_child(i)
 	
 	setup_menu_button()
