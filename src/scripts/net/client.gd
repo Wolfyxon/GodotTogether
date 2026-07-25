@@ -8,8 +8,6 @@ signal auth_succeed
 signal project_files_download_started(amount: int)
 signal file_received(path: String)
 
-var ignored_node_properties = GDTChangeDetector.IGNORED_PROPERTIES.Node
-
 var client_peer = ENetMultiplayerPeer.new()
 var current_join_data := GDTJoinData.new()
 
