@@ -146,11 +146,12 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 		_c2s_request_node_update.rpc_id(1, node_path, scene.scene_file_path, property_dict)
 
 func _node_child_entered_tree(child: Node, parent: Node) -> void:
-	#if not is_node_valid(child): return
+	# 'owner' is set very late, causing is_node_valid(child) to return false.
+	# Do not check it here
+	
 	if not is_node_valid(parent): return
 	
 	if not is_node_observed(parent): return
-		
 	if is_node_observed(child): return
 	
 	var scene = GDTUtils.get_node_scene(parent)
