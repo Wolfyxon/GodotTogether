@@ -106,11 +106,8 @@ func _check_node(node, root: Node = null) -> void:
 	data["hashes"] = new_hashes
 
 func _node_renamed(node: Node, old_path: String) -> void:
-	if not can_sync_nodes():
-		return
-	
-	if not is_node_valid(node):
-		return
+	if not can_sync_nodes(): return
+	if not is_node_valid(node): return
 	
 	var scene = GDTUtils.get_node_scene(node)
 	
@@ -123,16 +120,11 @@ func _node_renamed(node: Node, old_path: String) -> void:
 		_c2s_request_node_rename.rpc_id(1, old_path, scene.scene_file_path, node.name)
 
 func _node_properties_changed(node: Node, property_paths: Array) -> void:
-	if not can_sync_nodes():
-		return
-	
-	if not is_node_valid(node):
-		return
+	if not can_sync_nodes(): return
+	if not is_node_valid(node): return
 	
 	var scene = GDTUtils.get_node_scene(node)
-	
-	if not scene:
-		return
+	if not scene: return
 	
 	if scene.scene_file_path.is_empty():
 		return
@@ -148,8 +140,8 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	# 'owner' is set very late, causing is_node_valid(child) to return false.
 	# Do not check it here
-	
 	if not is_node_valid(parent): return
+	if not can_sync_nodes(): return
 	
 	if not is_node_observed(parent): return
 	if is_node_observed(child): return
@@ -174,6 +166,7 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 
 func _node_tree_exiting(node: Node) -> void:
 	if not is_node_valid(node): return
+	if not can_sync_nodes(): return
 	
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
@@ -192,6 +185,7 @@ func _node_tree_exiting(node: Node) -> void:
 func _c2s_request_node_update(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
 	if not main.server.validate_c2s(): 
 		return
+	
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
 		return
 	
@@ -207,6 +201,7 @@ func _c2s_request_node_update(node_path: String, scene_path: String, property_di
 func _c2s_request_node_rename(old_node_path: String, scene_path: String, new_name: String) -> void:
 	if not main.server.validate_c2s(): 
 		return
+	
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
 		return
 		
@@ -227,6 +222,7 @@ func _c2s_request_node_add(
 ) -> void:
 	if not main.server.validate_c2s(): 
 		return
+	
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
 		return
 	

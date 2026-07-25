@@ -110,9 +110,11 @@ func start_hosting(port: int, max_clients := 10) -> int:
 	return err
 
 func validate_c2s() -> bool:
-	return (
-		is_active()
-	)
+	if not is_active():
+		printerr("Attempt to call client-to-server RPC when server isn't active")
+		return false
+	
+	return true
 
 func get_calling_user() -> GDTUser:
 	var id = multiplayer.get_remote_sender_id()
