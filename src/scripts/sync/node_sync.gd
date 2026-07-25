@@ -330,6 +330,11 @@ func delete_node(node_path: String, scene_path: String) -> void:
 	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
 	if not node: return
 	
+	var selection = EditorInterface.get_selection()
+	
+	if node in selection.get_selected_nodes():
+		selection.remove_node(node)
+	
 	unobserve_node(node)
 	node.queue_free()
 
