@@ -258,7 +258,6 @@ func add_node(
 	node_class: String,
 	property_dict: Dictionary
 ) -> void:
-	print("recv add")
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
@@ -296,8 +295,6 @@ func add_node(
 	
 	set_node_supressed(parent, false)
 	set_node_supressed(new_node, false)
-	
-	prints("Created", new_node, parent)
 
 func validate_and_create_node(node_class: String) -> Node:
 	if not ClassDB.class_exists(node_class):
