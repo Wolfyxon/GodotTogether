@@ -358,7 +358,7 @@ func observe_node_recursive(node: Node) -> void:
 	observe_node(node)
 	
 	for i in node.get_children():
-		observe_node(i)
+		observe_node_recursive(i)
 
 func observe_current_scene() -> void:
 	var scene = EditorInterface.get_edited_scene_root()
