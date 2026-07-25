@@ -33,7 +33,7 @@ const _DEFAULT_DATA = {
 		# Everything here should be false by default
 		"run_tests_on_start": false,
 		"disable_real_time_file_sync": false,
-		"disable_node_scanning": false,
+		"disable_real_time_node_sync": false,
 		"restart_broadcast": false
 	},
 	"notifications": {

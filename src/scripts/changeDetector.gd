@@ -186,7 +186,7 @@ func _cycle() -> void:
 	if not main: return
 	if not root: return
 
-	if GDTSettings.get_setting("dev/disable_node_scanning"):
+	if GDTSettings.get_setting("dev/disable_real_time_node_sync"):
 		return
 
 	var current_scene_path := root.scene_file_path

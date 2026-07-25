@@ -282,7 +282,7 @@ func can_sync_nodes() -> bool:
 		main.is_session_active() and
 		not change_timer.paused and
 		not (main.client.is_active() and not main.client.is_fully_synced) and
-		not GDTSettings.get_setting("dev/disable_node_scanning")
+		not GDTSettings.get_setting("dev/disable_real_time_node_sync")
 	)
 
 static func get_hash_dict(obj: Object, depth := 64) -> Dictionary:
