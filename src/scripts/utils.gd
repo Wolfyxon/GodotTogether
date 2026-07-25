@@ -157,6 +157,15 @@ static func get_node_in_scene(node_path: String, scene_path: String) -> Node:
 	
 	return
 
+static func get_node_scene(node: Node) -> Node:
+	if node.owner:
+		return node.owner
+	
+	if node.scene_file_path:
+		return node
+	
+	return
+
 static func get_descendants(node: Node, include_internal := false) -> Array[Node]:
 	var res: Array[Node] = []
 	

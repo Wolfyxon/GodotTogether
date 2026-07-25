@@ -83,7 +83,7 @@ func _check_node(node, root: Node = null) -> void:
 	if not root:
 		root = EditorInterface.get_edited_scene_root()
 	
-	if node.owner != root:
+	if GDTUtils.get_node_scene(node) != root:
 		return # Belongs to non-current scene, ignore.
 	
 	var data = node_data_dict[node]
@@ -112,7 +112,7 @@ func _node_renamed(node: Node, old_path: String) -> void:
 	if not is_node_valid(node):
 		return
 	
-	var scene = node.owner
+	var scene = GDTUtils.get_node_scene(node)
 	
 	if scene.scene_file_path.is_empty():
 		return
@@ -129,7 +129,10 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	if not is_node_valid(node):
 		return
 	
-	var scene = node.owner
+	var scene = GDTUtils.get_node_scene(node)
+	
+	if not scene:
+		return
 	
 	if scene.scene_file_path.is_empty():
 		return
@@ -150,7 +153,7 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 		
 	if is_node_observed(child): return
 	
-	var scene = parent.owner
+	var scene = GDTUtils.get_node_scene(parent)
 	if not scene: return
 	
 	child.owner = scene # Godot isn't fast enough
@@ -254,11 +257,28 @@ func add_node(
 	node_class: String,
 	property_dict: Dictionary
 ) -> void:
+	print("recv add")
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
 	var parent = GDTUtils.get_node_in_scene(parent_path, scene_path)
-	if not parent: return
+	
+	if not parent: 
+		printerr("Parent not found %s in scene %s" % [parent_path, scene_path])
+		return
+	
+	var scene = GDTUtils.get_node_scene(parent)
+	
+	if not scene: 
+		printerr("Scene missing")
+		return
+	
+	if not "name" in property_dict:
+		printerr("Missing 'name' in property dict")
+		return
+	
+	if parent.has_node(NodePath(property_dict["name"])):
+		return
 	
 	var new_node = validate_and_create_node(node_class)
 	if not new_node: return
@@ -267,11 +287,16 @@ func add_node(
 	set_node_supressed(new_node, true)
 	
 	apply_property_dict(new_node, property_dict)
+	
 	parent.add_child(new_node)
+	new_node.owner = scene
+	
 	observe_node(new_node)
 	
 	set_node_supressed(parent, false)
 	set_node_supressed(new_node, false)
+	
+	prints("Created", new_node, parent)
 
 func validate_and_create_node(node_class: String) -> Node:
 	if not ClassDB.class_exists(node_class):
@@ -279,6 +304,10 @@ func validate_and_create_node(node_class: String) -> Node:
 		return
 	
 	var node = ClassDB.instantiate(node_class)
+	
+	if not node:
+		printerr("Unable to create clas '%s'" % node_class)
+		return
 	
 	if not node is Node:
 		printerr("Class '%s' is not a Node" % node_class)
@@ -319,7 +348,7 @@ func apply_node_data(node: Node) -> Dictionary:
 	return res
 
 func get_node_data(node: Node) -> Dictionary:
-	var scene = node.owner
+	var scene = GDTUtils.get_node_scene(node)
 	
 	if not scene:
 		printerr("Cannot create data of scene-less node")
@@ -516,6 +545,9 @@ static func is_node_valid(node) -> bool:
 		node and
 		is_instance_valid(node) and
 		node.is_inside_tree() and
-		node.owner and
-		is_instance_valid(node.owner)
+		(
+			(node.owner and is_instance_valid(node.owner))
+			or
+			node in EditorInterface.get_open_scene_roots()
+		)
 	)
