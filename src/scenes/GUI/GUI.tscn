@@ -20,7 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bpui0o3t80my5" path="res://addons/GodotTogether/src/img/script.svg" id="15_bvn1h"]
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
-[ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings.gd" id="18_8pkel"]
+[ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings_gui.gd" id="18_8pkel"]
 
 [node name="GUI" type="Node" unique_id=1542491573]
 script = ExtResource("1_73joy")
