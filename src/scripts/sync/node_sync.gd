@@ -415,5 +415,6 @@ static func is_node_valid(node) -> bool:
 		node and
 		is_instance_valid(node) and
 		node.is_inside_tree() and
-		node.owner
+		node.owner and
+		is_instance_valid(node.owner)
 	)
