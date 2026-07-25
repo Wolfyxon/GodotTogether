@@ -20,8 +20,6 @@ var client = GDTClient.new(self, "client")
 var server = GDTServer.new(self, "server")
 var dual = GDTDual.new(self, "dual")
 
-var change_detector = GDTChangeDetector.new(self, "changeDetector")
-
 var file_sync = GDTFileSync.new(self, "file_sync")
 var node_sync = GDTNodeSync.new(self, "node_sync")
 
@@ -37,8 +35,7 @@ var tests = GDTUnitTests.new(self)
 var plugin_started := false
 
 var components = [
-	client, server, dual, 
-	change_detector, # deprecated, pending rewrite
+	client, server, dual,
 	file_sync, node_sync, 
 	gui,
 	updater, 

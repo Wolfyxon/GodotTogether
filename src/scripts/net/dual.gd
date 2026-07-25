@@ -27,13 +27,6 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_peer_connected)
 	multiplayer.peer_disconnected.connect(_peer_disconnected)
 	
-	main.change_detector.scene_changed.connect(_scene_changed)
-	main.change_detector.node_properties_changed.connect(_node_properties_changed)
-	main.change_detector.node_removed.connect(_node_removed)
-	main.change_detector.node_added.connect(_node_added)
-	main.change_detector.node_renamed.connect(_node_renamed)
-	main.change_detector.node_reparented.connect(_node_reparented)
-	
 	update_timer.timeout.connect(_update)
 	update_timer.one_shot = false
 	update_timer.wait_time = 0.02
@@ -112,119 +105,8 @@ func _users_listed(users: Array[GDTUser]) -> void:
 	self.users = users
 	users_listed.emit(users)
 
-func _scene_changed() -> void:	
-	main.change_detector.observe_current_scene()
-
 func should_notify_user_connection() -> bool:
 	return GDTSettings.get_setting("notifications/users")
-
-func should_update(node: Node) -> bool:
-	#return (
-		#main and main.is_session_active() and
-		#is_instance_valid(node) and
-		#EditorInterface.get_edited_scene_root()
-	#)
-	return false
-
-func _node_properties_changed(node: Node, changed_keys: Array):
-	return
-	if not should_update(node): return
-	
-	var scene = EditorInterface.get_edited_scene_root()
-
-	var scene_path = scene.scene_file_path
-	var node_path = scene.get_path_to(node)
-	var dict = {}
-	
-	for key in changed_keys:
-		var value = node[key]
-
-		if value is Resource:
-			value = GDTChangeDetector.encode_resource(value)
-
-		dict[key] = value
-	
-	if main.client.is_active():
-		main.server.node_update_request.rpc_id(1, scene_path, node_path, dict)
-	elif main.server.is_active():
-		main.server.submit_node_update(scene_path, node_path, dict)
-
-func _node_removed(node: Node, node_path: NodePath) -> void:
-	return
-	await get_tree().process_frame
-	
-	if is_instance_valid(node) and node.is_inside_tree():
-		return
-	
-	if not node: return
-	if not is_instance_valid(node): return # the amount of checks I have to make is crazy
-	if not should_update(node): return
-	
-	var scene = EditorInterface.get_edited_scene_root()
-	if not is_instance_valid(scene): return
-	
-	var scene_path = scene.scene_file_path
-
-	if main.client.is_active():
-		main.server.node_removal_request.rpc_id(1, scene_path, node_path)
-	elif main.server.is_active():
-		main.server.submit_node_removal(scene_path, node_path)
-
-func _node_added(node: Node) -> void:
-	return
-	if not should_update(node): return
-
-	var scene = EditorInterface.get_edited_scene_root()
-	var scene_path = scene.scene_file_path
-	var node_path = scene.get_path_to(node)
-	
-	var properties = {}
-	for key in GDTChangeDetector.get_property_keys(node):
-		var value = node[key]
-		if value is Resource:
-			value = GDTChangeDetector.encode_resource(value)
-		properties[key] = value
-
-	if main.client.is_active():
-		main.server.node_add_request.rpc_id(1, scene_path, node_path, node.get_class(), properties)
-	elif main.server.is_active():
-		main.server.submit_node_add(scene_path, node_path, node.get_class(), properties)
-
-func _node_renamed(node: Node, old_name: String, new_name: String) -> void:
-	return
-	if not should_update(node): return
-	
-	var scene = EditorInterface.get_edited_scene_root()
-	var parent = node.get_parent()
-	
-	var old_path = scene.get_path_to(parent).get_concatenated_names() + "/" + old_name
-	var old_node_path = NodePath(old_path)
-	
-	if main.client.is_active():
-		main.server.node_rename_request.rpc_id(1, scene.scene_file_path, old_node_path, new_name)
-	elif main.server.is_active():
-		main.server.submit_node_rename(scene.scene_file_path, old_node_path, new_name)
-
-func _node_reparented(node: Node, old_parent: Node, new_parent: Node) -> void:
-	return
-	if not should_update(node): return
-	
-	var scene = EditorInterface.get_edited_scene_root()
-	var scene_path = scene.scene_file_path
-	
-	var old_path_str = scene.get_path_to(old_parent).get_concatenated_names()
-	if old_path_str != "":
-		old_path_str += "/"
-	old_path_str += node.name
-	var node_path = NodePath(old_path_str)
-
-	var new_parent_path = scene.get_path_to(new_parent)
-	var new_index = node.get_index()
-
-	if main.client.is_active():
-		main.server.node_reparent_request.rpc_id(1, scene_path, node_path, new_parent_path, new_index)
-	elif main.server.is_active():
-		main.server.submit_node_reparent(scene_path, node_path, new_parent_path, new_index)
 
 func get_user_by_id(id: int) -> GDTUser:
 	for i in users:
