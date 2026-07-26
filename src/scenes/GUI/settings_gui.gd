@@ -10,6 +10,7 @@ var controls: Array[Control] = []
 
 func _ready() -> void:
 	await get_tree().process_frame
+	await get_tree().process_frame
 	
 	if not gui: return
 	if not gui.visuals_available(): return
