@@ -4,17 +4,21 @@ class_name GDTUnitTests
 var success_count = 0
 var fail_count = 0
 
+var test_times = {}
+
 func exec_test(f: Callable) -> void:
-	
 	var start = Time.get_unix_time_from_system()
 	var res = f.call()
 	var time = Time.get_unix_time_from_system() - start
 	
+	var test_name = str(f.get_method())
+	test_times[test_name] = time
+	
 	if res:
-		print_rich("%s: [color=green]Ok[/color] \t\t%s s" % [f.get_method(), time])
+		print_rich("%s: [color=green]Ok[/color] \t\t%s s" % [test_name, time])
 		success_count += 1
 	else:
-		print_rich("%s: [color=red]FAIL[/color] \t\t%s s" % [f.get_method(), time])
+		print_rich("%s: [color=red]FAIL[/color] \t\t%s s" % [test_name, time])
 		fail_count += 1
 
 func run_tests() -> void:
@@ -36,12 +40,26 @@ func run_tests() -> void:
 	
 	print()
 	print("Testing complete")
+	print("Slowest: ", get_by_slowest().slice(0, 3))
 	print("Succeed: %s | Failed: %s" % [success_count, fail_count])
 	
-	success_count = 0
-	fail_count = 0
+	reset()
 	
 	print("------------------------------------")
+
+func reset() -> void:
+	success_count = 0
+	fail_count = 0
+	test_times.clear()
+
+func get_by_slowest() -> Array:
+	var tests = test_times.keys()
+	
+	tests.sort_custom(func(a, b):
+		return test_times[a] > test_times[b]
+	)
+	
+	return tests
 
 func check_version(ver: String) -> String:
 	if ver.is_empty():
