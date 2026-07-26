@@ -17,6 +17,8 @@ func _ready() -> void:
 	for i in GDTUtils.get_descendants(vbox):
 		if i.has_meta("setting"):
 			register_control(i)
+			
+	$main/scroll/vbox/devActions/btnRunTests.pressed.connect(gui.main.tests.run_tests)
 
 func register_control(node: Control) -> void:
 	var path = node.get_meta("setting")
