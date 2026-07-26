@@ -101,7 +101,7 @@ func test_versions() -> bool:
 		
 		if not err.is_empty():
 			ok = false
-			printerr("%s: %s", i, err)
+			printerr("%s: %s" % [i, err])
 	
 	for i in invalid:
 		var err = check_version(i)
