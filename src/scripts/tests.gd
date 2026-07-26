@@ -5,13 +5,16 @@ var success_count = 0
 var fail_count = 0
 
 func exec_test(f: Callable) -> void:
+	
+	var start = Time.get_unix_time_from_system()
 	var res = f.call()
+	var time = Time.get_unix_time_from_system() - start
 	
 	if res:
-		print("%s: Ok" % f.get_method())
+		print_rich("%s: [color=green]Ok[/color] \t\t%s s" % [f.get_method(), time])
 		success_count += 1
 	else:
-		print("%s: FAIL" % f.get_method())
+		print_rich("%s: [color=red]FAIL[/color] \t\t%s s" % [f.get_method(), time])
 		fail_count += 1
 
 func run_tests() -> void:
