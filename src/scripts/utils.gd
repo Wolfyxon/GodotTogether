@@ -193,6 +193,11 @@ static func set_control_value(node: Control, value) -> void:
 		var idx = node.get_item_index(value)
 		node.select(idx)
 	elif node is Button:
+		if not value is bool:
+			printerr("value must be bool. %s: %s" % [node, value])
+			print_stack()
+			return
+		
 		if not node.toggle_mode:
 			push_error("Button %s must have toggle_mode enabled" % node.name)
 		
