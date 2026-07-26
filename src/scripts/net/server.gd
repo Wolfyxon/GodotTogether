@@ -4,7 +4,7 @@ class_name GDTServer
 
 signal hosting_started
 
-const JOIN_DELAY: float = 5
+const JOIN_DELAY: float = 1
 const LOCALHOST := [
 	"0:0:0:0:0:0:0:1", 
 	"127.0.0.1", 
