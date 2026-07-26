@@ -27,6 +27,8 @@ func run_tests() -> void:
 	exec_test(test_compare_dicts)
 	exec_test(test_hash_dict)
 	exec_test(test_setget_nested)
+	exec_test(test_ignored_properties)
+	exec_test(test_property_keys)
 	exec_test(test_node_change_applying)
 	
 	print()
@@ -283,6 +285,43 @@ static func test_setget_nested() -> bool:
 	if font_size != 17:
 		printerr("font_size %s != %s" % [17, font_size])
 		return false
+	
+	return true
+
+static func test_ignored_properties() -> bool:
+	var node3d = Node3D.new()
+	
+	var ignored = GDTNodeSync.get_ignored_properties(node3d)
+	var expected = ["owner", "multiplayer", "global_position", "global_transform"]
+	
+	for i in expected:
+		if not i in ignored:
+			printerr("%s not found: %s" % [i, ignored])
+			return false
+	
+	return true
+
+static func test_property_keys() -> bool:
+	var node3d = Node3D.new()
+	
+	var keys = GDTNodeSync.get_property_keys(node3d)
+	
+	var essentials = ["name", "position", "visible"]
+	
+	for i in essentials:
+		if not i in essentials:
+			printerr("%s not found " % i)
+			return false
+	
+	for i in GDTNodeSync.IGNORED_PROPERTIES["Node"]:
+		if i in keys:
+			printerr("%s found" % i)
+			return false
+	
+	for i in GDTNodeSync.IGNORED_PROPERTIES["Node3D"]:
+		if i in keys:
+			printerr("%s found" % i)
+			return false
 	
 	return true
 

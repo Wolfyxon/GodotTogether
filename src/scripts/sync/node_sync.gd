@@ -24,8 +24,17 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"offset_left", "offset_right",
 		"offset_top", "offset_bottom"
 	],
+	"Node2D": [
+		"global_position",
+		"global_rotation"
+	],
 	"Node3D": [
-		"transform"
+		"transform",
+		"global_transform",
+		"global_basis",
+		"global_position",
+		"global_rotation",
+		"global_rotation_degrees"
 	],
 	"Resource": [
 		#"resource_path"
@@ -572,11 +581,13 @@ static func is_encoded_resource(value) -> bool:
 	return value is Dictionary and "_gdtRes" in value
 
 static func get_ignored_properties(obj: Object) -> Array:
+	var res = []
+	
 	for key in IGNORED_PROPERTIES.keys():
 		if obj.is_class(key):
-			return IGNORED_PROPERTIES[key]
-
-	return []
+			res.append_array(IGNORED_PROPERTIES[key])
+	
+	return res
 
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
@@ -631,9 +642,9 @@ static func decode_resource(dict: Dictionary) -> Resource:
 
 static func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
-
+	
 	var ignored = get_ignored_properties(obj)
-
+	
 	for i in obj.get_property_list():
 		var con := true
 
