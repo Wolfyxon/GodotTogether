@@ -281,10 +281,15 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 	var download_err = await download_update_zip(update.download_url)
 	
 	if not download_err.is_empty():
-		main.gui.alert(download_err, "Error downloading update")
+		alert(download_err, "Error downloading update")
 		return
 	
 	apply_update()
+
+# Godot randomly complains about cyclic reference
+# This garbage function fixes it
+func alert(text: String, title := "GodotTogether") -> AcceptDialog:
+	return main.get("gui").call("alert", text, title)
 
 func apply_update() -> void:
 	GDTUpdateCheckResult.clear_cache()
@@ -293,14 +298,14 @@ func apply_update() -> void:
 	var zip_err = installer.open_zip(ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE)
 	
 	if zip_err != OK:
-		main.gui.alert("Unable to open update file: %s" % error_string(zip_err), "Error applying update")
+		alert("Unable to open update file: %s" % error_string(zip_err), "Error applying update")
 		installer.queue_free()
 		return
 	
 	var valid_err = installer.validate()
 	
 	if not valid_err.is_empty():
-		main.gui.alert(valid_err, "Update file is invalid")
+		alert(valid_err, "Update file is invalid")
 		installer.queue_free()
 		return
 	
