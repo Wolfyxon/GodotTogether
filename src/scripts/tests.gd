@@ -33,6 +33,9 @@ func run_tests() -> void:
 	print("Testing complete")
 	print("Succeed: %s | Failed: %s" % [success_count, fail_count])
 	
+	success_count = 0
+	fail_count = 0
+	
 	print("------------------------------------")
 
 func check_version(ver: String) -> String:
