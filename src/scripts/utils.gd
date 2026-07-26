@@ -24,7 +24,7 @@ static func sha256_of_file(path: String) -> String:
 	
 	while file.get_position() < file_len:
 		var rem = file.get_length() - file.get_position()
-		hasher.update(file.get_buffer(min(128, rem)))
+		hasher.update(file.get_buffer(min(1024, rem)))
 	
 	
 	return hasher.finish().hex_encode()
