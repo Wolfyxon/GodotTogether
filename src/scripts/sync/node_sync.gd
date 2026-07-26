@@ -181,6 +181,27 @@ func _node_tree_exiting(node: Node) -> void:
 	else:
 		_c2s_request_node_delete.rpc_id(1, node_path, scene.scene_file_path)
 
+func _node_child_order_changed(parent: Node) -> void:
+	if not is_node_valid(parent): return
+	if is_node_supressed(parent): return
+	if not can_sync_nodes(): return
+	
+	var scene = GDTUtils.get_node_scene(parent)
+	if not scene: return
+	
+	var parent_path = scene.get_path_to(parent)
+	
+	var names = []
+	var children = parent.get_children()
+	
+	for i in children.size():
+		names.append(children[i].name)
+	
+	if main.server.is_active():
+		server_broadcast_reorder_children(parent_path, scene.scene_file_path, names)
+	else:
+		_c2s_request_node_reorder.rpc_id(1, parent_path, scene.scene_file_path, names)
+
 @rpc("any_peer", "call_remote", "reliable")
 func _c2s_request_node_update(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
 	if not main.server.validate_c2s(): 
@@ -235,11 +256,27 @@ func _c2s_request_node_add(
 func _c2s_request_node_delete(node_path: String, scene_path: String) -> void:
 	if not main.server.validate_c2s(): 
 		return
+		
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
 		return
 	
-	server_broadcast_node_delete(node_path, scene_path)
+	var id = multiplayer.get_remote_sender_id()
+	
+	server_broadcast_node_delete(node_path, scene_path, id)
 	delete_node(node_path, scene_path)
+
+@rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_node_reorder(parent_path: String, scene_path: String, ordered_names: Array) -> void:
+	if not main.server.validate_c2s(): 
+		return
+		
+	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+	
+	var id = multiplayer.get_remote_sender_id()
+	
+	server_broadcast_reorder_children(parent_path, scene_path, ordered_names, id)
+	reorder_children(parent_path, scene_path, ordered_names)
 
 @rpc("authority", "call_remote", "reliable")
 func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
@@ -334,6 +371,24 @@ func delete_node(node_path: String, scene_path: String) -> void:
 	unobserve_node(node)
 	node.queue_free()
 
+@rpc("authority", "call_remote", "reliable")
+func reorder_children(parent_path: String, scene_path: String, ordered_names: Array) -> void:
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+	
+	var parent = GDTUtils.get_node_in_scene(parent_path, scene_path)
+	if not parent: return
+	
+	set_node_supressed(parent, true)
+	
+	for i in ordered_names.size():
+		var child = parent.get_node(NodePath(ordered_names[i]))
+		if not child: continue
+		
+		parent.move_child(child, i)
+		
+	set_node_supressed(parent, false)
+
 func server_broadcast_node_update(node_path: String, scene_path: String, property_dict: Dictionary, sender := 0) -> void:
 	main.server.auth_rpc(update_node_properties, [node_path, scene_path, property_dict], [sender])
 
@@ -351,6 +406,14 @@ func server_broadcast_node_add(
 	sender := 0
 ) -> void:
 	main.server.auth_rpc(add_node, [parent_path, scene_path, node_class, property_dict], [sender])
+
+func server_broadcast_reorder_children(
+	parent_path: String, 
+	scene_path: String, 
+	ordered_names: Array, 
+	sender := 0
+) -> void:
+	main.server.auth_rpc(reorder_children, [parent_path, scene_path, ordered_names], [sender])
 
 func validate_and_create_node(node_class: String) -> Node:
 	if not ClassDB.class_exists(node_class):
@@ -411,6 +474,7 @@ func observe_node(node: Node) -> Dictionary:
 		return node_data_dict[node]
 		
 	node.child_entered_tree.connect(_node_child_entered_tree.bind(node))
+	node.child_order_changed.connect(_node_child_order_changed.bind(node))
 	node.tree_exiting.connect(_node_tree_exiting.bind(node))
 	
 	return apply_node_data(node)
@@ -426,6 +490,9 @@ func set_node_supressed(node: Node, state: bool) -> void:
 		supressed_nodes.get_or_add(node)
 	else:
 		supressed_nodes.erase(node)
+
+func is_node_supressed(node: Node) -> bool:
+	return supressed_nodes.has(node)
 
 func observe_node_recursive(node: Node) -> void:
 	observe_node(node)
