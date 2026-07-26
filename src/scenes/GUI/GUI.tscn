@@ -904,7 +904,7 @@ offset_bottom = 679.0
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 689
+scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll" unique_id=2018662387]
 layout_mode = 2
@@ -983,7 +983,7 @@ tooltip_text = "Not implemented.
 Same as the setting above, but only applies to @tool scripts which can run in Godot without running the game."
 button_pressed = true
 text = "Automatically check for updates"
-metadata/setting = "update/check_interval_hours"
+metadata/setting = "update/auto_check_enabled"
 
 [node name="updateCheckInterval" type="HBoxContainer" parent="mainMenu/settings/main/scroll/vbox" unique_id=617782896]
 layout_mode = 2
@@ -1059,7 +1059,7 @@ layout_mode = 2
 tooltip_text = "Disables the core plugin's feature: scanning for changes to replicate.
 Helps test basic networking when this feature isn't needed."
 text = "Disable node scanning"
-metadata/setting = "dev/disable_node_scanning"
+metadata/setting = "dev/disable_real_time_node_sync"
 
 [node name="restartBroadcast" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=1282858087]
 layout_mode = 2
