@@ -59,6 +59,20 @@ var node_data_dict = {
 	# } 
 }
 
+const SETGET_PROPERTIES = {
+	# TODO: Add more properties
+	"Label": {
+		"theme_override_font_sizes/font_size": {
+			"default": "get_theme_default_font_size",
+			
+			"reset": {
+				"func": "remove_theme_font_size_override",
+				"args": ["font_size"]
+			}
+		}
+	}
+}
+
 var supressed_nodes = {}
 var last_scene_path: String = ""
 
@@ -140,7 +154,7 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	
 	var node_path = scene.get_path_to(node)
 	var property_dict = get_select_property_dict(node, property_paths)
-	
+	#
 	if main.server.is_active():
 		server_broadcast_node_update(node_path, scene.scene_file_path, property_dict)
 	else:
@@ -559,6 +573,11 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	
 	for path in paths:
 		var true_path = path.replace(GDTUtils.DICT_PATH_SEPARATOR + ".", "")
+		
+		if is_setget_property(obj, path):
+			res[true_path] = get_setget_property(obj, path)
+			continue
+		
 		var value = GDTUtils.get_nested(obj, true_path)
 		
 		if value is Resource:
@@ -572,10 +591,45 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 	for path in dict.keys():
 		var value = dict[path]
 		
+		if is_setget_property(obj, path):
+			set_setget_property(obj, path, value)
+			continue
+		
 		if is_encoded_resource(value):
 			value = decode_resource(value)
 		
 		GDTUtils.set_nested(obj, path, value)
+
+static func get_setget_property(obj: Object, property: String) -> Variant:
+	var prop_entry = SETGET_PROPERTIES[obj.get_class()][property]
+	
+	if "get" in prop_entry:
+		return _call_setget_entry_method(obj, prop_entry["get"], prop_entry)
+
+	return obj.get(property)
+
+static func set_setget_property(obj: Object, property: String, value: Variant) -> void:
+	var prop_entry = SETGET_PROPERTIES[obj.get_class()][property]
+	
+	if "default" in prop_entry and "reset" in prop_entry:
+		var def_val = _call_setget_entry_method(obj, prop_entry["default"], prop_entry)
+		
+		if def_val == value:
+			_call_setget_entry_method(obj, prop_entry["reset"], prop_entry)
+			return
+	
+	obj.set(property, value)
+
+static func _call_setget_entry_method(obj: Object, method_entry: Variant, _prop_entry: Dictionary) -> Variant:
+	if method_entry is String:
+		return obj.call(method_entry)
+		
+	var args = []
+	
+	if "args" in method_entry:
+		args = method_entry["args"]
+	
+	return obj.callv(method_entry["func"], args)
 
 static func is_encoded_resource(value) -> bool:
 	return value is Dictionary and "_gdtRes" in value
@@ -588,6 +642,17 @@ static func get_ignored_properties(obj: Object) -> Array:
 			res.append_array(IGNORED_PROPERTIES[key])
 	
 	return res
+
+static func is_setget_property(obj: Object, property: String) -> bool:
+	var cls = obj.get_class()
+	
+	if not cls in SETGET_PROPERTIES:
+		return false
+	
+	if not property in SETGET_PROPERTIES[cls]:
+		return false
+	
+	return true
 
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {

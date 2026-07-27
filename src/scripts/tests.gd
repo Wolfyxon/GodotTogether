@@ -37,6 +37,8 @@ func run_tests() -> void:
 	exec_test(test_ignored_properties)
 	exec_test(test_property_keys)
 	exec_test(test_node_change_applying)
+	exec_test(test_setget_property_dict)
+	exec_test(test_setget_props)
 	
 	print()
 	print("Testing complete")
@@ -379,6 +381,88 @@ static func test_node_change_applying() -> bool:
 	
 	if lbl_output.label_settings.font_size != 16: # default font size
 		printerr("font size remained changed")
+		return false
+	
+	return true
+
+func test_setget_property_dict() -> bool:
+	const METHOD_KEYS = ["set", "get", "has", "reset"]
+	const ESSENTIALS = []
+	
+	for node_class in GDTNodeSync.SETGET_PROPERTIES.keys():
+		if not ClassDB.class_exists(node_class):
+			printerr("Class '%s' doesn't exist" % node_class)
+			return false
+		
+		var class_entry: Dictionary = GDTNodeSync.SETGET_PROPERTIES[node_class]
+		
+		for prop in class_entry.keys():
+			var prop_entry = class_entry[prop]
+			
+			for key in ESSENTIALS:
+				if not key in prop_entry:
+					printerr("Missing '%s' in %s of class %s" % [key, prop, node_class])
+					return false
+			
+			for method_key in METHOD_KEYS:
+				if not method_key in prop_entry:
+					continue
+				
+				var method_entry = prop_entry[method_key]
+				
+				if method_entry is String:
+					if not ClassDB.class_has_method(node_class, method_entry):
+						printerr("%s has no method '%s'" % [node_class, method_entry])
+						return false
+				elif method_entry is Dictionary:
+					if not "func" in method_entry:
+						printerr("Missing 'func' in '%s' of %s:%s" % [method_key, node_class, prop])
+						return false
+					
+				else:
+					printerr("Invalid method entry type of '%s' in %s:%s" % [method_key, node_class, prop])
+					return false
+	
+	return true
+
+static func test_setget_props() -> bool:
+	var lbl = Label.new()
+	var h1 = GDTNodeSync.get_hash_dict(lbl)
+	
+	lbl.add_theme_font_size_override("font_size", 42)
+	
+	var h2 = GDTNodeSync.get_hash_dict(lbl)
+	var diff = GDTUtils.compare_dicts(h1, h2)
+	
+	if diff.size() != 1:
+		printerr("Diff wrong: %s" % diff)
+		return false
+	
+	var prop = diff[0]
+	const expected_prop = "theme_override_font_sizes/font_size"
+	
+	if prop != expected_prop:
+		printerr("'%s' != '%s'" % [prop, expected_prop])
+		return false
+	
+	if not GDTNodeSync.is_setget_property(lbl, prop):
+		printerr("Property not reported as setget")
+		return false
+	
+	GDTNodeSync.set_setget_property(lbl, prop, 19)
+	
+	var val = lbl.get_theme_font_size("font_size")
+	
+	if val != 19:
+		printerr("set failed: %s != %s" % [val, 19])
+		return false
+	
+	var def = lbl.get_theme_default_font_size()
+	
+	GDTNodeSync.set_setget_property(lbl, prop, def)
+	
+	if lbl.has_theme_font_size_override("font_size"):
+		printerr("set didn't reset with default value")
 		return false
 	
 	return true
