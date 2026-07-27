@@ -149,3 +149,4 @@ Your changes must obviously be manually tested before opening a pull request.
 You must also run **unit tests**, which validate values returned by various functions based on the expected result and also validate the plugin's configuration.
 
 To run them, enable the plugin, go to the **settings** and use **run unit tests now** or enable **run unit tests on start**.
+After that, check the console.
