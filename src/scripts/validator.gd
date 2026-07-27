@@ -22,13 +22,17 @@ static func is_empty(string: String) -> bool:
 	return string.replace(" ", "").is_empty()
 
 static func is_path_safe(path: String) -> bool:
-	if not GDTFiles.is_path_in_project(path):
-		return false
-	
 	if GDTFiles.has_traversal(path):
 		return false
 	
+	if not GDTFiles.is_path_in_project(path):
+		return false
+	
 	var local_path = ProjectSettings.localize_path(path)
+	
+	# Double check just to be sure
+	if GDTFiles.has_traversal(path):
+		return false
 	
 	if local_path.begins_with("res://addons/"):
 		return false
