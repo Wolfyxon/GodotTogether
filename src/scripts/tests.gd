@@ -39,6 +39,7 @@ func run_tests() -> void:
 	exec_test(test_node_change_applying)
 	exec_test(test_setget_property_dict)
 	exec_test(test_setget_props)
+	exec_test(test_path_validation)
 	
 	print()
 	print("Testing complete")
@@ -464,5 +465,33 @@ static func test_setget_props() -> bool:
 	if lbl.has_theme_font_size_override("font_size"):
 		printerr("set didn't reset with default value")
 		return false
+	
+	return true
+
+func test_path_validation() -> bool:
+	var safe = [
+		"res://",
+		"res://addon",
+		"res://scenes/game.tscn",
+	]
+	
+	var unsafe = [
+		"/usr/bin/res://",
+		"user://owies",
+		"res://../../thing",
+		"res://files/cool/../../../oopsie",
+		"res://addons/GodotTogether",
+		"/home/wolfyxon/addons/GodotTogether/secret.txt",
+		"C:\\Windows\\System32"
+	]
+	
+	for i in safe:
+		if not GDTValidator.is_path_safe(i):
+			printerr("%s got unsafe" % i)
+			return false
+	
+	for i in unsafe:
+		if GDTValidator.is_path_safe(i):
+			printerr("'%s' got safe" % i)
 	
 	return true
