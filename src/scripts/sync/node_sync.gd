@@ -61,6 +61,7 @@ var node_data_dict = {
 
 const SETGET_PROPERTIES = {
 	# TODO: Add more properties
+	# TODO: Remove redundancy
 	"Label": {
 		"theme_override_font_sizes/font_size": {
 			"default": "get_theme_default_font_size",
@@ -69,7 +70,20 @@ const SETGET_PROPERTIES = {
 				"func": "remove_theme_font_size_override",
 				"args": ["font_size"]
 			}
-		}
+		},
+		# TODO: Support removing
+		#"theme_override_styles/normal": {
+			#"reset": {
+				#"func": "remove_theme_stylebox_override",
+				#"args": ["normal"]
+			#}
+		#},
+		#"theme_override_styles/focus": {
+			#"reset": {
+				#"func": "remove_theme_stylebox_override",
+				#"args": ["focus"]
+			#}
+		#}
 	}
 }
 
@@ -117,6 +131,8 @@ func _check_node(node, root: Node = null) -> void:
 	var last_hashes = data["hashes"]
 	var new_hashes = get_hash_dict(node)
 	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
+	
+	print(diff)
 	
 	if "name" in diff:
 		_node_renamed(node, data["last_path"])
