@@ -12,4 +12,5 @@ List your changes like this:
 # Checks
 <!-- Replace [ ] with [x] to check a box -->
 - [ ] I wrote the code myself without significant AI usage
+- [ ] I tested the code manually and ran unit tests which all were successful
 - [ ] I am following the rules in the CONTRIBUTING.md file

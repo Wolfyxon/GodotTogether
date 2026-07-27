@@ -11,8 +11,10 @@ Here are things you can do to contribute to the development of Godot Together.
 	- [Rules](#rules)
  		- [No AI generated code](#no-ai-generated-code) 
 		- [Code style](#code-style)
-		- [Typing](#typing)
-        - [Use class prefixes](#use-class-prefixes) 
+		- [Type hints](#type-hints)
+        - [Use class prefixes](#use-class-prefixes)
+        - [No author comments](#no-author-comments)
+        - [Testing](#testing)
 
 ## Bugs and suggesions
 If you've found a bug or would like to suggest a change or a new feature, you can use [issues](https://github.com/Wolfyxon/GodotTogether/issues).
@@ -140,3 +142,11 @@ Also most likely you and your PR will be mentioned on the release page (when a s
 func some_function():
 	...
 ```
+
+#### Testing
+Your changes must obviously be manually tested before opening a pull request.
+
+You must also run **unit tests**, which validate values returned by various functions based on the expected result and also validate the plugin's configuration.
+
+To run them, enable the plugin, go to the **settings** and use **run unit tests now** or enable **run unit tests on start**.
+After that, check the console.

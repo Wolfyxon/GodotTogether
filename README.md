@@ -50,3 +50,16 @@ yourProject
 2. Go to **Project settings**
 3. Go to the **plugins** tab
 4. Enable **Godot Together**
+
+## Testing
+To run unit tests, enable the plugin,
+go to **settings** (inside the plugin) and use **run unit tests now** or **run unit tests on start**.
+
+You will see results in the output console.
+
+### Writing tests
+To create a test:
+1. Go to `src/scripts/tests.gd`.
+2. Create a function called `test_your_test_name` and typehint its return value as `bool`
+3. Return `true` or `false` based on if the test failed or succeed, and use `printerr` to explain details of the error
+4. Call it in `run_tests` using `exec_test` as seen there.
