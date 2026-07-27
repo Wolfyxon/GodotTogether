@@ -50,3 +50,9 @@ yourProject
 2. Go to **Project settings**
 3. Go to the **plugins** tab
 4. Enable **Godot Together**
+
+## Testing
+To run unit tests, enable the plugin,
+go to **settings** (inside the plugin) and use **run unit tests now** or **run unit tests on start**.
+
+You will see results in the output console.
