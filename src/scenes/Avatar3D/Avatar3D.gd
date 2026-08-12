@@ -10,6 +10,7 @@ const MATERIAL: StandardMaterial3D = preload("res://addons/GodotTogether/src/sce
 
 var id := -1
 var main: GodotTogether
+var received_update := false
 
 func _ready() -> void:
 	if not main: return
@@ -20,13 +21,42 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if not ui: return
 	ui.queue_free()
-	
+
+# Called by GDTDual instead of setting position/rotation directly, so we
+# know when this avatar has an actual transform to display.
+func receive_transform(pos: Vector3, rot: Vector3) -> void:
+	position = pos
+	rotation = rot
+	received_update = true
+
 func _process(delta) -> void:
 	if not main: return
 
+	# Nothing to show yet (avatar still sitting at its default Vector3.ZERO),
+	# and unproject_position() below is not safe to call for a point that
+	# happens to line up with the camera.
+	if not received_update:
+		ui.visible = false
+		return
+
 	var cam = EditorInterface.get_editor_viewport_3d().get_camera_3d()
-	var dist = cam.position.distance_to(position) + 0.05 # Extra distance to prevent division by 0
-	
+	if not cam:
+		ui.visible = false
+		return
+
+	var dist = cam.position.distance_to(position)
+
+	# Camera3D.unproject_position() divides by a projected plane distance
+	# that can be exactly 0 for points that are behind, or extremely close
+	# to, the camera. That's what throws the engine's
+	# "Condition p.d == 0 is true" error. Skip the projection in that case
+	# instead of calling it blindly every frame.
+	if dist < 0.1 or cam.is_position_behind(position):
+		ui.visible = false
+		return
+
+	dist += 0.05 # Extra distance to prevent division by 0
+
 	ui.visible = cam.is_position_in_frustum(position)
 	ui.position = cam.unproject_position(position) - ui.size / 2 - (Vector2(0, 200) / dist)
 
