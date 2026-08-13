@@ -46,11 +46,7 @@ func _process(delta) -> void:
 
 	var dist = cam.position.distance_to(position)
 
-	# Camera3D.unproject_position() divides by a projected plane distance
-	# that can be exactly 0 for points that are behind, or extremely close
-	# to, the camera. That's what throws the engine's
-	# "Condition p.d == 0 is true" error. Skip the projection in that case
-	# instead of calling it blindly every frame.
+	# Fix the "Condition p.d == 0 is true" error. 
 	if dist < 0.1 or cam.is_position_behind(position):
 		ui.visible = false
 		return
