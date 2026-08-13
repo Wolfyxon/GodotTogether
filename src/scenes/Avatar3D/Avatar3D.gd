@@ -22,8 +22,7 @@ func _exit_tree() -> void:
 	if not ui: return
 	ui.queue_free()
 
-# Called by GDTDual instead of setting position/rotation directly, so we
-# know when this avatar has an actual transform to display.
+
 func receive_transform(pos: Vector3, rot: Vector3) -> void:
 	position = pos
 	rotation = rot
