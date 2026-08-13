@@ -1,0 +1,22 @@
+1. Create an "addons" folder in your project's root directory 
+2. Put these files in "addons/GodotTogether" (not addons/GodotTogether-main)
+3. Ensure the structure looks like this (names matter!):
+
+YourProject
+|_ addons
+	|_ GodotTogether
+		|_ src
+		|_ install_instructions.txt
+		|_ plugin.cfg
+		|_ ...
+
+|_ project.godot
+
+4. In Godot, go to Project > Project Settings
+5. Go to the "Plugins" tab
+6. You should see the plugin there, enable it
+7. The plugin should start. You should see a "GodotTogether" button on the Godot's toolbar
+
+
+If you have any issues refer to: https://github.com/Wolfyxon/GodotTogether/wiki/Troubleshooting
+or report a bug: https://github.com/Wolfyxon/GodotTogether/issues

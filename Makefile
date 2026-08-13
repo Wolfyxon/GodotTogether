@@ -6,7 +6,7 @@ BUILD_FILES_DIR := $(BUILD_ROOT_DIR)/source
 ZIP_PATH := $(BUILD_ROOT_DIR)/GodotTogether.zip
 SIGNATURE_PATH := $(ZIP_PATH).sig
 
-ESSENTIAL_ROOT_PATHS := src plugin.cfg .gitignore LICENSE
+ESSENTIAL_ROOT_PATHS := src plugin.cfg .gitignore install_instructions.txt LICENSE
 
 .PHONY: release build sign clean
 
