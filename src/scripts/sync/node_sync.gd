@@ -132,8 +132,6 @@ func _check_node(node, root: Node = null) -> void:
 	var new_hashes = get_hash_dict(node)
 	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
 	
-	print(diff)
-	
 	if "name" in diff:
 		_node_renamed(node, data["last_path"])
 		data["last_path"] = root.get_path_to(node)
