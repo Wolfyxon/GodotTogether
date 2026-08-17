@@ -78,25 +78,12 @@ const SETGET_PROPERTIES = {
 			}
 		},
 		"theme_override_styles/?": {
+			# BUG: "Required object "rp_style" is null" error when receiving this prop.
 			"reset": {
 				"func": "remove_theme_stylebox_override",
 				"args": ["?"]
 			}
 		}
-		
-		# TODO: Support removing
-		#"theme_override_styles/normal": {
-			#"reset": {
-				#"func": "remove_theme_stylebox_override",
-				#"args": ["normal"]
-			#}
-		#},
-		#"theme_override_styles/focus": {
-			#"reset": {
-				#"func": "remove_theme_stylebox_override",
-				#"args": ["focus"]
-			#}
-		#}
 	}
 }
 
