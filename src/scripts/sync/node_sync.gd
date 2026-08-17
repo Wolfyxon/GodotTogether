@@ -600,7 +600,7 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 		else:
 			res[true_path] = value
 		
-		if value == null and path.contains(".") and not is_setget:
+		if value == null and path.contains("/") and not is_setget:
 			if path.contains("/") and not path.ends_with("."):
 				push_error("Setget property not implemented: %s: %s" % [obj.get_class(), path])
 	
