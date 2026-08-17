@@ -212,5 +212,4 @@ func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:
 	var marker = get_avatar_3d(multiplayer.get_remote_sender_id())
 	if not marker: return
 	
-	marker.position = position
-	marker.rotation = rotation
+	marker.receive_transform(position, rotation)
