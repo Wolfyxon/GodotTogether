@@ -45,7 +45,13 @@ func run_tests() -> void:
 	print()
 	print("Testing complete")
 	print("Slowest: ", get_by_slowest().slice(0, 3))
-	print("Succeed: %s | Failed: %s" % [success_count, fail_count])
+	
+	var fail_str = fail_count
+	
+	if fail_count != 0:
+		fail_str = "[color=red]%s[/color]" % fail_count
+	
+	print_rich("Succeed: %s | Failed: %s" % [success_count, fail_str])
 	
 	reset()
 	
