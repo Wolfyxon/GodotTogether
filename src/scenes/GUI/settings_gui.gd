@@ -65,7 +65,14 @@ func _on_btn_check_update_now_pressed() -> void:
 		return
 	
 	if res.type == GDTUpdateCheckResult.ResultType.RunningLatest:
-		gui.alert("No new updates detected")
+		gui.alert(
+			GDTUtils.join([
+				"Official stable version not yet released!",
+				"You will get notified here if it arrives.",
+				"",
+				"Check GitHub for the latest source code."
+			], "\n")
+		)
 		return
 	
 	if res.type == GDTUpdateCheckResult.ResultType.Fail:
