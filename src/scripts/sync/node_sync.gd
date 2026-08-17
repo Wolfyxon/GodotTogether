@@ -589,13 +589,11 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	
 	for path: String in paths:
 		var true_path = path.replace(GDTUtils.DICT_PATH_SEPARATOR + ".", "")
+		var is_setget = is_setget_property(obj, path)
 		
-		if is_setget_property(obj, path):
+		if is_setget:
 			res[true_path] = get_setget_property(obj, path)
 			continue
-		else:
-			if path.contains("/") and not path.ends_with("."):
-				push_error("Setget property not implemented: %s: %s" % [obj.get_class(), path])
 		
 		var value = GDTUtils.get_nested(obj, true_path)
 		
@@ -604,6 +602,10 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 		else:
 			res[true_path] = value
 		
+		if value == null and path.contains(".") and not is_setget:
+			if path.contains("/") and not path.ends_with("."):
+				push_error("Setget property not implemented: %s: %s" % [obj.get_class(), path])
+	
 	return res
 
 static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
