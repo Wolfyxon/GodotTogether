@@ -61,8 +61,13 @@ var node_data_dict = {
 
 const SETGET_PROPERTIES = {
 	# TODO: Add more properties
-	# TODO: Remove redundancy
 	"Label": {
+		"theme_override_colors/?": {
+			"reset": {
+				"func": "remove_theme_color_override",
+				"args": ["?"]
+			}
+		},
 		"theme_override_constants/?": {
 			"reset": {
 				"func": "remove_theme_constant_override",
@@ -89,7 +94,7 @@ const SETGET_PROPERTIES = {
 
 var supressed_nodes = {}
 var last_scene_path: String = ""
-var always_scan = true # Enables change scanning even when session is inactive
+var always_scan = false # Enables change scanning even when session is inactive
 						# Useful in debugging
 
 func _ready() -> void:
