@@ -63,6 +63,12 @@ const SETGET_PROPERTIES = {
 	# TODO: Add more properties
 	# TODO: Remove redundancy
 	"Label": {
+		"theme_override_constants/?": {
+			"reset": {
+				"func": "remove_theme_constant_override",
+				"args": ["?"]
+			}
+		},
 		"theme_override_font_sizes/font_size": {
 			"default": "get_theme_default_font_size",
 			
@@ -71,7 +77,12 @@ const SETGET_PROPERTIES = {
 				"args": ["font_size"]
 			}
 		},
-		"theme_override_constants/?": {}
+		"theme_override_styles/?": {
+			"reset": {
+				"func": "remove_theme_stylebox_override",
+				"args": ["?"]
+			}
+		}
 		
 		# TODO: Support removing
 		#"theme_override_styles/normal": {
@@ -95,8 +106,6 @@ var always_scan = true # Enables change scanning even when session is inactive
 						# Useful in debugging
 
 func _ready() -> void:
-	
-	
 	change_timer.wait_time = GDTSettings.get_setting("sync/node_refresh_rate")
 	change_timer.timeout.connect(_check_changes)
 	add_child(change_timer)
@@ -650,7 +659,7 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 		return
 	
 	if "get" in prop_entry:
-		return _call_setget_entry_method(obj, prop_entry, "get")
+		return _call_setget_entry_method(obj, prop_entry, "get", property)
 
 	return obj.get(property)
 
@@ -662,15 +671,15 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		return
 	
 	if "default" in prop_entry and "reset" in prop_entry:
-		var def_val = _call_setget_entry_method(obj, prop_entry, "default")
+		var def_val = _call_setget_entry_method(obj, prop_entry, "default", property)
 		
 		if def_val == value:
-			_call_setget_entry_method(obj, prop_entry, "reset")
+			_call_setget_entry_method(obj, prop_entry, "reset", property)
 			return
 	
 	obj.set(property, value)
 
-static func _call_setget_entry_method(obj: Object, prop_entry: Dictionary, method_name: String) -> Variant:
+static func _call_setget_entry_method(obj: Object, prop_entry: Dictionary, method_name: String, property: String) -> Variant:
 	var method_entry = prop_entry[method_name]
 	
 	if method_entry is String:
@@ -680,6 +689,11 @@ static func _call_setget_entry_method(obj: Object, prop_entry: Dictionary, metho
 	
 	if "args" in method_entry:
 		args = method_entry["args"]
+		
+	for i in args.size():
+		if args[i] == "?":
+			var k = property.split("?")[1]
+			args[i] = k
 	
 	return obj.callv(method_entry["func"], args)
 
@@ -760,7 +774,7 @@ static func decode_resource(dict: Dictionary) -> Resource:
 					resource[key] = decode_resource(sub[key])
 	else:
 		push_error("Cannot decode resource: 'buf' and 'path' missing from resource dict")
-
+	
 	return resource
 
 static func get_property_keys(obj: Object) -> Array[String]:
