@@ -28,6 +28,7 @@ func run_tests() -> void:
 	
 	print("--- Running GodotTogether tests ---")
 	
+	exec_test(test_debug)
 	exec_test(test_versions)
 	exec_test(test_sha256)
 	exec_test(test_sha256_file)
@@ -82,6 +83,13 @@ func check_version(ver: String) -> String:
 	
 	return ""
 
+func test_debug() -> bool:
+	if main.node_sync.always_scan:
+		printerr("node_sync.always_scan should be false")
+		return false
+	
+	return true
+
 func test_versions() -> bool:
 	var valid = [
 		main.get_plugin_version(),
@@ -114,6 +122,7 @@ func test_versions() -> bool:
 			printerr("%s should be invalid" % i)
 	
 	return ok 
+
 func test_sha256() -> bool:
 	var a1 = [1, 2, 3, 4]
 	var a2 = [1, 2, 3, 4]

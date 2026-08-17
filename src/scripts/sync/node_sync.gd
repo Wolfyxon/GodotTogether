@@ -89,6 +89,8 @@ const SETGET_PROPERTIES = {
 
 var supressed_nodes = {}
 var last_scene_path: String = ""
+var always_scan = false # Enables change scanning even when session is inactive
+						# Useful in debugging
 
 func _ready() -> void:
 	change_timer.wait_time = GDTSettings.get_setting("sync/node_refresh_rate")
@@ -168,7 +170,10 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	
 	var node_path = scene.get_path_to(node)
 	var property_dict = get_select_property_dict(node, property_paths)
-	#
+	
+	if not main.is_session_active():
+		return
+	
 	if main.server.is_active():
 		server_broadcast_node_update(node_path, scene.scene_file_path, property_dict)
 	else:
@@ -557,7 +562,7 @@ func start() -> void:
 func can_sync_nodes() -> bool:
 	return (
 		main != null and
-		main.is_session_active() and
+		(always_scan or main.is_session_active()) and
 		not change_timer.paused and
 		not (main.client.is_active() and not main.client.is_fully_synced) and
 		not GDTSettings.get_setting("dev/disable_real_time_node_sync")
