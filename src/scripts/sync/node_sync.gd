@@ -587,12 +587,15 @@ static func fill_hash_dict(res: Dictionary, obj: Object, depth := 64) -> Diction
 static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	var res = {}
 	
-	for path in paths:
+	for path: String in paths:
 		var true_path = path.replace(GDTUtils.DICT_PATH_SEPARATOR + ".", "")
 		
 		if is_setget_property(obj, path):
 			res[true_path] = get_setget_property(obj, path)
 			continue
+		else:
+			if path.contains("/") and not path.ends_with("."):
+				push_error("Setget property not implemented: %s: %s" % [obj.get_class(), path])
 		
 		var value = GDTUtils.get_nested(obj, true_path)
 		
