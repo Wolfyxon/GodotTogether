@@ -71,6 +71,8 @@ const SETGET_PROPERTIES = {
 				"args": ["font_size"]
 			}
 		},
+		"theme_override_constants/?": {}
+		
 		# TODO: Support removing
 		#"theme_override_styles/normal": {
 			#"reset": {
@@ -89,10 +91,12 @@ const SETGET_PROPERTIES = {
 
 var supressed_nodes = {}
 var last_scene_path: String = ""
-var always_scan = false # Enables change scanning even when session is inactive
+var always_scan = true # Enables change scanning even when session is inactive
 						# Useful in debugging
 
 func _ready() -> void:
+	
+	
 	change_timer.wait_time = GDTSettings.get_setting("sync/node_refresh_rate")
 	change_timer.timeout.connect(_check_changes)
 	add_child(change_timer)
@@ -624,8 +628,26 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 		
 		GDTUtils.set_nested(obj, path, value)
 
+static func get_setget_entry(obj: Object, property: String) -> Variant:
+	var class_props = SETGET_PROPERTIES[obj.get_class()]
+	
+	var prop_entry: Dictionary
+	
+	if property in class_props:
+		return SETGET_PROPERTIES[obj.get_class()][property]
+	else:
+		for prop in class_props.keys():
+			if property.begins_with(prop.replace("?", "")):
+				return class_props[prop]
+				
+	return null
+
 static func get_setget_property(obj: Object, property: String) -> Variant:
-	var prop_entry = SETGET_PROPERTIES[obj.get_class()][property]
+	var prop_entry = get_setget_entry(obj, property)
+	
+	if prop_entry == null:
+		push_error("Missing setget entry for %s:%s" % [obj.get_class(), property])
+		return
 	
 	if "get" in prop_entry:
 		return _call_setget_entry_method(obj, prop_entry["get"], prop_entry)
@@ -633,7 +655,11 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 	return obj.get(property)
 
 static func set_setget_property(obj: Object, property: String, value: Variant) -> void:
-	var prop_entry = SETGET_PROPERTIES[obj.get_class()][property]
+	var prop_entry = get_setget_entry(obj, property)
+	
+	if prop_entry == null:
+		push_error("Missing setget entry for %s:%s" % [obj.get_class(), property])
+		return
 	
 	if "default" in prop_entry and "reset" in prop_entry:
 		var def_val = _call_setget_entry_method(obj, prop_entry["default"], prop_entry)
@@ -673,10 +699,16 @@ static func is_setget_property(obj: Object, property: String) -> bool:
 	if not cls in SETGET_PROPERTIES:
 		return false
 	
-	if not property in SETGET_PROPERTIES[cls]:
-		return false
+	var class_props = SETGET_PROPERTIES[cls]
 	
-	return true
+	if property in class_props:
+		return true
+	
+	for path: String in class_props.keys():
+		if property.begins_with(path.replace("?", "")):
+			return true
+	
+	return false
 
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
