@@ -650,7 +650,7 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 		return
 	
 	if "get" in prop_entry:
-		return _call_setget_entry_method(obj, prop_entry["get"], prop_entry)
+		return _call_setget_entry_method(obj, prop_entry, "get")
 
 	return obj.get(property)
 
@@ -662,15 +662,17 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		return
 	
 	if "default" in prop_entry and "reset" in prop_entry:
-		var def_val = _call_setget_entry_method(obj, prop_entry["default"], prop_entry)
+		var def_val = _call_setget_entry_method(obj, prop_entry, "default")
 		
 		if def_val == value:
-			_call_setget_entry_method(obj, prop_entry["reset"], prop_entry)
+			_call_setget_entry_method(obj, prop_entry, "reset")
 			return
 	
 	obj.set(property, value)
 
-static func _call_setget_entry_method(obj: Object, method_entry: Variant, _prop_entry: Dictionary) -> Variant:
+static func _call_setget_entry_method(obj: Object, prop_entry: Dictionary, method_name: String) -> Variant:
+	var method_entry = prop_entry[method_name]
+	
 	if method_entry is String:
 		return obj.call(method_entry)
 		
