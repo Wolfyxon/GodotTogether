@@ -30,6 +30,7 @@ func run_tests() -> void:
 	
 	exec_test(test_debug)
 	exec_test(test_versions)
+	exec_test(test_resource_encoding)
 	exec_test(test_sha256)
 	exec_test(test_sha256_file)
 	exec_test(test_compare_dicts)
@@ -128,6 +129,36 @@ func test_versions() -> bool:
 			printerr("%s should be invalid" % i)
 	
 	return ok 
+
+func test_resource_encoding() -> bool:
+	var a = StandardMaterial3D.new()
+	a.albedo_texture = NoiseTexture2D.new()
+	
+	var encoded = GDTNodeSync.encode_resource(a)
+	
+	if not encoded:
+		printerr("encoded is null")
+		return false
+		
+	if not GDTNodeSync.is_encoded_resource(encoded):
+		printerr("Encoded not recognized as an encoded resource")
+		return false
+	
+	var decoded = GDTNodeSync.decode_resource(encoded)
+	
+	if not decoded:
+		printerr("decoded is null")
+		return false
+	
+	if decoded.get_class() != a.get_class():
+		printerr("Class %s != %s" % [decoded.get_class(), a.get_class()])
+		return false
+	
+	if not decoded.albedo_texture:
+		printerr("Missing 'albedo_texture'")
+		return false
+	
+	return true
 
 func test_sha256() -> bool:
 	var a1 = [1, 2, 3, 4]
