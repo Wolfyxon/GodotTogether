@@ -74,6 +74,12 @@ const SETGET_PROPERTIES = {
 				"args": ["?"]
 			}
 		},
+		"theme_override_fonts/font": {
+			"reset": {
+				"func": "remove_theme_font_override",
+				"args": ["font"]
+			}
+		},
 		"theme_override_font_sizes/font_size": {
 			"default": "get_theme_default_font_size",
 			
@@ -83,7 +89,14 @@ const SETGET_PROPERTIES = {
 			}
 		},
 		"theme_override_styles/?": {
-			# BUG: "Required object "rp_style" is null" error when receiving this prop.
+			"reset": {
+				"func": "remove_theme_stylebox_override",
+				"args": ["?"]
+			}
+		}
+	},
+	"Panel": {
+		"theme_override_styles/panel": {
 			"reset": {
 				"func": "remove_theme_stylebox_override",
 				"args": ["?"]
