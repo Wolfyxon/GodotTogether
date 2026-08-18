@@ -445,8 +445,8 @@ static func test_node_change_applying() -> bool:
 		printerr("font size remained changed")
 		return false
 	
-	if lbl_output.has_theme_stylebox_override("normal"):
-		printerr("'normal' stylebox override not set") # Why does it fail?
+	if not lbl_output.has_theme_stylebox_override("normal"):
+		printerr("'normal' stylebox override not set")
 		return false
 	
 	return true
