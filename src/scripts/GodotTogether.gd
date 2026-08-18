@@ -60,6 +60,9 @@ func _enter_tree() -> void:
 	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
 	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
 	
+	if not check_path():
+		return
+	
 	if GDTSettings.get_setting("dev/run_tests_on_start"):
 		tests.run_tests()
 	
@@ -89,6 +92,15 @@ func restart() -> void:
 	EditorInterface.get_base_control().add_child(
 		GDTRestarter.new()
 	)
+	
+	if not self: return
+	if not is_instance_valid(self): return
+	
+	var tree = get_tree()
+	if not tree: return
+	
+	await tree.create_timer(1).timeout
+	gui.alert("Godot is having problems restarting the plugin. Please do it manually")
 
 func is_session_active() -> bool:
 	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint() and (
@@ -114,6 +126,25 @@ func pre_start_check() -> bool:
 		return false
 
 	return true
+
+func check_path() -> bool:
+	var path: String = get_script().get_path()
+	
+	if path.begins_with("res://addons/GodotTogether/"):
+		return true
+	
+	gui.get_menu_window().set_error_of_death(
+		"You didn't install the plugin correctly",
+		GDTUtils.join([
+			"The plugin's directory must be named 'GodotTogether', not 'GodotTogether-main' or anything else.",
+			"Please change it, or the plugin will not work.",
+			"",
+			"Restart the plugin when you're done.",
+			"If you encounter issues, try also restarting Godot."
+		], "\n")
+	)
+	
+	return false
 
 func setup_chat() -> void:
 	chat.main = self
