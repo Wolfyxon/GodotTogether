@@ -449,6 +449,20 @@ static func test_node_change_applying() -> bool:
 		printerr("'normal' stylebox override not set")
 		return false
 	
+	var style_output = GDTNodeSync.get_setget_property(lbl_output, "theme_override_styles/normal")
+	
+	if not style_output:
+		printerr("Stylebox is null")
+		return false
+	
+	if not style_output is StyleBoxFlat:
+		printerr("Stylebox class wrong: %s" % style_output.get_class())
+		return false
+	
+	if style_output.bg_color != style.bg_color:
+		printerr("Stylebox bg_color %s != %s" % [style_output.bg_color, style.bg_color])
+		return false
+	
 	return true
 
 func test_setget_property_dict() -> bool:
