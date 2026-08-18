@@ -40,7 +40,8 @@ func run_tests() -> void:
 	exec_test(test_property_keys)
 	exec_test(test_node_change_applying)
 	exec_test(test_setget_property_dict)
-	exec_test(test_setget_props)
+	exec_test(test_basic_setget_props)
+	exec_test(test_object_setget_props)
 	exec_test(test_path_validation)
 	
 	print()
@@ -401,7 +402,10 @@ static func test_node_change_applying() -> bool:
 	lbl.label_settings.font_size = 7
 	
 	var h1 = GDTNodeSync.get_hash_dict(lbl)
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color.RED
 	
+	lbl.add_theme_stylebox_override("normal", style)
 	lbl.text = "when the THE"
 	lbl.label_settings = LabelSettings.new()
 	lbl.label_settings.font_color = Color.RED
@@ -413,6 +417,17 @@ static func test_node_change_applying() -> bool:
 	
 	var lbl_output = Label.new()
 	GDTNodeSync.apply_property_dict(lbl_output, props)
+	
+	var has_setget = false
+	
+	for i in diff:
+		if GDTNodeSync.is_setget_property(lbl, i):
+			has_setget = true
+			break
+	
+	if not has_setget:
+		printerr("The diff should include a setget property")
+		return false
 	
 	if lbl_output.text != lbl.text:
 		printerr("text wrong")
@@ -428,6 +443,10 @@ static func test_node_change_applying() -> bool:
 	
 	if lbl_output.label_settings.font_size != 16: # default font size
 		printerr("font size remained changed")
+		return false
+	
+	if lbl_output.has_theme_stylebox_override("normal"):
+		printerr("'normal' stylebox override not set") # Why does it fail?
 		return false
 	
 	return true
@@ -472,7 +491,7 @@ func test_setget_property_dict() -> bool:
 	
 	return true
 
-static func test_setget_props() -> bool:
+static func test_basic_setget_props() -> bool:
 	var lbl = Label.new()
 	var h1 = GDTNodeSync.get_hash_dict(lbl)
 	
@@ -510,6 +529,50 @@ static func test_setget_props() -> bool:
 	
 	if lbl.has_theme_font_size_override("font_size"):
 		printerr("set didn't reset with default value")
+		return false
+	
+	return true
+
+static func test_object_setget_props() -> bool:
+	var lbl = Label.new()
+	var h1 = GDTNodeSync.get_hash_dict(lbl)
+	
+	var style1 = StyleBoxFlat.new()
+	style1.bg_color = Color.RED
+	
+	lbl.add_theme_stylebox_override("normal", style1)
+	
+	var h2 = GDTNodeSync.get_hash_dict(lbl)
+	var diff = GDTUtils.compare_dicts(h1, h2)
+	
+	if diff.size() != 1:
+		printerr("Diff wrong: %s" % diff)
+		return false
+	
+	var prop = diff[0]
+	const expected_prop = "theme_override_styles/normal"
+	
+	if prop != expected_prop:
+		printerr("'%s' != '%s'" % [prop, expected_prop])
+		return false
+	
+	if not GDTNodeSync.is_setget_property(lbl, prop):
+		printerr("Property not reported as setget")
+		return false
+	
+	var style2 = StyleBoxFlat.new()
+	style2.bg_color = Color.BLUE
+	
+	GDTNodeSync.set_setget_property(lbl, prop, style2)
+	
+	var val = lbl.get_theme_stylebox("normal")
+	
+	if not val:
+		printerr("set failed. got null")
+		return false
+	
+	if val.bg_color != style2.bg_color:
+		printerr("set failed. bg_color: %s != BLUE" % val.bg_color)
 		return false
 	
 	return true
