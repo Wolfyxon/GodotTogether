@@ -2,8 +2,8 @@
 extends Control
 class_name GDTChat
 
-const IMG_JOINED = preload("res://addons/GodotTogether/src/img/play.svg")
-const IMG_DISCONNECTED = preload("res://addons/GodotTogether/src/img/arrowLeft.svg")
+const IMG_JOINED = preload("../../../img/play.svg")
+const IMG_DISCONNECTED = preload("../../../img/arrowLeft.svg")
 const MAX_MESSAGE_LEN = 2048
 
 @onready var cover = $cover

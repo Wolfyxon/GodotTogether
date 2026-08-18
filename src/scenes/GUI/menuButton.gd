@@ -2,10 +2,10 @@
 class_name GDTMenuButton
 extends Button
 
-const ICON_CLIENT = preload("res://addons/GodotTogether/src/img/connect.svg")
-const ICON_SERVER = preload("res://addons/GodotTogether/src/img/server.svg")
-const ICON_SESSION = preload("res://addons/GodotTogether/src/img/play.svg")
-const ICON_DISCONNECTED = preload("res://addons/GodotTogether/src/img/disconnected.svg")
+const ICON_CLIENT = preload("../../img/connect.svg")
+const ICON_SERVER = preload("../../img/server.svg")
+const ICON_SESSION = preload("../../img/play.svg")
+const ICON_DISCONNECTED = preload("../../img/disconnected.svg")
 
 var main_icon: Texture = null
 var second_icon: Texture = null
