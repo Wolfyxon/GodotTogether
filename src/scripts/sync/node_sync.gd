@@ -87,15 +87,13 @@ const SETGET_PROPERTIES = {
 				"args": ["?"]
 			}
 		},
-		"theme_override_styles/?": {
+		"theme_override_icons/?": {
 			"reset": {
-				"func": "remove_theme_stylebox_override",
+				"func": "remove_theme_icon_override",
 				"args": ["?"]
 			}
-		}
-	},
-	"Panel": {
-		"theme_override_styles/panel": {
+		},
+		"theme_override_styles/?": {
 			"reset": {
 				"func": "remove_theme_stylebox_override",
 				"args": ["?"]
