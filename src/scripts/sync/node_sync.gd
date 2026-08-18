@@ -60,8 +60,7 @@ var node_data_dict = {
 }
 
 const SETGET_PROPERTIES = {
-	# TODO: Add more properties
-	"Label": {
+	"Control": {
 		"theme_override_colors/?": {
 			"reset": {
 				"func": "remove_theme_color_override",
@@ -74,18 +73,18 @@ const SETGET_PROPERTIES = {
 				"args": ["?"]
 			}
 		},
-		"theme_override_fonts/font": {
+		"theme_override_fonts/?": {
 			"reset": {
 				"func": "remove_theme_font_override",
-				"args": ["font"]
+				"args": ["?"]
 			}
 		},
-		"theme_override_font_sizes/font_size": {
+		"theme_override_font_sizes/?": {
 			"default": "get_theme_default_font_size",
 			
 			"reset": {
 				"func": "remove_theme_font_size_override",
-				"args": ["font_size"]
+				"args": ["?"]
 			}
 		},
 		"theme_override_styles/?": {
@@ -642,13 +641,26 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 		else:
 			GDTUtils.set_nested(obj, path, value)
 
+static func get_setget_properties_of_class(cls_name: String) -> Variant:
+	if cls_name in SETGET_PROPERTIES:
+		return SETGET_PROPERTIES[cls_name] 
+	
+	for key in SETGET_PROPERTIES.keys():
+		if ClassDB.is_parent_class(cls_name, key):
+			return SETGET_PROPERTIES[key]
+	
+	return null
+
+static func get_setget_properties(obj: Object) -> Variant:
+	return get_setget_properties_of_class(obj.get_class())
+
 static func get_setget_entry(obj: Object, property: String) -> Variant:
-	var class_props = SETGET_PROPERTIES[obj.get_class()]
+	var class_props = get_setget_properties(obj)
 	
 	var prop_entry: Dictionary
 	
 	if property in class_props:
-		return SETGET_PROPERTIES[obj.get_class()][property]
+		return class_props[property]
 	else:
 		for prop in class_props.keys():
 			if property.begins_with(prop.replace("?", "")):
@@ -726,12 +738,7 @@ static func get_ignored_properties(obj: Object) -> Array:
 	return res
 
 static func is_setget_property(obj: Object, property: String) -> bool:
-	var cls = obj.get_class()
-	
-	if not cls in SETGET_PROPERTIES:
-		return false
-	
-	var class_props = SETGET_PROPERTIES[cls]
+	var class_props = get_setget_properties(obj)
 	
 	if property in class_props:
 		return true
