@@ -599,20 +599,21 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 		var true_path = path.replace(GDTUtils.DICT_PATH_SEPARATOR + ".", "")
 		var is_setget = is_setget_property(obj, path)
 		
-		if is_setget:
-			res[true_path] = get_setget_property(obj, path)
-			continue
+		var value = null
 		
-		var value = GDTUtils.get_nested(obj, true_path)
+		if is_setget:
+			value = get_setget_property(obj, path)
+		else:
+			value = GDTUtils.get_nested(obj, true_path)
 		
 		if value is Resource:
-			res[true_path] = encode_resource(value)
-		else:
-			res[true_path] = value
+			value = encode_resource(value)
 		
 		if value == null and path.contains("/") and not is_setget:
 			if path.contains("/") and not path.ends_with("."):
 				push_error("Setget property not implemented: %s: %s" % [obj.get_class(), path])
+			
+		res[true_path] = value
 	
 	return res
 
@@ -620,14 +621,13 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 	for path in dict.keys():
 		var value = dict[path]
 		
-		if is_setget_property(obj, path):
-			set_setget_property(obj, path, value)
-			continue
-		
 		if is_encoded_resource(value):
 			value = decode_resource(value)
 		
-		GDTUtils.set_nested(obj, path, value)
+		if is_setget_property(obj, path):
+			set_setget_property(obj, path, value)
+		else:
+			GDTUtils.set_nested(obj, path, value)
 
 static func get_setget_entry(obj: Object, property: String) -> Variant:
 	var class_props = SETGET_PROPERTIES[obj.get_class()]
