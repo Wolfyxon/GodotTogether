@@ -669,25 +669,36 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 			_call_setget_entry_method(obj, prop_entry, "reset", property)
 			return
 	
-	obj.set(property, value)
+	if "set" in prop_entry:
+		_call_setget_entry_method(obj, prop_entry, "set", property, [value])
+	else:
+		obj.set(property, value)
 
-static func _call_setget_entry_method(obj: Object, prop_entry: Dictionary, method_name: String, property: String) -> Variant:
+static func _call_setget_entry_method(
+	obj: Object, 
+	prop_entry: Dictionary, 
+	method_name: String, 
+	property: String, 
+	args: Array = []
+) -> Variant:
 	var method_entry = prop_entry[method_name]
 	
 	if method_entry is String:
 		return obj.call(method_entry)
 		
-	var args = []
+	var full_args = []
 	
 	if "args" in method_entry:
-		args = method_entry["args"]
-		
-	for i in args.size():
-		if args[i] == "?":
-			var k = property.split("?")[1]
-			args[i] = k
+		full_args.append_array(method_entry["args"])
 	
-	return obj.callv(method_entry["func"], args)
+	for i in args.size():
+		if full_args[i] == "?":
+			var k = property.split("?")[1]
+			full_args[i] = k
+	
+	full_args.append_array(args)
+	
+	return obj.callv(method_entry["func"], full_args)
 
 static func is_encoded_resource(value) -> bool:
 	return value is Dictionary and "_gdtRes" in value
