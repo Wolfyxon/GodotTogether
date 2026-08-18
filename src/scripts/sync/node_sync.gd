@@ -693,7 +693,7 @@ static func _call_setget_entry_method(
 	
 	for i in args.size():
 		if full_args[i] == "?":
-			var k = property.split("?")[1]
+			var k = property.split("/")[1]
 			full_args[i] = k
 	
 	full_args.append_array(args)
