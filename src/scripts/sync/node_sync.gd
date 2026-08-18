@@ -738,6 +738,9 @@ static func get_ignored_properties(obj: Object) -> Array:
 static func is_setget_property(obj: Object, property: String) -> bool:
 	var class_props = get_setget_properties(obj)
 	
+	if not class_props:
+		return false
+	
 	if property in class_props:
 		return true
 	
