@@ -14,7 +14,7 @@ enum Permission {
 }
 
 const PROTOCOL_VERSION = 1
-const SUPPORTED_ENGINE_VERSION = [4, 7, 1]
+const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
 
 var client = GDTClient.new(self, "client")
 var server = GDTServer.new(self, "server")
