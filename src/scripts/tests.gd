@@ -28,21 +28,9 @@ func run_tests() -> void:
 	
 	print("--- Running GodotTogether tests ---")
 	
-	exec_test(test_debug)
-	exec_test(test_versions)
-	exec_test(test_resource_encoding)
-	exec_test(test_sha256)
-	exec_test(test_sha256_file)
-	exec_test(test_compare_dicts)
-	exec_test(test_hash_dict)
-	exec_test(test_setget_nested)
-	exec_test(test_ignored_properties)
-	exec_test(test_property_keys)
-	exec_test(test_node_change_applying)
-	exec_test(test_setget_property_dict)
-	exec_test(test_basic_setget_props)
-	exec_test(test_object_setget_props)
-	exec_test(test_path_validation)
+	for i in get_method_list():
+		if i["name"].begins_with("test_"):
+			exec_test(get(i["name"]))
 	
 	print()
 	print("Testing complete")
