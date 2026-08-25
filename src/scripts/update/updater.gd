@@ -288,7 +288,7 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 		alert(download_err, "Error downloading update")
 		return
 	
-	#apply_update()
+	apply_update()
 
 # Godot randomly complains about cyclic reference
 # This garbage function fixes it
