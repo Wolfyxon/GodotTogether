@@ -15,6 +15,7 @@ func _init(description: String) -> void:
 	exclusive = true
 	transient = true
 	always_on_top = true
+	borderless = false
 	
 	var vbox = VBoxContainer.new()
 	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -53,10 +54,14 @@ func bind_func(callable: Callable) -> void:
 	_bind_func = callable
 
 func bind_to_http_download(http: HTTPRequest) -> void:
+	close_on_max = false
 	set_max(http.get_body_size())
 	bind_func(http.get_downloaded_bytes)
 	
-	http.request_completed.connect(queue_free)
+	http.request_completed.connect(_http_complete)
+
+func _http_complete(_res: int, _code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
+	queue_free()
 
 func set_max(value: float) -> void:
 	if value == -1:
