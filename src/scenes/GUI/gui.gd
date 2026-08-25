@@ -22,9 +22,6 @@ func _ready() -> void:
 		menu_window.visible = false
 		menu_window.main = main
 		menu.main = main
-		
-		var prog = progress()
-		prog.bind_property(self, "test")
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
