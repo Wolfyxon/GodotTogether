@@ -250,7 +250,11 @@ func download_update_zip(url: String) -> String:
 	
 	delete_download_zip()
 	
+	var prog = main.gui.progress("Downloading")
+	prog.bind_to_http_download(http)
+	
 	http.request(url, ["User-Agent: %s" % USER_AGENT])
+	
 	var params = await http.request_completed
 	var code = params[1]
 	
@@ -284,7 +288,7 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 		alert(download_err, "Error downloading update")
 		return
 	
-	apply_update()
+	#apply_update()
 
 # Godot randomly complains about cyclic reference
 # This garbage function fixes it
@@ -298,14 +302,14 @@ func apply_update() -> void:
 	var zip_err = installer.open_zip(ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE)
 	
 	if zip_err != OK:
-		alert("Unable to open update file: %s" % error_string(zip_err), "Error applying update")
+		alert("Unable to open update file: %s" % error_string(zip_err) + "\nPlease report this", "Error applying update")
 		installer.queue_free()
 		return
 	
 	var valid_err = installer.validate()
 	
 	if not valid_err.is_empty():
-		alert(valid_err, "Update file is invalid")
+		alert(valid_err + "\nPlease report this.", "Update file is invalid")
 		installer.queue_free()
 		return
 	
