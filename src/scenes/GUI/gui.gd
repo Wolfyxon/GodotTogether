@@ -23,6 +23,9 @@ func _ready() -> void:
 		menu_window.main = main
 		menu.main = main
 		
+		var prog = progress()
+		prog.bind_property(self, "test")
+
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
 		get_menu_window().visible = true
@@ -45,23 +48,8 @@ func add_window(window: Window) -> void:
 	else:
 		add_child(window)
 
-func progress(callback: Callable, description := "Please wait...", title := "GodotTogether") -> Popup:
-	var popup = PopupPanel.new()
-	popup.min_size = Vector2(450, 150)
-	popup.size = popup.min_size
-	
-	var vbox = VBoxContainer.new()
-	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	
-	var label = Label.new()
-	label.text = description
-	
-	var bar = ProgressBar.new()
-	
-	vbox.add_child(label)
-	vbox.add_child(bar)
-	popup.add_child(vbox)
+func progress(description := "Please wait...") -> GDTProgressPopup:
+	var popup = GDTProgressPopup.new(description)
 	
 	add_window(popup)
 	popup.popup_centered()
