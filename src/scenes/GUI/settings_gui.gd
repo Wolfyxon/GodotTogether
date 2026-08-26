@@ -21,6 +21,7 @@ func _ready() -> void:
 	
 	$main/scroll/vbox/updateSigning.main = gui.main
 	$main/scroll/vbox/devActions/btnRunTests.pressed.connect(gui.main.tests.run_tests)
+	hide()
 
 func register_control(node: Control) -> void:
 	var path = node.get_meta("setting")
