@@ -25,6 +25,7 @@ const _DEFAULT_DATA = {
 	"update": {
 		"latest_version": null,
 		"download_url": null,
+		"download_signature": null,
 		"last_check": 0,
 		"check_interval_hours": 720, # monthly
 		"auto_check_enabled": true

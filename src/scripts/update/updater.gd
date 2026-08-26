@@ -9,9 +9,10 @@ const LAST_CHECK_SETTING_PATH = "update/last_check"
 const ROOT = "user://"
 const DOWNLOAD_DIR = "GodotTogetherUpdater"
 const DOWNLOAD_FILE = "update.zip"
+const ZIP_PATH = ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE
 
 const USER_AGENT = "GodotTogether Updater"
-const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/GodotTogether/releases/latest"
+const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/release-test/releases/latest"
 const GITHUB_AUTHOR_ID = 58263600
 
 const RELEASE_KEY_TEXT = "
@@ -133,23 +134,41 @@ func is_time_to_check() -> bool:
 	
 	return now > last_check + interval
 
+func validate_github_asset(asset: Dictionary) -> bool:
+	if not "name" in asset:
+		printerr("Missing 'name' field in asset")
+		return false
+	
+	if not "browser_download_url" in asset:
+		printerr("Missing 'browser_download_url' in asset")
+		return false
+	
+	if not "uploader" in asset:
+		printerr("Missing 'uploader' field in asset")
+		return false
+		
+	return true
+
 func get_target_github_asset(assets: Array) -> Dictionary:
 	for asset in assets:
-		if not "name" in asset:
-			printerr("Missing 'name' field in asset")
+		if not validate_github_asset(asset):
 			continue
 		
 		if not asset["name"].ends_with(".zip"):
 			continue
 		
-		if not "browser_download_url" in asset:
-			printerr("Missing 'browser_download_url' in asset")
+		return asset
+	
+	return {}
+
+func get_signature_github_asset(assets: Array) -> Dictionary:
+	for asset in assets:
+		if not validate_github_asset(asset):
 			continue
 		
-		if not "uploader" in asset:
-			printerr("Missing 'uploader' field in asset")
+		if not asset["name"].ends_with(".gdsig"):
 			continue
-			
+		
 		return asset
 	
 	return {}
@@ -246,22 +265,57 @@ func _check_from_api() -> GDTUpdateCheckResult:
 		return res
 	
 	var assets = json_data["assets"]
-	var asset = get_target_github_asset(assets)
+	var download_asset = get_target_github_asset(assets)
+	var sign_asset = get_signature_github_asset(assets)
 	
-	if asset.is_empty():
-		return GDTUpdateCheckResult.err("Update file to download not found")
+	if download_asset.is_empty():
+		return GDTUpdateCheckResult.err("Update file to download not found. Please report this")
 	
-	if asset["uploader"]["id"] != GITHUB_AUTHOR_ID:
+	if sign_asset.is_empty():
+		return GDTUpdateCheckResult.err("Update signature not found. The update cannot be verified. Please report this.")
+	
+	if download_asset["uploader"]["id"] != GITHUB_AUTHOR_ID:
 		var user_name = "<unknown>"
 		
-		if "login" in asset["uploader"]:
-			user_name = asset["uploader"]["login"]
+		if "login" in download_asset["uploader"]:
+			user_name = download_asset["uploader"]["login"]
 		
 		return GDTUpdateCheckResult.err(get_unauthorized_user_warning(user_name, res.version))
 	
-	res.download_url = asset["browser_download_url"]
+	var sig_request_err = await request_signature(res, sign_asset["browser_download_url"])
+	
+	if sig_request_err:
+		return GDTUpdateCheckResult.err(sig_request_err)
+	
+	res.download_url = download_asset["browser_download_url"]
 	
 	return res
+
+func request_signature(update: GDTUpdateCheckResult, url: String) -> String:
+	http.timeout = API_TIMEOUT
+	http.download_file = ""
+	
+	var err = http.request(url, ["User-Agent: %s" % USER_AGENT])
+	
+	if err != OK:
+		return "Unable to request signature: %s" % err
+	
+	var params = await http.request_completed
+	var code: int = params[1]
+	var body_buf: PackedByteArray = params[3]
+	
+	if code == 0:
+		return "No internet connection"
+	
+	if code != 200:
+		return "Could not request signature. Code %s" % code
+	
+	if not body_buf:
+		return "Signature is empty. Please report this"
+	
+	update.signature = body_buf
+	
+	return ""
 
 func get_download_progress_percent() -> int:
 	var size = http.get_body_size()
@@ -303,7 +357,7 @@ func prepare_dir() -> String:
 
 func download_update_zip(url: String) -> String:
 	http.timeout = DOWNLOAD_TIMEOUT
-	http.download_file = ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE
+	http.download_file = ZIP_PATH
 	
 	var dir_err = prepare_dir()
 	
@@ -363,7 +417,7 @@ func apply_update() -> void:
 	GDTUpdateCheckResult.clear_cache()
 	
 	var installer = GDTUpdateInstaller.new()
-	var zip_err = installer.open_zip(ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE)
+	var zip_err = installer.open_zip(ZIP_PATH)
 	
 	if zip_err != OK:
 		alert("Unable to open update file: %s" % error_string(zip_err) + "\nPlease report this", "Error applying update")
