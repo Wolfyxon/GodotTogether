@@ -413,7 +413,7 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 
 func verify_update(update: GDTUpdateCheckResult) -> bool:
 	if not update.signature:
-		alert("Missing signature. Cannot verify the authenticity of the release.")
+		alert("Corrupted signature. Cannot verify the authenticity of the release. Please report this")
 		return false
 	
 	var hash = GDTUtils.sha256_of_file(ZIP_PATH)
