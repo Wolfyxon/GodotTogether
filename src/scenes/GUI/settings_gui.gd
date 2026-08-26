@@ -4,6 +4,7 @@ class_name GDTSettingsGUI
 
 @onready var vbox = $main/scroll/vbox
 @onready var update_check_btn = $main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow
+@onready var title_sandwich: Label = $main/scroll/vbox/titleSandwich
 
 var gui: GodotTogetherGUI
 var controls: Array[Control] = []
@@ -22,6 +23,8 @@ func _ready() -> void:
 	$main/scroll/vbox/updateSigning.main = gui.main
 	$main/scroll/vbox/devActions/btnRunTests.pressed.connect(gui.main.tests.run_tests)
 	hide()
+	
+	title_sandwich.hide()
 
 func register_control(node: Control) -> void:
 	var path = node.get_meta("setting")
@@ -83,3 +86,7 @@ func _on_btn_check_update_now_pressed() -> void:
 	
 	if await gui.confirm("New version available: '%s'! Update now?" % res.version):
 		gui.main.updater.begin_update(res)
+
+
+func _on_btn_sandwich_pressed() -> void:
+	title_sandwich.show()

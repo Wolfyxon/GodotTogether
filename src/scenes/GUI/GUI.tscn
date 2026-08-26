@@ -21,7 +21,6 @@
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
 [ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings_gui.gd" id="18_8pkel"]
-[ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="22_m6j2w"]
 
 [node name="GUI" type="Node" unique_id=1542491573]
 script = ExtResource("1_73joy")
@@ -40,14 +39,13 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -25.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -695,10 +693,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 966.0
+offset_bottom = 596.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -740,55 +738,12 @@ text = "I'm aware of the security risk and I won't use it with people I don't fu
 layout_mode = 2
 text = "Proceed"
 
-[node name="error" type="VBoxContainer" parent="mainMenu" unique_id=245770348]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -25.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="header" type="Label" parent="mainMenu/error" unique_id=2120675591]
-layout_mode = 2
-size_flags_vertical = 1
-theme_type_variation = &"WarningLabel"
-theme_override_font_sizes/font_size = 31
-text = "Error"
-horizontal_alignment = 1
-
-[node name="description" type="Label" parent="mainMenu/error" unique_id=1268771401]
-custom_maximum_size = Vector2(-1, 400)
-layout_mode = 2
-size_flags_vertical = 3
-text = "There is supposed to be an error message here but Wolfyxon messed up SO bad I can't even tell you what went wrong.
-Please report this."
-autowrap_mode = 2
-
-[node name="sep" type="Control" parent="mainMenu/error" unique_id=2073683309]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="actions" type="HBoxContainer" parent="mainMenu/error" unique_id=245346357]
-layout_mode = 2
-
-[node name="btnRestart" type="Button" parent="mainMenu/error/actions" unique_id=789621297]
-custom_maximum_size = Vector2(-1, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Restart plugin"
-icon = ExtResource("17_u8ku5")
-
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 966.0
+offset_bottom = 596.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -866,10 +821,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 729.0
-offset_bottom = 479.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 746.0
+offset_bottom = 496.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]
@@ -942,10 +897,10 @@ borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings" unique_id=661741475]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 775.0
-offset_bottom = 675.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 796.0
+offset_bottom = 696.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
@@ -1069,24 +1024,6 @@ size_flags_horizontal = 3
 text = "Check for updates now"
 icon = ExtResource("4_lrlm7")
 
-[node name="updateSigning" type="VBoxContainer" parent="mainMenu/settings/main/scroll/vbox" unique_id=7472914]
-visible = false
-layout_mode = 2
-script = ExtResource("22_m6j2w")
-
-[node name="keyInput" type="TextEdit" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=1294506008]
-custom_minimum_size = Vector2(0, 150)
-layout_mode = 2
-placeholder_text = "Paste private key block"
-
-[node name="btnSign" type="Button" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=294336574]
-layout_mode = 2
-text = "Sign build"
-
-[node name="btnVerify" type="Button" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=693617756]
-layout_mode = 2
-text = "Verify last signature"
-
 [node name="HSeparator5" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=964053785]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -1188,6 +1125,17 @@ tooltip_text = "Shut down and restart the plugin. Useful for development."
 text = "Restart plugin"
 icon = ExtResource("17_u8ku5")
 
+[node name="btnSandwich" type="Button" parent="mainMenu/settings/main/scroll/vbox" unique_id=874707387]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sandwich 🥪"
+
+[node name="titleSandwich" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=311744435]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Your sandwich is ready 🥪"
+
 [node name="Label" type="Label" parent="mainMenu/settings/main" unique_id=448454228]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
@@ -1219,17 +1167,15 @@ icon = ExtResource("9_4c4b3")
 [connection signal="timeout" from="mainMenu/main/update" to="mainMenu/main" method="_on_update_timeout"]
 [connection signal="meta_clicked" from="mainMenu/disclaimer/text" to="mainMenu/disclaimer" method="_on_text_meta_clicked"]
 [connection signal="pressed" from="mainMenu/disclaimer/btnProceed" to="mainMenu/disclaimer" method="_on_btn_proceed_pressed"]
-[connection signal="pressed" from="mainMenu/error/actions/btnRestart" to="mainMenu" method="_on_btn_restart_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/openGd" to="mainMenu/settingsError" method="_on_open_gd_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/showFile" to="mainMenu/settingsError" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/restart" to="mainMenu/settingsError" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow" to="mainMenu/settings" method="_on_btn_check_update_now_pressed"]
-[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateSigning/btnSign" to="mainMenu/settings/main/scroll/vbox/updateSigning" method="_on_btn_sign_pressed"]
-[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateSigning/btnVerify" to="mainMenu/settings/main/scroll/vbox/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/shutdown" to="mainMenu/settings" method="_on_shutdown_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/restart" to="mainMenu/settings" method="_on_restart_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/btnSandwich" to="mainMenu/settings" method="_on_btn_sandwich_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/close" to="mainMenu/settings" method="hide"]
