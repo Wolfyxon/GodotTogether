@@ -32,6 +32,8 @@ func _ready() -> void:
 	update_timer.wait_time = 0.02
 	add_child(update_timer)
 	update_timer.start()
+	
+	report_ready()
 
 func _update() -> void:
 	if not main: return

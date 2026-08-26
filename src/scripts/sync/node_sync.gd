@@ -119,6 +119,7 @@ func _ready() -> void:
 	rescan_timer.start()
 	
 	start()
+	report_ready()
 
 func _check_changes() -> void:
 	if not can_sync_nodes(): return

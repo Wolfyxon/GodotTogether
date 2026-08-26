@@ -6,6 +6,9 @@ var fail_count = 0
 
 var test_times = {}
 
+func _ready() -> void:
+	report_ready()
+
 func exec_test(f: Callable) -> void:
 	var start = Time.get_unix_time_from_system()
 	var res = f.call()

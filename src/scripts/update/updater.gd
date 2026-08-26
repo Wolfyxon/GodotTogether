@@ -42,6 +42,7 @@ var latest_result: GDTUpdateCheckResult = null
 
 func _ready() -> void:
 	add_child(http)
+	report_ready()
 
 func get_key() -> CryptoKey:
 	if _release_key:

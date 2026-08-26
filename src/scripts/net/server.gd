@@ -18,6 +18,7 @@ var ip_join_times = {}
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
+	report_ready()
 
 func _connected(id: int) -> void:
 	if not multiplayer.is_server(): 

@@ -26,6 +26,7 @@ func _ready() -> void:
 
 	# Doesn't fire, probably a Godot bug
 	#multiplayer.connection_failed.connect(_connecting_finished.bind(false))
+	report_ready()
 
 func _connected() -> void:
 	if multiplayer.is_server(): return

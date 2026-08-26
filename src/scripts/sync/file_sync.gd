@@ -15,6 +15,7 @@ func _ready() -> void:
 	EditorInterface.get_resource_filesystem().filesystem_changed.connect(scan_files)
 	
 	ignore_last_changes()
+	report_ready()
 
 func ignore_last_changes() -> void:
 	file_hashes = GDTFiles.get_file_tree_hashes()

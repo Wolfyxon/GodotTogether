@@ -71,6 +71,8 @@ func _enter_tree() -> void:
 	
 	if GDTSettings.get_setting("update/auto_check_enabled"):
 		updater.conditional_check()
+	
+	post_check_components()
 
 func _exit_tree() -> void:
 	if not plugin_started:
@@ -82,6 +84,28 @@ func _exit_tree() -> void:
 	chat.queue_free()
 	gui.queue_free()
 	queue_free()
+
+func post_check_components() -> void:
+	await get_tree().create_timer(0.25).timeout
+	
+	var unready = []
+	
+	for i in components:
+		if i is GDTComponent and not i.component_ready:
+			unready.append(i.name)
+	
+	if not unready.is_empty():
+		gui.get_menu_window().set_error_of_death(
+			"Plugin failed to load",
+			
+			GDTUtils.join([
+				"The following components had a problem:",
+				GDTUtils.join(unready, ", "),
+				"",
+				"Please try restarting the plugin, and if it still doesn't work, file a bug report.",
+				"Make sure to include the console output"
+			], "\n")
+		)
 
 func shutdown() -> void:
 	EditorInterface.set_plugin_enabled("GodotTogether", false)

@@ -22,6 +22,8 @@ func _ready() -> void:
 		menu_window.visible = false
 		menu_window.main = main
 		menu.main = main
+		
+		report_ready()
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
