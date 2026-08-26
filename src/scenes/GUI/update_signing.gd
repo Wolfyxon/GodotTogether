@@ -5,7 +5,7 @@ class_name GDTReleaseSigner
 var main: GodotTogether
 
 const BUILD_PATH = "res://addons/GodotTogether/build/GodotTogether.zip"
-const SIG_PATH = "res://addons/GodotTogether/build/GodotTogether.zip.gdsig"
+const SIG_PATH = "res://addons/GodotTogether/build/release.gdsig"
 
 func _on_btn_sign_pressed() -> void:
 	var build_hash = GDTUtils.sha256_of_file(BUILD_PATH)
