@@ -12,7 +12,7 @@ const DOWNLOAD_FILE = "update.zip"
 const ZIP_PATH = ROOT + "/" + DOWNLOAD_DIR + "/" + DOWNLOAD_FILE
 
 const USER_AGENT = "GodotTogether Updater"
-const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/release-test/releases/latest"
+const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/GodotTogether/releases/latest"
 const GITHUB_AUTHOR_ID = 58263600
 
 const RELEASE_KEY_TEXT = "
