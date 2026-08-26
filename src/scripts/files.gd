@@ -45,7 +45,7 @@ static func get_file_tree(root := "res://", include_unsafe := false) -> Array[St
 		if not include_unsafe and GDTValidator.is_path_safe(dir_path):
 			continue
 
-		for path in get_file_tree(dir_path):
+		for path in get_file_tree(dir_path, include_unsafe):
 			_check_append.call(path)
 	
 	return res
