@@ -406,7 +406,35 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 		alert(download_err, "Error downloading update")
 		return
 	
+	if not verify_update(update):
+		return
+	
 	apply_update()
+
+func verify_update(update: GDTUpdateCheckResult) -> bool:
+	if not update.signature:
+		alert("Missing signature. Cannot verify the authenticity of the release.")
+		return false
+	
+	var hash = GDTUtils.sha256_of_file(ZIP_PATH)
+	
+	if not hash:
+		alert("Unable to hash update file")
+		return false
+	
+	if not verify_hash(hash, update.signature):
+		alert(GDTUtils.join([
+			"Downloaded file does not match the signature.",
+			"This means the update is corrupted or an authorized person uploaded file.",
+			"For your safety, do not try applying the update manually.",
+			"",
+			"Try downloading it again.",
+			"If it still happens please report this ASAP!"
+		]))
+		
+		return false
+	
+	return true
 
 # Godot randomly complains about cyclic reference
 # This garbage function fixes it
