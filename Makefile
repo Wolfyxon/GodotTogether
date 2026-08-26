@@ -12,6 +12,13 @@ ESSENTIAL_ROOT_PATHS := src plugin.cfg .gitignore install_instructions.txt LICEN
 release: build
 	rm -f $(ZIP_PATH)
 	cd $(BUILD_FILES_DIR) && zip -r ../../$(ZIP_PATH) .
+	
+	@echo ""
+	@echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	@echo " Make sure create a .gdsig signature if you're publishing this!"
+	@echo " Otherwise auto update will NOT work!"
+	@echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	@echo ""
 
 build:
 	mkdir -p $(BUILD_FILES_DIR)
