@@ -14,14 +14,78 @@ const USER_AGENT = "GodotTogether Updater"
 const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/GodotTogether/releases/latest"
 const GITHUB_AUTHOR_ID = 58263600
 
+const RELEASE_KEY_TEXT = "
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAjfLVr8zDUH2yL5JXcr1T
+hUqppO4vKi4aQjIT8vV/AW5kNqbBl+J+QFrW95um3loVRra8NnyBDVJBH1gYvMUZ
+OWAVxdMfdvwQ2qvIRRLEi7T9t0S9zIFUZfoGqBYN8ALftGpLAmllMspyjVr3lk4d
+jB3T3l1weoax/IC+g2cmuvuYsvzSiZMhjBmoIW1OF/fpZNzz3/T7EayQbPkLjo7/
+Ulp/bVRM+SMBoaPySYtJp3hqXwrJxqt/XZz9xQs6qckz0nvCqwRccEFDs/qPUOHZ
+mF7T/9efgqSVEwMOsSrRkg3kcrScnLfZ2oqKZUAAkY62D8ypMgoCGOna67pQWUaE
+gaortc6dFuLCOTqBLBUfzBmb6lQmbO6wo5jp/8tKsQr21ZONRfHOJqEvSH3/G4yE
+eJFB5CeakhBvWgk1EKpsD3sjXsoV9Be6FKTAgoqgbFDUOCFxNwCjfoKmCyWE+G/B
+EDwBECdEi5N7UMTXbAxuoYy9WQsPxBcPNJW1aqZayn1fT+x3jNy8VdGUzixO+Twv
+iBq705N+fdXRavu1+5J+GVuddGvqu69ny3ZhQZqIQLnhHuEwjk3HSrpUnT8diGZT
+KfgFSocVeaCqDxbGVv8tXNNDQ7Sr8ccmVwC4KrYVc2OWvcUvs8PRaM87f1kaqEv5
+lCnHIepelFBT4a6gPIbRX+sCAwEAAQ==
+-----END PUBLIC KEY-----
+"
+
 const API_TIMEOUT = 10
 const DOWNLOAD_TIMEOUT = 0
 
+var crypto = Crypto.new()
+var _release_key: CryptoKey
 var http = HTTPRequest.new()
 var latest_result: GDTUpdateCheckResult = null
 
 func _ready() -> void:
 	add_child(http)
+
+func get_key() -> CryptoKey:
+	if _release_key:
+		return _release_key
+		
+	var key = CryptoKey.new()
+	var err = key.load_from_string(RELEASE_KEY_TEXT, true)
+	
+	if err != OK:
+		printerr("Unable to load key. Code: %s"  % err)
+		return
+	
+	return key
+
+func sign_hash(private_key_text: String, hash_text: String) -> PackedByteArray:
+	var key = CryptoKey.new()
+	var err = key.load_from_string(private_key_text)
+	
+	if err != OK:
+		printerr("Unable to load private key. Code: %s"  % err)
+		return []
+	
+	var hash = hash_text.hex_decode()
+	
+	if hash.is_empty():
+		printerr("Unable to decode hash")
+		return []
+	
+	var buf = crypto.sign(HashingContext.HASH_SHA256, hash, key)
+	
+	return buf
+
+func sign_data(private_key_text: String, data: PackedByteArray) -> PackedByteArray:
+	var hash = GDTUtils.sha256_of_buffer(data)
+	
+	return sign_hash(private_key_text, hash)
+
+func verify_hash(hash: String, signature_buf: PackedByteArray) -> bool:
+	var hash_buf = hash.hex_decode()
+	var key = get_key()
+	
+	return crypto.verify(HashingContext.HASH_SHA256, hash_buf, signature_buf, key)
+
+func verify_data(data: PackedByteArray, signature_buf: PackedByteArray) -> bool:
+	return verify_hash(GDTUtils.sha256_of_buffer(data), signature_buf)
 
 func check_cached() -> GDTUpdateCheckResult:
 	var cached = GDTUpdateCheckResult.get_from_settings()

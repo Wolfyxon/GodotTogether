@@ -613,3 +613,83 @@ func test_path_validation() -> bool:
 			printerr("'%s' got safe" % i)
 	
 	return true
+
+func test_updater_crypto() -> bool:
+	if not main.updater.get_key():
+		printerr("Public key does not load")
+		return false
+	
+	var data1 = "Hello there this is a test" # signed
+	var data2 = "Hello here is is a testy test"
+	
+	# Signature of utf8 buffer
+	var sig_text = "
+					0a0434f96cae41a59e8542ab741caab78b68fa90598ac200db1c33d7e59446d8a52ee48b3f480
+					eb55ce13344c61920eb844908ec9c0a6f6654104e7e677177435622d43e5330b9f3ce9114d96b
+					d4d7d85aaae4d139f3fb9bf77864739dd4ee29f12a1d595b58511c3d5a058a1eea2e921d8b374
+					de527baf321313c2af4adb85009902388f8cefc430ee06bc68245b65a6ff52e312098042cf3c9
+					e76af54d37d540ad615a926bbefc7ff6f84cacbbd29711fbf335df16b0f45ea62d9f5a4072f9e
+					5893155059feb3caa9edbc67848f55c7d1f86159aefc951e5ef5acf2e4b90ec8751a865d2a0bc
+					36e5af526a5aae030ed53dbb2036c42d15ade43802db23417bfafcb5f811ef2930845de22ec6f
+					2342ccc42045987abc47c4ab84c7fea97c1da61f7a47c2f52ab29590ff49cdc97545c87bd00b3
+					fbc6d04106210744d76b57ee7ff929d830e764c3ce7667e03710bdede062a4d46ceba173ac615
+					afb9bc80c56d66d1144f3f5f8ae5959be7dc2ad60c3c8bba47fe8bae34822067c88356f4ed0c2
+					0d311c9e2487587cc868bae0ad32f50550da699d99e008dd66c39bacd8548c07d4effc9a91abe
+					5f39d7935a18afd8b8fc0f2e205f09709a7c520ecb236ebcf59633d85174f98ae4a21cca16578
+					d873a3932d6b4aee5ebc0ec0b60e949ad95ee27d4f8ef7d594e86e813e88da48a5ebc8a263291
+					9328a27f4adacbb493df293"
+	
+	var sig = sig_text.remove_chars("\n\t ").hex_decode()
+	
+	if not sig:
+		printerr("Unable to decode hex signature into buffer")
+		return false
+	
+	if not main.updater.verify_data(data1.to_utf8_buffer(), sig):
+		printerr("data1 should match signature")
+		return false
+	
+	if main.updater.verify_data(data2.to_utf8_buffer(), sig):
+		printerr("data2 shouldn't match signature")
+		return false
+	
+	return true
+
+func test_runaway_keys() -> bool:
+	var tree = GDTFiles.get_file_tree("res://addons/GodotTogether", true)
+	var extensions = ["gd", "txt", "json", "md", "res", "tres", "tscn"]
+	
+	# Private key header encoded as bytes to not activate the detection
+	var header = PackedByteArray(
+		[
+			45, 45, 45, 45, 45, 66, 69, 71, 73, 78, 32, 82, 83, 65, 32, 80, 
+			82, 73, 86, 65, 84, 69, 32, 75, 69, 89, 45, 45, 45, 45, 45
+		]
+	).get_string_from_utf8()
+
+	var found = []
+	
+	for path in tree:
+		if not path.get_extension() in extensions and not path.contains("Makefile"):
+			continue
+		
+		var text = FileAccess.get_file_as_string(path)
+		
+		if not text:
+			printerr("Unable to open %s" % path)
+			continue
+			
+		if text.contains(header):
+			found.append(path)
+	
+	if not found.is_empty():
+		printerr("PRIVATE KEY FOUND IN THE FOLLOWING FILES:")
+		
+		for path in found:
+			printerr(path)
+		
+		printerr("DO NOT COMMIT OR PUSH!!!")
+		
+		return false
+	
+	return true
