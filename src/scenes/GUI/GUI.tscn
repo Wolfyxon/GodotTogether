@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
 [ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings_gui.gd" id="18_8pkel"]
+[ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="22_m6j2w"]
 
 [node name="GUI" type="Node" unique_id=1542491573]
 script = ExtResource("1_73joy")
@@ -740,6 +741,7 @@ layout_mode = 2
 text = "Proceed"
 
 [node name="error" type="VBoxContainer" parent="mainMenu" unique_id=245770348]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -934,15 +936,16 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
 size = Vector2i(800, 700)
+visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings" unique_id=661741475]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 779.0
-offset_bottom = 679.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 775.0
+offset_bottom = 675.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
@@ -1065,6 +1068,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Check for updates now"
 icon = ExtResource("4_lrlm7")
+
+[node name="updateSigning" type="VBoxContainer" parent="mainMenu/settings/main/scroll/vbox" unique_id=7472914]
+visible = false
+layout_mode = 2
+script = ExtResource("22_m6j2w")
+
+[node name="keyInput" type="TextEdit" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=1294506008]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+placeholder_text = "Paste private key block"
+
+[node name="btnSign" type="Button" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=294336574]
+layout_mode = 2
+text = "Sign build"
+
+[node name="btnVerify" type="Button" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=693617756]
+layout_mode = 2
+text = "Verify last signature"
 
 [node name="HSeparator5" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=964053785]
 custom_minimum_size = Vector2(0, 50)
@@ -1205,6 +1226,8 @@ icon = ExtResource("9_4c4b3")
 [connection signal="pressed" from="mainMenu/settingsError/actions/restart" to="mainMenu/settingsError" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow" to="mainMenu/settings" method="_on_btn_check_update_now_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateSigning/btnSign" to="mainMenu/settings/main/scroll/vbox/updateSigning" method="_on_btn_sign_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateSigning/btnVerify" to="mainMenu/settings/main/scroll/vbox/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/shutdown" to="mainMenu/settings" method="_on_shutdown_pressed"]
