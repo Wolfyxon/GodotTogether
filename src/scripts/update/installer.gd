@@ -23,7 +23,7 @@ func _ready() -> void:
 	save_settings()
 	
 	print("[GodotTogether] Removing current plugin version")
-	remove_dir_recursive(PLUGIN_DIR)
+	remove_dir_recursive(PLUGIN_DIR, [".git"])
 	
 	unzip()
 	restore_settings()
@@ -130,7 +130,7 @@ static func ensure_dir_exists(path: String) -> int:
 		
 	return OK
 
-static func remove_dir_recursive(path: String) -> void:
+static func remove_dir_recursive(path: String, ignore := []) -> void:
 	var dir = DirAccess.open(path)
 	
 	if not dir:
@@ -138,9 +138,15 @@ static func remove_dir_recursive(path: String) -> void:
 		return
 	
 	for file in dir.get_files():
+		if file in ignore: 
+			continue
+		
 		dir.remove(file)
 	
 	for sub_dir in dir.get_directories():
+		if sub_dir in ignore:
+			continue
+		
 		remove_dir_recursive(path + "/" + sub_dir)
 	
 	dir.remove(".")
