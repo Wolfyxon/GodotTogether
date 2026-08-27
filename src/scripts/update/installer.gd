@@ -12,6 +12,7 @@ var zip_path: String = ""
 var zip: ZIPReader
 
 var settings_buf = []
+var written_paths = []
 
 func _ready() -> void:
 	print("[GodotTogether] Initializing update installer...")
@@ -34,7 +35,7 @@ func unzip() -> void:
 	for file_path in zip.get_files():
 		var buf = zip.read_file(file_path)
 		var physical_path = PLUGIN_DIR + "/" + file_path
-				
+		
 		ensure_dir_exists(physical_path)
 		
 		var file = FileAccess.open(physical_path, FileAccess.WRITE)
@@ -44,6 +45,7 @@ func unzip() -> void:
 			continue
 		
 		file.store_buffer(buf)
+		written_paths.append(physical_path)
 		
 		print(file_path)
 		
@@ -56,7 +58,7 @@ func save_settings() -> void:
 		print("[GodotTogether] Backing up settings")
 		
 		settings_buf = FileAccess.get_file_as_bytes(settings_path)
-		
+
 func restore_settings() -> void:
 	var settings_path = PLUGIN_DIR + "/" + SETTINGS_FILE
 	
@@ -89,6 +91,8 @@ func open_zip(path: String) -> int:
 	return zip.open(path)
 
 func start() -> void:
+	EditorInterface.set_plugin_enabled("GodotTogether", false) # in case it failed in main
+	
 	var root = EditorInterface.get_base_control()
 	root.add_child(self)
 
@@ -96,7 +100,13 @@ func finish() -> void:
 	print("[GodotTogether] Update complete. Restarting plugin")
 	
 	zip.close()
+	
 	EditorInterface.get_resource_filesystem().scan()
+	
+	for i in range(5):
+		await get_tree().process_frame
+	
+	EditorInterface.get_resource_filesystem().reimport_files(written_paths)
 	
 	for i in range(5):
 		await get_tree().process_frame
