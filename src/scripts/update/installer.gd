@@ -12,7 +12,6 @@ var zip_path: String = ""
 var zip: ZIPReader
 
 var settings_buf = []
-var written_paths = []
 
 func _ready() -> void:
 	print("[GodotTogether] Initializing update installer...")
@@ -45,7 +44,6 @@ func unzip() -> void:
 			continue
 		
 		file.store_buffer(buf)
-		written_paths.append(physical_path)
 		
 		print(file_path)
 		
@@ -102,11 +100,6 @@ func finish() -> void:
 	zip.close()
 	
 	EditorInterface.get_resource_filesystem().scan()
-	
-	for i in range(5):
-		await get_tree().process_frame
-	
-	EditorInterface.get_resource_filesystem().reimport_files(written_paths)
 	
 	for i in range(5):
 		await get_tree().process_frame
