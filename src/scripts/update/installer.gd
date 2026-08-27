@@ -104,6 +104,10 @@ func finish() -> void:
 	EditorInterface.set_plugin_enabled("GodotTogether", true)
 	
 	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	if not EditorInterface.is_plugin_enabled("GodotTogether"):
+		printerr("GodotTogether does not start. The update likely have failed.")
 	
 	print("[GodotTogether] Shutting down updater")
 	queue_free()
