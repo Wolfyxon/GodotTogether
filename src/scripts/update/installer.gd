@@ -14,7 +14,10 @@ var zip: ZIPReader
 var settings_buf = []
 
 func _ready() -> void:
-	await get_tree().process_frame # Wait for shutdown
+	print("[GodotTogether] Initializing update installer...")
+	
+	for i in range(5): # Wait for shutdown
+		await get_tree().process_frame
 	
 	save_settings()
 	
