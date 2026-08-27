@@ -186,7 +186,7 @@ static func get_descendants(node: Node, include_internal := false) -> Array[Node
 static func is_peer_connected(peer: MultiplayerPeer) -> bool:
 	return peer.get_connection_status() == peer.CONNECTION_CONNECTED
 
-static func set_control_value(node: Control, value) -> void:
+static func set_control_value(node: Control, value, format := "") -> void:
 	node.set_block_signals(true)
 	
 	if node is OptionButton:
@@ -207,10 +207,11 @@ static func set_control_value(node: Control, value) -> void:
 	elif node is LineEdit:
 		node.text = value
 	elif node is Label:
-		const VALUE_PLACEHHOLDER = "<value>"
-		# TODO: time placeholder
-		if node.text.contains(VALUE_PLACEHHOLDER):
-			node.text = node.text.replace(VALUE_PLACEHHOLDER, str(value))
+		const DATE_PLACEHOLDER = "<date>"
+		
+		if format and format.contains(DATE_PLACEHOLDER):
+			var tm = Time.get_date_string_from_unix_time(value)
+			node.text = format.replace(DATE_PLACEHOLDER, tm)
 		else:
 			node.text = str(value)
 	else:

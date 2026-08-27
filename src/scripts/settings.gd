@@ -110,7 +110,7 @@ static func set_setting(path: String, value) -> void:
 static func _set_setting_reverse(value, path: String) -> void:
 	set_setting(path, value)
 
-static func make_setting_control(node: Control, path: String) -> void:
+static func make_setting_control(node: Control, path: String, format := "") -> void:
 	if node is OptionButton:
 		node.item_selected.connect(func(idx):
 			var id = node.get_item_id(idx)
@@ -126,9 +126,9 @@ static func make_setting_control(node: Control, path: String) -> void:
 	elif node is LineEdit:
 		node.text_changed.connect(_set_setting_reverse.bind(path))
 	
-	update_control(node, path)
+	update_control(node, path, format)
 
-static func update_control(node: Control, path: String) -> void:
+static func update_control(node: Control, path: String, format := "") -> void:
 	var value = get_setting(path)
 	
-	GDTUtils.set_control_value(node, value)
+	GDTUtils.set_control_value(node, value, format)

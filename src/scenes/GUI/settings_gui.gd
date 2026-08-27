@@ -30,7 +30,12 @@ func register_control(node: Control) -> void:
 	var path = node.get_meta("setting")
 	controls.append(node)
 	
-	GDTSettings.make_setting_control(node, path)
+	var format = ""
+	
+	if node.has_meta("format"):
+		format = node.get_meta("format")
+	
+	GDTSettings.make_setting_control(node, path, format)
 
 func _on_reset_pressed() -> void:
 	if not gui: return
