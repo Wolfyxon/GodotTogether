@@ -7,7 +7,6 @@ Here are things you can do to contribute to the development of Godot Together.
 	- [Creating a branch](#creating-a-branch)
  		- [Why?](#why)
    		- [I forgot to create a branch but I want to make a separate pull request](#i-forgot-to-create-a-branch-but-i-want-to-make-a-separate-pull-request)
-     	- [Committing code](#committing-code) 
 	- [Rules](#rules)
  		- [No AI generated code](#no-ai-generated-code) 
 		- [Code style](#code-style)
@@ -25,6 +24,13 @@ Then clone your forked repository locally:
 ```
 git clone https://github.com/<your name>/GodotTogether.git
 ```
+
+## Repository already cloned
+If you have already cloned the repository, make sure to pull the recent changes **before you start coding**.
+```
+git pull
+```
+If you use branches, you will need to do this on each of them. 
 
 ### Creating a branch
 Then I **highly** recommend you create a separate branch instead of committing to `main`, so you can submit multiple pull requests.
@@ -51,32 +57,6 @@ To find the hash (for example a1Cx10dk01d01d), then use
 git checkout -b <name of your new branch> <commit hash>
 ```
 To branch off that older commit.
-
-### Committing code
-Use `git` (or the GitHub website, although that's very slow) to commit your changes.
-
-Make sure to commit each change instead of making a one big commit so you can debug and see individual changes in your code.
-
-❌ **Bad example**
-```
-git commit -m "General"
-```
-(has a lot of changes)
-
-✅ **Good example**
-```
-git commit -m "Fixed some_function() not returning"
-```
-```
-git commit -m "Added and using another_function()"
-```
-```
-git commit -m "Fixed lag when X is enabled"
-```
-```
-git commit -m "Cleanup"
-```
-
 
 ### Rules
 #### No AI generated code
