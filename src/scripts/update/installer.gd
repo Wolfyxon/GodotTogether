@@ -108,13 +108,10 @@ func finish() -> void:
 	# on Windows the scripts refuse to reload until you reload the project
 	# Behavior unknown on other OSes
 	if OS.get_name() != "Linux": 
-		var dial = AcceptDialog.new()
-		dial.dialog_text = "Update complete. \nPlease restart Godot to apply it."
-		dial.title = "GodotTogether"
-		EditorInterface.popup_dialog_centered(dial)
-		
+		alert("Update complete. \nPlease restart Godot to apply it.")
 		return
 	
+	alert("Update complete. \nIf you encounter issues, restart Godot.")
 	EditorInterface.set_plugin_enabled("GodotTogether", true)
 	
 	await get_tree().process_frame
@@ -125,6 +122,12 @@ func finish() -> void:
 	
 	print("[GodotTogether] Shutting down updater")
 	queue_free()
+
+func alert(text: String) -> void:
+	var dial = AcceptDialog.new()
+	dial.dialog_text = text
+	dial.title = "GodotTogether"
+	EditorInterface.popup_dialog_centered(dial)
 
 static func ensure_dir_exists(path: String) -> int:
 	var dir = path.get_base_dir()
