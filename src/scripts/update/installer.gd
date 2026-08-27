@@ -95,14 +95,25 @@ func start() -> void:
 	root.add_child(self)
 
 func finish() -> void:
-	print("[GodotTogether] Update complete. Restarting plugin")
-	
+	print("[GodotTogether] Update complete")
 	zip.close()
+	
+	await get_tree().process_frame
 	
 	EditorInterface.get_resource_filesystem().scan()
 	
 	for i in range(5):
 		await get_tree().process_frame
+	
+	# on Windows the scripts refuse to reload until you reload the project
+	# Behavior unknown on other OSes
+	if OS.get_name() != "Linux": 
+		var dial = AcceptDialog.new()
+		dial.dialog_text = "Update complete. \nPlease restart Godot to apply it."
+		dial.title = "GodotTogether"
+		EditorInterface.popup_dialog_centered(dial)
+		
+		return
 	
 	EditorInterface.set_plugin_enabled("GodotTogether", true)
 	
