@@ -15,6 +15,7 @@ const USER_AGENT = "GodotTogether Updater"
 const GITHUB_RELEASE_URL = "https://api.github.com/repos/Wolfyxon/GodotTogether/releases/latest"
 const GITHUB_AUTHOR_ID = 58263600
 
+# DO NOT TOUCH
 const RELEASE_KEY_TEXT = "
 -----BEGIN PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAjfLVr8zDUH2yL5JXcr1T
@@ -30,7 +31,7 @@ iBq705N+fdXRavu1+5J+GVuddGvqu69ny3ZhQZqIQLnhHuEwjk3HSrpUnT8diGZT
 KfgFSocVeaCqDxbGVv8tXNNDQ7Sr8ccmVwC4KrYVc2OWvcUvs8PRaM87f1kaqEv5
 lCnHIepelFBT4a6gPIbRX+sCAwEAAQ==
 -----END PUBLIC KEY-----
-"
+" # DO NOT TOUCH
 
 const API_TIMEOUT = 10
 const DOWNLOAD_TIMEOUT = 0
