@@ -84,6 +84,9 @@ func verify_hash(hash: String, signature_buf: PackedByteArray) -> bool:
 	var hash_buf = hash.hex_decode()
 	var key = get_key()
 	
+	if not key:
+		return false
+	
 	return crypto.verify(HashingContext.HASH_SHA256, hash_buf, signature_buf, key)
 
 func verify_data(data: PackedByteArray, signature_buf: PackedByteArray) -> bool:
@@ -392,6 +395,17 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 	if not main:
 		return
 	
+	if not get_key():
+		alert(GDTUtils.join([
+			"Updates cannot be safely installed.",
+			"The plugin's internal key for verifying releases is corrupted.",
+			"Try restarting the plugin and reporting this if it still occurs.",
+			"",
+			"If you're going to try updating manually, please make sure the releases are not hijacked."
+		]), "\n")
+		
+		return
+	
 	main.close_connection()
 	
 	if not update:
@@ -413,21 +427,25 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 	apply_update()
 
 func verify_update(update: GDTUpdateCheckResult) -> bool:
+	if not get_key():
+		alert("Public key is invalid. Cannot verify authenticity of the release.")
+		return false
+	
 	if not update.signature:
-		alert("Corrupted signature. Cannot verify the authenticity of the release. Please report this")
+		alert("Corrupted signature. Cannot verify the authenticity of the release. Try again or report this.")
 		return false
 	
 	var hash = GDTUtils.sha256_of_file(ZIP_PATH)
 	
 	if not hash:
-		alert("Unable to hash update file")
+		alert("Unable to get hash of update file to verify it.")
 		return false
 	
 	if not verify_hash(hash, update.signature):
 		alert(GDTUtils.join([
 			"Downloaded file does not match the signature.",
 			"This means the update is corrupted or an authorized person uploaded file.",
-			"For your safety, do not try applying the update manually.",
+			"For your safety, I advise you to not try updating manually.",
 			"",
 			"Try downloading it again.",
 			"If it still happens please report this ASAP!"
