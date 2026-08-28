@@ -32,6 +32,9 @@ func unzip() -> void:
 	print("[GodotTogether] Writing files")
 	
 	for file_path in zip.get_files():
+		if file_path.ends_with("/"): # Current entry is a directory
+			continue
+		
 		var buf = zip.read_file(file_path)
 		var physical_path = PLUGIN_DIR + "/" + file_path
 		
