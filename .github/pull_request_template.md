@@ -6,7 +6,7 @@ Explain your PR:
 
 List your changes like this:
 - Fixed this bug
-- Improved `some_function()` to `SomeClass`
+- Improved `some_function()` in `SomeClass`
 -->
 
 # Checks
