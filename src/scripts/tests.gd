@@ -635,7 +635,7 @@ func test_updater_crypto() -> bool:
 	var data1 = "Hello there this is a test" # signed
 	var data2 = "Hello here is is a testy test"
 	
-	# Signature of utf8 buffer
+	# Signature of utf8 buffer. DO NOT TOUCH!!!
 	var sig_text = "
 					0a0434f96cae41a59e8542ab741caab78b68fa90598ac200db1c33d7e59446d8a52ee48b3f480
 					eb55ce13344c61920eb844908ec9c0a6f6654104e7e677177435622d43e5330b9f3ce9114d96b
@@ -652,6 +652,7 @@ func test_updater_crypto() -> bool:
 					d873a3932d6b4aee5ebc0ec0b60e949ad95ee27d4f8ef7d594e86e813e88da48a5ebc8a263291
 					9328a27f4adacbb493df293"
 	
+	# The decoding can randomly fail. Restart Godot if it happens.
 	var sig = sig_text.remove_chars("\n\t ").hex_decode()
 	
 	if not sig:
