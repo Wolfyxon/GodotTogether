@@ -41,7 +41,9 @@ static func get_from_settings() -> GDTUpdateCheckResult:
 	if not ver or not url:
 		return
 	
-	if not sig_text:
+	if sig_text:
+		sig_text = sig_text.remove_chars("\t\n\"',. ")
+	else:
 		sig_text = ""
 	
 	var res = GDTUpdateCheckResult.new()
