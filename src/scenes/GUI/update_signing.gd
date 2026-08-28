@@ -20,6 +20,10 @@ func _on_btn_sign_pressed() -> void:
 		main.gui.alert("Unable to sign. Make sure the key is valid")
 		return
 	
+	if not main.updater.verify_hash(build_hash, sign_buf):
+		main.gui.alert("Created signature doesn't match public key. Make sure you used the maching private key")
+		return
+	
 	var f = FileAccess.open(SIG_PATH, FileAccess.WRITE)
 	
 	if not f:
