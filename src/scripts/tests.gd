@@ -652,11 +652,10 @@ func test_updater_crypto() -> bool:
 					d873a3932d6b4aee5ebc0ec0b60e949ad95ee27d4f8ef7d594e86e813e88da48a5ebc8a263291
 					9328a27f4adacbb493df293"
 	
-	# The decoding can randomly fail. Restart Godot if it happens.
 	var sig = sig_text.remove_chars("\n\t ").hex_decode()
 	
 	if not sig:
-		printerr("Unable to decode hex signature into buffer")
+		printerr("Unable to decode hex signature into buffer. Try restarting Godot")
 		return false
 	
 	if not main.updater.verify_data(data1.to_utf8_buffer(), sig):
