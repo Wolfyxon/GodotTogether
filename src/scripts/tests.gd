@@ -44,7 +44,7 @@ func run_tests() -> void:
 	if fail_count != 0:
 		fail_str = "[color=red]%s[/color]" % fail_count
 	
-	print_rich("Succeed: %s | Failed: %s" % [success_count, fail_str])
+	print_rich("Successful: %s | Failed: %s" % [success_count, fail_str])
 	
 	reset()
 	
