@@ -5,6 +5,8 @@ class_name GDTMenuWindow
 var main: GodotTogether
 var gui: GodotTogetherGUI
 
+var triggered_reflows := 0
+
 func _ready() -> void:
 	await get_tree().physics_frame
 	
@@ -34,12 +36,29 @@ func _ready() -> void:
 			error_gui.set_json(settings_json)
 			error_gui.visible = true
 
+func checked_reflow() -> void:
+	if triggered_reflows < 3:
+		reflow()
+
+# Sometimes using expanding controls causes the UI to overflow
+# Resizing the window fixes that
+func reflow() -> void:
+	triggered_reflows += 1
+	
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	position += Vector2i(1, 1)
+	size += Vector2i(1, 1)
+
 func hide_all_guis() -> void:
 	for i in get_children():
 		if i is Control:
 			i.visible = false
 
 func set_error_of_death(title: String, description: String) -> void:
+	triggered_reflows = 0
+	
 	if not is_node_ready():
 		await ready
 	

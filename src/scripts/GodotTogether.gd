@@ -180,8 +180,10 @@ func setup_chat() -> void:
 	chat_btn.tooltip_text = "Toggle GodotTogether chat"
 
 func open_menu() -> void:
-	gui.get_menu_window().popup()
-
+	var window = gui.get_menu_window()
+	window.popup()
+	window.checked_reflow()
+	
 func prepare_session() -> void:
 	EditorInterface.save_all_scenes()
 
