@@ -16,6 +16,9 @@ enum Permission {
 const PROTOCOL_VERSION = 1
 const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
 
+const GUI_SCENE = preload("../scenes/GUI/GUI.tscn")
+const CHAT_SCENE = preload("../scenes/GUI/chat/chat.tscn")
+
 var client = GDTClient.new(self, "client")
 var server = GDTServer.new(self, "server")
 var dual = GDTDual.new(self, "dual")
@@ -23,8 +26,8 @@ var dual = GDTDual.new(self, "dual")
 var file_sync = GDTFileSync.new(self, "file_sync")
 var node_sync = GDTNodeSync.new(self, "node_sync")
 
-var gui: GodotTogetherGUI = preload("../scenes/GUI/GUI.tscn").instantiate()
-var chat: GDTChat = preload("../scenes/GUI/chat/chat.tscn").instantiate()
+var gui: GodotTogetherGUI = GUI_SCENE.instantiate()
+var chat: GDTChat = CHAT_SCENE.instantiate()
 
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()

@@ -599,6 +599,28 @@ static func test_object_setget_props() -> bool:
 	
 	return true
 
+func test_scenes() -> bool:
+	const SCENES = [
+		GodotTogether.GUI_SCENE,
+		GodotTogether.CHAT_SCENE,
+		GDTDual.AVATAR_2D_SCENE,
+		GDTDual.AVATAR_3D_SCENE
+	]
+	
+	var ok = true
+	
+	for scene: PackedScene in SCENES:
+		var ins = scene.instantiate()
+		
+		if not ins:
+			printerr("Failed to instantiate: %s" % scene.resource_path)
+			ok = false
+			continue
+		
+		ins.queue_free()
+	
+	return ok
+
 func test_path_validation() -> bool:
 	var safe = [
 		"res://",
