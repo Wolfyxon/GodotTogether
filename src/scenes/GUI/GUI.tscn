@@ -20,8 +20,14 @@
 [ext_resource type="Texture2D" uid="uid://bpui0o3t80my5" path="res://addons/GodotTogether/src/img/script.svg" id="15_bvn1h"]
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
+[ext_resource type="Texture2D" uid="uid://c6okl8nlqm3oc" path="res://addons/GodotTogether/src/img/Skeleton3D.svg" id="17_ulx1o"]
 [ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings_gui.gd" id="18_8pkel"]
+[ext_resource type="Texture2D" uid="uid://cwnrusacfdot4" path="res://addons/GodotTogether/src/img/VSeparator.svg" id="18_doc2o"]
 [ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="22_m6j2w"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_doc2o"]
+font_size = 21
+outline_size = 1
 
 [node name="GUI" type="Node" unique_id=1542491573]
 script = ExtResource("1_73joy")
@@ -40,6 +46,7 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -693,7 +700,6 @@ metadata/_tab_index = 2
 autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
-visible = false
 offset_left = 25.0
 offset_top = 25.0
 offset_right = 945.0
@@ -702,14 +708,130 @@ script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Hold up!"
+theme_type_variation = &"WarningLabel"
+text = "Hold up! Please read this first!"
 horizontal_alignment = 1
 
-[node name="text" type="RichTextLabel" parent="mainMenu/disclaimer" unique_id=242571705]
+[node name="checksScroll" type="ScrollContainer" parent="mainMenu/disclaimer" unique_id=1257162799]
+custom_maximum_size = Vector2(-1, 500)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 20
+
+[node name="vbox" type="VBoxContainer" parent="mainMenu/disclaimer/checksScroll" unique_id=1342865674]
+custom_maximum_size = Vector2(-1, 400)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="security" type="VBoxContainer" parent="mainMenu/disclaimer/checksScroll/vbox" unique_id=1115699609]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="header" type="HBoxContainer" parent="mainMenu/disclaimer/checksScroll/vbox/security" unique_id=1109143563]
+layout_mode = 2
+alignment = 1
+
+[node name="icon" type="TextureRect" parent="mainMenu/disclaimer/checksScroll/vbox/security/header" unique_id=241410704]
+custom_minimum_size = Vector2(0, 32)
+custom_maximum_size = Vector2(-1, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("17_ulx1o")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="text" type="Label" parent="mainMenu/disclaimer/checksScroll/vbox/security/header" unique_id=1684863254]
+custom_minimum_size = Vector2(50, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Only use the plugin with people you FULLY trust. You may get easily hacked."
+label_settings = SubResource("LabelSettings_doc2o")
+autowrap_mode = 2
+
+[node name="check" type="CheckBox" parent="mainMenu/disclaimer/checksScroll/vbox/security" unique_id=2064131078]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "I will be responsible and only use the plugin with trusted people."
+autowrap_mode = 2
+
+[node name="check2" type="CheckBox" parent="mainMenu/disclaimer/checksScroll/vbox/security" unique_id=1457602053]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "I will not be a menace to society who sends people malware."
+autowrap_mode = 2
+
+[node name="backup" type="VBoxContainer" parent="mainMenu/disclaimer/checksScroll/vbox" unique_id=1416791306]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="header" type="HBoxContainer" parent="mainMenu/disclaimer/checksScroll/vbox/backup" unique_id=832744055]
+layout_mode = 2
+alignment = 1
+
+[node name="icon" type="TextureRect" parent="mainMenu/disclaimer/checksScroll/vbox/backup/header" unique_id=1255195602]
+custom_minimum_size = Vector2(0, 32)
+custom_maximum_size = Vector2(-1, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("18_doc2o")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="text" type="Label" parent="mainMenu/disclaimer/checksScroll/vbox/backup/header" unique_id=1435208717]
+custom_minimum_size = Vector2(50, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Always back up your work in case your project gets corrupted."
+label_settings = SubResource("LabelSettings_doc2o")
+autowrap_mode = 2
+
+[node name="check" type="CheckBox" parent="mainMenu/disclaimer/checksScroll/vbox/backup" unique_id=380356661]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "I will back up my projects."
+autowrap_mode = 2
+
+[node name="bugs" type="VBoxContainer" parent="mainMenu/disclaimer/checksScroll/vbox" unique_id=1847785676]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="header" type="HBoxContainer" parent="mainMenu/disclaimer/checksScroll/vbox/bugs" unique_id=94270188]
+layout_mode = 2
+alignment = 1
+
+[node name="icon" type="TextureRect" parent="mainMenu/disclaimer/checksScroll/vbox/bugs/header" unique_id=1034228185]
+custom_minimum_size = Vector2(0, 32)
+custom_maximum_size = Vector2(-1, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_3dfl6")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="text" type="Label" parent="mainMenu/disclaimer/checksScroll/vbox/bugs/header" unique_id=855666936]
+custom_minimum_size = Vector2(50, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "The plugin is still under development. You may encounter bugs and half-working features. Please report the bugs you find."
+label_settings = SubResource("LabelSettings_doc2o")
+autowrap_mode = 2
+
+[node name="check" type="CheckBox" parent="mainMenu/disclaimer/checksScroll/vbox/bugs" unique_id=1777668589]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "I understand that."
+autowrap_mode = 2
+
+[node name="sep" type="Control" parent="mainMenu/disclaimer" unique_id=288049334]
+custom_maximum_size = Vector2(-1, 50)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="text" type="RichTextLabel" parent="mainMenu/disclaimer" unique_id=242571705]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
 bbcode_enabled = true
 text = "[indent]
 • Do not use the plugin with people you don't fully trust.
@@ -724,20 +846,12 @@ text = "[indent]
 [/center]"
 shortcut_keys_enabled = false
 
-[node name="checks" type="VBoxContainer" parent="mainMenu/disclaimer" unique_id=852167]
-layout_mode = 2
-
-[node name="check" type="CheckBox" parent="mainMenu/disclaimer/checks" unique_id=2064131078]
-layout_mode = 2
-text = "I understand the plugin is not complete and buggy"
-
-[node name="check2" type="CheckBox" parent="mainMenu/disclaimer/checks" unique_id=939339745]
-layout_mode = 2
-text = "I'm aware of the security risk and I won't use it with people I don't fully trust"
-
 [node name="btnProceed" type="Button" parent="mainMenu/disclaimer" unique_id=27375837]
 layout_mode = 2
-text = "Proceed"
+tooltip_text = "Read and check all the boxes first."
+mouse_default_cursor_shape = 2
+text = "Activate plugin"
+icon = ExtResource("13_u8ku5")
 
 [node name="error" type="VBoxContainer" parent="mainMenu" unique_id=245770348]
 visible = false
@@ -948,7 +1062,7 @@ offset_bottom = 679.0
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 889
+scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll" unique_id=2018662387]
 layout_mode = 2
