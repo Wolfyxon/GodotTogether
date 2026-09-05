@@ -140,8 +140,10 @@ func user_disconnected(user_dict: Dictionary) -> void:
 func _project_files_downloaded() -> void:
 	print("Project files downloaded")
 	
-	EditorInterface.get_resource_filesystem() # reloads the script, breaking await ._.
-
+	EditorInterface.get_resource_filesystem().scan()
+	
+	await get_tree().process_frame
+	
 	for scene_path in last_open_scenes:
 		await GDTUtils.try_open_scene(scene_path)
 		await get_tree().process_frame
