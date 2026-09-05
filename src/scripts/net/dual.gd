@@ -129,6 +129,10 @@ func create_avatar_3d(user_dict: Dictionary) -> GDTAvatar3D:
 	var avatar = AVATAR_3D_SCENE.instantiate()
 	var user = GDTUser.from_dict(user_dict)
 
+	if not avatar:
+		push_error("Unable to create 3D avatar. Likely due to another instance of Godot holding the scene open")
+		return
+	
 	avatar.main = self.main
 	add_child(avatar)
 	
@@ -141,7 +145,11 @@ func create_avatar_3d(user_dict: Dictionary) -> GDTAvatar3D:
 func create_avatar_2d(user_dict: Dictionary) -> GDTAvatar2D:
 	var avatar = AVATAR_2D_SCENE.instantiate()
 	var user = GDTUser.from_dict(user_dict)
-
+	
+	if not avatar:
+		push_error("Unable to create 2D avatar. Likely due to another instance of Godot holding the scene open")
+		return
+	
 	tree_exiting.connect(avatar.queue_free)
 	EditorInterface.get_editor_viewport_2d().add_child(avatar)
 	
