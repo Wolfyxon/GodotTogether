@@ -7,8 +7,10 @@ signal user_disconnected(user: GDTUser)
 signal users_listed(users: Array[GDTUser])
 
 var camera: Camera3D
-var update_timer = Timer.new()
 var users: Array[GDTUser]
+
+var update_timer = Timer.new()
+var broadcast_timer = Timer.new()
 
 var prev_mouse_pos := Vector2()
 var prev_3d_pos := Vector3()
@@ -28,10 +30,16 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_peer_disconnected)
 	
 	update_timer.timeout.connect(_update)
-	update_timer.one_shot = false
 	update_timer.wait_time = 0.02
+	update_timer.one_shot = false
 	add_child(update_timer)
 	update_timer.start()
+	
+	broadcast_timer.timeout.connect(broadcast_avatars)
+	broadcast_timer.wait_time = 1
+	broadcast_timer.one_shot = false
+	add_child(broadcast_timer)
+	broadcast_timer.start()
 	
 	report_ready()
 
@@ -90,6 +98,7 @@ func _user_connected(user: GDTUser) -> void:
 		users.append(user)
 	
 	user_connected.emit(user)
+	broadcast_avatars()
 	
 	if should_notify_user_connection():
 		var ip = user.get_address()
@@ -223,3 +232,20 @@ func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:
 	if not marker: return
 	
 	marker.receive_transform(position, rotation)
+
+func broadcast_avatars() -> void:
+	if not main.is_session_active():
+		return
+	
+	var viewport_3d = EditorInterface.get_editor_viewport_3d()
+	var viewport_2d = EditorInterface.get_editor_viewport_2d()
+	
+	if viewport_3d:
+		var cam = viewport_3d.get_camera_3d()
+		
+		if cam:
+			update_3d_avatar.rpc(cam.position, cam.rotation)
+		
+	if viewport_2d:
+		var mouse_pos = viewport_2d.get_mouse_position()
+		update_2d_avatar.rpc(mouse_pos)
