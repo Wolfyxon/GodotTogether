@@ -205,7 +205,7 @@ func clear_avatars() -> void:
 	avatar_3d_markers.clear()
 	avatar_3d_markers.clear()
 
-@rpc("any_peer")
+@rpc("any_peer", "unreliable_ordered")
 func update_2d_avatar(position: Vector2) -> void:
 	if not main: return
 	
@@ -214,7 +214,7 @@ func update_2d_avatar(position: Vector2) -> void:
 	
 	marker.global_position = position
 
-@rpc("any_peer")
+@rpc("any_peer", "unreliable_ordered")
 func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:
 	if not main: return
 	if position == Vector3.ZERO and rotation == Vector3.ZERO: return
