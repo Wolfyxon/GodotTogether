@@ -229,6 +229,11 @@ func _node_tree_exiting(node: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
 	
+	# Partial mitigation for https://github.com/godotengine/godot/issues/114710
+	if node == scene:
+		var selection = EditorInterface.get_selection()
+		selection.clear()
+	
 	if not scene.is_ancestor_of(node):
 		return
 	
