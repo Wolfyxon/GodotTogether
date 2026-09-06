@@ -197,7 +197,16 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 	f.store_buffer(buffer)
 	
 	if path.get_extension() == "gd" and "@tool" in buffer.get_string_from_utf8():
-		var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
+		var warning_message = """Tool script detected: %s
+
+	Godot tool scripts can execute code inside the editor.
+
+	If you don't trust this script:
+	1. Close Godot.
+	2. Locate the script in your game files.
+	3. Review its code before reopening the project.
+	4. If you're unsure about the script, don't run it in the editor.""" % path
+
 		print(warning_message)
 
 		if main and main.gui:
