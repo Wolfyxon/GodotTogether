@@ -373,7 +373,7 @@ func download_update_zip(url: String) -> String:
 	
 	delete_download_zip()
 	
-	var prog = main.gui.progress("Downloading")
+	var prog = main.get_gui().progress("Downloading")
 	prog.bind_to_http_download(http)
 	
 	http.request(url, ["User-Agent: %s" % USER_AGENT])
@@ -396,8 +396,10 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 	if not main:
 		return
 	
+	var gui = main.get_gui()
+	
 	if not get_key():
-		alert(GDTUtils.join([
+		gui.alert(GDTUtils.join([
 			"Updates cannot be safely installed.",
 			"The plugin's internal key for verifying releases is corrupted.",
 			"Try restarting the plugin and reporting this if it still occurs.",
@@ -419,7 +421,7 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 	var download_err = await download_update_zip(update.download_url)
 	
 	if not download_err.is_empty():
-		alert(download_err, "Error downloading update")
+		gui.alert(download_err, "Error downloading update")
 		return
 	
 	if not verify_update(update):
@@ -428,22 +430,24 @@ func begin_update(update: GDTUpdateCheckResult = null) -> void:
 	apply_update()
 
 func verify_update(update: GDTUpdateCheckResult) -> bool:
+	var gui = main.get_gui()
+	
 	if not get_key():
-		alert("Public key is invalid. Cannot verify authenticity of the release.")
+		gui.alert("Public key is invalid. Cannot verify authenticity of the release.")
 		return false
 	
 	if not update.signature:
-		alert("Corrupted signature. Cannot verify the authenticity of the release. Try again or report this.")
+		gui.alert("Corrupted signature. Cannot verify the authenticity of the release. Try again or report this.")
 		return false
 	
 	var hash = GDTUtils.sha256_of_file(ZIP_PATH)
 	
 	if not hash:
-		alert("Unable to get hash of update file to verify it.")
+		gui.alert("Unable to get hash of update file to verify it.")
 		return false
 	
 	if not verify_hash(hash, update.signature):
-		alert(GDTUtils.join([
+		gui.alert(GDTUtils.join([
 			"Downloaded file does not match the signature.",
 			"This means the update is corrupted or an authorized person uploaded file.",
 			"For your safety, I advise you to not try updating manually.",
@@ -456,26 +460,22 @@ func verify_update(update: GDTUpdateCheckResult) -> bool:
 	
 	return true
 
-# Godot randomly complains about cyclic reference
-# This garbage function fixes it
-func alert(text: String, title := "GodotTogether") -> AcceptDialog:
-	return main.get("gui").call("alert", text, title)
-
 func apply_update() -> void:
 	GDTUpdateCheckResult.clear_cache()
 	
 	var installer = GDTUpdateInstaller.new()
 	var zip_err = installer.open_zip(ZIP_PATH)
+	var gui = main.get_gui()
 	
 	if zip_err != OK:
-		alert("Unable to open update file: %s" % error_string(zip_err) + "\nPlease report this", "Error applying update")
+		gui.alert("Unable to open update file: %s" % error_string(zip_err) + "\nPlease report this", "Error applying update")
 		installer.queue_free()
 		return
 	
 	var valid_err = installer.validate()
 	
 	if not valid_err.is_empty():
-		alert(valid_err + "\nPlease report this.", "Update file is invalid")
+		gui.alert(valid_err + "\nPlease report this.", "Update file is invalid")
 		installer.queue_free()
 		return
 	

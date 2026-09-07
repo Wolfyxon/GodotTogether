@@ -46,7 +46,7 @@ func _disconnected() -> void:
 	
 	is_fully_synced = false
 
-	main.gui.alert(
+	main.get_gui().alert(
 		GDTUser.disconnect_reason_to_string(disconnect_reason),
 		"Disconnected from the server"
 	)
@@ -200,8 +200,8 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 		var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
 		print(warning_message)
 
-		if main and main.gui:
-			main.gui.alert(warning_message)
+		if main and main.get_gui():
+			main.get_gui().alert(warning_message)
 	
 	print("Saved successfully")
 	

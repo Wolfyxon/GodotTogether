@@ -87,7 +87,7 @@ func test_debug() -> bool:
 		printerr("node_sync.always_scan should be false")
 		return false
 	
-	var signing_menu = main.gui.get_node("mainMenu/settings/main/scroll/vbox/updateSigning")
+	var signing_menu = main.get_gui().get_node("mainMenu/settings/main/scroll/vbox/updateSigning")
 	
 	if not signing_menu:
 		printerr("Signing menu not found")

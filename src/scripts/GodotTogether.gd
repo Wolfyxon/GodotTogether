@@ -26,7 +26,9 @@ var dual = GDTDual.new(self, "dual")
 var file_sync = GDTFileSync.new(self, "file_sync")
 var node_sync = GDTNodeSync.new(self, "node_sync")
 
-var gui: GodotTogetherGUI = GUI_SCENE.instantiate()
+# Do not access this directly, use get_gui()
+# Godot will randomly throw a "Cyclic reference" error
+var gui: GodotTogetherGUI = GUI_SCENE.instantiate()  
 var chat: GDTChat = CHAT_SCENE.instantiate()
 
 var button = GDTMenuButton.new()
@@ -186,6 +188,9 @@ func open_menu() -> void:
 	
 func prepare_session() -> void:
 	EditorInterface.save_all_scenes()
+
+func get_gui() -> GodotTogetherGUI:
+	return gui
 
 func close_connection() -> void:
 	client.connection_cancelled = true
