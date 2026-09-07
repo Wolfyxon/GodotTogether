@@ -38,14 +38,7 @@ var updater = GDTUpdater.new(self)
 var tests = GDTUnitTests.new(self)
 
 var plugin_started := false
-
-var components = [
-	client, server, dual,
-	file_sync, node_sync, 
-	gui,
-	updater, 
-	tests
-]
+var components = []
 
 func _enter_tree() -> void:
 	if not pre_start_check():
@@ -55,13 +48,9 @@ func _enter_tree() -> void:
 	name = "GodotTogether"
 	plugin_started = true
 	
-	var root = get_tree().root
-	
-	for i in components:
-		i.main = self
-		root.add_child(i)
-	
+	init_components()
 	setup_menu_button()
+	
 	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
 	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
 	
@@ -78,6 +67,30 @@ func _enter_tree() -> void:
 		updater.conditional_check()
 	
 	post_check_components()
+
+func init_components() -> void:
+	components = [
+		client, server, dual,
+		file_sync, node_sync, 
+		gui,
+		updater, 
+		tests
+	]
+	
+	# The array may become empty or null if an error occurs
+	if not components or components.is_empty():
+		gui.get_menu_window().set_error_of_death(
+			"Plugin failed to load", 
+			"Error initializing components, please report this."
+		)
+		
+		return
+	
+	var root = get_tree().root
+	
+	for i in components:
+		i.main = self
+		root.add_child(i)
 
 func _exit_tree() -> void:
 	if not plugin_started:
