@@ -1049,15 +1049,16 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
 size = Vector2i(800, 700)
+visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings" unique_id=661741475]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 779.0
-offset_bottom = 679.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 775.0
+offset_bottom = 675.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
@@ -1092,10 +1093,10 @@ text = "Node sync rate"
 [node name="nodeSyncRefresh" type="SpinBox" parent="mainMenu/settings/main/scroll/vbox" unique_id=-1060399406]
 layout_mode = 2
 tooltip_text = "How often to check for node changes (in seconds). Lower = faster syncing, higher = better performance on complex scenes. Default: 0.1"
-min_value = 0.05
+min_value = 0.01
 max_value = 1000.0
-step = 0.05
-value = 0.1
+step = 0.01
+value = 0.09999999999999999
 metadata/setting = "sync/node_refresh_rate"
 
 [node name="HSeparator2" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=1860984121]
