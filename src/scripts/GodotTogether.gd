@@ -68,6 +68,18 @@ func _enter_tree() -> void:
 	
 	post_check_components()
 
+func _exit_tree() -> void:
+	if not plugin_started:
+		return
+	
+	close_connection()
+	button.queue_free()
+	remove_control_from_bottom_panel(chat)
+	chat.queue_free()
+	gui.queue_free()
+	queue_free()
+
+
 func init_components() -> void:
 	components = [
 		client, server, dual,
@@ -92,16 +104,6 @@ func init_components() -> void:
 		i.main = self
 		root.add_child(i)
 
-func _exit_tree() -> void:
-	if not plugin_started:
-		return
-	
-	close_connection()
-	button.queue_free()
-	remove_control_from_bottom_panel(chat)
-	chat.queue_free()
-	gui.queue_free()
-	queue_free()
 
 func post_check_components() -> void:
 	await get_tree().create_timer(0.25).timeout
