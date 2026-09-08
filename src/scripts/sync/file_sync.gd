@@ -41,11 +41,10 @@ func scan_files() -> void:
 	var current_hashes = GDTFiles.get_file_tree_hashes()
 	
 	for path in current_hashes:
-		if not path in file_hashes:
-			_file_added(path)
-		elif file_hashes[path] != current_hashes[path]:
+		# (New file) or (File changed)
+		if (not path in file_hashes) or (file_hashes[path] != current_hashes[path]):
 			_file_changed(path)
-
+	
 	for path in file_hashes:
 		if not path in current_hashes:
 			_file_removed(path)
@@ -61,25 +60,13 @@ func can_sync_files() -> bool:
 		not GDTSettings.get_setting("dev/disable_real_time_file_sync")
 	)
 
-func _file_added(path: String) -> void:
-	if main.client.is_active():
-		var buffer = FileAccess.get_file_as_bytes(path)
-		
-		if buffer:
-			print("[CLIENT] Sending file add: ", path)
-			_c2s_request_file_write.rpc_id(1, [path, buffer])
-	
-	elif main.server.is_active():
-		print("[SERVER] Broadcasting file add: ", path)
-		server_broadcast_file_at_path(path)
-
 func _file_changed(path: String) -> void:
 	if main.client.is_active():
 		var buffer = FileAccess.get_file_as_bytes(path)
 
 		if buffer:
 			print("[CLIENT] Sending file modify: ", path)
-			main.server.receive_file_from_client.rpc_id(1, path, buffer)
+			_c2s_request_file_write.rpc_id(1, path, buffer)
 
 	elif main.server.is_active():
 		print("[SERVER] Broadcasting file modify: ", path)
