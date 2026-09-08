@@ -230,61 +230,6 @@ func broadcast_restart():
 	
 	main.dual.restart()
 
-@rpc("any_peer", "call_remote", "reliable")
-func receive_file_from_client(path: String, buffer: PackedByteArray) -> void:
-	var id = multiplayer.get_remote_sender_id()
-
-	if not id_has_permission(id, GodotTogether.Permission.ADD_CUSTOM_FILES): return
-	if not GDTValidator.is_path_safe(path): return
-
-	print("[SERVER] Received file from client %d: %s" % [id, path])
-	main.file_sync.pause()
-	
-	#await get_tree().create_timer(0.5).timeout
-	main.file_sync.write_file(path, buffer)
-	main.file_sync.resume.call_deferred()
-	
-	broadcast_file_with_buffer(path, buffer, id)
-
-@rpc("any_peer", "call_remote", "reliable")
-func file_remove_from_client(path: String) -> void:
-	var id = multiplayer.get_remote_sender_id()
-
-	if not id_has_permission(id, GodotTogether.Permission.DELETE_SCRIPTS): return
-	if not GDTValidator.is_path_safe(path): return
-
-	print("[SERVER] Received file remove from client %d: %s" % [id, path])
-	main.file_sync.pause()
-	
-	if FileAccess.file_exists(path):
-		DirAccess.remove_absolute(path)
-	
-	EditorInterface.get_resource_filesystem().scan()
-	
-	await get_tree().create_timer(1.0).timeout
-
-	main.file_sync.resume()
-	
-	broadcast_file_remove(path, id)
-
-func broadcast_file_add_with_buffer(path: String, buffer: PackedByteArray, sender := 0) -> void:
-	print("[SERVER] Broadcasting file add to clients: ", path)
-	auth_rpc(main.client.receive_file, [path, buffer], [sender])
-
-func broadcast_file_at_path(path: String, sender := 0) -> void:
-	var buffer = FileAccess.get_file_as_bytes(path)
-	
-	if buffer:
-		broadcast_file_with_buffer(path, buffer, sender)
-
-func broadcast_file_with_buffer(path: String, buffer: PackedByteArray, sender := 0) -> void:
-	print("[SERVER] Broadcasting file modify to clients: ", path)
-	auth_rpc(main.client.receive_file, [path, buffer], [sender])
-
-func broadcast_file_remove(path: String, sender := 0) -> void:
-	print("[SERVER] Broadcasting file remove to clients: ", path)
-	auth_rpc(main.client.sync_file_remove, [path], [sender])
-
 func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []) -> void:
 	for i in get_authenticated_ids(false):
 		if not i in exclude_ids:

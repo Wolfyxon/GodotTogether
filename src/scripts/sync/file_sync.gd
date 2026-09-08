@@ -20,8 +20,13 @@ func _ready() -> void:
 func ignore_last_changes() -> void:
 	file_hashes = GDTFiles.get_file_tree_hashes()
 
-func update_file(path: String, hash: String) -> void:
-	file_hashes[path] = FileAccess.get_sha256(path)
+func update_file(path: String) -> void:
+	var hash = FileAccess.get_sha256(path)
+	
+	if hash:
+		file_hashes[path] = hash
+	else:
+		file_hashes.erase(path)
 
 func pause() -> void:
 	scan_timer.paused = true
@@ -56,8 +61,43 @@ func can_sync_files() -> bool:
 		not GDTSettings.get_setting("dev/disable_real_time_file_sync")
 	)
 
+func _file_added(path: String) -> void:
+	if main.client.is_active():
+		var buffer = FileAccess.get_file_as_bytes(path)
+		
+		if buffer:
+			print("[CLIENT] Sending file add: ", path)
+			_c2s_request_file_write.rpc_id(1, [path, buffer])
+	
+	elif main.server.is_active():
+		print("[SERVER] Broadcasting file add: ", path)
+		server_broadcast_file_at_path(path)
+
+func _file_changed(path: String) -> void:
+	if main.client.is_active():
+		var buffer = FileAccess.get_file_as_bytes(path)
+
+		if buffer:
+			print("[CLIENT] Sending file modify: ", path)
+			main.server.receive_file_from_client.rpc_id(1, path, buffer)
+
+	elif main.server.is_active():
+		print("[SERVER] Broadcasting file modify: ", path)
+		server_broadcast_file_at_path(path)
+
+func _file_removed(path: String) -> void:
+	if main.client.is_active():
+		print("[CLIENT] Sending file remove: ", path)
+		_c2s_request_file_delete.rpc_id(1, path)
+
+	elif main.server.is_active():
+		print("[SERVER] Broadcasting file remove: ", path)
+		server_broadcast_file_delete(path)
+
+@rpc("authority", "reliable")
 func write_file(path: String, buffer: PackedByteArray) -> void:
 	if not GDTValidator.is_path_safe(path):
+		printerr("Server tried to write at unsafe location: %s" % path)
 		return
 	
 	GDTFiles.ensure_dir_exists(path)
@@ -73,8 +113,12 @@ func write_file(path: String, buffer: PackedByteArray) -> void:
 
 	assert(err == OK, "Failed to open %s: %d" % [path, err])
 	
+	pause()
+	
 	file.store_buffer(buffer)
 	file.close()
+	
+	resume.call_deferred()
 	
 	if path.get_extension() == "gd":
 		EditorInterface.get_script_editor().reload_open_files.call_deferred()
@@ -88,35 +132,66 @@ func write_file(path: String, buffer: PackedByteArray) -> void:
 	else:
 		EditorInterface.get_resource_filesystem().scan.call_deferred()
 
-func _file_added(path: String) -> void:
-	if main.client.is_active():
-		var buffer = FileAccess.get_file_as_bytes(path)
-		
-		if buffer:
-			print("[CLIENT] Sending file add: ", path)
-			main.server.receive_file_from_client.rpc_id(1, path, buffer)
+@rpc("authority", "reliable")
+func delete_file(path: String) -> void:
+	if not GDTValidator.is_path_safe(path):
+		printerr("Server tried to delete file at unsafe location: %s" % path)
+		return
 	
-	elif main.server.is_active():
-		print("[SERVER] Broadcasting file add: ", path)
-		main.server.broadcast_file_at_path(path)
+	var dir = DirAccess.open("res://")
+	
+	if not dir:
+		printerr("Unable to acces project directory for file removal")
+		return
+		
+	var err = dir.remove(path)
+	
+	if err != OK:
+		printerr("Error code %s removing file %s" % [err, path])
+		return
+	
+	update_file(path)
 
-func _file_changed(path: String) -> void:
-	if main.client.is_active():
-		var buffer = FileAccess.get_file_as_bytes(path)
+func server_broadcast_file_write(path: String, buffer: PackedByteArray, sender := 0) -> void:
+	main.server.auth_rpc(write_file, [path, buffer], [sender])
 
-		if buffer:
-			print("[CLIENT] Sending file modify: ", path)
-			main.server.receive_file_from_client.rpc_id(1, path, buffer)
+func server_broadcast_file_at_path(path: String, sender := 0) -> void:
+	var buf = FileAccess.get_file_as_bytes(path)
+	
+	if buf:
+		server_broadcast_file_write(path, buf, sender)
 
-	elif main.server.is_active():
-		print("[SERVER] Broadcasting file modify: ", path)
-		main.server.broadcast_file_at_path(path)
+func server_broadcast_file_delete(path: String, sender := 0) -> void:
+	main.server.auth_rpc(delete_file, [path], [sender])
 
-func _file_removed(path: String) -> void:
-	if main.client.is_active():
-		print("[CLIENT] Sending file remove: ", path)
-		main.server.file_remove_from_client.rpc_id(1, path)
+@rpc("any_peer", "reliable")
+func _c2s_request_file_write(path: String, buffer: PackedByteArray) -> void:
+	if not main.server.is_active(): return
+	
+	var id = multiplayer.get_remote_sender_id()
+	
+	if not main.server.caller_has_permission(GodotTogether.Permission.MODIFY_CUSTOM_FILES):
+		return
+	
+	if not GDTValidator.is_path_safe(path): 
+		printerr("User %s tried to write file at unsafe location: %s" % [id, path])
+		return
+	
+	write_file(path, buffer)
+	server_broadcast_file_write(path, buffer, id)
 
-	elif main.server.is_active():
-		print("[SERVER] Broadcasting file remove: ", path)
-		main.server.broadcast_file_remove(path)
+@rpc("any_peer", "reliable")
+func _c2s_request_file_delete(path: String) -> void:
+	if not main.server.is_active(): return
+	
+	var id = multiplayer.get_remote_sender_id()
+	
+	if not main.server.caller_has_permission(GodotTogether.Permission.MODIFY_CUSTOM_FILES):
+		return
+	
+	if not GDTValidator.is_path_safe(path): 
+		printerr("User %s tried to delete file at unsafe location: %s" % [id, path])
+		return
+	
+	delete_file(path)
+	server_broadcast_file_delete(path, id)
