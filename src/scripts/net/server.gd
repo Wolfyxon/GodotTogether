@@ -240,18 +240,9 @@ func receive_file_from_client(path: String, buffer: PackedByteArray) -> void:
 	print("[SERVER] Received file from client %d: %s" % [id, path])
 	main.file_sync.pause()
 	
-	GDTFiles.ensure_dir_exists(path)
-	
-	var f = FileAccess.open(path, FileAccess.WRITE)
-	
-	if f:
-		f.store_buffer(buffer)
-		f.close()
-	
-	EditorInterface.get_resource_filesystem().scan()
-	
-	await get_tree().create_timer(0.5).timeout
-	main.file_sync.resume()
+	#await get_tree().create_timer(0.5).timeout
+	main.file_sync.write_file(path, buffer)
+	main.file_sync.resume.call_deferred()
 	
 	broadcast_file_with_buffer(path, buffer, id)
 

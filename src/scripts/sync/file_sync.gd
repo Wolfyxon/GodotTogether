@@ -20,6 +20,9 @@ func _ready() -> void:
 func ignore_last_changes() -> void:
 	file_hashes = GDTFiles.get_file_tree_hashes()
 
+func update_file(path: String, hash: String) -> void:
+	file_hashes[path] = FileAccess.get_sha256(path)
+
 func pause() -> void:
 	scan_timer.paused = true
 	
@@ -52,6 +55,38 @@ func can_sync_files() -> bool:
 		not (main.client.is_active() and not main.client.is_fully_synced) and
 		not GDTSettings.get_setting("dev/disable_real_time_file_sync")
 	)
+
+func write_file(path: String, buffer: PackedByteArray) -> void:
+	if not GDTValidator.is_path_safe(path):
+		return
+	
+	GDTFiles.ensure_dir_exists(path)
+	
+	var current_hash = FileAccess.get_sha256(path)
+	var new_hash = GDTUtils.sha256_of_buffer(buffer)
+	
+	if FileAccess.file_exists(path) and current_hash == new_hash:
+		return
+	
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	var err = FileAccess.get_open_error()
+
+	assert(err == OK, "Failed to open %s: %d" % [path, err])
+	
+	file.store_buffer(buffer)
+	file.close()
+	
+	if path.get_extension() == "gd":
+		EditorInterface.get_script_editor().reload_open_files.call_deferred()
+		
+		if "@tool" in buffer.get_string_from_utf8():
+			var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
+			print(warning_message)
+	
+			if main and main.get_gui():
+				main.get_gui().alert(warning_message)
+	else:
+		EditorInterface.get_resource_filesystem().scan.call_deferred()
 
 func _file_added(path: String) -> void:
 	if main.client.is_active():

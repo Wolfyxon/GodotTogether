@@ -175,44 +175,10 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 		print("Server attempted to send file at unsafe location: " + path)
 		return
 	
-	print("Downloading " + path)
-	
-	GDTFiles.ensure_dir_exists(path)
-	
-	if FileAccess.file_exists(path):
-		var current_buf = FileAccess.get_file_as_bytes(path)
-		
-		var current_hash = GDTUtils.sha256_of_buffer(current_buf)
-		var new_hash = GDTUtils.sha256_of_buffer(buffer)
-		
-		if current_hash == new_hash:
-			print("File didn't change. Not writing")
-			return
-	
-	var f = FileAccess.open(path, FileAccess.WRITE)
-	var err = FileAccess.get_open_error()
-
-	assert(err == OK, "Failed to open %s: %d" % [path, err])
-	
-	f.store_buffer(buffer)
-	
-	if path.get_extension() == "gd" and "@tool" in buffer.get_string_from_utf8():
-		var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
-		print(warning_message)
-
-		if main and main.get_gui():
-			main.get_gui().alert(warning_message)
-	
+	print("Receiving from server " + path)
+	main.file_sync.write_file(path, buffer)
 	print("Saved successfully")
 	
-	#if path.get_extension() == "tscn":
-		#var current_scene = EditorInterface.get_edited_scene_root()
-#
-		#if current_scene and current_scene.scene_file_path == path:
-			#EditorInterface.mark_scene_as_unsaved()
-#
-		#EditorInterface.reload_scene_from_path(path)
-
 	if not is_fully_synced and target_file_count != 0 and downloaded_file_count >= target_file_count:
 		target_file_count = 0
 		_project_files_downloaded()
