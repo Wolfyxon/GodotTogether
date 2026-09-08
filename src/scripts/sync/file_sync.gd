@@ -65,20 +65,16 @@ func _file_changed(path: String) -> void:
 		var buffer = FileAccess.get_file_as_bytes(path)
 
 		if buffer:
-			print("[CLIENT] Sending file modify: ", path)
 			_c2s_request_file_write.rpc_id(1, path, buffer)
 
 	elif main.server.is_active():
-		print("[SERVER] Broadcasting file modify: ", path)
 		server_broadcast_file_at_path(path)
 
 func _file_removed(path: String) -> void:
 	if main.client.is_active():
-		print("[CLIENT] Sending file remove: ", path)
 		_c2s_request_file_delete.rpc_id(1, path)
 
 	elif main.server.is_active():
-		print("[SERVER] Broadcasting file remove: ", path)
 		server_broadcast_file_delete(path)
 
 @rpc("authority", "reliable")
