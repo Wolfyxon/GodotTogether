@@ -46,7 +46,6 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -89,6 +88,7 @@ theme_type_variation = &"WarningLabel"
 text = "Plugin only supported on Godot stable"
 
 [node name="sessionInit" type="Control" parent="mainMenu/main" unique_id=346473724]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -341,7 +341,6 @@ text = "Cancel"
 icon = ExtResource("9_4c4b3")
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main" unique_id=1582343068]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -700,6 +699,7 @@ metadata/_tab_index = 2
 autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
+visible = false
 offset_left = 25.0
 offset_top = 25.0
 offset_right = 945.0
@@ -1049,16 +1049,15 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
 size = Vector2i(800, 700)
-visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings" unique_id=661741475]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 775.0
-offset_bottom = 675.0
+offset_left = 21.0
+offset_top = 21.0
+offset_right = 779.0
+offset_bottom = 679.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
@@ -1309,7 +1308,6 @@ layout_mode = 2
 
 [node name="sandwichTitle" type="Label" parent="mainMenu/settings/main/scroll/vbox" unique_id=349041035]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
 text = "Your sandwich is ready 🥪"
 horizontal_alignment = 1
 
@@ -1344,6 +1342,7 @@ icon = ExtResource("9_4c4b3")
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
 [connection signal="pressed" from="mainMenu/main/session/top/restart" to="mainMenu/main" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Users" method="toggle_all_ips"]
+[connection signal="pressed" from="mainMenu/main/session/tabs/Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Users/vbox/user" method="toggle_ip_visibility"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/header/ip/toggle" to="mainMenu/main/session/tabs/Pending Users" method="toggle_all_ips"]
 [connection signal="pressed" from="mainMenu/main/session/tabs/Pending Users/vbox/user/ip/toggle" to="mainMenu/main/session/tabs/Pending Users/vbox/user" method="toggle_ip_visibility"]
 [connection signal="timeout" from="mainMenu/main/update" to="mainMenu/main" method="_on_update_timeout"]
