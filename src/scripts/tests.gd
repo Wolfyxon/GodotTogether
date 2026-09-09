@@ -690,6 +690,49 @@ func test_updater_crypto() -> bool:
 	
 	return true
 
+func test_update_multi_signature_set_get() -> bool:
+	var update = GDTUpdateCheckResult.new()
+	
+	for i in GDTUpdater.SIGNATURE_LENGTH:
+		update.signature_buf.append(1)
+	
+	# 111111111111
+	if update.get_signature_count() != 1:
+		printerr("Signature count after adding one %s != %s" % [update.get_signature_count(), 2])
+		return false
+	
+	# 222222222222
+	for i in GDTUpdater.SIGNATURE_LENGTH:
+		update.signature_buf.append(2)
+	
+	if update.get_signature_count() != 2:
+		printerr("Signature count after adding both %s != %s" % [update.get_signature_count(), 2])
+		return false
+	
+	var sig1 = update.get_signature(0)
+	var sig2 = update.get_signature(1)
+	var ln = GDTUpdater.SIGNATURE_LENGTH
+	
+	if sig1.size() != ln:
+		printerr("Signature 1 length %s != %s" % [sig1.size(), ln])
+		return false
+	
+	if sig2.size() != ln:
+		printerr("Signature 2 length %s != %s" % [sig2.size(), ln])
+		return false
+	
+	for i in sig1:
+		if i != 1:
+			printerr("Signature 1 is not all 0x1: %s" % sig1)
+			return false
+	
+	for i in sig2:
+		if i != 2:
+			printerr("Signature 2 is not all 0x2: %s" % sig1)
+			return false
+	
+	return true
+
 func test_runaway_keys() -> bool:
 	var tree = GDTFiles.get_file_tree("res://addons/GodotTogether", true)
 	var extensions = ["gd", "txt", "json", "md", "res", "tres", "tscn"]

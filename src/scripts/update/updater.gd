@@ -35,6 +35,7 @@ lCnHIepelFBT4a6gPIbRX+sCAwEAAQ==
 
 const API_TIMEOUT = 10
 const DOWNLOAD_TIMEOUT = 0
+const SIGNATURE_LENGTH = 512
 
 var crypto = Crypto.new()
 var _release_key: CryptoKey
@@ -318,7 +319,7 @@ func request_signature(update: GDTUpdateCheckResult, url: String) -> String:
 	if not body_buf:
 		return "Signature is empty. Please report this"
 	
-	update.signature = body_buf
+	update.signature_buf = body_buf
 	
 	return ""
 
@@ -436,7 +437,7 @@ func verify_update(update: GDTUpdateCheckResult) -> bool:
 		gui.alert("Public key is invalid. Cannot verify authenticity of the release.")
 		return false
 	
-	if not update.signature:
+	if not update.has_signature():
 		gui.alert("Corrupted signature. Cannot verify the authenticity of the release. Try again or report this.")
 		return false
 	
@@ -446,7 +447,7 @@ func verify_update(update: GDTUpdateCheckResult) -> bool:
 		gui.alert("Unable to get hash of update file to verify it.")
 		return false
 	
-	if not verify_hash(hash, update.signature):
+	if not verify_hash(hash, update.get_signature(0)):
 		gui.alert(GDTUtils.join([
 			"Downloaded file does not match the signature.",
 			"This means the update is corrupted or an authorized person uploaded file.",
