@@ -24,7 +24,7 @@ func _ready() -> void:
 	print("[GodotTogether] Removing current plugin version")
 	remove_dir_recursive(PLUGIN_DIR, [".git"])
 	
-	unzip()
+	#unzip()
 	restore_settings()
 	finish()
 
@@ -44,7 +44,7 @@ func unzip() -> void:
 		
 		var buf = zip.read_file(file_path)
 		
-		var physical_path = PLUGIN_DIR + "/" + file_path.substr(0, root.length())
+		var physical_path = PLUGIN_DIR + "/" + file_path.substr(root.length())
 		
 		ensure_dir_exists(physical_path)
 		
@@ -118,6 +118,7 @@ func finish() -> void:
 	await get_tree().process_frame
 	
 	print("[GodotTogether] Restarting Godot")
+	
 	EditorInterface.restart_editor(true)
 	queue_free()
 	
