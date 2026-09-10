@@ -268,23 +268,30 @@ func _node_child_order_changed(parent: Node) -> void:
 		_c2s_request_node_reorder.rpc_id(1, parent_path, scene.scene_file_path, names)
 
 func _node_replacing_by(new_node: Node, current_node: Node) -> void:
-	if not is_node_valid(current_node): return
-	if not can_sync_nodes(): return
+	#if not is_node_valid(current_node): return
+	if not can_sync_nodes(): 
+		print("cant")
+		return
 	
-	if is_node_supressed(current_node): return
+	if is_node_supressed(current_node): 
+		print('supr')
+		return
 	
 	unobserve_node(current_node)
 	
-	var scene = GDTUtils.get_node_scene(current_node)
+	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
 	
 	prints("repl", current_node, new_node)
+	
+	new_node.owner = scene
+	new_node.name = current_node.name
 	
 	if current_node.get_class() == new_node.get_class():
 		printerr("Node replacing that isn't a class change not supported")
 		return
 	
-	var path = scene.get_path_to(current_node)
+	var path = scene.get_path_to(new_node) # Must get path to new node. Old is already gone
 	
 	var data_dict = observe_node(new_node)
 	var prop_list = GDTUtils.compare_dicts(data_dict["hashes"], {})
