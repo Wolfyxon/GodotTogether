@@ -49,7 +49,7 @@ func unzip() -> void:
 		
 		file.store_buffer(buf)
 		
-		written_file_paths.append(written_file_paths)
+		written_file_paths.append(file_path)
 		print(file_path)
 		
 	print("[GodotTogether] Update files extracted")
