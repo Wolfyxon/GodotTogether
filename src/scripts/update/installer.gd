@@ -119,7 +119,7 @@ func force_reimport_files() -> void:
 		
 		paths.append(path)
 	
-	fs.reimport_files(written_file_paths)
+	fs.reimport_files(paths)
 
 func finish() -> void:
 	print("[GodotTogether] Update complete")
