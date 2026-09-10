@@ -221,4 +221,14 @@ static func set_control_value(node: Control, value, format := "") -> void:
 
 static func is_file_resource(resource: Resource) -> bool:
 	return not resource.resource_path.is_empty() and not resource.resource_path.contains("::")
+
+static func printerr_traceback(message) -> void:
+	var stack = get_stack()
+	var stack_lines = []
 	
+	stack.remove_at(0) # Remove this func
+	
+	for i in stack:
+		stack_lines.append("%s %s:%s" % [ i["source"], i["function"], i["line"] ])
+	
+	printerr(message, "\n-- Traceback: --", GDTUtils.join(stack_lines, "\n"), "-----------")
