@@ -37,7 +37,7 @@ func run_tests() -> void:
 	
 	print()
 	print("Testing complete")
-	print("Slowest: ", get_by_slowest().slice(0, 3))
+	print("Slowest: ", get_by_slowest().slice(0, 5))
 	
 	var fail_str = fail_count
 	
