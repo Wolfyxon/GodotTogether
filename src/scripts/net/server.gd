@@ -115,7 +115,7 @@ func start_hosting(port: int, max_clients := 10) -> int:
 
 func validate_c2s() -> bool:
 	if not is_active():
-		printerr("Attempt to call client-to-server RPC when server isn't active")
+		GDTUtils.printerr_traceback("Attempt to call client-to-server RPC when server isn't active")
 		return false
 	
 	return true
