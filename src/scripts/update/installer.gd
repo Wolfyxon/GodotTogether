@@ -28,15 +28,32 @@ func _ready() -> void:
 	restore_settings()
 	finish()
 
+func get_zip_root() -> String:
+	for file_path in zip.get_files():
+		if not file_path.ends_with("/"):
+			var base_dir = file_path.get_base_dir()
+			
+			if base_dir:
+				return base_dir + "/"
+			else:
+				return ""
+	
+	return ""
+
 func unzip() -> void:
 	print("[GodotTogether] Writing files")
+	
+	var root = get_zip_root()
+	
+	print("[GodotTogether] Determined zip root: '%s'" % root)
 	
 	for file_path in zip.get_files():
 		if file_path.ends_with("/"): # Current entry is a directory
 			continue
 		
 		var buf = zip.read_file(file_path)
-		var physical_path = PLUGIN_DIR + "/" + file_path
+		
+		var physical_path = PLUGIN_DIR + "/" + file_path.substr(0, root.length())
 		
 		ensure_dir_exists(physical_path)
 		
@@ -76,11 +93,12 @@ func restore_settings() -> void:
 
 func validate() -> String:
 	var files = zip.get_files()
+	var root = get_zip_root()
 	
 	if files.is_empty():
 		return "Archive is empty"
 	
-	if not "plugin.cfg" in files:
+	if not root + "plugin.cfg" in files:
 		return "Missing plugin manifest"
 	
 	return ""
