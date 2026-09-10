@@ -5,6 +5,7 @@ var success_count = 0
 var fail_count = 0
 
 var test_times = {}
+var longest_test_name = 0
 
 func _ready() -> void:
 	report_ready()
@@ -15,13 +16,15 @@ func exec_test(f: Callable) -> void:
 	var time = Time.get_unix_time_from_system() - start
 	
 	var test_name = str(f.get_method())
+	var spaced_name = test_name + " ".repeat(longest_test_name - test_name.length())
+	
 	test_times[test_name] = time
 	
 	if res:
-		print_rich("%s: [color=green]Ok[/color] \t\t%s s" % [test_name, time])
+		print_rich("%s : [color=green]Ok[/color]   %s s" % [spaced_name, time])
 		success_count += 1
 	else:
-		print_rich("%s: [color=red]FAIL[/color] \t\t%s s" % [test_name, time])
+		print_rich("%s : [color=red]FAIL[/color]   %s s" % [spaced_name, time])
 		fail_count += 1
 
 func run_tests() -> void:
@@ -31,9 +34,18 @@ func run_tests() -> void:
 	
 	print("--- Running GodotTogether tests ---")
 	
+	var test_names = []
+	
 	for i in get_method_list():
 		if i["name"].begins_with("test_"):
-			exec_test(get(i["name"]))
+			var nm: String = i["name"]
+			test_names.append(nm)
+			
+			if nm.length() > longest_test_name:
+				longest_test_name = nm.length()
+	
+	for func_name in test_names:
+		exec_test(get(func_name))
 	
 	print()
 	print("Testing complete")
