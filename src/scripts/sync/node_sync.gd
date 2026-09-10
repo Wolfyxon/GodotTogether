@@ -200,6 +200,7 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	# Do not check it here
 	if not is_node_valid(parent): return
 	if not can_sync_nodes(): return
+	if not is_user_node(child): return
 	
 	if not is_node_observed(parent): return
 	if is_node_observed(child): return
@@ -208,7 +209,7 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	if not scene: return
 	
 	child.owner = scene # Godot isn't fast enough
-	
+	prints("add", child.name, "to", parent)
 	var data_dict = observe_node(child)
 	
 	# Cursed. TODO: Optimize later
@@ -225,6 +226,7 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 func _node_tree_exiting(node: Node) -> void:
 	if not is_node_valid(node): return
 	if not can_sync_nodes(): return
+	prints("exit", node)
 	
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
@@ -264,6 +266,46 @@ func _node_child_order_changed(parent: Node) -> void:
 		server_broadcast_reorder_children(parent_path, scene.scene_file_path, names)
 	else:
 		_c2s_request_node_reorder.rpc_id(1, parent_path, scene.scene_file_path, names)
+
+func _node_replacing_by(new_node: Node, current_node: Node) -> void:
+	if not is_node_valid(current_node): return
+	if not can_sync_nodes(): return
+	
+	if is_node_supressed(current_node): return
+	
+	unobserve_node(current_node)
+	
+	var scene = GDTUtils.get_node_scene(current_node)
+	if not scene: return
+	
+	prints("repl", current_node, new_node)
+	
+	if current_node.get_class() == new_node.get_class():
+		printerr("Node replacing that isn't a class change not supported")
+		return
+	
+	var path = scene.get_path_to(current_node)
+	
+	var data_dict = observe_node(new_node)
+	var prop_list = GDTUtils.compare_dicts(data_dict["hashes"], {})
+	var prop_dict = get_select_property_dict(new_node, prop_list)
+	
+	prop_dict["name"] = current_node.name
+	
+	if main.server.is_active():
+		server_broadcast_node_class_change(
+			path, 
+			scene.scene_file_path, 
+			new_node.get_class(), 
+			prop_dict
+		)
+	else:
+		_c2s_request_node_class_change(
+			path, 
+			scene.scene_file_path,
+			new_node.get_class(),
+			prop_dict
+		)
 
 @rpc("any_peer", "call_remote", "reliable")
 func _c2s_request_node_update(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
@@ -340,6 +382,24 @@ func _c2s_request_node_reorder(parent_path: String, scene_path: String, ordered_
 	
 	server_broadcast_reorder_children(parent_path, scene_path, ordered_names, id)
 	reorder_children(parent_path, scene_path, ordered_names)
+
+@rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_node_class_change(
+	node_path: String, 
+	scene_path: String,
+	new_class: String,
+	property_dict: Dictionary
+) -> void:
+	if not main.server.validate_c2s(): 
+		return
+	
+	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+		
+	var id = multiplayer.get_remote_sender_id()
+	
+	server_broadcast_node_class_change(node_path, scene_path, new_class, property_dict)
+	change_node_class(node_path, scene_path, new_class, property_dict)
 
 @rpc("authority", "call_remote", "reliable")
 func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
@@ -452,6 +512,37 @@ func reorder_children(parent_path: String, scene_path: String, ordered_names: Ar
 		
 	set_node_supressed(parent, false)
 
+@rpc("authority", "call_remote", "reliable")
+func change_node_class(
+	node_path: String, 
+	scene_path: String,
+	new_class: String,
+	property_dict: Dictionary
+) -> void:
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+	
+	var old_node = GDTUtils.get_node_in_scene(node_path, scene_path)
+	if not old_node: return
+	
+	if old_node.get_class() == new_class:
+		return
+	
+	var new_node = validate_and_create_node(new_class)
+	if not new_node: return
+	
+	apply_property_dict(new_node, property_dict)
+	
+	if not is_user_node(new_node):
+		printerr("Replacing node failed, name was not applied")
+		return
+	
+	set_node_supressed(old_node, true)
+	
+	old_node.replace_by(new_node)
+	
+	unobserve_node(old_node)
+
 func server_broadcast_node_update(node_path: String, scene_path: String, property_dict: Dictionary, sender := 0) -> void:
 	main.server.auth_rpc(update_node_properties, [node_path, scene_path, property_dict], [sender])
 
@@ -477,6 +568,15 @@ func server_broadcast_reorder_children(
 	sender := 0
 ) -> void:
 	main.server.auth_rpc(reorder_children, [parent_path, scene_path, ordered_names], [sender])
+
+func server_broadcast_node_class_change(
+	node_path: String, 
+	scene_path: String,
+	new_class: String,
+	property_dict: Dictionary,
+	sender := 0
+) -> void:
+	main.server.auth_rpc(change_node_class, [node_path, scene_path, new_class, property_dict], [sender])
 
 func validate_and_create_node(node_class: String) -> Node:
 	if not ClassDB.class_exists(node_class):
@@ -539,6 +639,7 @@ func observe_node(node: Node) -> Dictionary:
 	node.child_entered_tree.connect(_node_child_entered_tree.bind(node))
 	node.child_order_changed.connect(_node_child_order_changed.bind(node))
 	node.tree_exiting.connect(_node_tree_exiting.bind(node))
+	node.replacing_by.connect(_node_replacing_by.bind(node))
 	
 	return apply_node_data(node)
 
@@ -827,6 +928,9 @@ static func get_property_keys(obj: Object) -> Array[String]:
 		res.append(i.name)
 
 	return res
+
+static func is_user_node(node: Node) -> bool:
+	return node and is_instance_valid(node) and not node.name.contains("@")
 
 # "node" must be untyped to properly check freed nodes
 static func is_node_valid(node) -> bool:
