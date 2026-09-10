@@ -787,20 +787,67 @@ func test_root_finding() -> bool:
 		
 		"files_first_with_root": {
 			"paths": [
+				"main/",
 				"main/a",
 				"main/dir/",
 				"main/dir/b",
 			],
 			"res": "main/"
+		},
+		
+		"unordered_rootless": {
+			"paths": [
+				"src/script",
+				"plugin.cfg",
+				"src/thingthing",
+				"src/hello/",
+				"thing.gd",
+				"src/hello/hi",
+			],
+			"res": ""
+		},
+		
+		"no_dirs": {
+			"paths": ["a", "b", "c", "d"],
+			"res": ""
+		},
+		
+		"joke_root": {
+			"paths": [
+				"main/",
+				"main/a",
+				"main/b",
+				"mainiac/",
+				"mainiac/hi"
+			],
+			"res": ""
 		}
 	}
 	
 	for key in data.keys():
 		var entry = data[key]
-		var res = GDTUpdateInstaller.get_root_of_paths(entry["paths"])
+		var expected = entry["res"]
+		var paths: Array = entry["paths"]
 		
-		if res != entry["res"]:
-			printerr("%s '%s' != '%s'" % [key, res, entry["res"]])
+		var normal = GDTUpdateInstaller.get_root_of_paths(paths)
+		
+		paths.reverse()
+		var reversed = GDTUpdateInstaller.get_root_of_paths(paths)
+		
+		if normal != expected:
+			printerr("%s [normal] '%s' != '%s'" % [key, normal, expected])
 			return false
+			
+		if reversed != expected:
+			printerr("%s [reversed] '%s' != '%s'" % [key, reversed, expected])
+			return false
+		
+		for i in 10:
+			paths.shuffle()
+			var shuffled = GDTUpdateInstaller.get_root_of_paths(paths)
+			
+			if shuffled != expected:
+				printerr("%s [shuffled] '%s' != '%s'" % [key, shuffled, expected])
+				return false
 	
 	return true

@@ -129,16 +129,16 @@ func alert(text: String) -> void:
 	EditorInterface.popup_dialog_centered(dial)
 
 static func get_root_of_paths(paths: Array) -> String:
-	for file_path in paths:
-		if not file_path.ends_with("/"):
-			var base_dir = file_path.get_base_dir()
-			
-			if base_dir:
-				return base_dir + "/"
-			else:
-				return ""
+	if paths.is_empty():
+		return ""
 	
-	return ""
+	var first_root = paths[0].split("/")[0] + "/"
+	
+	for file_path: String in paths:
+		if not file_path.begins_with(first_root):
+			return ""
+	
+	return first_root
 
 static func ensure_dir_exists(path: String) -> int:
 	var dir = path.get_base_dir()
