@@ -29,16 +29,7 @@ func _ready() -> void:
 	finish()
 
 func get_zip_root() -> String:
-	for file_path in zip.get_files():
-		if not file_path.ends_with("/"):
-			var base_dir = file_path.get_base_dir()
-			
-			if base_dir:
-				return base_dir + "/"
-			else:
-				return ""
-	
-	return ""
+	return get_root_of_paths(zip.get_files())
 
 func unzip() -> void:
 	print("[GodotTogether] Writing files")
@@ -136,6 +127,18 @@ func alert(text: String) -> void:
 	dial.dialog_text = text
 	dial.title = "GodotTogether"
 	EditorInterface.popup_dialog_centered(dial)
+
+static func get_root_of_paths(paths: Array) -> String:
+	for file_path in paths:
+		if not file_path.ends_with("/"):
+			var base_dir = file_path.get_base_dir()
+			
+			if base_dir:
+				return base_dir + "/"
+			else:
+				return ""
+	
+	return ""
 
 static func ensure_dir_exists(path: String) -> int:
 	var dir = path.get_base_dir()
