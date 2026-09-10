@@ -483,4 +483,7 @@ func apply_update() -> void:
 	installer.start()
 	
 	print("[GodotTogether] Shutting down plugin for update")
-	main.shutdown()
+	
+	# In case the installer doesn't shutdown the plugin
+	if main and is_instance_valid(main):
+		main.shutdown()

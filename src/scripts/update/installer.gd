@@ -12,6 +12,7 @@ var zip_path: String = ""
 var zip: ZIPReader
 
 var settings_buf = []
+var written_file_paths = []
 
 func _ready() -> void:
 	print("[GodotTogether] Initializing update installer...")
@@ -48,6 +49,7 @@ func unzip() -> void:
 		
 		file.store_buffer(buf)
 		
+		written_file_paths.append(written_file_paths)
 		print(file_path)
 		
 	print("[GodotTogether] Update files extracted")
@@ -97,6 +99,28 @@ func start() -> void:
 	var root = EditorInterface.get_base_control()
 	root.add_child(self)
 
+func wait_for_import() -> void:
+	var fs = EditorInterface.get_resource_filesystem()
+	
+	while fs.is_scanning() or fs.is_importing():
+		await get_tree().process_frame
+
+func force_reimport_files() -> void:
+	var fs = EditorInterface.get_resource_filesystem()
+	
+	var paths = []
+	var self_path = get_script().resource_path
+	
+	for i in written_file_paths:
+		var path = PLUGIN_DIR + "/" + i
+		
+		if path == self_path:
+			continue # Prevent script reload which could cancel the execution
+		
+		paths.append(path)
+	
+	fs.reimport_files(written_file_paths)
+
 func finish() -> void:
 	print("[GodotTogether] Update complete")
 	zip.close()
@@ -107,11 +131,13 @@ func finish() -> void:
 		await tree.process_frame
 	
 	var fs = EditorInterface.get_resource_filesystem()
+	
 	fs.scan()
 	fs.scan_sources()
 	
-	while fs.is_scanning() or fs.is_importing():
-		await tree.process_frame
+	await wait_for_import()
+	force_reimport_files()
+	await wait_for_import()
 	
 	for i in range(5):
 		await tree.process_frame
