@@ -441,7 +441,7 @@ func verify_update(update: GDTUpdateCheckResult) -> bool:
 		gui.alert("Corrupted signature. Cannot verify the authenticity of the release. Try again or report this.")
 		return false
 	
-	var hash = GDTUtils.sha256_of_file(ZIP_PATH)
+	var hash = FileAccess.get_sha256(ZIP_PATH)
 	
 	if not hash:
 		gui.alert("Unable to get hash of update file to verify it.")

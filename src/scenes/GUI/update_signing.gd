@@ -8,7 +8,7 @@ const BUILD_PATH = "res://addons/GodotTogether/build/GodotTogether.zip"
 const SIG_PATH = "res://addons/GodotTogether/build/release.gdsig"
 
 func _on_btn_sign_pressed() -> void:
-	var build_hash = GDTUtils.sha256_of_file(BUILD_PATH)
+	var build_hash = FileAccess.get_sha256(BUILD_PATH)
 	
 	if not build_hash:
 		main.get_gui().alert("Unable to get build hash. Make sure the build zip exists")
@@ -37,7 +37,7 @@ func _on_btn_sign_pressed() -> void:
 	main.get_gui().alert("Signature created at %s" % SIG_PATH)
 
 func _on_btn_verify_pressed() -> void:
-	var build_hash = GDTUtils.sha256_of_file(BUILD_PATH)
+	var build_hash = FileAccess.get_sha256(BUILD_PATH)
 	var signature = FileAccess.get_file_as_bytes(SIG_PATH)
 	
 	if not build_hash:

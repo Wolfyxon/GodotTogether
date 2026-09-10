@@ -10,25 +10,6 @@ static func sha256_of_buffer(buffer: PackedByteArray) -> String:
 	
 	return hasher.finish().hex_encode()
 
-static func sha256_of_file(path: String) -> String:
-	var hasher = HashingContext.new()
-	hasher.start(HashingContext.HASH_SHA256)
-	
-	var file = FileAccess.open(path, FileAccess.READ)
-	
-	if not file:
-		printerr("Unable to hash file at %s" % path)
-		return ""
-	
-	var file_len = file.get_length()
-	
-	while file.get_position() < file_len:
-		var rem = file.get_length() - file.get_position()
-		hasher.update(file.get_buffer(min(1024, rem)))
-	
-	
-	return hasher.finish().hex_encode()
-
 static func join(array: Array, separator := "\n") -> String:
 	var res = ""
 	var ln = array.size()

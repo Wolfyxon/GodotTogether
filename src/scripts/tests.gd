@@ -205,14 +205,14 @@ func test_sha256_file() -> bool:
 		return false
 	
 	var hash_buf = GDTUtils.sha256_of_buffer(buf)
-	var hash_file = GDTUtils.sha256_of_file(path)
+	var hash_file = FileAccess.get_sha256(path)
 	
 	if hash_buf.is_empty():
 		printerr("sha256_of_buffer() empty")
 		return false
 	
 	if hash_file.is_empty():
-		printerr("sha256_of_file() empty")
+		printerr("FileAccess.get_sha256() empty")
 		return false
 		
 	if hash_buf != hash_file:
