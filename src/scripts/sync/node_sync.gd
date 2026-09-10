@@ -307,7 +307,8 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 			prop_dict
 		)
 	else:
-		_c2s_request_node_class_change(
+		_c2s_request_node_class_change.rpc_id(
+			1,
 			path, 
 			scene.scene_file_path,
 			new_node.get_class(),
