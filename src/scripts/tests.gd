@@ -773,29 +773,34 @@ func test_runaway_keys() -> bool:
 	return true
 	
 func test_root_finding() -> bool:
-	var files_first_rootless = [
-		"file",
-		"file2",
-		"dir/",
-		"dir/subfile",
-		"dir/dir/"
-	]
+	var data = {
+		"files_first_rootless": {
+			"paths": [
+				"file",
+				"file2",
+				"dir/",
+				"dir/subfile",
+				"dir/dir/"
+			],
+			"res": ""
+		},
+		
+		"files_first_with_root": {
+			"paths": [
+				"main/a",
+				"main/dir/",
+				"main/dir/b",
+			],
+			"res": "main/"
+		}
+	}
 	
-	var files_first_with_root = [
-		"main/a",
-		"main/dir/",
-		"main/dir/b",
-	]
-	
-	var files_first_rootless_res = GDTUpdateInstaller.get_root_of_paths(files_first_rootless)
-	var files_first_with_root_res = GDTUpdateInstaller.get_root_of_paths(files_first_with_root)
-	
-	if files_first_rootless_res != "":
-		printerr("files_first_rootless '%s' != ''" % files_first_rootless_res)
-		return false
-	
-	if files_first_with_root_res != "main/":
-		printerr("files_first_with_root '%s' != 'main/'" % files_first_with_root_res)
-		return false
+	for key in data.keys():
+		var entry = data[key]
+		var res = GDTUpdateInstaller.get_root_of_paths(entry["paths"])
+		
+		if res != entry["res"]:
+			printerr("%s '%s' != '%s'" % [key, res, entry["res"]])
+			return false
 	
 	return true
