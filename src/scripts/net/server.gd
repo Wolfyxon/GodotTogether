@@ -51,8 +51,11 @@ func _disconnected(id: int) -> void:
 	if not multiplayer.is_server(): return
 
 	var user = main.dual.get_user_by_id(id)
-	assert(user, "User %d disconnected, but was never listed" % id)
-
+	
+	if not user:
+		print("User %d disconnected" % id)
+		return
+	
 	print("User %s (%d) disconnected" % [user.name, id])
 	
 	var user_dict = user.to_dict()

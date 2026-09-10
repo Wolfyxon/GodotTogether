@@ -63,6 +63,9 @@ func _init(id: int, peer: ENetPacketPeer = null, main: GodotTogether = null):
 func has_permission(permission: GodotTogether.Permission) -> bool:
 	return authenticated and permission in permissions
 
+func was_ever_authenticated() -> bool:
+	return authenticated_at != -1
+
 func get_address() -> String:
 	if not peer:
 		return "localhost"

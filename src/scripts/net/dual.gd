@@ -103,7 +103,7 @@ func _user_disconnected(user: GDTUser) -> void:
 	users.erase(user)
 	user_disconnected.emit(user)
 	
-	if should_notify_user_connection():
+	if user.was_ever_authenticated() and should_notify_user_connection():
 		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, ip])
 
