@@ -241,6 +241,16 @@ func _node_tree_exiting(node: Node) -> void:
 	
 	var node_path = scene.get_path_to(node)
 	
+	# Do not delete the node if it was reparented into a node with the same path
+	# This is the case for node replacements (class changes).
+	# This fixes children of replaced nodes disappearing, while also preserving reparenting.
+	# (Actually reparenting creates the node from scratch instead of actually reparenting it lol)
+	await get_tree().process_frame # Needs to wait a frame
+	
+	if node.is_inside_tree() and node_path == scene.get_path_to(node):
+		return
+	# ---------------------
+	
 	if main.server.is_active():
 		server_broadcast_node_delete(node_path, scene.scene_file_path)
 	else:
