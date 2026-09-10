@@ -12,7 +12,6 @@ var zip_path: String = ""
 var zip: ZIPReader
 
 var settings_buf = []
-var written_file_paths = []
 
 func _ready() -> void:
 	print("[GodotTogether] Initializing update installer...")
@@ -48,8 +47,6 @@ func unzip() -> void:
 			continue
 		
 		file.store_buffer(buf)
-		
-		written_file_paths.append(file_path)
 		print(file_path)
 		
 	print("[GodotTogether] Update files extracted")
@@ -105,60 +102,16 @@ func wait_for_import() -> void:
 	while fs.is_scanning() or fs.is_importing():
 		await get_tree().process_frame
 
-func force_reimport_files() -> void:
-	var fs = EditorInterface.get_resource_filesystem()
-	
-	var paths = []
-	var self_path = get_script().resource_path
-	
-	for i in written_file_paths:
-		var path = PLUGIN_DIR + "/" + i
-		
-		if path == self_path:
-			continue # Prevent script reload which could cancel the execution
-		
-		paths.append(path)
-	
-	fs.reimport_files(paths)
-
 func finish() -> void:
 	print("[GodotTogether] Update complete")
 	zip.close()
 	
-	var tree = get_tree()
-	
-	for i in range(5):
-		await tree.process_frame
-	
-	var fs = EditorInterface.get_resource_filesystem()
-	
-	fs.scan()
-	fs.scan_sources()
-	
-	await wait_for_import()
-	force_reimport_files()
-	await wait_for_import()
-	
-	for i in range(5):
-		await tree.process_frame
-	
-	# on Windows the scripts refuse to reload until you reload the project
-	# Behavior unknown on other OSes
-	if OS.get_name() != "Linux": 
-		alert("Update complete. \nPlease restart Godot to apply it.")
-		return
-	
-	alert("Update complete. \nIf you encounter issues, restart Godot.")
-	EditorInterface.set_plugin_enabled("GodotTogether", true)
-	
-	await get_tree().process_frame
 	await get_tree().process_frame
 	
-	if not EditorInterface.is_plugin_enabled("GodotTogether"):
-		printerr("GodotTogether does not start. The update likely have failed.")
-	
-	print("[GodotTogether] Shutting down updater")
+	print("[GodotTogether] Restarting Godot")
+	EditorInterface.restart_editor(true)
 	queue_free()
+	
 
 func alert(text: String) -> void:
 	var dial = AcceptDialog.new()
