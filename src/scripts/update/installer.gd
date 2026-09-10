@@ -101,12 +101,20 @@ func finish() -> void:
 	print("[GodotTogether] Update complete")
 	zip.close()
 	
-	await get_tree().process_frame
-	
-	EditorInterface.get_resource_filesystem().scan()
+	var tree = get_tree()
 	
 	for i in range(5):
-		await get_tree().process_frame
+		await tree.process_frame
+	
+	var fs = EditorInterface.get_resource_filesystem()
+	fs.scan()
+	fs.scan_sources()
+	
+	while fs.is_scanning() or fs.is_importing():
+		await tree.process_frame
+	
+	for i in range(5):
+		await tree.process_frame
 	
 	# on Windows the scripts refuse to reload until you reload the project
 	# Behavior unknown on other OSes
