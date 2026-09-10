@@ -24,7 +24,7 @@ func _ready() -> void:
 	print("[GodotTogether] Removing current plugin version")
 	remove_dir_recursive(PLUGIN_DIR, [".git"])
 	
-	#unzip()
+	unzip()
 	restore_settings()
 	finish()
 
