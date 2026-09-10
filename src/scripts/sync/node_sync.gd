@@ -279,20 +279,13 @@ func _node_child_order_changed(parent: Node) -> void:
 
 func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 	#if not is_node_valid(current_node): return
-	if not can_sync_nodes(): 
-		print("cant")
-		return
-	
-	if is_node_supressed(current_node): 
-		print('supr')
-		return
+	if not can_sync_nodes(): return
+	if is_node_supressed(current_node): return
 	
 	unobserve_node(current_node)
 	
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
-	
-	prints("repl", current_node, new_node)
 	
 	new_node.owner = scene
 	new_node.name = current_node.name
