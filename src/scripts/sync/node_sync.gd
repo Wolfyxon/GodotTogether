@@ -212,7 +212,6 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	if not scene: return
 	
 	child.owner = scene # Godot isn't fast enough
-	prints("add", child.name, "to", parent)
 	var data_dict = observe_node(child)
 	
 	# Cursed. TODO: Optimize later
@@ -229,7 +228,6 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 func _node_tree_exiting(node: Node) -> void:
 	if not is_node_valid(node): return
 	if not can_sync_nodes(): return
-	prints("exit", node)
 	
 	var selection = EditorInterface.get_selection()
 	selection.remove_node(node)
