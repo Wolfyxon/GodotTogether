@@ -306,6 +306,10 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
 	
+	if scene == new_node:
+		_scene_root_replacing(current_node, new_node)
+		return
+	
 	new_node.owner = scene
 	new_node.name = current_node.name
 	
@@ -336,6 +340,27 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 			new_node.get_class(),
 			prop_dict
 		)
+
+func _scene_root_replacing(old_scene: Node, new_scene: Node) -> void:
+	var path = old_scene.scene_file_path
+	if not path: return
+	
+	await get_tree().process_frame
+	
+	var err = EditorInterface.save_scene()
+	
+	if err != OK:
+		printerr("Not broadcasting scene type change as the save failed")
+		return
+	
+	await main.file_sync.scan_started
+	await main.file_sync.scan_complete
+	await get_tree().process_frame
+	
+	if main.server.is_active():
+		server_broadcast_scene_reload(path)
+	else:
+		_c2s_request_scene_reload.rpc_id(1, path)
 
 @rpc("any_peer", "call_remote", "reliable")
 func _c2s_request_node_update(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
@@ -430,6 +455,17 @@ func _c2s_request_node_class_change(
 	
 	server_broadcast_node_class_change(node_path, scene_path, new_class, property_dict)
 	change_node_class(node_path, scene_path, new_class, property_dict)
+
+@rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_scene_reload(path: String) -> void:
+	if not main.server.validate_c2s(): 
+		return
+	
+	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+	
+	server_broadcast_scene_reload(path)
+	reload_scene(path)
 
 @rpc("authority", "call_remote", "reliable")
 func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
@@ -595,6 +631,43 @@ func change_node_class(
 		#old_node.queue_free()
 		pass
 
+@rpc("authority", "reliable")
+func reload_scene(path: String) -> void:
+	# EditorInterface.reload_scene() is not reliable
+	
+	if not GDTValidator.is_path_safe(path):
+		printerr("Server tried to reload file at unsafe location: %s" % path)
+		return
+	
+	if not FileAccess.file_exists(path):
+		printerr("Attempt to reload nonexistent scene: %s" % path)
+		return
+	
+	EditorInterface.get_selection().clear()
+	
+	var scene_paths = EditorInterface.get_open_scenes()
+	var current_scene_path = ""
+	var scene = EditorInterface.get_edited_scene_root()
+	
+	if scene and scene.scene_file_path:
+		current_scene_path = scene.scene_file_path
+	
+	for i in scene_paths:
+		if not i: continue
+		
+		EditorInterface.open_scene_from_path(i)
+		
+		if i != path:
+			EditorInterface.save_scene()
+		
+		EditorInterface.close_scene()
+	
+	for i in scene_paths:
+		EditorInterface.open_scene_from_path(i)
+	
+	if current_scene_path:
+		EditorInterface.open_scene_from_path(current_scene_path)
+
 func server_broadcast_node_update(node_path: String, scene_path: String, property_dict: Dictionary, sender := 0) -> void:
 	main.server.auth_rpc(update_node_properties, [node_path, scene_path, property_dict], [sender])
 
@@ -629,6 +702,9 @@ func server_broadcast_node_class_change(
 	sender := 0
 ) -> void:
 	main.server.auth_rpc(change_node_class, [node_path, scene_path, new_class, property_dict], [sender])
+
+func server_broadcast_scene_reload(path: String, sender := 0) -> void:
+	main.server.auth_rpc(reload_scene, [path], [sender])
 
 func validate_and_create_node(node_class: String) -> Node:
 	if not ClassDB.class_exists(node_class):
