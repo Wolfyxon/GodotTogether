@@ -212,4 +212,4 @@ static func printerr_traceback(message) -> void:
 	for i in stack:
 		stack_lines.append("%s %s:%s" % [ i["source"], i["function"], i["line"] ])
 	
-	printerr(message, "\n-- Traceback: --", GDTUtils.join(stack_lines, "\n"), "-----------")
+	printerr(message, "\n-- Traceback: --\n", GDTUtils.join(stack_lines, "\n"), "\n-----------")
