@@ -109,6 +109,7 @@ func auth_successful() -> void:
 	
 	main.file_sync.pause()
 
+	EditorInterface.get_selection().clear()
 	last_open_scenes = EditorInterface.get_open_scenes().duplicate()
 	GDTUtils.close_all_scenes()
 
