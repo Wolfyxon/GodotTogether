@@ -635,7 +635,7 @@ func reload_scene(path: String) -> void:
 	# EditorInterface.reload_scene() is not reliable
 	
 	if not GDTValidator.is_path_safe(path):
-		printerr("Server tried to reload file at unsafe location: %s" % path)
+		printerr("Server tried to reload scene at unsafe location: %s" % path)
 		return
 	
 	if not FileAccess.file_exists(path):
