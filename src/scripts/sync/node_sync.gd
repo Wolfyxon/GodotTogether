@@ -138,8 +138,8 @@ func _check_node(node, root: Node = null) -> void:
 	if not root:
 		root = EditorInterface.get_edited_scene_root()
 	
-	if GDTUtils.get_node_scene(node) != root:
-		return # Belongs to non-current scene, ignore.
+	if not root.is_ancestor_of(node) and node != root:
+		return
 	
 	var data = node_data_dict[node]
 	
@@ -182,6 +182,9 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	if not scene: return
 	
 	if scene.scene_file_path.is_empty():
+		return
+	
+	if not scene.is_ancestor_of(node) and node != node:
 		return
 	
 	var node_path = scene.get_path_to(node)
@@ -236,17 +239,26 @@ func _node_tree_exiting(node: Node) -> void:
 		var selection = EditorInterface.get_selection()
 		selection.clear()
 	
-	if not scene.is_ancestor_of(node):
+	if not scene.is_ancestor_of(node) and node != scene:
 		return
 	
 	var node_path = scene.get_path_to(node)
+	
+	await get_tree().process_frame
+	
+	var new_scene = EditorInterface.get_edited_scene_root()
+	
+	if not node: return
+	if not scene: return
+	if not new_scene: return
+	
+	if scene.get_class() != new_scene.get_class():
+		return
 	
 	# Do not delete the node if it was reparented into a node with the same path
 	# This is the case for node replacements (class changes).
 	# This fixes children of replaced nodes disappearing, while also preserving reparenting.
 	# (Actually reparenting creates the node from scratch instead of actually reparenting it lol)
-	await get_tree().process_frame # Needs to wait a frame
-	
 	if node.is_inside_tree() and node_path == scene.get_path_to(node):
 		return
 	# ---------------------
@@ -270,7 +282,13 @@ func _node_child_order_changed(parent: Node) -> void:
 	var children = parent.get_children()
 	
 	for i in children.size():
-		names.append(children[i].name)
+		var child = children[i]
+		if not child: continue
+		
+		if not is_user_node(child):
+			continue
+		
+		names.append(child.name)
 	
 	if main.server.is_active():
 		server_broadcast_reorder_children(parent_path, scene.scene_file_path, names)
@@ -513,8 +531,12 @@ func reorder_children(parent_path: String, scene_path: String, ordered_names: Ar
 	set_node_supressed(parent, true)
 	
 	for i in ordered_names.size():
-		var child = parent.get_node(NodePath(ordered_names[i]))
-		if not child: continue
+		var path = NodePath(ordered_names[i])
+		var child = parent.get_node_or_null(path)
+		
+		if not child: 
+			printerr("Failed to get node in %s for reorder: %s" % [parent, path])
+			continue
 		
 		parent.move_child(child, i)
 		
@@ -625,6 +647,10 @@ func get_node_data(node: Node) -> Dictionary:
 	
 	if not scene:
 		printerr("Cannot create data of scene-less node")
+		return {}
+	
+	if not scene.is_ancestor_of(node) and node != scene:
+		GDTUtils.printerr_traceback("Cannot get data of %s: scene mismatch" % node)
 		return {}
 	
 	return {
