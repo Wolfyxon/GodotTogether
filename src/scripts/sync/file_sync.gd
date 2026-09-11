@@ -1,6 +1,9 @@
 extends GDTComponent
 class_name GDTFileSync
 
+signal scan_started
+signal scan_complete
+
 var filesystem_watcher: Timer = Timer.new()
 var file_hashes := {}
 
@@ -38,6 +41,8 @@ func resume() -> void:
 func scan_files() -> void:
 	if not can_sync_files(): return
 	
+	scan_started.emit()
+	
 	var current_hashes = GDTFiles.get_file_tree_hashes()
 	
 	for path in current_hashes:
@@ -50,6 +55,7 @@ func scan_files() -> void:
 			_file_removed(path)
 			
 	file_hashes = current_hashes
+	scan_complete.emit()
 
 func can_sync_files() -> bool:
 	return (
