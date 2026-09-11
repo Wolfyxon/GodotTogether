@@ -11,7 +11,12 @@ func _ready() -> void:
 	await get_tree().physics_frame
 	
 	if main:
-		$about/main/scroll/vbox/version.text = "Version: " + main.get_plugin_version()
+		var version = main.get_plugin_version()
+		
+		if version != "unreleased":
+			title = "GodotTogether v. %s" % version
+		
+		$about/main/scroll/vbox/version.text = "Version: %s" % version
 
 	if gui.visuals_available():
 		var settings_json = GDTSettings.get_settings_json()
