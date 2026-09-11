@@ -144,6 +144,20 @@ func test_versions() -> bool:
 	
 	return ok 
 
+func test_plugin_version() -> bool:
+	var ver = main.get_plugin_version()
+	var err = check_version(ver)
+	
+	if err:
+		printerr("Invalid plugin version %s")
+		return false
+	
+	if not FileAccess.file_exists("res://addons/GodotTogether/.dev") and ver == "unreleased":
+		printerr("The plugin version must not be 'unreleased' in a release build")
+		return false
+	
+	return true
+
 func test_resource_encoding() -> bool:
 	var a = StandardMaterial3D.new()
 	a.albedo_texture = NoiseTexture2D.new()
