@@ -17,7 +17,10 @@ A **work in progress** plugin for real-time collaboration over the network for G
 - Node property and type sync
 - Tree changes (node add, remove, reparent)
 - File sync
-- Basic security via password and manual user approval
+- Basic security via password, manual user approval and kicking
+- 2D and 3D Avatars showing where each user is on the scene
+- Optional auto updater (always asks for consent before installing and can be completely turned off)
+- Can make you a sandwich
 
 All sync features listed above happen constantly in real time!
 
