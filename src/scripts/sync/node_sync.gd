@@ -454,16 +454,13 @@ func add_node(
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
-	var parent = GDTUtils.get_node_in_scene(parent_path, scene_path)
+	var scene = GDTUtils.get_loaded_scene_root(scene_path)
+	if not scene: return
+	
+	var parent = scene.get_node_or_null(parent_path)
 	
 	if not parent: 
 		printerr("Parent not found %s in scene %s" % [parent_path, scene_path])
-		return
-	
-	var scene = GDTUtils.get_node_scene(parent)
-	
-	if not scene: 
-		printerr("Scene missing")
 		return
 	
 	if not "name" in property_dict:
