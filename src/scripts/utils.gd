@@ -109,6 +109,24 @@ static func compare_dicts(a: Dictionary, b: Dictionary, depth := 16) -> Array:
 static func get_tree() -> SceneTree:
 	return EditorInterface.get_base_control().get_tree()
 
+static func try_connect(sig: Signal, fn: Callable) -> void:
+	if not sig.is_connected(fn):
+		sig.connect(fn)
+
+static func try_connect_bulk(dict: Dictionary) -> void:
+	for sig in dict.keys():
+		var fn = dict[sig]
+		
+		if typeof(sig) != TYPE_SIGNAL:
+			printerr_traceback("Expected Signal, got %s for key %s" % [type_string(typeof(sig)), sig])
+			continue
+			
+		if typeof(fn) != TYPE_CALLABLE:
+			printerr_traceback("Expected Callable, got %s for value at key %s" % [type_string(typeof(fn)), sig])
+			continue
+		
+		try_connect(sig, fn)
+
 static func try_open_scene(scene_path: String, tries := 100) -> void:
 	var tree = get_tree()
 

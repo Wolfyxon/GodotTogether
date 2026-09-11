@@ -769,11 +769,13 @@ func observe_node(node: Node) -> Dictionary:
 		
 	if node in node_data_dict:
 		return node_data_dict[node]
-		
-	node.child_entered_tree.connect(_node_child_entered_tree.bind(node))
-	node.child_order_changed.connect(_node_child_order_changed.bind(node))
-	node.tree_exiting.connect(_node_tree_exiting.bind(node))
-	node.replacing_by.connect(_node_replacing_by.bind(node))
+	
+	GDTUtils.try_connect_bulk({
+		node.child_entered_tree: _node_child_entered_tree.bind(node),
+		node.child_order_changed: _node_child_order_changed.bind(node),
+		node.tree_exiting: _node_tree_exiting.bind(node),
+		node.replacing_by: _node_replacing_by.bind(node)
+	})
 	
 	return apply_node_data(node)
 
