@@ -13,6 +13,14 @@ A **work in progress** plugin for real-time collaboration over the network for G
 > There's also a risk of your projects becoming corrupted so
 > **always make backups** or/and **use version control** like **git**.
 
+## Features
+- Node property and type sync
+- Tree changes (node add, remove, reparent)
+- File sync
+- Basic security via password and manual user approval
+
+All sync features listed above happen constantly in real time!
+
 ## Installation
 First create a folder called `addons` in your project's directory.
 
