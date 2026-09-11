@@ -602,6 +602,13 @@ func change_node_class(
 	var old_node = scene.get_node_or_null(node_path)
 	if not old_node: return
 	
+	if old_node in EditorInterface.get_open_scene_roots():
+		# Godot does not properly recognize the new scene root, even
+		# after changing SceneTree.edited_scene_root.
+		# A file-based workaround is used in _scene_root_replacing()
+		printerr("Attempt to replace root of an open scene.")
+		return
+	
 	if old_node.get_class() == new_class:
 		return
 	
@@ -620,14 +627,11 @@ func change_node_class(
 	
 	old_node.replace_by(new_node)
 	
-	if is_current_scene:
-		get_tree().edited_scene_root = new_node
-
 	unobserve_node(old_node)
 	
 	await get_tree().process_frame
 	
-	if not old_node.is_inside_tree():
+	if old_node and not old_node.is_inside_tree():
 		#old_node.queue_free()
 		pass
 
