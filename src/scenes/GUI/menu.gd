@@ -64,7 +64,12 @@ func _host() -> void:
 		
 		if err:
 			set_session_init_cover()
-			gui.alert("Failed to start server: %s" % error_string(err), "Failed to start server")
+			gui.alert(GDTUtils.join([
+				"Unable to start server.",
+				"Make sure a GodotTogether server is not already running in another Godot instance",
+				"and no other application is using this port.",
+				"Error code: %s" % error_string(err),
+			], "\n"), "Failed to start server")
 			return
 		
 		server_settings_tab.load_settings()
