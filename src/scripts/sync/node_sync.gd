@@ -231,16 +231,17 @@ func _node_tree_exiting(node: Node) -> void:
 	if not can_sync_nodes(): return
 	prints("exit", node)
 	
+	var selection = EditorInterface.get_selection()
+	selection.remove_node(node)
+	
 	var scene = EditorInterface.get_edited_scene_root()
 	if not scene: return
 	
-	# Partial mitigation for https://github.com/godotengine/godot/issues/114710
-	if node == scene:
-		var selection = EditorInterface.get_selection()
+	if node == scene: 
 		selection.clear()
-	
-	if not scene.is_ancestor_of(node) and node != scene:
 		return
+	
+	if not scene.is_ancestor_of(node): return
 	
 	var node_path = scene.get_path_to(node)
 	
@@ -508,9 +509,16 @@ func add_node(
 func delete_node(node_path: String, scene_path: String) -> void:
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
-		
-	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
+	
+	var scene = GDTUtils.get_loaded_scene_root(scene_path)
+	if not scene: return
+	
+	var node = scene.get_node_or_null(node_path)
 	if not node: return
+	
+	if node == scene:
+		printerr("Deleting scene root not supported")
+		return
 	
 	var selection = EditorInterface.get_selection()
 	
