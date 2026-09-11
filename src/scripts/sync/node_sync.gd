@@ -560,7 +560,10 @@ func change_node_class(
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
-	var old_node = GDTUtils.get_node_in_scene(node_path, scene_path)
+	var scene = GDTUtils.get_loaded_scene_root(scene_path)
+	if not scene: return
+	
+	var old_node = scene.get_node_or_null(node_path)
 	if not old_node: return
 	
 	if old_node.get_class() == new_class:
@@ -577,9 +580,20 @@ func change_node_class(
 	
 	set_node_supressed(old_node, true)
 	
+	var is_current_scene = EditorInterface.get_edited_scene_root() == old_node
+	
 	old_node.replace_by(new_node)
 	
+	if is_current_scene:
+		get_tree().edited_scene_root = new_node
+
 	unobserve_node(old_node)
+	
+	await get_tree().process_frame
+	
+	if not old_node.is_inside_tree():
+		#old_node.queue_free()
+		pass
 
 func server_broadcast_node_update(node_path: String, scene_path: String, property_dict: Dictionary, sender := 0) -> void:
 	main.server.auth_rpc(update_node_properties, [node_path, scene_path, property_dict], [sender])
