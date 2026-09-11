@@ -462,7 +462,9 @@ func _c2s_request_scene_reload(path: String) -> void:
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
 		return
 	
-	server_broadcast_scene_reload(path)
+	var id = multiplayer.get_remote_sender_id()
+	
+	server_broadcast_scene_reload(path, id)
 	reload_scene(path)
 
 @rpc("authority", "call_remote", "reliable")
