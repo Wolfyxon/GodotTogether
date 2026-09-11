@@ -623,8 +623,6 @@ func change_node_class(
 	
 	set_node_supressed(old_node, true)
 	
-	var is_current_scene = EditorInterface.get_edited_scene_root() == old_node
-	
 	old_node.replace_by(new_node)
 	
 	unobserve_node(old_node)
@@ -632,8 +630,7 @@ func change_node_class(
 	await get_tree().process_frame
 	
 	if old_node and not old_node.is_inside_tree():
-		#old_node.queue_free()
-		pass
+		old_node.queue_free()
 
 @rpc("authority", "reliable")
 func reload_scene(path: String) -> void:
