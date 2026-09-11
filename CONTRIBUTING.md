@@ -12,10 +12,11 @@ Here are things you can do to contribute to the development of Godot Together.
 		- [Code style](#code-style)
 		- [Type hints](#type-hints)
         - [Use class prefixes](#use-class-prefixes)
+        - [Explanation comments](#explanation-comments)
         - [No author comments](#no-author-comments)
         - [Testing](#testing)
 
-## Bugs and suggesions
+## Bugs and suggestions
 If you've found a bug or would like to suggest a change or a new feature, you can use [issues](https://github.com/Wolfyxon/GodotTogether/issues).
 
 ## Writing code
@@ -109,6 +110,39 @@ class_name User
 ✅ **Good**:
 ```gdscript
 class_name GDTUser
+```
+
+#### Explanation comments
+If a piece of code is not obvious for what it does or why it is there, you should make a comment explaining it.
+
+On the other hand, do not make comments for self explanatory code.
+
+
+❌ **Bad**:
+```gdscript
+static func get_node_in_scene(node_path: String, scene_path: String) -> Node:
+	# Iterate through all scene roots
+	for scene in EditorInterface.get_open_scene_roots():
+		if scene.scene_file_path == scene_path: # Check if the scene has the given path
+			return scene.get_node_or_null(node_path) # Get and return the target node
+	
+	return
+```
+```gdscript
+	await get_tree().process_frame
+	
+	if node.is_inside_tree() and node_path == scene.get_path_to(node):
+		return
+```
+✅ **Good**:
+```gdscript
+	# Do not delete the node if it was reparented into a node with the same path
+	# This is the case for node replacements (class changes).
+	# This fixes children of replaced nodes disappearing, while also preserving reparenting.
+	await get_tree().process_frame # Needs to wait a frame
+	
+	if node.is_inside_tree() and node_path == scene.get_path_to(node):
+		return
 ```
 
 #### No author comments
