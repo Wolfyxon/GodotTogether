@@ -644,14 +644,17 @@ func reload_scene(path: String) -> void:
 		printerr("Attempt to reload nonexistent scene: %s" % path)
 		return
 	
-	EditorInterface.get_selection().clear()
-	
 	var scene_paths = EditorInterface.get_open_scenes()
 	var current_scene_path = ""
 	var scene = EditorInterface.get_edited_scene_root()
 	
+	if not path in scene_paths:
+		return
+	
 	if scene and scene.scene_file_path:
 		current_scene_path = scene.scene_file_path
+	
+	EditorInterface.get_selection().clear()
 	
 	for i in scene_paths:
 		if not i: continue
