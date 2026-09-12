@@ -852,6 +852,18 @@ func can_sync_nodes() -> bool:
 		not GDTSettings.get_setting("dev/disable_real_time_node_sync")
 	)
 
+static func get_signal_hash_dict(node: Node) -> Dictionary:
+	var res = {}
+	var signals = node.get_signal_list()
+	
+	for sig in signals:
+		var sig_name = sig["name"]
+		var connections = node.get_signal_connection_list(sig_name)
+		
+		res[sig_name] = hash(connections)
+	
+	return res
+
 static func get_property_hash_dict(obj: Object, depth := 64) -> Dictionary:
 	var res = {}
 	fill_property_hash_dict(res, obj, depth)
