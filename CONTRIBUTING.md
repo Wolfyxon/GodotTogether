@@ -12,6 +12,7 @@ Here are things you can do to contribute to the development of Godot Together.
 		- [Code style](#code-style)
 		- [Type hints](#type-hints)
         - [Use class prefixes](#use-class-prefixes)
+        - [RPC functions](#rpc-functions)
         - [Explanation comments](#explanation-comments)
         - [No author comments](#no-author-comments)
         - [Testing](#testing)
@@ -110,6 +111,43 @@ class_name User
 ✅ **Good**:
 ```gdscript
 class_name GDTUser
+```
+
+#### RPC functions
+Always properly configure RPC functions. Use `"reliable"` to make sure it's always received.  
+If it's not critical to the plugin (like avatar position updates), use `"unreliable"`, or "unreliable_ordered".  
+Unreliable functions save on performance.
+
+```gdscript
+@rpc("authority", "reliable")
+func i_am_very_important():
+
+@rpc("authority", "unreliable")
+func would_be_nice_if_you_call_me_but_its_fine()
+
+```
+
+If a function is only meant to be received by the server, prefix it with `_c2s_` (means client to server),
+and if it's only meant to be received by clients from the server, use `_s2c` (server to client).
+If an RPC function is called in both cases, do not prefix it.
+
+Always properly use `"authority"` and `"any_peer"`, and validate everything to ensure security.
+
+```gdscript
+@rpc("authority", "reliable")
+func i_can_be_called_on_clients_by_the_server_and_scripts()
+
+@rpc("any_peer", "reliable")
+func everyone_calls_me()
+
+@rpc("any_peer", "reliable")
+func _c2s_say_something_to_the_server():
+	if not main.server.validate_c2s(): # Server is not running! Function got called client->client 
+		return
+
+	if not main.server.caller_has_permission(GodotTogether.Permission.SOMETHING):
+		return
+
 ```
 
 #### Explanation comments

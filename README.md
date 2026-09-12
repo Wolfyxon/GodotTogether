@@ -1,5 +1,5 @@
 # Godot Together
-A **work in progress** plugin for real-time collaboration over the network for Godot Engine.
+A plugin for real-time collaboration over the network for Godot Engine.
 
 [Wiki & help](https://github.com/Wolfyxon/GodotTogether/wiki/) |
 [Troubleshooting](https://github.com/Wolfyxon/GodotTogether/wiki/Troubleshooting) |
