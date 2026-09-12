@@ -42,24 +42,6 @@ const IGNORED_PROPERTIES: Dictionary = {
 	]
 }
 
-var change_timer = Timer.new()
-var rescan_timer = Timer.new()
-
-# Using dictionary without objects for better performance
-var node_data_dict = {
-	# [node]: {
-	#	"hashes": {
-	#		[property]: hash,
-	#		[object]: {
-	#			".": hash of object instance,
-	#			[property]: hash
-	#		}
-	#	},
-	#	"last_name": name,
-	#	"last_path": path
-	# } 
-}
-
 const SETGET_PROPERTIES = {
 	"Control": {
 		"theme_override_colors/?": {
@@ -103,12 +85,33 @@ const SETGET_PROPERTIES = {
 	}
 }
 
+var change_timer = Timer.new()
+var rescan_timer = Timer.new()
+
+# Using dictionary without objects for better performance
+var node_data_dict = {
+	# [node]: {
+	#	"hashes": {
+	#		[property]: hash,
+	#		[object]: {
+	#			".": hash of object instance,
+	#			[property]: hash
+	#		}
+	#	},
+	#	"last_name": name,
+	#	"last_path": path
+	# } 
+}
+
 var supressed_nodes = {}
 var last_scene_path: String = ""
 var always_scan = false # Enables change scanning even when session is inactive
 						# Useful in debugging
 
 func _ready() -> void:
+	var root = EditorInterface.get_edited_scene_root()
+	root.hidden.connect(root.show, CONNECT_PERSIST)
+	
 	change_timer.wait_time = GDTSettings.get_setting("sync/node_refresh_rate")
 	change_timer.timeout.connect(_check_changes)
 	add_child(change_timer)
