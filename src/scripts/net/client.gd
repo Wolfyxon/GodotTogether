@@ -15,7 +15,7 @@ var downloaded_file_count := 0
 var target_file_count := 0
 
 var connection_cancelled := false
-var disconnect_reason: GDTUser.DisconnectReason = 0
+var disconnect_reason: GDTUser.DisconnectReason = GDTUser.DisconnectReason.UNKNOWN
 
 var is_fully_synced := false
 var last_open_scenes: PackedStringArray = []
