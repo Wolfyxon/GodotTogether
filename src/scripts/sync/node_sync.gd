@@ -91,7 +91,7 @@ var rescan_timer = Timer.new()
 # Using dictionary without objects for better performance
 var node_data_dict = {
 	# [node]: {
-	#	"hashes": {
+	#	"property_hashes": {
 	#		[property]: hash,
 	#		[object]: {
 	#			".": hash of object instance,
@@ -153,7 +153,7 @@ func _check_node(node, root: Node = null) -> void:
 	if not data:
 		return
 	
-	var last_hashes = data["hashes"]
+	var last_hashes = data["property_hashes"]
 	var new_hashes = get_hash_dict(node)
 	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
 	
@@ -165,7 +165,7 @@ func _check_node(node, root: Node = null) -> void:
 	if not diff.is_empty():
 		_node_properties_changed(node, diff)
 	
-	data["hashes"] = new_hashes
+	data["property_hashes"] = new_hashes
 
 func _node_renamed(node: Node, old_path: String) -> void:
 	if not can_sync_nodes(): return
@@ -222,7 +222,7 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	var data_dict = observe_node(child)
 	
 	# Cursed. TODO: Optimize later
-	var prop_list = GDTUtils.compare_dicts(data_dict["hashes"], {})
+	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {})
 	var prop_dict = get_select_property_dict(child, prop_list)
 	
 	var parent_path = scene.get_path_to(parent)
@@ -325,7 +325,7 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 	var path = scene.get_path_to(new_node) # Must get path to new node. Old is already gone
 	
 	var data_dict = observe_node(new_node)
-	var prop_list = GDTUtils.compare_dicts(data_dict["hashes"], {})
+	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {})
 	var prop_dict = get_select_property_dict(new_node, prop_list)
 	
 	prop_dict["name"] = current_node.name
@@ -515,7 +515,7 @@ func rename_node(node_path: String, scene_path: String, new_name: String) -> voi
 	set_node_supressed(node, true)
 	
 	if node in node_data_dict:
-		node_data_dict[node]["hashes"]["name"] = hash(new_name)
+		node_data_dict[node]["property_hashes"]["name"] = hash(new_name)
 	
 	node.name = new_name
 	
@@ -780,7 +780,7 @@ func get_node_data(node: Node) -> Dictionary:
 	return {
 		"name": node.name,
 		"last_path": scene.get_path_to(node),
-		"hashes": get_hash_dict(node)
+		"property_hashes": get_hash_dict(node)
 	}
 
 func unobserve_node(node: Node) -> void:
