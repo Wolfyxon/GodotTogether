@@ -51,7 +51,10 @@ func _process(_delta: float) -> void:
 func _send() -> void:
 	var text = input.text.strip_edges()
 	
-	if text == "": return
+	if text == "": 
+		input.clear()
+		return
+	
 	if text.length() > MAX_MESSAGE_LEN: return
 	
 	if main.server.is_active():
