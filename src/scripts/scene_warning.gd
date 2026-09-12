@@ -14,9 +14,8 @@ func _ready() -> void:
 	text = "Unsaved scenes are not synced!"
 	modulate = Color(1.0, 0.767, 0.0)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
-
 	visible = not scene or scene.scene_file_path.is_empty()
 
 func add(container: int):

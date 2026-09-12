@@ -1,3 +1,4 @@
+@tool
 extends GDTComponent
 class_name GDTFileSync
 
@@ -24,10 +25,10 @@ func ignore_last_changes() -> void:
 	file_hashes = GDTFiles.get_file_tree_hashes()
 
 func update_file(path: String) -> void:
-	var hash = FileAccess.get_sha256(path)
+	var new_hash = FileAccess.get_sha256(path)
 	
-	if hash:
-		file_hashes[path] = hash
+	if new_hash:
+		file_hashes[path] = new_hash
 	else:
 		file_hashes.erase(path)
 

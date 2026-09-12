@@ -35,6 +35,7 @@ func get_signature(i: int = 0) -> PackedByteArray:
 	return signature_buf.slice(start, end)
 
 func get_signature_count() -> int:
+	@warning_ignore("integer_division")
 	return int(signature_buf.size() / GDTUpdater.SIGNATURE_LENGTH)
 
 func has_signature() -> bool:

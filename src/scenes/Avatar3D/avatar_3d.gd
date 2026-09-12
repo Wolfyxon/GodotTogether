@@ -28,7 +28,7 @@ func receive_transform(pos: Vector3, rot: Vector3) -> void:
 	rotation = rot
 	received_update = true
 
-func _process(delta) -> void:
+func _process(_delta) -> void:
 	if not main: return
 
 	# Nothing to show yet (avatar still sitting at its default Vector3.ZERO),

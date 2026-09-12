@@ -1,3 +1,4 @@
+@tool
 extends GDTComponent
 class_name GDTUnitTests
 

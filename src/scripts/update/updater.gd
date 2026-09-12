@@ -225,9 +225,7 @@ func _check_from_api() -> GDTUpdateCheckResult:
 		return GDTUpdateCheckResult.err("No internet connection")
 	
 	if code == 404:
-		var res = GDTUpdateCheckResult.new()
-		res.type = GDTUpdateCheckResult.ResultType.RunningLatest
-		return res
+		return GDTUpdateCheckResult.status_latest()
 	
 	if code != 200:
 		print("Body:\n", body_str)
@@ -329,6 +327,7 @@ func get_download_progress_percent() -> int:
 	if size == 0:
 		return 0
 	
+	@warning_ignore("integer_division")
 	return (http.get_downloaded_bytes() / size) * 100
 
 func delete_download_zip() -> void:

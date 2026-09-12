@@ -1,3 +1,4 @@
+@tool
 extends GDTComponent
 class_name GDTNodeSync
 
@@ -345,7 +346,7 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 			prop_dict
 		)
 
-func _scene_root_replacing(old_scene: Node, new_scene: Node) -> void:
+func _scene_root_replacing(old_scene: Node, _new_scene: Node) -> void:
 	var path = old_scene.scene_file_path
 	if not path: return
 	
@@ -469,7 +470,7 @@ func _c2s_request_node_class_change(
 		
 	var id = multiplayer.get_remote_sender_id()
 	
-	server_broadcast_node_class_change(node_path, scene_path, new_class, property_dict)
+	server_broadcast_node_class_change(node_path, scene_path, new_class, property_dict, id)
 	change_node_class(node_path, scene_path, new_class, property_dict)
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -922,8 +923,6 @@ static func get_setget_properties(obj: Object) -> Variant:
 
 static func get_setget_entry(obj: Object, property: String) -> Variant:
 	var class_props = get_setget_properties(obj)
-	
-	var prop_entry: Dictionary
 	
 	if property in class_props:
 		return class_props[property]
