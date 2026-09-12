@@ -411,6 +411,9 @@ func _c2s_request_node_add(
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
 		return
 	
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+	
 	var id = multiplayer.get_remote_sender_id()
 	
 	add_node(parent_path, scene_path, node_class, property_dict)
@@ -424,6 +427,9 @@ func _c2s_request_node_delete(node_path: String, scene_path: String) -> void:
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
 		return
 	
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+	
 	var id = multiplayer.get_remote_sender_id()
 	
 	server_broadcast_node_delete(node_path, scene_path, id)
@@ -435,6 +441,9 @@ func _c2s_request_node_reorder(parent_path: String, scene_path: String, ordered_
 		return
 		
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+	
+	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
 	var id = multiplayer.get_remote_sender_id()
@@ -455,6 +464,9 @@ func _c2s_request_node_class_change(
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
 		return
 		
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+		
 	var id = multiplayer.get_remote_sender_id()
 	
 	server_broadcast_node_class_change(node_path, scene_path, new_class, property_dict)
@@ -466,6 +478,9 @@ func _c2s_request_scene_reload(path: String) -> void:
 		return
 	
 	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+	
+	if not GDTValidator.validate_existing_file_path(path):
 		return
 	
 	var id = multiplayer.get_remote_sender_id()
