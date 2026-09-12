@@ -128,6 +128,15 @@ func get_server_user() -> GDTUser:
 
 	return
 
+func get_local_user() -> GDTUser:
+	var id = multiplayer.get_unique_id()
+	
+	for i: GDTUser in users:
+		if i.id == id:
+			return i
+	
+	return
+
 func get_avatar_2d(id: int) -> GDTAvatar2D:
 	for i in avatar_2d_markers:
 		if is_instance_valid(i) and i.id == id and i.is_inside_tree(): 
