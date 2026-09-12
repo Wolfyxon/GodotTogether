@@ -156,21 +156,22 @@ func get_user_dicts() -> Array[Dictionary]:
 	return dicts
 
 @rpc("any_peer", "reliable")
-func receive_chat_message(text: String) -> void:
+func _c2s_chat_request(text: String) -> void:
+	if not validate_c2s(): return
+	
 	var id = multiplayer.get_remote_sender_id()
 	var user = main.dual.get_user_by_id(id)
 
 	if not user: return
 	if not user.authenticated: return
 
-	if text == "": return
-	if text.length() > GDTChat.MAX_MESSAGE_LEN: return
+	if not GDTChat.validate_message(text): return
+	
+	broadcast_chat_user_message(id, text)
+	main.chat.add_user_message(text, user)
 
-	submit_chat_message(id, text)
-
-func submit_chat_message(user_id: int, text) -> void:
-	auth_rpc(main.chat.receive_user_message, [text, user_id])
-	main.chat.receive_user_message(text, user_id)
+func broadcast_chat_user_message(user_id: int, text: String) -> void:
+	auth_rpc(main.client._s2c_receive_chat_message, [text, user_id])
 
 @rpc("any_peer", "call_remote", "reliable")
 func receive_join_data(data_dict: Dictionary) -> void:

@@ -17,6 +17,8 @@ const MAX_MESSAGE_LEN = 2048
 
 @onready var input = $main/controls/inputContainer/input
 
+# WARNING: Do not use rpc here. It will fail due to node paths
+
 var main: GodotTogether
 var last_user: GDTUser
 
@@ -53,9 +55,11 @@ func _send() -> void:
 	if text.length() > MAX_MESSAGE_LEN: return
 	
 	if main.server.is_active():
-		main.server.submit_chat_message(1, text)
+		var user = main.dual.get_local_user()
+		main.server.broadcast_chat_user_message(1, text)
+		add_user_message(text, user)
 	else:
-		main.server.receive_chat_message.rpc_id(1, text)
+		main.server._c2s_chat_request.rpc_id(1, text)
 
 	input.clear()
 
@@ -80,6 +84,10 @@ func add_system_message(text: String) -> void:
 	last_user = null
 
 func add_user_message(text: String, user: GDTUser) -> void:
+	if not user:
+		GDTUtils.printerr_traceback("user cannot be null")
+		return
+	
 	if last_user != user:
 		var header = usr_header.duplicate()
 		
@@ -113,13 +121,6 @@ func add_user_notification(user: GDTUser, icon: Texture, status: String) -> void
 	msg.visible = true
 	add_msg_node(msg)
 
-@rpc("authority", "reliable")
-func receive_user_message(text: String, id: int) -> void:
-	var user = main.dual.get_user_by_id(id)
-	if not user: return
-
-	add_user_message(text, user)
-
 func get_templates() -> Array[Control]:
 	return [
 		usr_header,
@@ -136,3 +137,9 @@ func clear() -> void:
 			i.queue_free()
 
 	add_system_message("Welcome to the GodotTogether chat! \nRemember to be nice and civil.")
+
+static func validate_message(text: String) -> bool:
+	if not text: return false
+	if text.length() > GDTChat.MAX_MESSAGE_LEN: return false
+	
+	return true

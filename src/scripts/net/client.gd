@@ -184,6 +184,17 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 		target_file_count = 0
 		_project_files_downloaded()
 
+@rpc("authority", "reliable")
+func _s2c_receive_chat_message(text: String, user_id: int) -> void:
+	if not GDTChat.validate_message(text):
+		return
+	
+	var user = main.dual.get_user_by_id(user_id)
+	
+	if not user: return
+	
+	main.chat.add_user_message(text, user)
+
 func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -> void:
 	if not FileAccess.file_exists(scene_path):
 		push_error("Scene file not found for background update: " + scene_path)
