@@ -16,8 +16,10 @@ var prev_mouse_pos := Vector2()
 var prev_3d_pos := Vector3()
 var prev_3d_rot := Vector3()
 
-const AVATAR_3D_SCENE = preload("../../scenes/Avatar3D/Avatar3D.tscn")
-const AVATAR_2D_SCENE = preload("../../scenes/Avatar2D/Avatar2D.tscn")
+# preload() causes 'Busy' errors
+# relative paths are not supported by load()
+var avatar_3d_scene = load("res://addons/GodotTogether/src/scenes/Avatar3D/Avatar3D.tscn")
+var avatar_2d_scene = load("res://addons/GodotTogether/src/scenes/Avatar2D/Avatar2D.tscn")
 
 var avatar_3d_markers: Array[GDTAvatar3D] = []
 var avatar_2d_markers: Array[GDTAvatar2D] = []
@@ -194,7 +196,7 @@ func broadcast_avatars() -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func create_avatar_3d(user_dict: Dictionary) -> GDTAvatar3D:
-	var avatar = AVATAR_3D_SCENE.instantiate()
+	var avatar = avatar_3d_scene.instantiate()
 	var user = GDTUser.from_dict(user_dict)
 
 	if not avatar:
@@ -211,7 +213,7 @@ func create_avatar_3d(user_dict: Dictionary) -> GDTAvatar3D:
 
 @rpc("authority", "call_remote", "reliable")
 func create_avatar_2d(user_dict: Dictionary) -> GDTAvatar2D:
-	var avatar = AVATAR_2D_SCENE.instantiate()
+	var avatar = avatar_2d_scene.instantiate()
 	var user = GDTUser.from_dict(user_dict)
 	
 	if not avatar:

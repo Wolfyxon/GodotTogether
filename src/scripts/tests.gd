@@ -642,16 +642,23 @@ static func test_object_setget_props() -> bool:
 	return true
 
 func test_scenes() -> bool:
-	const SCENES = [
+	var scenes = [
 		GodotTogether.GUI_SCENE,
 		GodotTogether.CHAT_SCENE,
-		GDTDual.AVATAR_2D_SCENE,
-		GDTDual.AVATAR_3D_SCENE
+		main.dual.avatar_2d_scene,
+		main.dual.avatar_2d_scene
 	]
 	
 	var ok = true
 	
-	for scene: PackedScene in SCENES:
+	for i in scenes.size():
+		var scene = scenes[i]
+		
+		if not scene:
+			printerr("Scene at %s didn't load" % i)
+			ok = false
+			continue
+		
 		var ins = scene.instantiate()
 		
 		if not ins:
