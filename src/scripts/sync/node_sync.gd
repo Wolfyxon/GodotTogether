@@ -810,10 +810,12 @@ func observe_node_recursive(node: Node) -> void:
 
 func observe_current_scene() -> void:
 	var scene = EditorInterface.get_edited_scene_root()
+	if not scene: return
+	if not scene.scene_file_path: return
 	
-	if not scene:
+	if not GDTValidator.is_path_safe(scene.scene_file_path):
 		return
-		
+	
 	observe_node_recursive(scene)
 
 func clear() -> void:
