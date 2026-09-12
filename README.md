@@ -28,32 +28,16 @@ All sync features listed above happen constantly in real time!
 First create a folder called `addons` in your project's directory.
 
 ### Getting the plugin
->[!NOTE]
-> As the plugin is not fully released, you're going to download the **current state of development** which may be unstable. 
-
-#### With Git (recommended)
-Open the terminal in your `addons` folder, then run:
-```
-git clone https://github.com/Wolfyxon/GodotTogether.git
-```
-
-Then proceed to the [enabling section](#enabling).
-
-#### Manual download
-
-1. [Download the source code](https://github.com/Wolfyxon/GodotTogether/archive/refs/heads/main.zip) zip.
-2. Extract the zip contents into your `addons` folder.
-3. Rename `GodotTogether-main` to `GodotTogether`. IMPORTANT!!!
-
-The structure should look like this
+1. Head into the [latest release](https://github.com/Wolfyxon/GodotTogether/releases/latest)
+2. Download `GodotTogether.zip`
+3. Extract the zip contents into your `addons` folder, under "GodotTogether".
+4. Ensure the file structure looks like this
 ```
 yourProject
 |_ addons
   |_ GodotTogether
     |_ src
-      |_ scripts
-      |_ img
-      |_ scenes
+    |_ plugin.cfg
 ```
 
 ### Enabling 
@@ -61,6 +45,8 @@ yourProject
 2. Go to **Project settings**
 3. Go to the **plugins** tab
 4. Enable **Godot Together**
+
+You're now good to go!
 
 ## Testing
 To run unit tests, enable the plugin,
