@@ -135,24 +135,23 @@ func _check_changes() -> void:
 		return
 	
 	for node in node_data_dict:
-		_check_node(node, root)
+		check_node(node, root)
 
 # "node" must be untyped to prevent freed nodes from stopping the code
-func _check_node(node, root: Node = null) -> void:
-	if not is_node_valid(node):
-		return
-	
-	if not root:
-		root = EditorInterface.get_edited_scene_root()
+func check_node(node, root: Node) -> void:
+	if not is_node_valid(node): return
+	if not root: return
 	
 	if not root.is_ancestor_of(node) and node != root:
 		return
 	
 	var data = node_data_dict[node]
+	if not data: return
 	
-	if not data:
-		return
-	
+	_check_node_properties(node, root, data)
+	_check_node_signals(node, root, data)
+
+func _check_node_properties(node, root: Node, data: Dictionary) -> void:
 	var last_hashes = data["property_hashes"]
 	var new_hashes = get_property_hash_dict(node)
 	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
@@ -166,6 +165,19 @@ func _check_node(node, root: Node = null) -> void:
 		_node_properties_changed(node, diff)
 	
 	data["property_hashes"] = new_hashes
+
+func _check_node_signals(node, root: Node, data: Dictionary) -> void:
+	var last_hashes = data["signal_hashes"]
+	var new_hashes = get_signal_hash_dict(node)
+	
+	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
+	
+	if diff.is_empty():
+		return
+	
+	print("Connection diff %s for %s" % [diff, node])
+	
+	data["signal_hashes"] = new_hashes
 
 func _node_renamed(node: Node, old_path: String) -> void:
 	if not can_sync_nodes(): return
@@ -780,7 +792,8 @@ func get_node_data(node: Node) -> Dictionary:
 	return {
 		"name": node.name,
 		"last_path": scene.get_path_to(node),
-		"property_hashes": get_property_hash_dict(node)
+		"property_hashes": get_property_hash_dict(node),
+		"signal_hashes": get_signal_hash_dict(node)
 	}
 
 func unobserve_node(node: Node) -> void:
@@ -858,9 +871,19 @@ static func get_signal_hash_dict(node: Node) -> Dictionary:
 	
 	for sig in signals:
 		var sig_name = sig["name"]
-		var connections = node.get_signal_connection_list(sig_name)
+		var connections = get_user_signal_connections(node, sig_name)
 		
 		res[sig_name] = hash(connections)
+	
+	return res
+
+static func get_user_signal_connections(node: Node, signal_name: String) -> Array:
+	var res = []
+	var connections = node.get_signal_connection_list(signal_name)
+	
+	for con in connections:
+		if con["flags"] & ConnectFlags.CONNECT_PERSIST:
+			res.append(con)
 	
 	return res
 
