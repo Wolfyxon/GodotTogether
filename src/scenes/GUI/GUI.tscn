@@ -1169,16 +1169,18 @@ text = "Check interval"
 [node name="value" type="OptionButton" parent="mainMenu/settings/main/scroll/vbox/updateCheckInterval" unique_id=2020541214]
 layout_mode = 2
 size_flags_horizontal = 3
-selected = 3
-item_count = 4
-popup/item_0/text = "Daily"
-popup/item_0/id = 12
-popup/item_1/text = "3 days"
-popup/item_1/id = 72
-popup/item_2/text = "Weekly"
-popup/item_2/id = 168
-popup/item_3/text = "Monthly (30 days)"
-popup/item_3/id = 720
+selected = 4
+item_count = 5
+popup/item_0/text = "On every launch"
+popup/item_0/id = 0
+popup/item_1/text = "Daily"
+popup/item_1/id = 12
+popup/item_2/text = "3 days"
+popup/item_2/id = 72
+popup/item_3/text = "Weekly"
+popup/item_3/id = 168
+popup/item_4/text = "Monthly (30 days)"
+popup/item_4/id = 720
 metadata/setting = "update/check_interval_hours"
 
 [node name="updateCheckTimeHbox" type="HBoxContainer" parent="mainMenu/settings/main/scroll/vbox" unique_id=2007539503]
