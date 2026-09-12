@@ -7,6 +7,7 @@ var fail_count = 0
 
 var test_times = {}
 var longest_test_name = 0
+var running_on_start = false
 
 func _ready() -> void:
 	report_ready()
@@ -113,15 +114,16 @@ func test_ui() -> bool:
 		printerr("Release signing menu should be hidden")
 		return false
 	
-	var settings = main.gui.get_menu_window().get_settings_gui()
-	
-	if not settings:
-		printerr("Settings window not found")
-		return false
+	if running_on_start:
+		var settings = main.gui.get_menu_window().get_settings_gui()
 		
-	if settings.visible:
-		printerr("Settings window should be hidden or it will cause a flash")
-		return false
+		if not settings:
+			printerr("Settings window not found")
+			return false
+			
+		if settings.visible:
+			printerr("Settings window should be hidden or it will cause a flash")
+			return false
 	
 	return true
 

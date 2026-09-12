@@ -58,7 +58,9 @@ func _enter_tree() -> void:
 		return
 	
 	if GDTSettings.get_setting("dev/run_tests_on_start"):
+		tests.running_on_start = true
 		tests.run_tests()
+		tests.running_on_start = false
 	
 	await get_tree().process_frame
 	setup_chat()
