@@ -67,7 +67,7 @@ func add_msg_node(node: Control) -> void:
 	var sb: VScrollBar = scroll.get_v_scroll_bar()
 	var scroll_down = false
 	
-	if (sb.max_value - sb.value) < 300:
+	if (sb.max_value - sb.value) < 500:
 		scroll_down = true
 	
 	messages.add_child(node)
