@@ -4,7 +4,7 @@ class_name GDTUser
 
 enum Type {
 	HOST,
-	GUEST
+	EDITOR
 }
 
 enum DisconnectReason {
@@ -31,7 +31,7 @@ var id: int
 var name: String
 var peer: ENetPacketPeer
 var main: GodotTogether = null
-var type := Type.GUEST
+var type := Type.EDITOR
 var color := Color.WHITE
 var joined_at := -1.0
 var authenticated_at := -1.0
