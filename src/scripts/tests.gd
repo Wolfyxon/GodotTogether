@@ -99,6 +99,9 @@ func test_debug() -> bool:
 		printerr("node_sync.always_scan should be false")
 		return false
 	
+	return true
+
+func test_ui() -> bool:
 	var signing_menu = main.get_gui().get_node("mainMenu/settings/main/scroll/vbox/updateSigning")
 	
 	if not signing_menu:
@@ -107,6 +110,16 @@ func test_debug() -> bool:
 	
 	if signing_menu.visible:
 		printerr("Release signing menu should be hidden")
+		return false
+	
+	var settings = main.gui.get_menu_window().get_settings_gui()
+	
+	if not settings:
+		printerr("Settings window not found")
+		return false
+		
+	if settings.visible:
+		printerr("Settings window should be hidden or it will cause a flash")
 		return false
 	
 	return true
