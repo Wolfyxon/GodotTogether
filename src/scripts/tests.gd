@@ -325,8 +325,8 @@ func test_hash_dict() -> bool:
 	
 	# -- Unchanged -- #
 	
-	var h1 = GDTNodeSync.get_hash_dict(lbl)
-	var h1_unchanged = GDTNodeSync.get_hash_dict(lbl)
+	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h1_unchanged = GDTNodeSync.get_property_hash_dict(lbl)
 	
 	var diff_unchanged = GDTUtils.compare_dicts(h1, h1_unchanged)
 	
@@ -340,7 +340,7 @@ func test_hash_dict() -> bool:
 	lbl.visible = false
 	lbl.label_settings = LabelSettings.new()
 	
-	var h2 = GDTNodeSync.get_hash_dict(lbl)
+	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
 	
 	var diff2 = GDTUtils.compare_dicts(h1, h2)
 	var expected_diff2 = ["text", "visible", "label_settings"]
@@ -358,7 +358,7 @@ func test_hash_dict() -> bool:
 	
 	lbl.label_settings = LabelSettings.new()
 	
-	var h3 = GDTNodeSync.get_hash_dict(lbl)
+	var h3 = GDTNodeSync.get_property_hash_dict(lbl)
 	
 	var diff3 = GDTUtils.compare_dicts(h2, h3)
 	var expected_diff3 = ["label_settings/."]
@@ -444,7 +444,7 @@ static func test_node_change_applying() -> bool:
 	lbl.label_settings = LabelSettings.new()
 	lbl.label_settings.font_size = 7
 	
-	var h1 = GDTNodeSync.get_hash_dict(lbl)
+	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color.RED
 	
@@ -453,7 +453,7 @@ static func test_node_change_applying() -> bool:
 	lbl.label_settings = LabelSettings.new()
 	lbl.label_settings.font_color = Color.RED
 	
-	var h2 = GDTNodeSync.get_hash_dict(lbl)
+	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
 	
 	var diff = GDTUtils.compare_dicts(h1, h2)
 	var props = GDTNodeSync.get_select_property_dict(lbl, diff)
@@ -554,11 +554,11 @@ func test_setget_property_dict() -> bool:
 
 static func test_basic_setget_props() -> bool:
 	var lbl = Label.new()
-	var h1 = GDTNodeSync.get_hash_dict(lbl)
+	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
 	
 	lbl.add_theme_font_size_override("font_size", 42)
 	
-	var h2 = GDTNodeSync.get_hash_dict(lbl)
+	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
 	var diff = GDTUtils.compare_dicts(h1, h2)
 	
 	if diff.size() != 1:
@@ -599,14 +599,14 @@ static func test_basic_setget_props() -> bool:
 
 static func test_object_setget_props() -> bool:
 	var lbl = Label.new()
-	var h1 = GDTNodeSync.get_hash_dict(lbl)
+	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
 	
 	var style1 = StyleBoxFlat.new()
 	style1.bg_color = Color.RED
 	
 	lbl.add_theme_stylebox_override("normal", style1)
 	
-	var h2 = GDTNodeSync.get_hash_dict(lbl)
+	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
 	var diff = GDTUtils.compare_dicts(h1, h2)
 	
 	if diff.size() != 1:

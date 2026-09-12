@@ -154,7 +154,7 @@ func _check_node(node, root: Node = null) -> void:
 		return
 	
 	var last_hashes = data["property_hashes"]
-	var new_hashes = get_hash_dict(node)
+	var new_hashes = get_property_hash_dict(node)
 	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
 	
 	if "name" in diff:
@@ -780,7 +780,7 @@ func get_node_data(node: Node) -> Dictionary:
 	return {
 		"name": node.name,
 		"last_path": scene.get_path_to(node),
-		"property_hashes": get_hash_dict(node)
+		"property_hashes": get_property_hash_dict(node)
 	}
 
 func unobserve_node(node: Node) -> void:
@@ -852,12 +852,12 @@ func can_sync_nodes() -> bool:
 		not GDTSettings.get_setting("dev/disable_real_time_node_sync")
 	)
 
-static func get_hash_dict(obj: Object, depth := 64) -> Dictionary:
+static func get_property_hash_dict(obj: Object, depth := 64) -> Dictionary:
 	var res = {}
-	fill_hash_dict(res, obj, depth)
+	fill_property_hash_dict(res, obj, depth)
 	return res
 
-static func fill_hash_dict(res: Dictionary, obj: Object, depth := 64) -> Dictionary:
+static func fill_property_hash_dict(res: Dictionary, obj: Object, depth := 64) -> Dictionary:
 	for key in get_property_keys(obj):
 		var value = obj[key]
 		
@@ -865,7 +865,7 @@ static func fill_hash_dict(res: Dictionary, obj: Object, depth := 64) -> Diction
 			res[key] = {
 				"." = hash(value)
 			} 
-			fill_hash_dict(res[key], value, depth - 1)
+			fill_property_hash_dict(res[key], value, depth - 1)
 		else:
 			res[key] = hash(value)
 		
