@@ -27,7 +27,7 @@ const _DEFAULT_DATA = {
 		"download_url": null,
 		"download_signature": null,
 		"last_check": 0,
-		"check_interval_hours": 720, # monthly
+		"check_interval_hours": 168, # weekly
 		"auto_check_enabled": true
 	},
 	"dev": {
