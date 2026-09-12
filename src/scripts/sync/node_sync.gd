@@ -127,6 +127,12 @@ func _check_changes() -> void:
 	var root := EditorInterface.get_edited_scene_root()
 	if not root: return
 	
+	if not root.scene_file_path:
+		return
+	
+	if not GDTValidator.is_path_safe(root.scene_file_path):
+		return
+	
 	for node in node_data_dict:
 		_check_node(node, root)
 
