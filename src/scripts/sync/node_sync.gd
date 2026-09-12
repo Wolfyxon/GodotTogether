@@ -109,9 +109,6 @@ var always_scan = false # Enables change scanning even when session is inactive
 						# Useful in debugging
 
 func _ready() -> void:
-	var root = EditorInterface.get_edited_scene_root()
-	root.hidden.connect(root.show, CONNECT_PERSIST)
-	
 	change_timer.wait_time = GDTSettings.get_setting("sync/node_refresh_rate")
 	change_timer.timeout.connect(_check_changes)
 	add_child(change_timer)
