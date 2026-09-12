@@ -88,11 +88,11 @@ theme_type_variation = &"WarningLabel"
 text = "Plugin only supported on Godot stable"
 
 [node name="sessionInit" type="Control" parent="mainMenu/main" unique_id=346473724]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=1491207414]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -160,7 +160,6 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=2132209178]
-visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -172,6 +171,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=513917131]
+visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -235,16 +235,22 @@ layout_mode = 2
 text = "Start server"
 icon = ExtResource("4_lrlm7")
 
+[node name="netWikiLink" type="LinkButton" parent="mainMenu/main/sessionInit/start/host" unique_id=1935553111]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "How do I host outside of my local network?"
+uri = "https://github.com/Wolfyxon/GodotTogether/wiki/Hosting-outside-your-network"
+
 [node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/host" unique_id=1849455135]
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
+theme_override_font_sizes/font_size = 16
 text = "Do not let untrusted people join!
 Back up your project before using!"
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=1313580569]
-visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -289,11 +295,18 @@ layout_mode = 2
 text = "Join server"
 icon = ExtResource("4_lrlm7")
 
+[node name="netWikiLink" type="LinkButton" parent="mainMenu/main/sessionInit/start/join" unique_id=1070537760]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "How do I join someone not in my local network?"
+uri = "https://github.com/Wolfyxon/GodotTogether/wiki/Hosting-outside-your-network"
+
 [node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=764680905]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
+theme_override_font_sizes/font_size = 16
 text = "Make sure you trust the host!
 Also this project will be overwritten."
 horizontal_alignment = 1
@@ -341,6 +354,7 @@ text = "Cancel"
 icon = ExtResource("9_4c4b3")
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main" unique_id=1582343068]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
