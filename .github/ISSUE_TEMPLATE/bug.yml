@@ -10,6 +10,7 @@ body:
       placeholder: Describe the bug in as much detail as you can. You can also attach screenshots and videos...
     validations:
       required: true
+      
   - type: input
     id: godot-version
     attributes:
@@ -18,14 +19,22 @@ body:
       placeholder: ex. v4.4.1.stable.arch_linux
     validations:
       required: true
+      
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: The version of the plugin you're running. If you use the source code version, specify the commit hash or the approximate date of downloading
+      placeholder: ex. "1.1-alpha", "Source d437d64", "Source around 2026-09-13"  
+    validations:
+      required: true
+      
   - type: checkboxes
     id: checks
     attributes:
       label: Checks
       options:
-        - label: I searched for other issues describing this bug
-          required: true
-        - label: I am using the latest source code version of the plugin
+        - label: I searched for other issues describing this bug (closed and open)
           required: true
         - label: I have read the [wiki](https://github.com/Wolfyxon/GodotTogether/wiki) and believe I'm not doing anything wrong
           required: true
