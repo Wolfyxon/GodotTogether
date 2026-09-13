@@ -175,9 +175,13 @@ func _check_node_signals(node, root: Node, data: Dictionary) -> void:
 	if diff.is_empty():
 		return
 	
-	print("Connection diff %s for %s" % [diff, node])
+	_node_signal_connections_changed(node, diff)
 	
 	data["signal_hashes"] = new_hashes
+
+func _node_signal_connections_changed(node: Node, signal_names: String) -> void:
+	for sig in signal_names:
+		var cons = get_user_signal_connections(node, sig)
 
 func _node_renamed(node: Node, old_path: String) -> void:
 	if not can_sync_nodes(): return
