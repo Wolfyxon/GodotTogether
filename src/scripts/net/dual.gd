@@ -97,6 +97,9 @@ func _user_connected(user: GDTUser) -> void:
 	user_connected.emit(user)
 	broadcast_avatars()
 	
+	create_avatar_2d(user)
+	create_avatar_3d(user)
+	
 	if should_notify_user_connection():
 		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) joined" % [user.name, ip])
@@ -109,9 +112,20 @@ func _user_disconnected(user: GDTUser) -> void:
 		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, ip])
 
-func _users_listed(users: Array[GDTUser]) -> void:
-	self.users = users
-	users_listed.emit(users)
+func _users_listed(new_users: Array[GDTUser]) -> void:
+	var self_id = multiplayer.get_unique_id()
+	
+	users = new_users
+	users_listed.emit(new_users)
+	
+	clear_avatars()
+	
+	for user in new_users:
+		if user.id == self_id: 
+			continue
+		
+		create_avatar_2d(user)
+		create_avatar_3d(user)
 
 func should_notify_user_connection() -> bool:
 	return GDTSettings.get_setting("notifications/users")
@@ -195,10 +209,9 @@ func broadcast_avatars() -> void:
 		update_2d_avatar.rpc(mouse_pos)
 
 @rpc("authority", "call_remote", "reliable")
-func create_avatar_3d(user_dict: Dictionary) -> GDTAvatar3D:
+func create_avatar_3d(user: GDTUser) -> GDTAvatar3D:
 	var avatar = avatar_3d_scene.instantiate()
-	var user = GDTUser.from_dict(user_dict)
-
+	
 	if not avatar:
 		push_error("Unable to create 3D avatar. Likely due to another instance of Godot holding the scene open")
 		return
@@ -212,9 +225,8 @@ func create_avatar_3d(user_dict: Dictionary) -> GDTAvatar3D:
 	return avatar
 
 @rpc("authority", "call_remote", "reliable")
-func create_avatar_2d(user_dict: Dictionary) -> GDTAvatar2D:
+func create_avatar_2d(user: GDTUser) -> GDTAvatar2D:
 	var avatar = avatar_2d_scene.instantiate()
-	var user = GDTUser.from_dict(user_dict)
 	
 	if not avatar:
 		push_error("Unable to create 2D avatar. Likely due to another instance of Godot holding the scene open")
