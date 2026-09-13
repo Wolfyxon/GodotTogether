@@ -60,14 +60,18 @@ func set_user(user: GDTUser) -> void:
 
 	text_ui.get_node("name").text = user.name
 	text_ui.get_node("class").text = user.get_type_as_string()
-
+	
 	id = user.id
-
-	var material = MATERIAL.duplicate()
-
-	material.albedo_color = user.color
-	material.albedo_color.a = MATERIAL.albedo_color.a
 
 	for i in model.get_children():
 		if i is MeshInstance3D:
-			i.mesh.material = material
+			var mat = MATERIAL.duplicate(true)
+			
+			mat.albedo_color = Color(
+				user.color.r, 
+				user.color.g, 
+				user.color.b, 
+				mat.albedo_color.a
+			)
+			
+			i.set_surface_override_material(0, mat)
