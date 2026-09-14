@@ -98,6 +98,9 @@ var node_data_dict = {
 	#			[property]: hash
 	#		}
 	#	},
+	#	"signal_hashes": {
+	#		[signal name]: hash of connection list
+	#	}
 	#	"last_name": name,
 	#	"last_path": path
 	# } 
