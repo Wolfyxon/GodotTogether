@@ -180,8 +180,7 @@ func _check_node_signals(node, root: Node, data: Dictionary) -> void:
 	data["signal_hashes"] = new_hashes
 
 func _node_signal_connections_changed(node: Node, signal_names: String) -> void:
-	for sig in signal_names:
-		var cons = get_user_signal_connections(node, sig)
+	var dict = get_select_connection_dict(node, signal_names)
 
 func _node_renamed(node: Node, old_path: String) -> void:
 	if not can_sync_nodes(): return
@@ -923,6 +922,21 @@ static func decode_callable_ref(node: Node, dict: Dictionary) -> Callable:
 	
 	return cal
 
+static func get_select_connection_dict(node: Node, signal_names: String) -> Dictionary:
+	var res = {}
+	
+	for sig_name in signal_names:
+		var callable_dicts = []
+		var connections = get_user_signal_connections(node, sig_name)
+		
+		for con in connections:
+			var cal = con["callable"]
+			callable_dicts.append(encode_callable_ref(cal))
+		
+		res[sig_name] = callable_dicts
+		
+	return res
+
 static func is_encoded_calllable_ref(dict: Dictionary) -> bool:
 	return (
 		typeof(dict) == TYPE_DICTIONARY and
@@ -943,6 +957,29 @@ static func get_user_signal_connections(node: Node, signal_name: String) -> Arra
 			res.append(con)
 	
 	return res
+
+static func clear_user_signal_connections(node: Node, signal_name: String) -> void:
+	var connections = node.get_signal_connection_list(signal_name)
+	
+	for con in connections:
+		if con["flags"] & ConnectFlags.CONNECT_PERSIST:
+			var sig: Signal = con["signal"]
+			sig.disconnect(con["callable"])
+
+static func apply_signal_connection_dict(node: Node, dict: Dictionary) -> void:
+	for sig_name in dict.keys():
+		if not node.has_signal(sig_name):
+			continue
+		
+		clear_user_signal_connections(node, sig_name)
+		
+		for cal_dict in dict[sig_name]:
+			var cal = decode_callable_ref(node, cal_dict)
+			
+			if cal == _invalid_callable:
+				continue
+			
+			node.connect(sig_name, cal, ConnectFlags.CONNECT_PERSIST)
 
 static func get_property_hash_dict(obj: Object, depth := 64) -> Dictionary:
 	var res = {}
