@@ -193,6 +193,13 @@ func _node_signal_connections_changed(node: Node, signal_names: Array) -> void:
 	
 	var node_path = scene.get_path_to(node)
 	
+	await main.file_sync.scan_started
+	await main.file_sync.scan_complete
+	await get_tree().process_frame
+	
+	if not scene: 
+		return
+	
 	if main.server.is_active():
 		server_broadcast_node_signal_connections_update(node_path, scene.scene_file_path, dict)
 	else:
@@ -716,6 +723,8 @@ func update_node_signal_connections(
 	scene_path: String, 
 	dict: Dictionary
 ) -> void:
+	await get_tree().process_frame
+	
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
