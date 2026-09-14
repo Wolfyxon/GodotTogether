@@ -982,15 +982,16 @@ static func decode_callable_ref(node: Node, dict: Dictionary) -> Callable:
 	
 	var method_name = dict["name"]
 	
-	var cal = node.get(method_name)
+	var cal = Callable(node, method_name)
 	
-	if not cal:
-		GDTUtils.printerr_traceback("%s has no method %s" % [node, method_name])
-		return _invalid_callable
+	# You can't access properties of scripts that aren't in tool mode
+	#if not cal:
+		#GDTUtils.printerr_traceback("%s has no method %s" % [node, method_name])
+		#return _invalid_callable
 	
-	if typeof(cal) != TYPE_CALLABLE:
-		GDTUtils.printerr_traceback("%s: %s is not a method: %s" % [node, method_name, cal])
-		return _invalid_callable
+	#if typeof(cal) != TYPE_CALLABLE:
+		#GDTUtils.printerr_traceback("%s: %s is not a method: %s" % [node, method_name, cal])
+		#return _invalid_callable
 	
 	if dict["bind_args"]:
 		return cal.bindv(dict["bind_args"])
