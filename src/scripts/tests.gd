@@ -823,53 +823,31 @@ func test_runaway_keys() -> bool:
 	
 func test_root_finding() -> bool:
 	var data = {
-		"files_first_rootless": {
+		"store_format": {
 			"paths": [
-				"file",
-				"file2",
-				"dir/",
-				"dir/subfile",
-				"dir/dir/"
+				"addons/GodotTogether/src/",
+				"addons/GodotTogether/src/script.gd",
+				"addons/GodotTogether/plugin.cfg"
 			],
-			"res": ""
+			"res": "addons/GodotTogether/"
 		},
 		
-		"files_first_with_root": {
+		"rootless_format": {
 			"paths": [
-				"main/",
-				"main/a",
-				"main/dir/",
-				"main/dir/b",
-			],
-			"res": "main/"
-		},
-		
-		"unordered_rootless": {
-			"paths": [
-				"src/script",
 				"plugin.cfg",
-				"src/thingthing",
-				"src/hello/",
-				"thing.gd",
-				"src/hello/hi",
+				"src/",
+				"src/script.gd"
 			],
 			"res": ""
 		},
 		
-		"no_dirs": {
-			"paths": ["a", "b", "c", "d"],
-			"res": ""
-		},
-		
-		"joke_root": {
+		"one_root_format": {
 			"paths": [
-				"main/",
-				"main/a",
-				"main/b",
-				"mainiac/",
-				"mainiac/hi"
+				"GodotTogether/plugin.cfg",
+				"GodotTogether/src/",
+				"GodotTogether/src/script.gd"
 			],
-			"res": ""
+			"res": "GodotTogether/"
 		}
 	}
 	

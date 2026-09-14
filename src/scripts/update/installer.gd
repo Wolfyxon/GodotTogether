@@ -133,13 +133,11 @@ static func get_root_of_paths(paths: Array) -> String:
 	if paths.is_empty():
 		return ""
 	
-	var first_root = paths[0].split("/")[0] + "/"
-	
 	for file_path: String in paths:
-		if not file_path.begins_with(first_root):
-			return ""
+		if file_path.get_file() == "plugin.cfg":
+			return file_path.replace("plugin.cfg", "")
 	
-	return first_root
+	return ""
 
 static func ensure_dir_exists(path: String) -> int:
 	var dir = path.get_base_dir()
