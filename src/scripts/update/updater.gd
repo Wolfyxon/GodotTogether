@@ -475,7 +475,11 @@ func apply_update() -> void:
 	var valid_err = installer.validate()
 	
 	if not valid_err.is_empty():
-		gui.alert(valid_err + "\nPlease report this.", "Update file is invalid")
+		gui.alert(GDTUtils.join([
+			"The update file is invalid or corrupted:",
+			valid_err,
+			"Please report this.",
+		]), "Update file is invalid")
 		installer.queue_free()
 		return
 	

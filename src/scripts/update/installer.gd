@@ -87,10 +87,10 @@ func validate() -> String:
 	var root = get_zip_root()
 	
 	if files.is_empty():
-		return "Archive is empty"
+		return "Archive is empty."
 	
 	if not root + "plugin.cfg" in files:
-		return "Missing plugin manifest"
+		return "Plugin manifest 'plugin.cfg' not found under %s." % root
 	
 	return ""
 
