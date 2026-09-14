@@ -176,11 +176,27 @@ func _check_node_signals(node, root: Node, data: Dictionary) -> void:
 		return
 	
 	_node_signal_connections_changed(node, diff)
-	
 	data["signal_hashes"] = new_hashes
 
-func _node_signal_connections_changed(node: Node, signal_names: String) -> void:
+func _node_signal_connections_changed(node: Node, signal_names: Array) -> void:
+	if not can_sync_nodes(): return
+	if not is_node_valid(node): return
+	
 	var dict = get_select_connection_dict(node, signal_names)
+	var scene = GDTUtils.get_node_scene(node)
+	
+	if scene.scene_file_path.is_empty(): return
+	if not GDTValidator.is_path_safe(scene.scene_file_path): return
+	
+	var node_path = scene.get_path_to(node)
+	
+	if main.server.is_active():
+		server_broadcast_node_signal_connections_update(node_path, scene.scene_file_path, dict)
+	else:
+		_c2s_request_signal_connections_update.rpc_id(
+			0, 
+			node_path, scene.scene_file_path, dict
+		)
 
 func _node_renamed(node: Node, old_path: String) -> void:
 	if not can_sync_nodes(): return
@@ -504,6 +520,28 @@ func _c2s_request_scene_reload(path: String) -> void:
 	server_broadcast_scene_reload(path, id)
 	reload_scene(path)
 
+@rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_signal_connections_update(
+	node_path: String,
+	scene_path: String, 
+	dict: Dictionary
+) -> void:
+	if not main.server.validate_c2s(): 
+		return
+		
+	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+	
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+	
+	if not dict:
+		return
+	
+	var id = multiplayer.get_remote_sender_id()
+	update_node_signal_connections(node_path, scene_path, dict)
+	server_broadcast_node_signal_connections_update(node_path, scene_path, dict, id)
+
 @rpc("authority", "call_remote", "reliable")
 func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
 	if not GDTValidator.validate_existing_file_path(scene_path):
@@ -670,6 +708,23 @@ func change_node_class(
 		old_node.queue_free()
 
 @rpc("authority", "reliable")
+func update_node_signal_connections(
+	node_path: String,
+	scene_path: String, 
+	dict: Dictionary
+) -> void:
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+	
+	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
+	if not node: return
+	
+	apply_signal_connection_dict(node, dict)
+	
+	if node in node_data_dict:
+		node_data_dict[node]["signal_hashes"] = get_signal_hash_dict(node)
+
+@rpc("authority", "reliable")
 func reload_scene(path: String) -> void:
 	# EditorInterface.reload_scene() is not reliable
 	
@@ -746,6 +801,14 @@ func server_broadcast_node_class_change(
 
 func server_broadcast_scene_reload(path: String, sender := 0) -> void:
 	main.server.auth_rpc(reload_scene, [path], [sender])
+
+func server_broadcast_node_signal_connections_update(
+	node_path: String,
+	scene_path: String,
+	dict: Dictionary,
+	sender := 0
+) -> void:
+	main.server.auth_rpc(update_node_signal_connections, [node_path, scene_path, dict], [sender])
 
 func validate_and_create_node(node_class: String) -> Node:
 	if not ClassDB.class_exists(node_class):
@@ -922,7 +985,7 @@ static func decode_callable_ref(node: Node, dict: Dictionary) -> Callable:
 	
 	return cal
 
-static func get_select_connection_dict(node: Node, signal_names: String) -> Dictionary:
+static func get_select_connection_dict(node: Node, signal_names: Array) -> Dictionary:
 	var res = {}
 	
 	for sig_name in signal_names:
