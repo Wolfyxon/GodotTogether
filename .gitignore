@@ -1,13 +1,25 @@
-# Directories
+# Dev files
+.idea/
 temp/
 build/
-.godot
+
+# Godot
+.godot/
 .import/
-.idea/
+*.translation
+export.cfg
+export_presets.cfg
 
-# File types
-*~
-*.tmp
+# Mono
+.mono/
+data_*/
+mono_crash.*.json
 
-# Specific files
+# User data
 /settings.json
+
+# Other
+*~
+*.bak
+*.zip
+*.tmp
