@@ -881,6 +881,59 @@ static func get_signal_hash_dict(node: Node) -> Dictionary:
 	
 	return res
 
+static func encode_callable_ref(callable: Callable) -> Dictionary:
+	var method_name = callable.get_method()
+	
+	if not method_name:
+		GDTUtils.printerr_traceback("Method name is empty")
+		return {}
+	
+	if method_name.contains("<"):
+		GDTUtils.printerr_traceback("Cannot encode annonymous lambdas")
+		return {}
+	
+	return {
+		"name": method_name,
+		"bind_args": callable.get_bound_arguments()
+	}
+
+static func decode_callable_ref(node: Node, dict: Dictionary) -> Callable:
+	if not node:
+		GDTUtils.printerr_traceback("Node null or freed")
+		return _invalid_callable
+	
+	if not is_encoded_calllable_ref(dict):
+		GDTUtils.printerr_traceback("Invalid callable dict: %s" % dict)
+		return _invalid_callable
+	
+	var method_name = dict["name"]
+	
+	var cal = node.get(method_name)
+	
+	if not cal:
+		GDTUtils.printerr_traceback("%s has no method %s" % [node, method_name])
+		return _invalid_callable
+	
+	if typeof(cal) != TYPE_CALLABLE:
+		GDTUtils.printerr_traceback("%s: %s is not a method: %s" % [node, method_name, cal])
+		return _invalid_callable
+	
+	if dict["bind_args"]:
+		return cal.bindv(dict["bind_args"])
+	
+	return cal
+
+static func is_encoded_calllable_ref(dict: Dictionary) -> bool:
+	return (
+		typeof(dict) == TYPE_DICTIONARY and
+		
+		"name" in dict and
+		(typeof(dict["name"]) == TYPE_STRING or typeof(dict["name"]) == TYPE_STRING_NAME) and
+		
+		"bind_args" in dict and 
+		typeof(dict["bind_args"]) == TYPE_ARRAY
+	)
+
 static func get_user_signal_connections(node: Node, signal_name: String) -> Array:
 	var res = []
 	var connections = node.get_signal_connection_list(signal_name)
@@ -1143,3 +1196,6 @@ static func is_node_valid(node) -> bool:
 			node in EditorInterface.get_open_scene_roots()
 		)
 	)
+
+static func _invalid_callable() -> void:
+	GDTUtils.printerr_traceback("Placeholder invalid callable called!")

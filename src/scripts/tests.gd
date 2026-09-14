@@ -204,6 +204,43 @@ func test_resource_encoding() -> bool:
 	
 	return true
 
+func test_callable_encoding() -> bool:
+	var encoded_original = GDTNodeSync.encode_callable_ref(_dummy_function)
+	var encoded_bound = GDTNodeSync.encode_callable_ref(_dummy_function.bind("Hello"))
+	
+	if not encoded_original:
+		printerr("encoded_original empty")
+		return false
+	
+	if not encoded_bound:
+		printerr("encoded_bound empty")
+		return false
+	
+	var decoded_original = GDTNodeSync.decode_callable_ref(self, encoded_original)
+	var decoded_bound = GDTNodeSync.decode_callable_ref(self, encoded_bound)
+	
+	if decoded_original == GDTNodeSync._invalid_callable:
+		printerr("decoded_original is invalid")
+		return false
+	
+	if decoded_bound == GDTNodeSync._invalid_callable:
+		printerr("decoded_bound is invalid")
+		return false
+	
+	var decoded_original_res = decoded_original.call()
+	var decoded_bound_res = decoded_bound.call()
+	
+	if decoded_original_res != "":
+		printerr("decoded_original() <empty string> != '%s'" % decoded_original_res)
+		return false
+	
+	if decoded_bound_res != "Hello":
+		printerr("decoded_bound() '%s' != 'Hello'" % decoded_bound_res)
+		return false
+	
+	
+	return true
+
 func test_sha256() -> bool:
 	var a1 = [1, 2, 3, 4]
 	var a2 = [1, 2, 3, 4]
@@ -878,3 +915,6 @@ func test_root_finding() -> bool:
 				return false
 	
 	return true
+
+static func _dummy_function(data: String = "") -> String:
+	return data
