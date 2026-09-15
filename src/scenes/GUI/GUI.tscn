@@ -1150,9 +1150,7 @@ text = "Updates"
 
 [node name="autoCheckUpdates" type="CheckButton" parent="mainMenu/settings/main/scroll/vbox" unique_id=1533970669]
 layout_mode = 2
-tooltip_text = "Not implemented.
-
-Same as the setting above, but only applies to @tool scripts which can run in Godot without running the game."
+tooltip_text = "Should the plugin automatically check for updates."
 button_pressed = true
 text = "Automatically check for updates"
 metadata/setting = "update/auto_check_enabled"
