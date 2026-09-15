@@ -35,7 +35,33 @@ func register_control(node: Control) -> void:
 	if node.has_meta("format"):
 		format = node.get_meta("format")
 	
+	if node.has_meta("disabled_by_node"):
+		var disabler = node.get_node(node.get_meta("disabled_by_node"))
+		setup_control_with_node_disabler(node, disabler)
+	
+	if node.has_meta("enabled_by_node"):
+		var enabler = node.get_node(node.get_meta("enabled_by_node"))
+		setup_control_with_node_disabler(node, enabler, true)
+	
 	GDTSettings.make_setting_control(node, path, format)
+
+func setup_control_with_node_disabler(node: Control, disabler: Control, reverse = false) -> void:
+	if not disabler:
+		printerr("Disabler is null for node %s" % node)
+		return
+	
+	if not disabler is Button:
+		printerr("%s must be a button to work as a disabler for %s" % [disabler, node])
+		return
+	
+	var update = func():
+		if reverse:
+			GDTUtils.set_control_disabled(node, not disabler.button_pressed)
+		else:
+			GDTUtils.set_control_disabled(node, disabler.button_pressed)
+	
+	disabler.pressed.connect(update)
+	update.call()
 
 func _on_reset_pressed() -> void:
 	if not gui: return
