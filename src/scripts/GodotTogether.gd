@@ -34,9 +34,9 @@ var chat: GDTChat = CHAT_SCENE.instantiate()
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
-var script_security = GDTScriptSecurity.new(self)
-var updater = GDTUpdater.new(self)
-var tests = GDTUnitTests.new(self)
+var script_security = GDTScriptSecurity.new(self, "script_security")
+var updater = GDTUpdater.new(self, "updater")
+var tests = GDTUnitTests.new(self, "tests")
 
 var plugin_started := false
 var components = []
