@@ -226,13 +226,19 @@ static func set_control_disabled(node: Control, state: bool) -> void:
 static func is_file_resource(resource: Resource) -> bool:
 	return not resource.resource_path.is_empty() and not resource.resource_path.contains("::")
 
-static func printerr_traceback(message) -> void:
+static func get_stack_lines() -> Array:
+	var res = []
 	var stack = get_stack()
-	var stack_lines = []
 	
-	stack.remove_at(0) # Remove this func
+	stack.remove_at(0)
 	
 	for i in stack:
-		stack_lines.append("%s %s:%s" % [ i["source"], i["function"], i["line"] ])
+		res.append("%s %s:%s" % [ i["source"], i["function"], i["line"] ])
+	
+	return res
+
+static func printerr_traceback(message) -> void:
+	var stack_lines = get_stack_lines()
+	stack_lines.remove_at(0)
 	
 	printerr(message, "\n-- Traceback: --\n", GDTUtils.join(stack_lines, "\n"), "\n-----------")
