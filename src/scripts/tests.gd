@@ -916,5 +916,37 @@ func test_root_finding() -> bool:
 	
 	return true
 
+func test_array_tokens() -> bool:
+	var arr = []
+	var parts = [
+		[1, 2, 3],
+		[0, 0, 0],
+		[4],
+		[0, 0],
+		[5, 6],
+		[0, 0, 0, 0]
+	]
+	
+	for part in parts:
+		arr.append_array(part)
+		arr.append(0)
+	
+	var start = 0
+	
+	for i in parts.size():
+		if parts[i][0] == 0:
+			continue
+		
+		var tok = GDTUtils.get_array_token(arr, 0, start)
+		var slice = tok[0]
+		
+		if slice != parts[i]:
+			printerr("Token %s %s != %s" % [i, slice, parts[i]])
+			return false
+		
+		start = tok[1]
+	
+	return true
+
 static func _dummy_function(data: String = "") -> String:
 	return data
