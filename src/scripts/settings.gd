@@ -30,6 +30,9 @@ const _DEFAULT_DATA = {
 		"check_interval_hours": 168, # weekly
 		"auto_check_enabled": true
 	},
+	"security": {
+		"sanitize_tool_scripts": true
+	},
 	"dev": {
 		# Everything here should be false by default
 		"run_tests_on_start": false,
