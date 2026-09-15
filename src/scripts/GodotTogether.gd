@@ -34,6 +34,7 @@ var chat: GDTChat = CHAT_SCENE.instantiate()
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
+var script_security = GDTScriptSecurity.new(self)
 var updater = GDTUpdater.new(self)
 var tests = GDTUnitTests.new(self)
 
@@ -87,6 +88,7 @@ func init_components() -> void:
 		client, server, dual,
 		file_sync, node_sync, 
 		gui,
+		script_security,
 		updater, 
 		tests
 	]

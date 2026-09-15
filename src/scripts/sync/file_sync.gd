@@ -92,6 +92,9 @@ func write_file(path: String, buffer: PackedByteArray) -> void:
 	
 	GDTFiles.ensure_dir_exists(path)
 	
+	if path.get_extension() == "gd":
+		buffer = main.script_security.sanitize_buffer(buffer)
+	
 	var current_hash = FileAccess.get_sha256(path)
 	var new_hash = GDTUtils.sha256_of_buffer(buffer)
 	

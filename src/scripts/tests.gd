@@ -923,9 +923,11 @@ static func test_detool() -> bool:
 			"func hi"
 		],
 		[
+			"",
+			"\t",
+			"@tool ",
 			"@tool",
-			"@tool",
-			"@tool",
+			"@tool # burh",
 			"extends Node"
 		],
 		[
@@ -958,6 +960,11 @@ static func test_detool() -> bool:
 				
 			if line.begins_with("##@tool"):
 				printerr("Already disabled @tool was sanitized")
+				dump_result.call()
+				return false
+				
+			if line.begins_with("#@tool@tool") or line.begins_with("#@tool#@tool"):
+				printerr("Broken sanitization")
 				dump_result.call()
 				return false
 	
