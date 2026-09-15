@@ -111,6 +111,7 @@ func init_components() -> void:
 
 func post_check_components() -> void:
 	await get_tree().create_timer(0.25).timeout
+	await get_tree().process_frame
 	
 	var unready = []
 	
@@ -119,12 +120,16 @@ func post_check_components() -> void:
 			unready.append(i.name)
 	
 	if not unready.is_empty():
+		var unready_str = GDTUtils.join(unready, ", ")
+		printerr("Some plugin components did not start: \n%s" % unready_str)
+		printerr("Check for errors in _ready() and make sure _component_ready() is called")
+		
 		gui.get_menu_window().set_error_of_death(
 			"Plugin failed to load",
 			
 			GDTUtils.join([
-				"The following components had a problem:",
-				GDTUtils.join(unready, ", "),
+				"The following components did not start:",
+				unready_str,
 				"",
 				"Please try restarting the plugin, and if it still doesn't work, file a bug report.",
 				"Make sure to include the console output"
