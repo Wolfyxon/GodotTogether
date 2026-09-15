@@ -9,17 +9,17 @@ class_name GDTSettingsErrorGUI
 var gui: GodotTogetherGUI
 var json: JSON
 
-func set_json(json: JSON) -> void:
+func set_json(new_json: JSON) -> void:
 	path_label.text = "Path: " + GDTSettings.FILE_PATH
 
-	if json:
-		error_label.text = "Error: " + json.get_error_message()
-		line_label.text = "Line: " + str(json.get_error_line())
+	if new_json:
+		error_label.text = "Error: " + new_json.get_error_message()
+		line_label.text = "Line: " + str(new_json.get_error_line())
 	else:
 		error_label.text = "Failed to access settings"
 		line_label.text = ""
 
-	self.json = json
+	json = new_json
 
 func _on_open_gd_pressed() -> void:
 	if not gui: return

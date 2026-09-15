@@ -67,23 +67,23 @@ func sign_hash(private_key_text: String, hash_text: String) -> PackedByteArray:
 		printerr("Unable to load private key. Code: %s"  % err)
 		return []
 	
-	var hash = hash_text.hex_decode()
+	var hash_buf = hash_text.hex_decode()
 	
-	if hash.is_empty():
+	if hash_buf.is_empty():
 		printerr("Unable to decode hash")
 		return []
 	
-	var buf = crypto.sign(HashingContext.HASH_SHA256, hash, key)
+	var buf = crypto.sign(HashingContext.HASH_SHA256, hash_buf, key)
 	
 	return buf
 
 func sign_data(private_key_text: String, data: PackedByteArray) -> PackedByteArray:
-	var hash = GDTUtils.sha256_of_buffer(data)
+	var data_hash = GDTUtils.sha256_of_buffer(data)
 	
-	return sign_hash(private_key_text, hash)
+	return sign_hash(private_key_text, data_hash)
 
-func verify_hash(hash: String, signature_buf: PackedByteArray) -> bool:
-	var hash_buf = hash.hex_decode()
+func verify_hash(hash_str: String, signature_buf: PackedByteArray) -> bool:
+	var hash_buf = hash_str.hex_decode()
 	var key = get_key()
 	
 	if not key:
@@ -440,13 +440,13 @@ func verify_update(update: GDTUpdateCheckResult) -> bool:
 		gui.alert("Corrupted signature. Cannot verify the authenticity of the release. Try again or report this.")
 		return false
 	
-	var hash = FileAccess.get_sha256(ZIP_PATH)
+	var zip_hash = FileAccess.get_sha256(ZIP_PATH)
 	
-	if not hash:
+	if not zip_hash:
 		gui.alert("Unable to get hash of update file to verify it.")
 		return false
 	
-	if not verify_hash(hash, update.get_signature(0)):
+	if not verify_hash(zip_hash, update.get_signature(0)):
 		gui.alert(GDTUtils.join([
 			"Downloaded file does not match the signature.",
 			"This means the update is corrupted or an authorized person uploaded file.",

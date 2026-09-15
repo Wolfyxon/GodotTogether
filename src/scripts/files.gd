@@ -53,7 +53,7 @@ static func get_file_tree(root := "res://", include_unsafe := false) -> Array[St
 static func get_file_tree_hashes(root := "res://") -> Dictionary:
 	var res = {}
 	
-	for path in get_file_tree():
+	for path in get_file_tree(root):
 		res[path] = FileAccess.get_sha256(path)
 	
 	return res

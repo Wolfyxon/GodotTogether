@@ -6,10 +6,11 @@ var user: GDTUser
 var gui: GodotTogetherGUI
 var is_pending := false
 
-func set_user(user: GDTUser, gui_ref: GodotTogetherGUI, is_pending_entry: bool = false) -> void:
-	self.user = user
-	self.gui = gui_ref
-	self.is_pending = is_pending_entry
+func set_user(_user: GDTUser, _gui: GodotTogetherGUI, is_pending_entry: bool = false) -> void:
+	user = _user
+	gui = _gui
+	is_pending = is_pending_entry
+	
 	$color.color = user.color
 	$name.text = user.name
 	$id.text = str(user.id)

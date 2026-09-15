@@ -61,7 +61,7 @@ func hide_all_guis() -> void:
 		if i is Control:
 			i.visible = false
 
-func set_error_of_death(title: String, description: String) -> void:
+func set_error_of_death(error_title: String, error_description: String) -> void:
 	triggered_reflows = 0
 	
 	if not is_node_ready():
@@ -74,8 +74,8 @@ func set_error_of_death(title: String, description: String) -> void:
 	hide_all_guis()
 	
 	$error.show()
-	$error/header.text = title
-	$error/description.text = description
+	$error/header.text = error_title
+	$error/description.text = error_description
 
 func get_settings_gui() -> GDTSettingsGUI:
 	return $settings

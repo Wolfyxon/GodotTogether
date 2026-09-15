@@ -32,9 +32,9 @@ func _update_icon() -> void:
 
 	ticks += 1
 
-func set_session_icon(icon: Texture) -> void:
+func set_session_icon(new_icon: Texture) -> void:
 	main_icon = ICON_SESSION
-	second_icon = icon
+	second_icon = new_icon
 
 func reset() -> void:
 	main_icon = ICON_DISCONNECTED

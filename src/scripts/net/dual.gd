@@ -82,7 +82,7 @@ func _update() -> void:
 		prev_3d_rot = camera.rotation
 		update_3d_avatar.rpc(camera.position, camera.rotation)
 
-func _peer_connected(id: int) -> void:
+func _peer_connected(_id: int) -> void:
 	pass
 	
 func _peer_disconnected(id: int) -> void:

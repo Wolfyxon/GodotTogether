@@ -5,9 +5,8 @@ class_name GDTSceneWarning
 var main: GodotTogether
 var container: int
 
-func _init(main: GodotTogether) -> void:
-	self.main = main
-
+func _init(_main: GodotTogether) -> void:
+	main = _main
 	main.tree_exiting.connect(remove)
 
 func _ready() -> void:
@@ -18,9 +17,9 @@ func _process(_delta: float) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	visible = not scene or scene.scene_file_path.is_empty()
 
-func add(container: int):
-	self.container = container
-	main.add_control_to_container(container, self)
+func add(new_container: int):
+	container = new_container
+	main.add_control_to_container(new_container, self)
 
 func remove():
 	main.remove_control_from_container(container, self)

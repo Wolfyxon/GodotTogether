@@ -25,7 +25,7 @@ func _ready() -> void:
 		
 		report_ready()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not Engine.is_editor_hint():
 		get_menu_window().visible = true
 

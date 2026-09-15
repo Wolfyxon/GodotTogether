@@ -48,13 +48,13 @@ var permissions: Array[GodotTogether.Permission] = [
 	GodotTogether.Permission.DELETE_SCRIPTS
 ]
 
-func _init(id: int, peer: ENetPacketPeer = null, main: GodotTogether = null):
-	self.id = id
-	self.peer = peer
-	self.joined_at = Time.get_unix_time_from_system()
-	self.main = main
+func _init(_id: int, _peer: ENetPacketPeer = null, _main: GodotTogether = null):
+	id = _id
+	peer = _peer
+	joined_at = Time.get_unix_time_from_system()
+	main = _main
 	
-	self.color = Color(
+	color = Color(
 		randf(),
 		randf(),
 		randf()
@@ -163,8 +163,8 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 	
 	return "Connection lost"
 
-static func type_to_string(type: Type) -> String:
-	var key: String = Type.find_key(type)
+static func type_to_string(user_type: Type) -> String:
+	var key: String = Type.find_key(user_type)
 
 	if key:
 		return key.to_lower().capitalize()

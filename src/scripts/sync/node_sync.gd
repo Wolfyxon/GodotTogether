@@ -169,7 +169,7 @@ func _check_node_properties(node, root: Node, data: Dictionary) -> void:
 	
 	data["property_hashes"] = new_hashes
 
-func _check_node_signals(node, root: Node, data: Dictionary) -> void:
+func _check_node_signals(node, _root: Node, data: Dictionary) -> void:
 	var last_hashes = data["signal_hashes"]
 	var new_hashes = get_signal_hash_dict(node)
 	

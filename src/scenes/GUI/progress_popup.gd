@@ -32,7 +32,7 @@ func _init(description: String) -> void:
 	
 	popup_hide.connect(_hidden)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if _bind_object and _bind_property:
 		set_value(_bind_object.get(_bind_property))
 	

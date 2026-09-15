@@ -58,11 +58,9 @@ func _connecting_finished(success: bool) -> void:
 	connecting_finished.emit(success)
 
 func _handle_connecting() -> void:
-	var connecting = MultiplayerPeer.ConnectionStatus.CONNECTION_CONNECTING
 	var success = MultiplayerPeer.ConnectionStatus.CONNECTION_CONNECTED
 
 	var status = -1
-
 	var start = Time.get_unix_time_from_system()
 	var timeout = start + 10
 

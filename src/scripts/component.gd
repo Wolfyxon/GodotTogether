@@ -5,13 +5,13 @@ class_name GDTComponent
 var main: GodotTogether
 var component_ready = false
 
-func _init(main: GodotTogether = null, name: String = "") -> void:
-	self.main = main
+func _init(_main: GodotTogether = null, _name: String = "") -> void:
+	main = _main
 	
-	if name != "":
-		self.name = "GodotTogether_" + name
+	if _name != "":
+		name = "GodotTogether_" + _name
 	else:
-		self.name = get_class()
+		name = get_class()
 	
 	if main:
 		main.tree_exiting.connect(queue_free)
