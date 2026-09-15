@@ -4,10 +4,19 @@ class_name GDTScriptSecurity
 
 const TOOL_ANNOTATION = "@tool"
 
+var already_warned = []
+
 func _ready() -> void:
+	main.session_started.connect(reset)
 	report_ready()
 
+func reset() -> void:
+	already_warned.clear()
+
 func check_for_tool_script(path: String, buffer: PackedByteArray) -> void:
+	if path in already_warned:
+		return
+	
 	# Script is sanitized. No need for warnings
 	if GDTSettings.get_setting("security/sanitize_tool_scripts"):
 		return
@@ -15,12 +24,16 @@ func check_for_tool_script(path: String, buffer: PackedByteArray) -> void:
 	var lines = buffer.get_string_from_utf8().split("\n")
 	var tool_idxs = get_tool_annotation_indexes(lines)
 	
-	if not tool_idxs.is_empty():
-		var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
-		print(warning_message)
+	if tool_idxs.is_empty():
+		return
+	
+	var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
+	print(warning_message)
+	
+	if main and main.get_gui():
+		main.get_gui().alert(warning_message)
 		
-		if main and main.get_gui():
-			main.get_gui().alert(warning_message)
+	already_warned.append(path)
 
 func sanitize_buffer(buf: PackedByteArray) -> PackedByteArray:
 	var text = buf.get_string_from_utf8()

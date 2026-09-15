@@ -2,6 +2,7 @@
 extends EditorPlugin
 class_name GodotTogether
 
+signal session_started
 signal session_ended
 
 enum Permission {

@@ -136,6 +136,7 @@ func caller_has_permission(permission: GodotTogether.Permission) -> bool:
 
 func _post_start() -> void:
 	main.file_sync.resume()
+	main.session_started.emit()
 	
 	await get_tree().process_frame
 
