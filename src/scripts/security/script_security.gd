@@ -24,12 +24,8 @@ static func is_script_line_ignored(line: String) -> bool:
 		
 	return false
 
-static func detool_code(source: String) -> String:
-	# TODO: Replace this with something more efficient. 
-	# The function should iterate on the raw file buffer and
-	# replace bytes instead of allocating a string
-	
-	var lines = source.split("\n")
+static func get_tool_annotation_indexes(lines: Array) -> Array:
+	var res = []
 	
 	for line_i in lines.size():
 		var line = lines[line_i]
@@ -38,6 +34,20 @@ static func detool_code(source: String) -> String:
 			break
 		
 		if line.begins_with(TOOL_ANNOTATION):
-			lines[line_i] = "#" + TOOL_ANNOTATION + line.erase(0, TOOL_ANNOTATION.length())
+			res.append(line_i)
+	
+	return res
+
+static func detool_code(source: String) -> String:
+	# TODO: Replace this with something more efficient. 
+	# The function should iterate on the raw file buffer and
+	# replace bytes instead of allocating a string
+	
+	var lines = source.split("\n")
+	var indexes = get_tool_annotation_indexes(lines)
+	
+	for line_i in indexes:
+		var line = lines[line_i]
+		lines[line_i] = "#" + TOOL_ANNOTATION + line.erase(0, TOOL_ANNOTATION.length())
 	
 	return GDTUtils.join(lines, "\n")
