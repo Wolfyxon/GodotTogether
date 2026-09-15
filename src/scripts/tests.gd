@@ -916,5 +916,52 @@ func test_root_finding() -> bool:
 	
 	return true
 
+static func test_detool() -> bool:
+	var scripts = [
+		[
+			"@tool",
+			"func hi"
+		],
+		[
+			"@tool",
+			"@tool",
+			"@tool",
+			"extends Node"
+		],
+		[
+			"#@tool",
+			"tool"
+		]
+	]
+	
+	for script_lines in scripts:
+		var script = GDTUtils.join(script_lines, "\n")
+		var sanitized = GDTScriptSecurity.detool_code(script)
+		var sanitized_lines = sanitized.split("\n")
+		
+		var dump_result = func():
+			printerr("-- Original --")
+			printerr(script)
+			printerr("-- Sanitized --")
+			printerr(sanitized)
+		
+		if script_lines.size() != sanitized_lines.size():
+			printerr("Line count mismatch:")
+			dump_result.call()
+			return false
+		
+		for line in sanitized_lines:
+			if line.begins_with("@tool"):
+				printerr("Sanitization failed. @tool still found")
+				dump_result.call()
+				return false
+				
+			if line.begins_with("##@tool"):
+				printerr("Already disabled @tool was sanitized")
+				dump_result.call()
+				return false
+	
+	return true
+
 static func _dummy_function(data: String = "") -> String:
 	return data
