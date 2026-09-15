@@ -236,22 +236,3 @@ static func printerr_traceback(message) -> void:
 		stack_lines.append("%s %s:%s" % [ i["source"], i["function"], i["line"] ])
 	
 	printerr(message, "\n-- Traceback: --\n", GDTUtils.join(stack_lines, "\n"), "\n-----------")
-
-static func get_array_token(
-	arr: Array, 
-	divier, 
-	start := 0, 
-	include_empty := false
-) -> Array:
-	var i = start
-	var new_start = start
-	
-	if not include_empty:
-		while i < arr.size() and arr[i] == divier:
-			new_start += 1
-			i += 1
-	
-	while i < arr.size() and arr[i] != divier:
-		i += 1
-	
-	return [arr.slice(new_start, i), i]
