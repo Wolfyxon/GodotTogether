@@ -215,6 +215,14 @@ static func set_control_value(node: Control, value, format := "") -> void:
 	
 	node.set_block_signals(false)
 
+static func set_control_disabled(node: Control, state: bool) -> void:
+	if node is Button:
+		node.disabled = state
+	elif node is TextEdit or node is LineEdit or node is SpinBox:
+		node.editable = not state
+	else:
+		printerr_traceback("Unsupported class %s %s" % [node.get_class(), node])
+
 static func is_file_resource(resource: Resource) -> bool:
 	return not resource.resource_path.is_empty() and not resource.resource_path.contains("::")
 
