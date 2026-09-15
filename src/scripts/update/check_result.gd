@@ -55,7 +55,7 @@ static func get_from_settings() -> GDTUpdateCheckResult:
 		return
 	
 	if sig_text:
-		sig_text = sig_text.remove_chars("\t\n\"',. ")
+		sig_text = sig_text.remove_chars("\t\n\ufffd\"',. ")
 	else:
 		sig_text = ""
 	
