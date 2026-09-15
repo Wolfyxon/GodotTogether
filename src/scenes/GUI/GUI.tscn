@@ -1127,7 +1127,10 @@ tooltip_text = "Removes the @tool annotation from scripts, preventing them from 
 Disabling this setting makes you vulnerable to remote execution without even running the game!"
 button_pressed = true
 text = "Turn tool scripts into regular scripts"
+icon_alignment = 2
+expand_icon = true
 metadata/setting = "security/sanitize_tool_scripts"
+metadata/warn_when = false
 
 [node name="HSeparator3" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=985936473]
 custom_minimum_size = Vector2(0, 50)

@@ -2,6 +2,8 @@
 extends PopupPanel
 class_name GDTSettingsGUI
 
+const WARNING_IMG = preload("../../img/warning.svg")
+
 @onready var vbox = $main/scroll/vbox
 @onready var update_check_btn = $main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow
 @onready var sandwich_title: Label = $main/scroll/vbox/sandwichTitle
@@ -32,6 +34,9 @@ func register_control(node: Control) -> void:
 	
 	var format = ""
 	
+	if node.has_meta("warn_when"):
+		setup_control_with_warning(node)
+	
 	if node.has_meta("format"):
 		format = node.get_meta("format")
 	
@@ -44,6 +49,22 @@ func register_control(node: Control) -> void:
 		setup_control_with_node_disabler(node, enabler, true)
 	
 	GDTSettings.make_setting_control(node, path, format)
+
+func setup_control_with_warning(node: Control) -> void:
+	if not node is Button:
+		printerr("Not not supported for warn_when: %s" % node)
+		return
+	
+	var warn_state = node.get_meta("warn_when")
+	
+	var update = func():
+		if warn_state == node.button_pressed:
+			node.icon = WARNING_IMG
+		else:
+			node.icon = null
+	
+	node.pressed.connect(update)
+	update.call_deferred()
 
 func setup_control_with_node_disabler(node: Control, disabler: Control, reverse = false) -> void:
 	if not disabler:
