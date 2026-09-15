@@ -7,6 +7,21 @@ const TOOL_ANNOTATION = "@tool"
 func _ready() -> void:
 	report_ready()
 
+func check_for_tool_script(path: String, buffer: PackedByteArray) -> void:
+	# Script is sanitized. No need for warnings
+	if GDTSettings.get_setting("security/sanitize_tool_scripts"):
+		return
+	
+	var lines = buffer.get_string_from_utf8().split("\n")
+	var tool_idxs = get_tool_annotation_indexes(lines)
+	
+	if not tool_idxs.is_empty():
+		var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
+		print(warning_message)
+		
+		if main and main.get_gui():
+			main.get_gui().alert(warning_message)
+
 func sanitize_buffer(buf: PackedByteArray) -> PackedByteArray:
 	var text = buf.get_string_from_utf8()
 	

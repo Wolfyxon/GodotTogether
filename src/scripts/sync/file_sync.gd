@@ -115,13 +115,7 @@ func write_file(path: String, buffer: PackedByteArray) -> void:
 	
 	if path.get_extension() == "gd":
 		EditorInterface.get_script_editor().reload_open_files.call_deferred()
-		
-		if "@tool" in buffer.get_string_from_utf8():
-			var warning_message = "Tool script detected (%s). It can execute malicious code in your editor!" % path
-			print(warning_message)
-	
-			if main and main.get_gui():
-				main.get_gui().alert(warning_message)
+		main.script_security.check_for_tool_script(path, buffer)
 	else:
 		EditorInterface.get_resource_filesystem().scan.call_deferred()
 
