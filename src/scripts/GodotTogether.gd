@@ -38,6 +38,7 @@ var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 var script_security = GDTScriptSecurity.new(self, "script_security")
 var updater = GDTUpdater.new(self, "updater")
 var tests = GDTUnitTests.new(self, "tests")
+var debug = GDTDebug.new(self, "debug")
 
 var plugin_started := false
 var components = []
@@ -91,7 +92,8 @@ func init_components() -> void:
 		gui,
 		script_security,
 		updater, 
-		tests
+		tests,
+		debug
 	]
 	
 	# The array may become empty or null if an error occurs
