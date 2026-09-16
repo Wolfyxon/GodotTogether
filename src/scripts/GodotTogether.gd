@@ -217,6 +217,9 @@ func prepare_session() -> void:
 func get_gui() -> GodotTogetherGUI:
 	return gui
 
+func get_chat() -> GDTChat:
+	return chat
+
 func close_connection() -> void:
 	client.connection_cancelled = true
 		

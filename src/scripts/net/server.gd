@@ -169,7 +169,7 @@ func _c2s_chat_request(text: String) -> void:
 	if not GDTChat.validate_message(text): return
 	
 	broadcast_chat_user_message(id, text)
-	main.chat.add_user_message(text, user)
+	main.get_chat().add_user_message(text, user)
 
 func broadcast_chat_user_message(user_id: int, text: String) -> void:
 	auth_rpc(main.client._s2c_receive_chat_message, [text, user_id])

@@ -194,7 +194,7 @@ func _s2c_receive_chat_message(text: String, user_id: int) -> void:
 	
 	if not user: return
 	
-	main.chat.add_user_message(text, user)
+	main.get_chat().add_user_message(text, user)
 
 func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -> void:
 	if not FileAccess.file_exists(scene_path):
