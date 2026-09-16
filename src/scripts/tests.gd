@@ -970,5 +970,19 @@ static func test_detool() -> bool:
 	
 	return true
 
+func test_wrappers() -> bool:
+	var wrappers = [
+		main.gui.scene_tree_editor
+	]
+	
+	for i: GDTNodeWrapper in wrappers:
+		var node = i.get_wrapped_node()
+		
+		if not node:
+			printerr("Wrapped node not found")
+			return false
+	
+	return true
+
 static func _dummy_function(data: String = "") -> String:
 	return data
