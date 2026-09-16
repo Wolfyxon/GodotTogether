@@ -178,7 +178,19 @@ static func get_descendants(node: Node, include_internal := false) -> Array[Node
 		res.append(i)
 	
 	return res
+
+static func get_descendant_with_class(root: Node, search_class: String) -> Node:
+	for i in root.get_children():
+		if i.get_class() == search_class:
+			return i
+			
+		var sub = get_descendant_with_class(i, search_class)
+		
+		if sub:
+			return sub
 	
+	return
+
 static func is_peer_connected(peer: MultiplayerPeer) -> bool:
 	return peer.get_connection_status() == peer.CONNECTION_CONNECTED
 
