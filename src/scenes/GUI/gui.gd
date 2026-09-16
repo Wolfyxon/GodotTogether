@@ -5,6 +5,8 @@ class_name GodotTogetherGUI
 const IMG_HIDDEN = preload("../../img/hidden.svg")
 const IMG_VISIBLE = preload("../../img/visible.svg")
 
+var scene_tree_editor = GDTSceneTreeEditor.new()
+
 func _ready() -> void:
 	var menu_window = get_menu_window()
 	var menu = get_menu()
