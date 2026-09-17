@@ -115,7 +115,7 @@ func test_ui() -> bool:
 		return false
 	
 	if running_on_start:
-		var settings = main.gui.get_menu_window().get_settings_gui()
+		var settings = main.get_gui().get_menu_window().get_settings_gui()
 		
 		if not settings:
 			printerr("Settings window not found")
@@ -972,7 +972,7 @@ static func test_detool() -> bool:
 
 func test_wrappers() -> bool:
 	var wrappers = [
-		main.gui.scene_tree_editor
+		main.get_gui().scene_tree_editor
 	]
 	
 	for i: GDTNodeWrapper in wrappers:

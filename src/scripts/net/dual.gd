@@ -111,7 +111,7 @@ func _user_disconnected(user: GDTUser) -> void:
 	users.erase(user)
 	user_disconnected.emit(user)
 	
-	main.gui.scene_tree_editor.clear_matching_colors(
+	main.get_gui().scene_tree_editor.clear_matching_colors(
 		user_color_to_selection_color(user.color)
 	)
 	
