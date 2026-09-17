@@ -229,7 +229,7 @@ func broadcast_avatars() -> void:
 		if cam:
 			update_3d_avatar.rpc(cam.position, cam.rotation)
 		
-	if viewport_2d:
+	if viewport_2d and DisplayServer.window_is_focused():
 		var mouse_pos = viewport_2d.get_mouse_position()
 		update_2d_avatar.rpc(mouse_pos)
 
