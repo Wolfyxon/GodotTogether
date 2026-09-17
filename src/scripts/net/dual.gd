@@ -298,17 +298,17 @@ func receive_selection(node_paths: Array, scene_path: String) -> void:
 	var user = get_user_by_id(id)
 	if not user: return
 	
+	var tree_editor = main.get_gui().scene_tree_editor
+	
+	var color = user_color_to_selection_color(user.color)
+	tree_editor.clear_matching_colors(color)
+	
 	var root = EditorInterface.get_edited_scene_root()
 	if not root: return
 	if not root.scene_file_path: return
 	
 	if not scene_path: return
 	if root.scene_file_path != scene_path: return
-	
-	var tree_editor = main.get_gui().scene_tree_editor
-	
-	var color = user_color_to_selection_color(user.color)
-	tree_editor.clear_matching_colors(color)
 	
 	for node_path in node_paths:
 		var tp = typeof(node_path)
