@@ -26,9 +26,13 @@ func clear_colors(root: TreeItem = null) -> void:
 	if not root:
 		root = get_tree_control().get_root()
 	
+	if not root:
+		return
+	
 	root.clear_custom_bg_color(0)
 	
 	for i in root.get_children():
+		if not i: continue
 		clear_colors(i)
 
 func clear_matching_colors(color: Color, root: TreeItem = null) -> void:
