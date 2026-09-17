@@ -131,6 +131,9 @@ func _users_listed(new_users: Array[GDTUser]) -> void:
 		create_avatar_3d(user)
 
 func broadcast_selection() -> void:
+	if not main.is_session_active():
+		return
+	
 	var root = EditorInterface.get_edited_scene_root()
 	if not root: return
 	
@@ -288,7 +291,7 @@ func receive_selection(node_paths: Array, scene_path: String) -> void:
 	if not root.scene_file_path: return
 	
 	if not scene_path: return
-	if root.scene_file_path != scene_file_path: return
+	if root.scene_file_path != scene_path: return
 	
 	var tree_editor = main.get_gui().scene_tree_editor
 	
@@ -297,7 +300,7 @@ func receive_selection(node_paths: Array, scene_path: String) -> void:
 	for node_path in node_paths:
 		var tp = typeof(node_path)
 		
-		if tp != TYPE_STRING:
+		if tp not in [TYPE_STRING, TYPE_STRING_NAME, TYPE_NODE_PATH]:
 			printerr("Expected String for node path, got %s" % tp)
 			continue
 			
