@@ -85,7 +85,7 @@ const SETGET_PROPERTIES = {
 	},
 	
 	"TileSet": {
-		"tile_set/sources/?": {
+		"sources/?": {
 			"get": {
 				"func": "get_source",
 				"args": ["?int"]
