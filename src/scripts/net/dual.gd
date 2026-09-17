@@ -280,6 +280,14 @@ func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:
 	
 	marker.receive_transform(position, rotation)
 
+func user_color_to_selection_color(color: Color) -> Color:
+	return Color(
+			color.r,
+			color.g,
+			color.b,
+			0.25
+		)
+
 @rpc("any_peer", "reliable")
 func receive_selection(node_paths: Array, scene_path: String) -> void:
 	var id = multiplayer.get_remote_sender_id()
@@ -295,7 +303,8 @@ func receive_selection(node_paths: Array, scene_path: String) -> void:
 	
 	var tree_editor = main.get_gui().scene_tree_editor
 	
-	tree_editor.clear_matching_colors(user.color)
+	var color = user_color_to_selection_color(user.color)
+	tree_editor.clear_matching_colors(color)
 	
 	for node_path in node_paths:
 		var tp = typeof(node_path)
@@ -307,7 +316,7 @@ func receive_selection(node_paths: Array, scene_path: String) -> void:
 		var item = tree_editor.get_tree_item_at_path(node_path)
 		if not item: continue
 		
-		item.set_custom_bg_color(0, user.color)
+		item.set_custom_bg_color(0, color)
 
 @rpc("authority", "call_remote", "reliable")
 func restart() -> void:
