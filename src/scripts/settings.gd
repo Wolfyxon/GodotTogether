@@ -94,9 +94,8 @@ static func get_settings() -> Dictionary:
 			push_error("Parsing settings failed at line %s: %s Returning default data." % [json.get_error_line(), json.get_error_message()])
 			return get_default_settings()
 		
-		parsed = parsed.duplicate(true)
-
-		return GDTUtils.merge(parsed, _DEFAULT_DATA) 
+		var default_data = _DEFAULT_DATA.duplicate(true)
+		return GDTUtils.merge(parsed.duplicate(true), default_data).duplicate(true)
 		
 	else:
 		return get_default_settings()
