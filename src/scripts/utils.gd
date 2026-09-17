@@ -64,6 +64,9 @@ static func set_nested(obj, path: String, value, separator := DICT_PATH_SEPARATO
 	for i in range(levels.size() - 1):
 		var level = levels[i]
 		
+		if not current is Dictionary and not current is Object:
+			return
+		
 		if not level in current:
 			if current is Dictionary:
 				current[level] = {}
