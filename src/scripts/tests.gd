@@ -545,6 +545,59 @@ static func test_node_change_applying() -> bool:
 	
 	return true
 
+func test_node_change_applying_deep_setget() -> bool:
+	const TEXTURE = preload("../img/x.svg")
+	
+	var tmap = TileMapLayer.new()
+	var tset = TileSet.new()
+	
+	tmap.tile_set = tset
+	
+	var h1 = GDTNodeSync.get_property_hash_dict(tmap)
+	
+	var source = TileSetAtlasSource.new()
+	source.texture = TEXTURE
+	tset.add_source(source)
+	
+	var h2 = GDTNodeSync.get_property_hash_dict(tmap)
+	
+	var diff = GDTUtils.compare_dicts(h1, h2)
+	
+	if not "tile_set/sources/0" in diff:
+		printerr("tile_set/sources/0 not found in diff")
+		return false
+	
+	var props = GDTNodeSync.get_select_property_dict(tmap, diff)
+	var tmap_output = TileMapLayer.new()
+	
+	GDTNodeSync.apply_property_dict(tmap_output, props)
+	
+	if not tmap_output.tile_set:
+		printerr("TileSet not set")
+		return false
+	
+	if tmap.tile_set.get_source_count() != 1:
+		printerr("TileSet source count %s != 1", tmap.tile_set.get_source_count())
+		return false
+	
+	var source_output = tmap.tile_set.get_source(0)
+	
+	if not source_output:
+		printerr("Source is null")
+		return false
+		
+	if not source_output is TileSetAtlasSource:
+		printerr("Expected TileSetAtlasSource, got %s" % source_output.get_class())
+		return false
+	
+	source_output = source_output as TileSetAtlasSource
+	
+	if source_output.resource_path != TEXTURE.resource_path:
+		printerr("Texture path %s != %s" % [source_output.resource_path, TEXTURE.resource_path])
+		return false
+	
+	return true
+
 func test_setget_property_dict() -> bool:
 	const METHOD_KEYS = ["set", "get", "has", "reset"]
 	const ESSENTIALS = []

@@ -82,6 +82,23 @@ const SETGET_PROPERTIES = {
 				"pre_args": ["?"]
 			}
 		}
+	},
+	
+	"TileSet": {
+		"tile_set/sources/?": {
+			"get": {
+				"func": "get_source",
+				"args": ["?int"]
+			},
+			"set": {
+				"func": "add_source",
+				"args": ["?int"]
+			},
+			"reset": {
+				"func": "remove_source",
+				"args": ["?int"]
+			}
+		}
 	}
 }
 
