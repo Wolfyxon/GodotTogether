@@ -607,7 +607,14 @@ func test_setget_property_dict() -> bool:
 			printerr("Class '%s' doesn't exist" % node_class)
 			return false
 		
-		var class_entry: Dictionary = GDTNodeSync.SETGET_PROPERTIES[node_class]
+		var class_entry = GDTNodeSync.SETGET_PROPERTIES[node_class]
+		
+		if typeof(class_entry) == TYPE_STRING:
+			if not class_entry in GDTNodeSync.SETGET_PROPERTIES:
+				printerr("Duplicate setget entry %s not found" % class_entry)
+				return false
+			
+			continue
 		
 		for prop in class_entry.keys():
 			var prop_entry = class_entry[prop]

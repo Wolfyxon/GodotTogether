@@ -1135,6 +1135,11 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 
 static func get_setget_properties_of_class(cls_name: String) -> Variant:
 	if cls_name in SETGET_PROPERTIES:
+		var entry = SETGET_PROPERTIES[cls_name] 
+		
+		if typeof(entry) == TYPE_STRING or typeof(entry) == TYPE_STRING_NAME:
+			return get_setget_properties_of_class(entry)
+		
 		return entry
 	
 	for key in SETGET_PROPERTIES.keys():
