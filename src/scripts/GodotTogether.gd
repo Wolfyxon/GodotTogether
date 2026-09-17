@@ -60,6 +60,9 @@ func _enter_tree() -> void:
 	if not check_path():
 		return
 	
+	if GDTUtils.has_readonly(GDTSettings.get_settings()):
+		printerr("Loaded settings dict is read-only! This should not happen!")
+	
 	if GDTSettings.get_setting("dev/run_tests_on_start"):
 		tests.running_on_start = true
 		tests.run_tests()
