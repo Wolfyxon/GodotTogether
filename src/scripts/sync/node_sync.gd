@@ -1189,15 +1189,24 @@ static func _call_setget_entry_method(
 	if "pre_args" in method_entry:
 		full_args.append_array(method_entry["pre_args"])
 	
-	for i in args.size():
-		if full_args[i] == "?":
-			var k = property.split("/")[1]
-			full_args[i] = k
-	
 	full_args.append_array(args)
 	
 	if "post_args" in method_entry:
 		full_args.append("post_args")
+	
+	for i in args.size():
+		if full_args[i] == "?":
+			var k = property.split("/")[1]
+			full_args[i] = k
+		
+		if full_args[i] == "?int":
+			var k = property.split("/")[1]
+			
+			if k.is_valid_int():
+				full_args[i] = int(k)
+			else:
+				printerr("Invalid int %s for property %s of %s" % [k, property, obj.get_class()])
+				full_args[i] = 0
 	
 	return obj.callv(method_entry["func"], full_args)
 
