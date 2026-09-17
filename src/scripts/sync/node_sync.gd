@@ -47,19 +47,19 @@ const SETGET_PROPERTIES = {
 		"theme_override_colors/?": {
 			"reset": {
 				"func": "remove_theme_color_override",
-				"args": ["?"]
+				"pre_args": ["?"]
 			}
 		},
 		"theme_override_constants/?": {
 			"reset": {
 				"func": "remove_theme_constant_override",
-				"args": ["?"]
+				"pre_args": ["?"]
 			}
 		},
 		"theme_override_fonts/?": {
 			"reset": {
 				"func": "remove_theme_font_override",
-				"args": ["?"]
+				"pre_args": ["?"]
 			}
 		},
 		"theme_override_font_sizes/?": {
@@ -67,19 +67,19 @@ const SETGET_PROPERTIES = {
 			
 			"reset": {
 				"func": "remove_theme_font_size_override",
-				"args": ["?"]
+				"pre_args": ["?"]
 			}
 		},
 		"theme_override_icons/?": {
 			"reset": {
 				"func": "remove_theme_icon_override",
-				"args": ["?"]
+				"pre_args": ["?"]
 			}
 		},
 		"theme_override_styles/?": {
 			"reset": {
 				"func": "remove_theme_stylebox_override",
-				"args": ["?"]
+				"pre_args": ["?"]
 			}
 		}
 	}
@@ -1186,8 +1186,8 @@ static func _call_setget_entry_method(
 		
 	var full_args = []
 	
-	if "args" in method_entry:
-		full_args.append_array(method_entry["args"])
+	if "pre_args" in method_entry:
+		full_args.append_array(method_entry["pre_args"])
 	
 	for i in args.size():
 		if full_args[i] == "?":
@@ -1195,6 +1195,9 @@ static func _call_setget_entry_method(
 			full_args[i] = k
 	
 	full_args.append_array(args)
+	
+	if "post_args" in method_entry:
+		full_args.append("post_args")
 	
 	return obj.callv(method_entry["func"], full_args)
 
