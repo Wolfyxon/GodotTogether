@@ -22,6 +22,16 @@ static func join(array: Array, separator := "\n") -> String:
 	
 	return res
 
+static func has_readonly(dict: Dictionary) -> bool:
+	if dict.is_read_only():
+		return true
+	
+	for val in dict.values():
+		if typeof(val) == TYPE_DICTIONARY and has_readonly(val):
+			return true
+	
+	return false
+
 static func merge(a: Dictionary, b: Dictionary) -> Dictionary:
 	for key in b.keys():
 		if not key in a:

@@ -984,5 +984,16 @@ func test_wrappers() -> bool:
 	
 	return true
 
+func test_settings() -> bool:
+	if GDTUtils.has_readonly(GDTSettings.get_default_settings()):
+		printerr("Default settings are read only")
+		return false
+	
+	if GDTUtils.has_readonly(GDTSettings.get_settings()):
+		printerr("Loaded settings are read only")
+		return false
+	
+	return true
+
 static func _dummy_function(data: String = "") -> String:
 	return data
