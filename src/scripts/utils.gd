@@ -47,6 +47,9 @@ static func get_nested(obj, path: String, separator := DICT_PATH_SEPARATOR):
 	var current = obj
 	
 	for level in levels:
+		if not current is Dictionary and not current is Object:
+			return
+		
 		if not level in current: 
 			return
 		
