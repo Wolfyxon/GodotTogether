@@ -1064,6 +1064,9 @@ static func get_property_hash_dict(obj: Object, depth := 64) -> Dictionary:
 
 static func fill_property_hash_dict(res: Dictionary, obj: Object, depth := 64) -> Dictionary:
 	for key in get_property_keys(obj):
+		if not key in obj:
+			continue
+		
 		var value = obj[key]
 		
 		if value is Object and depth > 0:
