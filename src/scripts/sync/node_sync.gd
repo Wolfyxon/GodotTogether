@@ -99,7 +99,12 @@ const SETGET_PROPERTIES = {
 				"args": ["?int"]
 			}
 		}
-	}
+	},
+	
+	"TileMap": {
+		"tile_set/sources/?": {}
+	},
+	"TileMapLayer": "TileMap",
 }
 
 var change_timer = Timer.new()
@@ -1164,10 +1169,16 @@ static func get_setget_entry(obj: Object, property: String) -> Variant:
 	return null
 
 static func get_setget_property(obj: Object, property: String) -> Variant:
+	var first = property.split("/")[0]
+	
+	if first in obj and obj[first] is Object:
+		var new_path = property.substr(first.length() + 1)
+		return get_setget_property(obj[first], new_path)
+	
 	var prop_entry = get_setget_entry(obj, property)
 	
 	if prop_entry == null:
-		push_error("Missing setget entry for %s:%s" % [obj.get_class(), property])
+		GDTUtils.printerr_stack("Missing setget entry for %s: %s" % [obj.get_class(), property])
 		return
 	
 	if "get" in prop_entry:
@@ -1176,6 +1187,13 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 	return obj.get(property)
 
 static func set_setget_property(obj: Object, property: String, value: Variant) -> void:
+	var first = property.split("/")[0]
+	
+	if first in obj and obj[first] is Object:
+		var new_path = property.substr(first.length() + 1)
+		set_setget_property(obj[first], new_path, value)
+		return
+	
 	var prop_entry = get_setget_entry(obj, property)
 	
 	if prop_entry == null:
