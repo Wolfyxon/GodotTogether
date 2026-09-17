@@ -1232,9 +1232,9 @@ static func _call_setget_entry_method(
 	full_args.append_array(args)
 	
 	if "post_args" in method_entry:
-		full_args.append("post_args")
+		full_args.append_array(method_entry["post_args"])
 	
-	for i in args.size():
+	for i in full_args.size():
 		if full_args[i] == "?":
 			var k = property.split("/")[1]
 			full_args[i] = k
