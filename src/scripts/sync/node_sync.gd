@@ -1234,13 +1234,18 @@ static func encode_resource(resource: Resource) -> Dictionary:
 	var cloned = false
 
 	for key in get_property_keys(resource):
-		var value = resource[key]
-
+		var value
+		
+		if is_setget_property(resource, key):
+			value = get_setget_property(resource, key)
+		elif key in resource:
+			value = resource[key]
+		
 		if value is Resource:
 			if not cloned:
 				cloned = true
 				resource = resource.duplicate()
-
+			
 			resource[key] = null
 			res["sub"][key] = encode_resource(value)
 
@@ -1270,7 +1275,12 @@ static func decode_resource(dict: Dictionary) -> Resource:
 
 			if sub is Dictionary:
 				for key in sub.keys():
-					resource[key] = decode_resource(sub[key])
+					var value = sub[key]
+					
+					if is_setget_property(resource, key):
+						set_setget_property(resource, key, value)
+					elif key in resource:
+						resource[key] = decode_resource(value)
 	else:
 		push_error("Cannot decode resource: 'buf' and 'path' missing from resource dict")
 	
