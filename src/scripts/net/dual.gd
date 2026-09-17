@@ -111,6 +111,10 @@ func _user_disconnected(user: GDTUser) -> void:
 	users.erase(user)
 	user_disconnected.emit(user)
 	
+	main.gui.scene_tree_editor.clear_matching_colors(
+		user_color_to_selection_color(user.color)
+	)
+	
 	if user.was_ever_authenticated() and should_notify_user_connection():
 		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, ip])
