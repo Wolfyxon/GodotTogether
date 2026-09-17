@@ -187,6 +187,14 @@ func receive_join_data(data_dict: Dictionary) -> void:
 		user.kick(GDTUser.DisconnectReason.PASSWORD_INVALID)
 		return
 
+	if data.protocol_version < GodotTogether.PROTOCOL_VERSION:
+		user.kick(GDTUser.DisconnectReason.CLIENT_OUTDATED)
+		return
+		
+	if data.protocol_version > GodotTogether.PROTOCOL_VERSION:
+		user.kick(GDTUser.DisconnectReason.SERVER_OUTDATED)
+		return
+	
 	user.name = data.username
 	
 	if GDTSettings.get_setting("server/require_approval"):
