@@ -598,8 +598,12 @@ func test_node_change_applying_deep_setget() -> bool:
 	
 	source_output = source_output as TileSetAtlasSource
 	
-	if source_output.resource_path != texture.resource_path:
-		printerr("Texture path %s != %s" % [source_output.resource_path, texture.resource_path])
+	if not source_output.texture:
+		printerr("Source texture not set")
+		return false
+	
+	if source_output.texture.resource_path != texture.resource_path:
+		printerr("Texture path '%s' != '%s'" % [source_output.texture.resource_path, texture.resource_path])
 		return false
 	
 	return true
