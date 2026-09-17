@@ -1219,6 +1219,9 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		elif "has" in property:
 			if not _call_setget_entry_method(obj, prop_entry, "has", property):
 				_call_setget_entry_method(obj, prop_entry, "reset", property)
+		
+		if value == null:
+			_call_setget_entry_method(obj, prop_entry, "reset", property)
 	
 	if "set" in prop_entry:
 		_call_setget_entry_method(obj, prop_entry, "set", property, [value])
