@@ -546,7 +546,11 @@ static func test_node_change_applying() -> bool:
 	return true
 
 func test_node_change_applying_deep_setget() -> bool:
-	const TEXTURE = preload("../img/x.svg")
+	var texture = load("res://icon.svg")
+	
+	if not texture:
+		printerr("res://icon.svg doesn't exist in project")
+		return false
 	
 	var tmap = TileMapLayer.new()
 	var tset = TileSet.new()
@@ -556,7 +560,7 @@ func test_node_change_applying_deep_setget() -> bool:
 	var h1 = GDTNodeSync.get_property_hash_dict(tmap)
 	
 	var source = TileSetAtlasSource.new()
-	source.texture = TEXTURE
+	source.texture = texture
 	tset.add_source(source)
 	
 	var h2 = GDTNodeSync.get_property_hash_dict(tmap)
@@ -592,8 +596,8 @@ func test_node_change_applying_deep_setget() -> bool:
 	
 	source_output = source_output as TileSetAtlasSource
 	
-	if source_output.resource_path != TEXTURE.resource_path:
-		printerr("Texture path %s != %s" % [source_output.resource_path, TEXTURE.resource_path])
+	if source_output.resource_path != texture.resource_path:
+		printerr("Texture path %s != %s" % [source_output.resource_path, texture.resource_path])
 		return false
 	
 	return true
