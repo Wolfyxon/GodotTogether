@@ -162,6 +162,10 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 			return "Connection rejected by host"
 		DisconnectReason.JOINING_TOO_FAST:
 			return "You are joining too quickly"
+		DisconnectReason.CLIENT_OUTDATED:
+			return "You are running an older version of the plugin than the server"
+		DisconnectReason.SERVER_OUTDATED:
+			return "The host's plugin version is outdated"
 	
 	return "Connection lost"
 
