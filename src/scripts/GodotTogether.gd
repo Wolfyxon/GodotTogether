@@ -77,6 +77,8 @@ func _exit_tree() -> void:
 	if not plugin_started:
 		return
 	
+	gui.scene_tree_editor.clear_colors()
+	
 	close_connection()
 	button.queue_free()
 	remove_control_from_bottom_panel(chat)
@@ -233,6 +235,8 @@ func close_connection() -> void:
 	post_session_end()
 
 func post_session_end() -> void:
+	gui.scene_tree_editor.clear_colors()
+	
 	button.reset()
 	dual.clear_avatars()
 

@@ -39,10 +39,13 @@ func _ready() -> void:
 	update_timer.start()
 	
 	broadcast_timer.timeout.connect(broadcast_avatars)
+	broadcast_timer.timeout.connect(broadcast_selection)
 	broadcast_timer.wait_time = 1
 	broadcast_timer.one_shot = false
 	add_child(broadcast_timer)
 	broadcast_timer.start()
+	
+	EditorInterface.get_selection().selection_changed.connect(broadcast_selection)
 	
 	report_ready()
 
@@ -126,6 +129,21 @@ func _users_listed(new_users: Array[GDTUser]) -> void:
 		
 		create_avatar_2d(user)
 		create_avatar_3d(user)
+
+func broadcast_selection() -> void:
+	var root = EditorInterface.get_edited_scene_root()
+	if not root: return
+	
+	var nodes = EditorInterface.get_selection().get_selected_nodes()
+	var paths = []
+	
+	for i in nodes:
+		var path = root.get_path_to(i)
+		
+		if path:
+			paths.append(path)
+	
+	receive_selection.rpc_id(0, paths, root.scene_file_path)
 
 func should_notify_user_connection() -> bool:
 	return GDTSettings.get_setting("notifications/users")
@@ -258,6 +276,35 @@ func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:
 	if not marker: return
 	
 	marker.receive_transform(position, rotation)
+
+@rpc("any_peer", "reliable")
+func receive_selection(node_paths: Array, scene_path: String) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	var user = get_user_by_id(id)
+	if not user: return
+	
+	var root = EditorInterface.get_edited_scene_root()
+	if not root: return
+	if not root.scene_file_path: return
+	
+	if not scene_path: return
+	if root.scene_file_path != scene_file_path: return
+	
+	var tree_editor = main.get_gui().scene_tree_editor
+	
+	tree_editor.clear_matching_colors(user.color)
+	
+	for node_path in node_paths:
+		var tp = typeof(node_path)
+		
+		if tp != TYPE_STRING:
+			printerr("Expected String for node path, got %s" % tp)
+			continue
+			
+		var item = tree_editor.get_tree_item_at_path(node_path)
+		if not item: continue
+		
+		item.set_custom_bg_color(0, user.color)
 
 @rpc("authority", "call_remote", "reliable")
 func restart() -> void:
