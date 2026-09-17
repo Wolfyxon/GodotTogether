@@ -88,15 +88,15 @@ const SETGET_PROPERTIES = {
 		"sources/?": {
 			"get": {
 				"func": "get_source",
-				"args": ["?int"]
+				"post_args": ["?int"]
 			},
 			"set": {
 				"func": "add_source",
-				"args": ["?int"]
+				"post_args": ["?int"]
 			},
 			"reset": {
 				"func": "remove_source",
-				"args": ["?int"]
+				"post_args": ["?int"]
 			}
 		}
 	},
