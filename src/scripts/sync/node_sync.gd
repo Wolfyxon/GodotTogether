@@ -94,6 +94,10 @@ const SETGET_PROPERTIES = {
 				"func": "add_source",
 				"post_args": ["?int"]
 			},
+			"has": {
+				"func": "has_source",
+				"post_args": ["?int"]
+			},
 			"reset": {
 				"func": "remove_source",
 				"post_args": ["?int"]
@@ -1181,6 +1185,10 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 		GDTUtils.printerr_stack("Missing setget entry for %s: %s" % [obj.get_class(), property])
 		return
 	
+	if "has" in prop_entry:
+		if not _call_setget_entry_method(obj, prop_entry, "has", property):
+			return
+	
 	if "get" in prop_entry:
 		return _call_setget_entry_method(obj, prop_entry, "get", property)
 
@@ -1200,12 +1208,17 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		push_error("Missing setget entry for %s:%s" % [obj.get_class(), property])
 		return
 	
-	if "default" in prop_entry and "reset" in prop_entry:
-		var def_val = _call_setget_entry_method(obj, prop_entry, "default", property)
-		
-		if def_val == value:
-			_call_setget_entry_method(obj, prop_entry, "reset", property)
-			return
+	if "reset" in prop_entry:
+		if "default" in property:
+			var def_val = _call_setget_entry_method(obj, prop_entry, "default", property)
+			
+			if def_val == value:
+				_call_setget_entry_method(obj, prop_entry, "reset", property)
+				return
+			
+		elif "has" in property:
+			if not _call_setget_entry_method(obj, prop_entry, "has", property):
+				_call_setget_entry_method(obj, prop_entry, "reset", property)
 	
 	if "set" in prop_entry:
 		_call_setget_entry_method(obj, prop_entry, "set", property, [value])
