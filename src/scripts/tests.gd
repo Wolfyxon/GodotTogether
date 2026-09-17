@@ -572,7 +572,9 @@ func test_node_change_applying_deep_setget() -> bool:
 		return false
 	
 	var props = GDTNodeSync.get_select_property_dict(tmap, diff)
+	
 	var tmap_output = TileMapLayer.new()
+	tmap_output.tile_set = TileSet.new()
 	
 	GDTNodeSync.apply_property_dict(tmap_output, props)
 	
