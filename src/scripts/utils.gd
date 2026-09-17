@@ -128,11 +128,11 @@ static func try_connect_bulk(dict: Dictionary) -> void:
 		var fn = dict[sig]
 		
 		if typeof(sig) != TYPE_SIGNAL:
-			printerr_traceback("Expected Signal, got %s for key %s" % [type_string(typeof(sig)), sig])
+			printerr_stack("Expected Signal, got %s for key %s" % [type_string(typeof(sig)), sig])
 			continue
 			
 		if typeof(fn) != TYPE_CALLABLE:
-			printerr_traceback("Expected Callable, got %s for value at key %s" % [type_string(typeof(fn)), sig])
+			printerr_stack("Expected Callable, got %s for value at key %s" % [type_string(typeof(fn)), sig])
 			continue
 		
 		try_connect(sig, fn)
@@ -243,7 +243,7 @@ static func set_control_disabled(node: Control, state: bool) -> void:
 	elif node is TextEdit or node is LineEdit or node is SpinBox:
 		node.editable = not state
 	else:
-		printerr_traceback("Unsupported class %s %s" % [node.get_class(), node])
+		printerr_stack("Unsupported class %s %s" % [node.get_class(), node])
 
 static func is_file_resource(resource: Resource) -> bool:
 	return not resource.resource_path.is_empty() and not resource.resource_path.contains("::")
@@ -259,7 +259,7 @@ static func get_stack_lines() -> Array:
 	
 	return res
 
-static func printerr_traceback(message) -> void:
+static func printerr_stack(message) -> void:
 	var stack_lines = get_stack_lines()
 	stack_lines.remove_at(0)
 	

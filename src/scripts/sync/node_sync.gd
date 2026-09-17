@@ -881,7 +881,7 @@ func get_node_data(node: Node) -> Dictionary:
 		return {}
 	
 	if not scene.is_ancestor_of(node) and node != scene:
-		GDTUtils.printerr_traceback("Cannot get data of %s: scene mismatch" % node)
+		GDTUtils.printerr_stack("Cannot get data of %s: scene mismatch" % node)
 		return {}
 	
 	return {
@@ -976,11 +976,11 @@ static func encode_callable_ref(callable: Callable) -> Dictionary:
 	var method_name = callable.get_method()
 	
 	if not method_name:
-		GDTUtils.printerr_traceback("Method name is empty")
+		GDTUtils.printerr_stack("Method name is empty")
 		return {}
 	
 	if method_name.contains("<"):
-		GDTUtils.printerr_traceback("Cannot encode annonymous lambdas")
+		GDTUtils.printerr_stack("Cannot encode annonymous lambdas")
 		return {}
 	
 	return {
@@ -990,11 +990,11 @@ static func encode_callable_ref(callable: Callable) -> Dictionary:
 
 static func decode_callable_ref(node: Node, dict: Dictionary) -> Callable:
 	if not node:
-		GDTUtils.printerr_traceback("Node null or freed")
+		GDTUtils.printerr_stack("Node null or freed")
 		return _invalid_callable
 	
 	if not is_encoded_calllable_ref(dict):
-		GDTUtils.printerr_traceback("Invalid callable dict: %s" % dict)
+		GDTUtils.printerr_stack("Invalid callable dict: %s" % dict)
 		return _invalid_callable
 	
 	var method_name = dict["name"]
@@ -1003,11 +1003,11 @@ static func decode_callable_ref(node: Node, dict: Dictionary) -> Callable:
 	
 	# You can't access properties of scripts that aren't in tool mode
 	#if not cal:
-		#GDTUtils.printerr_traceback("%s has no method %s" % [node, method_name])
+		#GDTUtils.printerr_stack("%s has no method %s" % [node, method_name])
 		#return _invalid_callable
 	
 	#if typeof(cal) != TYPE_CALLABLE:
-		#GDTUtils.printerr_traceback("%s: %s is not a method: %s" % [node, method_name, cal])
+		#GDTUtils.printerr_stack("%s: %s is not a method: %s" % [node, method_name, cal])
 		#return _invalid_callable
 	
 	if dict["bind_args"]:
@@ -1115,7 +1115,7 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 		
 		if value == null and path.contains("/") and not is_setget:
 			if path.contains("/") and not path.ends_with("."):
-				GDTUtils.printerr_traceback("Setget property not implemented: %s: %s" % [obj.get_class(), path])
+				GDTUtils.printerr_stack("Setget property not implemented: %s: %s" % [obj.get_class(), path])
 			
 		res[true_path] = value
 	
@@ -1135,7 +1135,7 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 
 static func get_setget_properties_of_class(cls_name: String) -> Variant:
 	if cls_name in SETGET_PROPERTIES:
-		return SETGET_PROPERTIES[cls_name] 
+		return entry
 	
 	for key in SETGET_PROPERTIES.keys():
 		if ClassDB.is_parent_class(cls_name, key):
@@ -1353,4 +1353,4 @@ static func is_node_valid(node) -> bool:
 	)
 
 static func _invalid_callable() -> void:
-	GDTUtils.printerr_traceback("Placeholder invalid callable called!")
+	GDTUtils.printerr_stack("Placeholder invalid callable called!")

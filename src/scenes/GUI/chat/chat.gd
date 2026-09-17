@@ -88,7 +88,7 @@ func add_system_message(text: String) -> void:
 
 func add_user_message(text: String, user: GDTUser) -> void:
 	if not user:
-		GDTUtils.printerr_traceback("user cannot be null")
+		GDTUtils.printerr_stack("user cannot be null")
 		return
 	
 	if last_user != user:
