@@ -14,7 +14,7 @@ enum Permission {
 	MODIFY_CUSTOM_FILES
 }
 
-const PROTOCOL_VERSION = 1
+const PROTOCOL_VERSION = 2
 const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
 
 const GUI_SCENE = preload("../scenes/GUI/GUI.tscn")
