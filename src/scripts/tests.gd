@@ -1070,6 +1070,7 @@ func test_fs_tree() -> bool:
 	
 	var check_paths = [
 		get_script().resource_path,
+		"res://project.godot",
 		"res://addons/GodotTogether/src/scripts/net/user/user.gd"
 	]
 	
