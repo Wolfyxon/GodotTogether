@@ -85,3 +85,4 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeClasses" to="." method="_on_btn_node_classes_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnFileTree" to="." method="_on_btn_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
+[connection signal="pressed" from="main/btnClose" to="." method="hide"]
