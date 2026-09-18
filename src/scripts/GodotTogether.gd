@@ -54,9 +54,6 @@ func _enter_tree() -> void:
 	init_components()
 	setup_menu_button()
 	
-	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
-	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
-	
 	if not check_path():
 		return
 	
@@ -70,6 +67,9 @@ func _enter_tree() -> void:
 	
 	await get_tree().process_frame
 	setup_chat()
+	
+	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
+	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
 	
 	if GDTSettings.get_setting("update/auto_check_enabled"):
 		updater.conditional_check()
