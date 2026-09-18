@@ -43,19 +43,24 @@ text = "General"
 
 [node name="userNotif" type="CheckButton" parent="main/scroll/vbox" unique_id=1881905859]
 layout_mode = 2
-tooltip_text = "Show a notification when a user joins or leaves the editing session.
-Doesn't apply to join request notifications."
 button_pressed = true
 text = "User join/leave notifications"
 metadata/setting = "notifications/users"
 
-[node name="nodeSyncRefreshTitle" type="Label" parent="main/scroll/vbox" unique_id=751089060]
-layout_mode = 2
-text = "Node sync rate"
-
-[node name="nodeSyncRefresh" type="SpinBox" parent="main/scroll/vbox" unique_id=169913795]
+[node name="nodeSyncRate" type="HBoxContainer" parent="main/scroll/vbox" unique_id=641348456]
 layout_mode = 2
 tooltip_text = "How often to check for node changes (in seconds). Lower = faster syncing, higher = better performance on complex scenes. Default: 0.1"
+
+[node name="label" type="Label" parent="main/scroll/vbox/nodeSyncRate" unique_id=751089060]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Node sync rate"
+
+[node name="value" type="SpinBox" parent="main/scroll/vbox/nodeSyncRate" unique_id=169913795]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Show a notification when a user joins or leaves the editing session.
+Doesn't apply to join request notifications."
 min_value = 0.01
 max_value = 1000.0
 step = 0.01
