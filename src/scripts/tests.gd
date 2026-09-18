@@ -12,6 +12,12 @@ var running_on_start = false
 func _ready() -> void:
 	report_ready()
 
+func run_boot_tests() -> void:
+	running_on_start = true
+	run_tests()
+	await get_tree().process_frame
+	running_on_start = false
+
 func exec_test(f: Callable) -> void:
 	var start = Time.get_unix_time_from_system()
 	var res = f.call()
