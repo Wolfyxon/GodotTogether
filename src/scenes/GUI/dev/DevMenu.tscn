@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bobclubq7448p"]
 
 [ext_resource type="Script" uid="uid://bnsgm8yrm82ne" path="res://addons/GodotTogether/src/scenes/GUI/dev/dev_menu.gd" id="1_2xnq5"]
+[ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="2_qe0lv"]
+[ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="2_usb8t"]
 
 [node name="DevMenu" type="PopupPanel" unique_id=968168676]
 oversampling_override = 1.0
@@ -10,3 +12,50 @@ size = Vector2i(700, 500)
 visible = true
 borderless = false
 script = ExtResource("1_2xnq5")
+
+[node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 696.0
+offset_bottom = 496.0
+
+[node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
+layout_mode = 2
+
+[node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll" unique_id=83351936]
+layout_mode = 2
+size_flags_horizontal = 3
+folded = true
+title = "Update signing"
+
+[node name="updateSigning" type="VBoxContainer" parent="main/scroll/updateSigningContainer" unique_id=1835030861]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_usb8t")
+
+[node name="keyInput" type="TextEdit" parent="main/scroll/updateSigningContainer/updateSigning" unique_id=314991037]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+placeholder_text = "Paste private key block"
+
+[node name="btnSign" type="Button" parent="main/scroll/updateSigningContainer/updateSigning" unique_id=918739488]
+layout_mode = 2
+text = "Sign build"
+
+[node name="btnVerify" type="Button" parent="main/scroll/updateSigningContainer/updateSigning" unique_id=1836796620]
+layout_mode = 2
+text = "Verify last signature"
+
+[node name="btnClose" type="Button" parent="main" unique_id=990704499]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Close"
+icon = ExtResource("2_qe0lv")
+
+[connection signal="pressed" from="main/scroll/updateSigningContainer/updateSigning/btnSign" to="main/scroll/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
+[connection signal="pressed" from="main/scroll/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]

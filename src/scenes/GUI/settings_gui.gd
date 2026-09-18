@@ -22,7 +22,7 @@ func _ready() -> void:
 		if i.has_meta("setting"):
 			register_control(i)
 	
-	$main/scroll/vbox/updateSigning.main = gui.main
+	$DevMenu.main = gui.main
 	$main/scroll/vbox/devActions/btnRunTests.pressed.connect(gui.main.tests.run_tests)
 	hide()
 	

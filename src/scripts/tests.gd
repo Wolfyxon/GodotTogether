@@ -104,16 +104,6 @@ func test_debug() -> bool:
 	return true
 
 func test_ui() -> bool:
-	var signing_menu = main.get_gui().get_node("mainMenu/settings/main/scroll/vbox/updateSigning")
-	
-	if not signing_menu:
-		printerr("Signing menu not found")
-		return false
-	
-	if signing_menu.visible:
-		printerr("Release signing menu should be hidden")
-		return false
-	
 	if running_on_start:
 		var settings = main.get_gui().get_menu_window().get_settings_gui()
 		

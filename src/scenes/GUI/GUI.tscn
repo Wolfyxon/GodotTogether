@@ -23,7 +23,6 @@
 [ext_resource type="Texture2D" uid="uid://c6okl8nlqm3oc" path="res://addons/GodotTogether/src/img/Skeleton3D.svg" id="17_ulx1o"]
 [ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings_gui.gd" id="18_8pkel"]
 [ext_resource type="Texture2D" uid="uid://cwnrusacfdot4" path="res://addons/GodotTogether/src/img/VSeparator.svg" id="18_doc2o"]
-[ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="22_m6j2w"]
 [ext_resource type="PackedScene" uid="uid://bobclubq7448p" path="res://addons/GodotTogether/src/scenes/GUI/dev/DevMenu.tscn" id="25_22oqj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_doc2o"]
@@ -1064,6 +1063,7 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
 size = Vector2i(800, 700)
+visible = true
 unresizable = false
 borderless = false
 script = ExtResource("18_8pkel")
@@ -1189,24 +1189,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Check for updates now"
 icon = ExtResource("4_lrlm7")
-
-[node name="updateSigning" type="VBoxContainer" parent="mainMenu/settings/main/scroll/vbox" unique_id=7472914]
-visible = false
-layout_mode = 2
-script = ExtResource("22_m6j2w")
-
-[node name="keyInput" type="TextEdit" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=1294506008]
-custom_minimum_size = Vector2(0, 150)
-layout_mode = 2
-placeholder_text = "Paste private key block"
-
-[node name="btnSign" type="Button" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=294336574]
-layout_mode = 2
-text = "Sign build"
-
-[node name="btnVerify" type="Button" parent="mainMenu/settings/main/scroll/vbox/updateSigning" unique_id=693617756]
-layout_mode = 2
-text = "Verify last signature"
 
 [node name="HSeparator5" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=964053785]
 custom_minimum_size = Vector2(0, 50)
@@ -1377,8 +1359,6 @@ visible = false
 [connection signal="pressed" from="mainMenu/settingsError/actions/restart" to="mainMenu/settingsError" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow" to="mainMenu/settings" method="_on_btn_check_update_now_pressed"]
-[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateSigning/btnSign" to="mainMenu/settings/main/scroll/vbox/updateSigning" method="_on_btn_sign_pressed"]
-[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateSigning/btnVerify" to="mainMenu/settings/main/scroll/vbox/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/devActions/btnDevMenu" to="mainMenu/settings/DevMenu" method="popup"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
