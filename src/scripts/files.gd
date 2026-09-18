@@ -7,7 +7,7 @@ const ignored_dirs = [
 	"res://.vscode", 
 	"res://.idea",
 	"res://.github",
-	"res://addons"
+	#"res://addons"
 ]
 
 static func ensure_dir_exists(path: String) -> int:
@@ -28,25 +28,27 @@ static func is_path_in_project(path: String) -> bool:
 
 static func get_file_tree(root := "res://", include_unsafe := false) -> Array[String]:
 	if root in ignored_dirs: return []
-	
 	var res: Array[String] = []
 	
-	var _check_append = func(path: String) -> void:
+	var dir = DirAccess.open(root)
+	
+	if not dir:
+		GDTUtils.printerr_stack("Unable to open dir: %s" % root)
+		return []
+	
+	for file in dir.get_files():
+		var path = root.path_join(file)
+		
 		if include_unsafe or GDTValidator.is_path_safe(path):
 			res.append(path)
-
-	for file in get_files(root):
-		var path = root.path_join(file)
-		_check_append.call(path)
 	
-	for dir in get_dirs(root):
-		var dir_path = root.path_join(dir)
-
-		if not include_unsafe and GDTValidator.is_path_safe(dir_path):
-			continue
-
-		for path in get_file_tree(dir_path, include_unsafe):
-			_check_append.call(path)
+	for dir_name in dir.get_directories():
+		var path = root.path_join(dir_name)
+		
+		if include_unsafe or GDTValidator.is_path_safe(path):
+			var sub = get_file_tree(path, include_unsafe)
+			prints(dir_name, sub)
+			res.append_array(sub)
 	
 	return res
 
