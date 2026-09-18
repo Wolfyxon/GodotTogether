@@ -59,37 +59,3 @@ static func get_file_tree_hashes(root := "res://") -> Dictionary:
 		res[path] = FileAccess.get_sha256(path)
 	
 	return res
-
-static func get_files(path: String) -> Array[String]:
-	var res: Array[String] = []
-	
-	var dir = DirAccess.open(path)
-	assert(dir, "Failed to open " + path)
-	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	
-	while file_name != "":
-		if !dir.current_is_dir():
-			res.append(file_name)
-		
-		file_name = dir.get_next()
-		
-	return res
-
-static func get_dirs(path: String) -> Array[String]:
-	var res: Array[String] = []
-	
-	var dir = DirAccess.open(path)
-	assert(dir, "Failed to open " + path)
-	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	
-	while file_name != "":
-		if dir.current_is_dir():
-			res.append(file_name)
-		
-		file_name = dir.get_next()
-		
-	return res
