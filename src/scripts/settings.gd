@@ -35,6 +35,7 @@ const _DEFAULT_DATA = {
 	},
 	"dev": {
 		# Everything here should be false by default
+		"menu_button": false,
 		"run_tests_on_start": false,
 		"disable_real_time_file_sync": false,
 		"disable_real_time_node_sync": false,
@@ -112,23 +113,42 @@ static func set_setting(path: String, value) -> void:
 static func _set_setting_reverse(value, path: String) -> void:
 	set_setting(path, value)
 
-static func make_setting_control(node: Control, path: String, format := "") -> void:
+static func _none() -> void:
+	pass
+
+static func make_setting_control(node: Control, path: String, format := "", callback: Callable = _none) -> void:
+	var sig = null
+	
 	if node is OptionButton:
 		node.item_selected.connect(func(idx):
 			var id = node.get_item_id(idx)
 			set_setting(path, id)
 		)
+		sig = node.item_selected
+	
 	elif node is Button:
 		if not node.toggle_mode:
 			push_error("Button %s must have toggle_mode enabled" % node.name)
 		
 		node.toggled.connect(_set_setting_reverse.bind(path))
+		sig = node.toggled
 	elif node is SpinBox:
 		node.value_changed.connect(_set_setting_reverse.bind(path))
+		sig = node.value_changed
 	elif node is LineEdit:
 		node.text_changed.connect(_set_setting_reverse.bind(path))
+		sig = node.text_changed
+	elif node is Label:
+		pass
+	else:
+		GDTUtils.printerr_stack("Unsupported control %s %s" % [node.get_class() ,node])
 	
 	update_control(node, path, format)
+	
+	if sig:
+		sig.connect(func(_a = null, _b = null, _c = null, _d = null):
+			callback.call()
+		)
 
 static func update_control(node: Control, path: String, format := "") -> void:
 	var value = get_setting(path)

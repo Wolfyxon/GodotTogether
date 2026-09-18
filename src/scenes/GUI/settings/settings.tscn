@@ -13,6 +13,7 @@ oversampling_override = 1.0
 title = "GodotTogether - settings"
 initial_position = 4
 size = Vector2i(800, 700)
+visible = true
 unresizable = false
 borderless = false
 script = ExtResource("1_b5wo4")
@@ -162,6 +163,12 @@ layout_mode = 2
 tooltip_text = "Tests internal plugin's features on start and prints the results in the console"
 text = "Run unit tests on start"
 metadata/setting = "dev/run_tests_on_start"
+
+[node name="devMenuButton" type="CheckButton" parent="main/scroll/vbox" unique_id=198184511]
+layout_mode = 2
+tooltip_text = "Show developer menu button next to the settings button"
+text = "Show dev menu button on top"
+metadata/setting = "dev/menu_button"
 
 [node name="realTimeFileSync" type="CheckButton" parent="main/scroll/vbox" unique_id=1654814302]
 layout_mode = 2

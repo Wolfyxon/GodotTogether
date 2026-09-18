@@ -2,6 +2,8 @@
 extends PopupPanel
 class_name GDTSettingsGUI
 
+signal settings_changed
+
 const WARNING_IMG = preload("../../../img/warning.svg")
 
 @onready var vbox = $main/scroll/vbox
@@ -27,6 +29,14 @@ func _ready() -> void:
 	hide()
 	
 	sandwich_title.hide()
+	_settings_changed()
+
+func _settings_changed() -> void:
+	settings_changed.emit()
+
+func open_dev_menu() -> void:
+	visible = true
+	$DevMenu.popup()
 
 func register_control(node: Control) -> void:
 	var path = node.get_meta("setting")
@@ -48,7 +58,7 @@ func register_control(node: Control) -> void:
 		var enabler = node.get_node(node.get_meta("enabled_by_node"))
 		setup_control_with_node_disabler(node, enabler, true)
 	
-	GDTSettings.make_setting_control(node, path, format)
+	GDTSettings.make_setting_control(node, path, format, _settings_changed)
 
 func setup_control_with_warning(node: Control) -> void:
 	if not node is Button:

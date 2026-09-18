@@ -68,6 +68,12 @@ text = "Settings"
 icon = ExtResource("2_3dfl6")
 flat = true
 
+[node name="devMenu" type="Button" parent="mainMenu/main/topBar" unique_id=251685037]
+layout_mode = 2
+text = "Developer"
+icon = ExtResource("15_bvn1h")
+flat = true
+
 [node name="about" type="Button" parent="mainMenu/main/topBar" unique_id=1100326616]
 layout_mode = 2
 text = "About"
@@ -1058,8 +1064,10 @@ text = "Close"
 icon = ExtResource("9_4c4b3")
 
 [node name="settings" parent="mainMenu" unique_id=1835564117 instance=ExtResource("23_ulx1o")]
+visible = false
 
 [connection signal="pressed" from="mainMenu/main/topBar/settings" to="mainMenu/settings" method="popup"]
+[connection signal="pressed" from="mainMenu/main/topBar/devMenu" to="mainMenu/settings" method="open_dev_menu"]
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
 [connection signal="text_changed" from="mainMenu/main/sessionInit/pre/username" to="mainMenu/main" method="_on_username_text_changed"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="session_start_menu"]
@@ -1085,3 +1093,4 @@ icon = ExtResource("9_4c4b3")
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/restart" to="mainMenu/settingsError" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
+[connection signal="settings_changed" from="mainMenu/settings" to="mainMenu" method="_on_settings_settings_changed"]
