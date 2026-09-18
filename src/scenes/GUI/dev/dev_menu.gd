@@ -28,3 +28,18 @@ func _on_btn_unsafe_file_tree_pressed() -> void:
 	
 	for i in paths:
 		print(i)
+
+
+func _on_btn_execute_pressed() -> void:
+	var expr = Expression.new()
+	var source_code = $main/scroll/vbox/exec/vbox/code.text
+	var err = expr.parse(source_code)
+	
+	if err != OK:
+		printerr(expr.get_error_text())
+		return
+		
+	var res = expr.execute([], self)
+	
+	if not expr.has_execute_failed():
+		print("Code result: %s" % res)

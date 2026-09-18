@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://bobclubq7448p"]
 
 [ext_resource type="Script" uid="uid://bnsgm8yrm82ne" path="res://addons/GodotTogether/src/scenes/GUI/dev/dev_menu.gd" id="1_2xnq5"]
+[ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="1_o4f5c"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="2_qe0lv"]
 [ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="2_usb8t"]
+[ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="3_kl0hy"]
+
+[sub_resource type="GDScriptSyntaxHighlighter" id="GDScriptSyntaxHighlighter_usb8t"]
 
 [node name="DevMenu" type="PopupPanel" unique_id=968168676]
 oversampling_override = 1.0
@@ -11,6 +15,7 @@ initial_position = 4
 size = Vector2i(700, 500)
 visible = true
 borderless = false
+theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
@@ -74,6 +79,36 @@ text = "Print file tree"
 layout_mode = 2
 text = "Print file tree with unsafe paths"
 
+[node name="exec" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1651164589]
+layout_mode = 2
+folded = true
+title = "Code execution"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/exec" unique_id=1401677742]
+visible = false
+layout_mode = 2
+
+[node name="code" type="CodeEdit" parent="main/scroll/vbox/exec/vbox" unique_id=1783779930]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+placeholder_text = "print(\"Hello World\")"
+syntax_highlighter = SubResource("GDScriptSyntaxHighlighter_usb8t")
+code_completion_enabled = true
+auto_brace_completion_enabled = true
+
+[node name="warning" type="Label" parent="main/scroll/vbox/exec/vbox" unique_id=469677777]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_type_variation = &"WarningLabel"
+text = "Do not execute code you don't understand!
+If someone told you to paste something here, they might be trying to hack you."
+autowrap_mode = 2
+
+[node name="btnExecute" type="Button" parent="main/scroll/vbox/exec/vbox" unique_id=1894905706]
+layout_mode = 2
+text = "Execute"
+icon = ExtResource("3_kl0hy")
+
 [node name="btnClose" type="Button" parent="main" unique_id=990704499]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -85,4 +120,5 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeClasses" to="." method="_on_btn_node_classes_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnFileTree" to="." method="_on_btn_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]
