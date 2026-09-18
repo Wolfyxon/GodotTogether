@@ -24,6 +24,7 @@
 [ext_resource type="Script" uid="uid://c5i5er1t8sb34" path="res://addons/GodotTogether/src/scenes/GUI/settings_gui.gd" id="18_8pkel"]
 [ext_resource type="Texture2D" uid="uid://cwnrusacfdot4" path="res://addons/GodotTogether/src/img/VSeparator.svg" id="18_doc2o"]
 [ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="22_m6j2w"]
+[ext_resource type="PackedScene" uid="uid://bobclubq7448p" path="res://addons/GodotTogether/src/scenes/GUI/dev/DevMenu.tscn" id="25_22oqj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_doc2o"]
 font_size = 21
@@ -49,10 +50,10 @@ script = ExtResource("2_dm08s")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -25.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -714,10 +715,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 966.0
+offset_bottom = 596.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -872,10 +873,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -25.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -912,10 +913,10 @@ icon = ExtResource("17_u8ku5")
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 966.0
+offset_bottom = 596.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -993,10 +994,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 729.0
-offset_bottom = 479.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 746.0
+offset_bottom = 496.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]
@@ -1068,15 +1069,14 @@ borderless = false
 script = ExtResource("18_8pkel")
 
 [node name="main" type="VBoxContainer" parent="mainMenu/settings" unique_id=661741475]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 779.0
-offset_bottom = 679.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 796.0
+offset_bottom = 696.0
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/settings/main" unique_id=1433230715]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/settings/main/scroll" unique_id=2018662387]
 layout_mode = 2
@@ -1271,6 +1271,17 @@ text = "Run unit tests now"
 icon = ExtResource("4_lrlm7")
 flat = true
 
+[node name="btnDevMenu" type="Button" parent="mainMenu/settings/main/scroll/vbox/devActions" unique_id=1640233073]
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Run internal logic tests.
+You will see results in the output console.
+
+Always use this if you're contributing to the plugin."
+text = "Open dev menu"
+icon = ExtResource("2_3dfl6")
+flat = true
+
 [node name="HSeparator4" type="HSeparator" parent="mainMenu/settings/main/scroll/vbox" unique_id=896762126]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -1336,6 +1347,9 @@ size_flags_horizontal = 4
 text = "Close"
 icon = ExtResource("9_4c4b3")
 
+[node name="DevMenu" parent="mainMenu/settings" unique_id=968168676 instance=ExtResource("25_22oqj")]
+visible = false
+
 [connection signal="pressed" from="mainMenu/main/topBar/settings" to="mainMenu/settings" method="popup"]
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
 [connection signal="text_changed" from="mainMenu/main/sessionInit/pre/username" to="mainMenu/main" method="_on_username_text_changed"]
@@ -1365,6 +1379,7 @@ icon = ExtResource("9_4c4b3")
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow" to="mainMenu/settings" method="_on_btn_check_update_now_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateSigning/btnSign" to="mainMenu/settings/main/scroll/vbox/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/updateSigning/btnVerify" to="mainMenu/settings/main/scroll/vbox/updateSigning" method="_on_btn_verify_pressed"]
+[connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/devActions/btnDevMenu" to="mainMenu/settings/DevMenu" method="popup"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/reset" to="mainMenu/settings" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/showFile" to="mainMenu/settings" method="_on_show_file_pressed"]
 [connection signal="pressed" from="mainMenu/settings/main/scroll/vbox/actions/shutdown" to="mainMenu/settings" method="_on_shutdown_pressed"]
