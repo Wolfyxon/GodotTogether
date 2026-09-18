@@ -2,7 +2,7 @@
 extends PopupPanel
 class_name GDTSettingsGUI
 
-const WARNING_IMG = preload("../../img/warning.svg")
+const WARNING_IMG = preload("../../../img/warning.svg")
 
 @onready var vbox = $main/scroll/vbox
 @onready var update_check_btn = $main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow

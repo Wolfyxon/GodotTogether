@@ -20,8 +20,8 @@ func _ready() -> void:
 
 	if gui.visuals_available():
 		var settings_json = GDTSettings.get_settings_json()
-		var error_gui = get_settings_error_gui()
-		var settings_gui = get_settings_gui()
+		var error_gui: GDTSettingsErrorGUI = get_settings_error_gui()
+		var settings_gui: GDTSettingsGUI = get_settings_gui()
 		var menu = get_menu()
 		
 		get_error_gui().visible = false
@@ -34,7 +34,7 @@ func _ready() -> void:
 			menu.visible = seen_disclaimer
 			get_disclaimer().visible = not seen_disclaimer
 			
-			settings_gui.gui = gui
+			settings_gui.gui = gui as GodotTogetherGUI
 		else:
 			menu.visible = false
 			error_gui.gui = gui
