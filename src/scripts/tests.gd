@@ -1065,5 +1065,20 @@ func test_settings() -> bool:
 	
 	return true
 
+func test_fs_tree() -> bool:
+	var paths = GDTFiles.get_file_tree("res://", true)
+	
+	var check_paths = [
+		get_script().resource_path,
+		"res://addons/GodotTogether/src/scripts/net/user/user.gd"
+	]
+	
+	for i in check_paths:
+		if not i in paths:
+			printerr("Missing in paths: %s. Full: %s" % [i, paths])
+			return false
+	
+	return true
+
 static func _dummy_function(data: String = "") -> String:
 	return data
