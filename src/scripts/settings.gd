@@ -113,10 +113,12 @@ static func set_setting(path: String, value) -> void:
 static func _set_setting_reverse(value, path: String) -> void:
 	set_setting(path, value)
 
-static func _none() -> void:
-	pass
-
-static func make_setting_control(node: Control, path: String, format := "", callback: Callable = _none) -> void:
+static func make_setting_control(
+	node: Control, 
+	path: String, 
+	format := "", 
+	callback: Callable = _none
+) -> void:
 	var sig = null
 	
 	if node is OptionButton:
@@ -154,3 +156,6 @@ static func update_control(node: Control, path: String, format := "") -> void:
 	var value = get_setting(path)
 	
 	GDTUtils.set_control_value(node, value, format)
+
+static func _none() -> void:
+	pass
