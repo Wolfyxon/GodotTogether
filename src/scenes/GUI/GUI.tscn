@@ -155,7 +155,7 @@ custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="warning" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=663261338]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 17
