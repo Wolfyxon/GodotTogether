@@ -9,6 +9,8 @@ var test_times = {}
 var longest_test_name = 0
 var running_on_start = false
 
+var created_nodes = []
+
 func _ready() -> void:
 	report_ready()
 
@@ -34,6 +36,16 @@ func exec_test(f: Callable) -> void:
 	else:
 		print_rich("%s : [color=red]FAIL[/color]   %s s" % [spaced_name, time])
 		fail_count += 1
+		
+	cleanup_tests()
+
+func cleanup_tests() -> void:
+	for i in created_nodes:
+		if i is Node:
+			i.queue_free()
+		else:
+			created_nodes.erase(i)
+			printerr("%s is not a Node, but was added to created_nodes" % i)
 
 func run_tests() -> void:
 	if not main:
@@ -354,6 +366,7 @@ func test_compare_dicts() -> bool:
 
 func test_hash_dict() -> bool:
 	var lbl = Label.new()
+	created_nodes.append(lbl)
 	lbl.text = "Hello"
 	
 	# -- Unchanged -- #
@@ -407,7 +420,7 @@ func test_hash_dict() -> bool:
 	
 	return true
 
-static func test_setget_nested() -> bool:
+func test_setget_nested() -> bool:
 	var dict = {
 		"a": {
 			"b": null
@@ -423,6 +436,7 @@ static func test_setget_nested() -> bool:
 	
 	var lbl = Label.new()
 	var lbl_settings = LabelSettings.new()
+	created_nodes.append(lbl)
 	lbl.label_settings = lbl_settings
 	
 	GDTUtils.set_nested(lbl, "label_settings/font_size", 17)
@@ -435,8 +449,9 @@ static func test_setget_nested() -> bool:
 	
 	return true
 
-static func test_ignored_properties() -> bool:
+func test_ignored_properties() -> bool:
 	var node3d = Node3D.new()
+	created_nodes.append(node3d)
 	
 	var ignored = GDTNodeSync.get_ignored_properties(node3d)
 	var expected = ["owner", "multiplayer", "global_position", "global_transform"]
@@ -448,8 +463,9 @@ static func test_ignored_properties() -> bool:
 	
 	return true
 
-static func test_property_keys() -> bool:
+func test_property_keys() -> bool:
 	var node3d = Node3D.new()
+	created_nodes.append(node3d)
 	
 	var keys = GDTNodeSync.get_property_keys(node3d)
 	
@@ -472,8 +488,10 @@ static func test_property_keys() -> bool:
 	
 	return true
 
-static func test_node_change_applying() -> bool:
+func test_node_change_applying() -> bool:
 	var lbl = Label.new()
+	created_nodes.append(lbl)
+	
 	lbl.label_settings = LabelSettings.new()
 	lbl.label_settings.font_size = 7
 	
@@ -492,6 +510,7 @@ static func test_node_change_applying() -> bool:
 	var props = GDTNodeSync.get_select_property_dict(lbl, diff)
 	
 	var lbl_output = Label.new()
+	created_nodes.append(lbl_output)
 	GDTNodeSync.apply_property_dict(lbl_output, props)
 	
 	var has_setget = false
@@ -551,6 +570,7 @@ func test_node_change_applying_deep_setget() -> bool:
 	var tmap = TileMapLayer.new()
 	var tset = TileSet.new()
 	
+	created_nodes.append(tmap)
 	tmap.tile_set = tset
 	
 	var h1 = GDTNodeSync.get_property_hash_dict(tmap)
@@ -571,6 +591,8 @@ func test_node_change_applying_deep_setget() -> bool:
 	
 	var tmap_output = TileMapLayer.new()
 	tmap_output.tile_set = TileSet.new()
+	
+	created_nodes.append(tmap_output)
 	
 	GDTNodeSync.apply_property_dict(tmap_output, props)
 	
@@ -655,8 +677,10 @@ func test_setget_property_dict() -> bool:
 	
 	return true
 
-static func test_basic_setget_props() -> bool:
+func test_basic_setget_props() -> bool:
 	var lbl = Label.new()
+	created_nodes.append(lbl)
+	
 	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
 	
 	lbl.add_theme_font_size_override("font_size", 42)
@@ -700,8 +724,10 @@ static func test_basic_setget_props() -> bool:
 	
 	return true
 
-static func test_object_setget_props() -> bool:
+func test_object_setget_props() -> bool:
 	var lbl = Label.new()
+	created_nodes.append(lbl)
+	
 	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
 	
 	var style1 = StyleBoxFlat.new()
