@@ -11,7 +11,7 @@ var file_hashes := {}
 var scan_timer = Timer.new()
 
 func _ready() -> void:
-	scan_timer.wait_time = 1.0
+	scan_timer.wait_time = GDTSettings.get_setting("sync/file_refresh_rate")
 	scan_timer.timeout.connect(scan_files)
 	add_child(scan_timer)
 	scan_timer.start()

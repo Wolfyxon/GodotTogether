@@ -22,7 +22,8 @@ const _DEFAULT_DATA = {
 		"require_approval": false
 	},
 	"sync": {
-		"node_refresh_rate": 0.1
+		"node_refresh_rate": 0.1,
+		"file_refresh_rate": 1,
 	},
 	"update": {
 		"latest_version": null,
