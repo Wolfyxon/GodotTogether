@@ -284,6 +284,7 @@ placeholder_text = "IP address of the host..."
 [node name="port" type="SpinBox" parent="mainMenu/main/sessionInit/start/join/address" unique_id=63867957]
 layout_mode = 2
 size_flags_horizontal = 4
+tooltip_text = "Port"
 min_value = 1024.0
 max_value = 49151.0
 value = 5017.0
