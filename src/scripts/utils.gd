@@ -22,6 +22,14 @@ static func join(array: Array, separator := "\n") -> String:
 	
 	return res
 
+static func avg(array: Array) -> float:
+	var sum: float = 0.0
+	
+	for i in array:
+		sum += float(i)
+	
+	return sum / float(array.size())
+
 static func has_readonly(dict: Dictionary) -> bool:
 	if dict.is_read_only():
 		return true
