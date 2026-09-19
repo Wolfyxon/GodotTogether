@@ -95,5 +95,8 @@ func get_error_gui() -> Control:
 func _on_btn_restart_pressed() -> void:
 	main.restart()
 
+func _on_btn_restart_godot_pressed() -> void:
+	EditorInterface.restart_editor()
+
 func _on_settings_settings_changed() -> void:
 	$main/topBar/devMenu.visible = GDTSettings.get_setting("dev/menu_button")
