@@ -5,8 +5,9 @@ class_name GDTFileSync
 signal scan_started
 signal scan_complete
 
-var filesystem_watcher: Timer = Timer.new()
-var file_hashes := {}
+var filesystem_watcher := Timer.new()
+
+var file_mod_times := {}
 
 var scan_timer = Timer.new()
 
@@ -22,15 +23,15 @@ func _ready() -> void:
 	report_ready()
 
 func ignore_last_changes() -> void:
-	file_hashes = GDTFiles.get_file_tree_hashes()
+	file_mod_times = GDTFiles.get_file_modification_times()
 
 func update_file(path: String) -> void:
-	var new_hash = FileAccess.get_sha256(path)
+	if not FileAccess.file_exists(path):
+		file_mod_times.erase(path)
+		return
 	
-	if new_hash:
-		file_hashes[path] = new_hash
-	else:
-		file_hashes.erase(path)
+	file_mod_times[path] = FileAccess.get_modified_time(path)
+
 
 func pause() -> void:
 	scan_timer.paused = true
@@ -44,18 +45,18 @@ func scan_files() -> void:
 	
 	scan_started.emit()
 	
-	var current_hashes = GDTFiles.get_file_tree_hashes()
+	var new_times = GDTFiles.get_file_modification_times()
 	
-	for path in current_hashes:
+	for path in new_times:
 		# (New file) or (File changed)
-		if (not path in file_hashes) or (file_hashes[path] != current_hashes[path]):
+		if (not path in file_mod_times) or (file_mod_times[path] > new_times[path]):
 			_file_changed(path)
 	
-	for path in file_hashes:
-		if not path in current_hashes:
+	for path in file_mod_times:
+		if not path in new_times:
 			_file_removed(path)
 			
-	file_hashes = current_hashes
+	file_mod_times = new_times
 	scan_complete.emit()
 
 func can_sync_files() -> bool:

@@ -58,3 +58,11 @@ static func get_file_tree_hashes(root := "res://") -> Dictionary:
 		res[path] = FileAccess.get_sha256(path)
 	
 	return res
+
+static func get_file_modification_times(root := "res://") -> Dictionary:
+	var res = {}
+	
+	for path in get_file_tree(root):
+		res[path] = FileAccess.get_modified_time(path)
+	
+	return res
