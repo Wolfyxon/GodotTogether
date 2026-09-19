@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="2_qe0lv"]
 [ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="2_usb8t"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="3_kl0hy"]
+[ext_resource type="Script" uid="uid://c1ii8ge5y21f5" path="res://addons/GodotTogether/src/scenes/GUI/dev/profiler.gd" id="5_govu4"]
 
 [sub_resource type="GDScriptSyntaxHighlighter" id="GDScriptSyntaxHighlighter_usb8t"]
 
@@ -19,10 +20,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 696.0
-offset_bottom = 496.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 675.0
+offset_bottom = 475.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -109,6 +110,46 @@ layout_mode = 2
 text = "Execute"
 icon = ExtResource("3_kl0hy")
 
+[node name="profiling" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
+layout_mode = 2
+folded = true
+title = "Profiling"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/profiling" unique_id=786792079]
+visible = false
+layout_mode = 2
+script = ExtResource("5_govu4")
+
+[node name="nodeTitle" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=373811155]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Node change detection:"
+
+[node name="nodeTime" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=1757536329]
+layout_mode = 2
+text = "Avg node scan time:"
+
+[node name="nodeCount" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=1559332646]
+layout_mode = 2
+text = "Total nodes:"
+
+[node name="fileTitle" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=1540368066]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "File change detection:"
+
+[node name="fileTime" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=2130753035]
+layout_mode = 2
+text = "Avg file scan time:"
+
+[node name="fileCount" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=2008130147]
+layout_mode = 2
+text = "Total files:"
+
+[node name="enabled" type="CheckBox" parent="main/scroll/vbox/profiling/vbox" unique_id=1410617470]
+layout_mode = 2
+text = "Enable profiler"
+
 [node name="btnClose" type="Button" parent="main" unique_id=990704499]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -121,4 +162,5 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnFileTree" to="." method="_on_btn_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/profiling/vbox/enabled" to="main/scroll/vbox/profiling/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]
