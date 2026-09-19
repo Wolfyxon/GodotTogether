@@ -196,7 +196,7 @@ func check_engine_version() -> void:
 	
 	if info["status"] != "stable":
 		version_warning.visible = true
-		version_warning.text = "Plugin only supported on Godot stable"
+		version_warning.text = "Only supported on Godot stable"
 		return
 	
 	if (
@@ -205,7 +205,7 @@ func check_engine_version() -> void:
 		info["patch"] != supported_info[2]
 	):
 		version_warning.visible = true
-		version_warning.text = "Plugin only supported on Godot %s.%s.%s" % [supported_info[0], supported_info[1], supported_info[2]]
+		version_warning.text = "Only supported on Godot %s.%s.%s" % [supported_info[0], supported_info[1], supported_info[2]]
 		return
 	
 	version_warning.visible = false
