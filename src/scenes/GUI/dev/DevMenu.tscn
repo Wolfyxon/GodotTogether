@@ -34,31 +34,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
-layout_mode = 2
-size_flags_horizontal = 3
-folded = true
-title = "Update signing"
-
-[node name="updateSigning" type="VBoxContainer" parent="main/scroll/vbox/updateSigningContainer" unique_id=1835030861]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("2_usb8t")
-
-[node name="keyInput" type="TextEdit" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=314991037]
-custom_minimum_size = Vector2(0, 150)
-layout_mode = 2
-placeholder_text = "Paste private key block"
-
-[node name="btnSign" type="Button" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=918739488]
-layout_mode = 2
-text = "Sign build"
-
-[node name="btnVerify" type="Button" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=1836796620]
-layout_mode = 2
-text = "Verify last signature"
-
 [node name="prints" type="FoldableContainer" parent="main/scroll/vbox" unique_id=282098678]
 layout_mode = 2
 folded = true
@@ -150,17 +125,42 @@ text = "Total files:"
 layout_mode = 2
 text = "Enable profiler"
 
+[node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
+layout_mode = 2
+size_flags_horizontal = 3
+folded = true
+title = "Update signing"
+
+[node name="updateSigning" type="VBoxContainer" parent="main/scroll/vbox/updateSigningContainer" unique_id=1835030861]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_usb8t")
+
+[node name="keyInput" type="TextEdit" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=314991037]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+placeholder_text = "Paste private key block"
+
+[node name="btnSign" type="Button" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=918739488]
+layout_mode = 2
+text = "Sign build"
+
+[node name="btnVerify" type="Button" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=1836796620]
+layout_mode = 2
+text = "Verify last signature"
+
 [node name="btnClose" type="Button" parent="main" unique_id=990704499]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Close"
 icon = ExtResource("2_qe0lv")
 
-[connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeClasses" to="." method="_on_btn_node_classes_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnFileTree" to="." method="_on_btn_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/profiling/vbox/enabled" to="main/scroll/vbox/profiling/vbox" method="_on_enabled_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]
