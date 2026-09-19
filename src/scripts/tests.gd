@@ -122,9 +122,25 @@ func test_debug() -> bool:
 	return true
 
 func test_ui() -> bool:
+	var gui = main.get_gui()
+	
+	if not gui:
+		printerr("get_gui() failed")
+		return false
+	
+	var menu_window = gui.get_menu_window()
+	
+	if not menu_window:
+		printerr("get_menu_window() failed. Make sure the script is set")
+		return false
+	
+	var settings = menu_window.get_settings_gui()
+	
+	if not settings:
+		printerr("get_settings_gui() failed. Make sure the script is set")
+		return false
+	
 	if running_on_start:
-		var settings = main.get_gui().get_menu_window().get_settings_gui()
-		
 		if not settings:
 			printerr("Settings window not found")
 			return false
