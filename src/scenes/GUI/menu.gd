@@ -37,9 +37,10 @@ func _ready() -> void:
 	if visuals_available():
 		set_session_init_cover()
 		check_engine_version()
-		username_input.text = GDTSettings.get_setting("username")
+		
 		update_btn.visible = false
 		
+		GDTSettings.make_setting_control(username_input, "username")
 		GDTSettings.make_setting_control(join_ip_input, "last_connection/ip")
 		GDTSettings.make_setting_control(join_port_input, "last_connection/port")
 
@@ -214,10 +215,6 @@ func check_engine_version() -> void:
 		return
 	
 	version_warning.visible = false
-
-func _on_username_text_changed(text: String) -> void:
-	if visuals_available():
-		GDTSettings.set_setting("username", text)
 
 func _on_btn_cancel_pressed() -> void:
 	if main:
