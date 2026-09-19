@@ -25,6 +25,14 @@ func _ready() -> void:
 		menu_window.main = main
 		menu.main = main
 		
+		if not menu_window.get_menu():
+			component_error("get_menu() failed")
+			return
+		
+		if not menu_window.get_settings_gui():
+			component_error("get_settings_gui() failed")
+			return
+		
 		report_ready()
 
 func _process(_delta: float) -> void:

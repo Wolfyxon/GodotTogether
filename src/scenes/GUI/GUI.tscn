@@ -48,10 +48,10 @@ script = ExtResource("2_dm08s")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 49.0
-offset_bottom = -25.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 966.0
+offset_bottom = 596.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -719,10 +719,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 966.0
+offset_bottom = 596.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -877,10 +877,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -25.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 966.0
+offset_bottom = 596.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -917,10 +917,10 @@ icon = ExtResource("17_u8ku5")
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 966.0
+offset_bottom = 596.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -998,10 +998,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 729.0
-offset_bottom = 479.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 746.0
+offset_bottom = 496.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]
@@ -1065,6 +1065,7 @@ icon = ExtResource("9_4c4b3")
 
 [node name="settings" parent="mainMenu" unique_id=1835564117 instance=ExtResource("23_ulx1o")]
 visible = false
+script = null
 
 [connection signal="pressed" from="mainMenu/main/topBar/settings" to="mainMenu/settings" method="popup"]
 [connection signal="pressed" from="mainMenu/main/topBar/devMenu" to="mainMenu/settings" method="open_dev_menu"]
@@ -1092,4 +1093,3 @@ visible = false
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/restart" to="mainMenu/settingsError" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
-[connection signal="settings_changed" from="mainMenu/settings" to="mainMenu" method="_on_settings_settings_changed"]

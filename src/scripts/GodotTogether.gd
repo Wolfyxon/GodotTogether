@@ -121,15 +121,27 @@ func post_check_components() -> void:
 	await get_tree().create_timer(0.25).timeout
 	await get_tree().process_frame
 	
-	var unready = []
+	var failed = []
+	var errors = []
 	
 	for i in components:
-		if i is GDTComponent and not i.component_ready:
-			unready.append(i.name)
+		if i is GDTComponent and (not i.component_ready or i.component_errors):
+			failed.append(i.name)
+			
+			if i.component_errors:
+				for err in i.component_errors:
+					var err_txt = "%s: %s" % [i.name, err]
+					errors.append(err_txt)
 	
-	if not unready.is_empty():
-		var unready_str = GDTUtils.join(unready, ", ")
-		printerr("Some plugin components did not start: \n%s" % unready_str)
+	if not failed.is_empty():
+		var failed_str = GDTUtils.join(failed, ", ")
+		var err_str = "Diagnosis not available."
+		
+		if errors:
+			err_str = "\n" + GDTUtils.join(errors, "\n")
+		
+		printerr("Some plugin components did not start: \n%s" % failed_str)
+		printerr(err_str)
 		printerr("Check for errors in _ready() and make sure _component_ready() is called")
 		
 		gui.get_menu_window().set_error_of_death(
@@ -137,10 +149,11 @@ func post_check_components() -> void:
 			
 			GDTUtils.join([
 				"The following components did not start:",
-				unready_str,
+				failed_str,
+				err_str,
 				"",
-				"Please try restarting the plugin, and if it still doesn't work, file a bug report.",
-				"Make sure to include the console output"
+				"Please try restarting the plugin, Godot, and if it still doesn't work, file a bug report.",
+				"Make sure to include the console output and errors you see on this screen."
 			], "\n")
 		)
 
@@ -176,6 +189,14 @@ func setup_menu_button() -> void:
 	button.pressed.connect(open_menu)
 
 func pre_start_check() -> bool:
+	if not gui:
+		printerr("GUI is not available")
+		return false
+		
+	if not gui.get_menu_window():
+		printerr("get_menu_window() is not available and errors cannot be properly displayed")
+		return false
+	
 	if OS.has_feature("standalone"):
 		printerr(
 			"GodotTogether ended up in your exported game. \n" +

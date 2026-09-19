@@ -3,7 +3,9 @@ extends Node
 class_name GDTComponent
 
 var main: GodotTogether
+
 var component_ready = false
+var component_errors = []
 
 var _init_stack: Array = []
 
@@ -25,6 +27,10 @@ func _component_ready() -> void:
 		var stack = GDTUtils.join(_init_stack, "\n")
 		# Single print because the lines could get mixed
 		printerr("Component should have a name\n-- _init traceback --\n%s\n" % stack)
+
+func component_error(text: String) -> void:
+	GDTUtils.printerr_stack(text)
+	component_errors.append(text)
 
 func report_ready() -> void:
 	component_ready = true
