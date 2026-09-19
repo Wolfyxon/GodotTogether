@@ -44,8 +44,12 @@ func _on_btn_execute_pressed() -> void:
 	if err != OK:
 		printerr(expr.get_error_text())
 		return
-		
+	
+	var start = Time.get_unix_time_from_system()
 	var res = expr.execute([], self)
+	var end = Time.get_unix_time_from_system()
 	
 	if not expr.has_execute_failed():
 		print("Code result: %s" % res)
+	
+	print("Took: %s s" % str(end - start)) # why doesn't it automatically convert  to string here?
