@@ -30,6 +30,11 @@ func _on_btn_unsafe_file_tree_pressed() -> void:
 	for i in paths:
 		print(i)
 
+func _on_btn_scanned_files_pressed() -> void:
+	var paths = main.file_sync.file_hashes
+	
+	for i in paths:
+		print(i)
 
 func _on_btn_execute_pressed() -> void:
 	var expr = Expression.new()

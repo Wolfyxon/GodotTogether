@@ -43,9 +43,19 @@ title = "Data printing"
 visible = false
 layout_mode = 2
 
+[node name="lblEditor" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=1814752883]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Editor"
+
 [node name="btnNodeClasses" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1816482059]
 layout_mode = 2
 text = "Print all node classes in editor"
+
+[node name="lblFiles" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=720643382]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Filesystem"
 
 [node name="btnFileTree" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1760289925]
 layout_mode = 2
@@ -54,6 +64,10 @@ text = "Print file tree"
 [node name="btnUnsafeFileTree" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=345370361]
 layout_mode = 2
 text = "Print file tree with unsafe paths"
+
+[node name="btnScannedFiles" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1837834936]
+layout_mode = 2
+text = "Print files included in scanning"
 
 [node name="exec" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1651164589]
 layout_mode = 2
@@ -159,6 +173,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeClasses" to="." method="_on_btn_node_classes_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnFileTree" to="." method="_on_btn_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnScannedFiles" to="." method="_on_btn_scanned_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/profiling/vbox/enabled" to="main/scroll/vbox/profiling/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
