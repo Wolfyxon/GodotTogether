@@ -2,6 +2,9 @@
 extends GDTComponent
 class_name GDTNodeSync
 
+signal scan_started
+signal scan_complete
+
 enum ResourceType {
 	LOCAL,
 	FILE
@@ -163,8 +166,12 @@ func _check_changes() -> void:
 	if not GDTValidator.is_path_safe(root.scene_file_path):
 		return
 	
+	scan_started.emit()
+	
 	for node in node_data_dict:
 		check_node(node, root)
+	
+	scan_complete.emit()
 
 # "node" must be untyped to prevent freed nodes from stopping the code
 func check_node(node, root: Node) -> void:
