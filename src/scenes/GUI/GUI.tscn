@@ -45,7 +45,6 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -874,6 +873,7 @@ text = "Activate plugin"
 icon = ExtResource("13_u8ku5")
 
 [node name="error" type="VBoxContainer" parent="mainMenu" unique_id=245770348]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -897,8 +897,9 @@ custom_minimum_size = Vector2(50, 50)
 custom_maximum_size = Vector2(-1, 400)
 layout_mode = 2
 size_flags_vertical = 1
-text = "There is supposed to be an error message here but Wolfyxon messed up SO bad I can't even tell you what went wrong.
-Please report this."
+text = "Something went very wrong with the plugin and even this screen failed to display a proper error message.
+Please try restarting the plugin, Godot and if it still doesn't work, report this.
+Make sure to include the console output and say that this screen failed."
 autowrap_mode = 2
 
 [node name="bugReportLink" type="LinkButton" parent="mainMenu/error" unique_id=277944716]
