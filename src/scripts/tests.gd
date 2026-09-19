@@ -765,7 +765,7 @@ func test_scenes() -> bool:
 		var ins = scene.instantiate()
 		
 		if not ins:
-			printerr("Failed to instantiate: %s" % scene.resource_path)
+			printerr("Failed to instantiate scene at index %s" % i)
 			ok = false
 			continue
 		
