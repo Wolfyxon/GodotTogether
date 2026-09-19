@@ -12,7 +12,9 @@ var gui: GodotTogetherGUI
 @onready var session_init_cover = $sessionInit/cover
 @onready var session_cancel = $sessionInit/cover/vbox/btnCancel
 
-@onready var join_password = $sessionInit/start/join/password
+@onready var join_ip_input = $sessionInit/start/join/address/ip
+@onready var join_port_input =  $sessionInit/start/join/address/port
+@onready var join_password_input = $sessionInit/start/join/password
 
 @onready var users: GDTUserList = $session/tabs/Users
 @onready var server_settings_tab = $"session/tabs/Server settings"
@@ -37,6 +39,9 @@ func _ready() -> void:
 		check_engine_version()
 		username_input.text = GDTSettings.get_setting("username")
 		update_btn.visible = false
+		
+		GDTSettings.make_setting_control(join_ip_input, "last_connection/ip")
+		GDTSettings.make_setting_control(join_port_input, "last_connection/port")
 
 func _update_available(update: GDTUpdateCheckResult) -> void:
 	update_btn.text = "Update to v.%s" % update.version
@@ -83,10 +88,10 @@ func _host() -> void:
 func _join() -> void:
 	if main.client:
 		main.client.current_join_data.username = username_input.text
-		main.client.current_join_data.password = join_password.text
+		main.client.current_join_data.password = join_password_input.text
 		
-		var ip = $sessionInit/start/join/address/ip.text
-		var port = $sessionInit/start/join/address/port.value
+		var ip = join_ip_input.text
+		var port = join_port_input.value
 		
 		session_cancel.visible = true
 

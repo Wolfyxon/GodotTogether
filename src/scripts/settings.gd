@@ -6,8 +6,10 @@ const _DEFAULT_DATA = {
 	"username": "Cool person",
 	"format_version": 1,
 	
-	"last_server": "",
-	"last_port": 5017,
+	"last_connection": {
+		"ip": "",
+		"port": 5017,
+	},
 	
 	"server": {
 		"password": "",
