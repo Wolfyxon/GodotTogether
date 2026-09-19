@@ -279,8 +279,7 @@ alignment = 1
 [node name="ip" type="LineEdit" parent="mainMenu/main/sessionInit/start/join/address" unique_id=1584906226]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "localhost"
-placeholder_text = "IP address..."
+placeholder_text = "IP address of the host..."
 
 [node name="port" type="SpinBox" parent="mainMenu/main/sessionInit/start/join/address" unique_id=63867957]
 layout_mode = 2
