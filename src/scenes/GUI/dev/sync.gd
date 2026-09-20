@@ -68,3 +68,10 @@ func _on_enabled_pressed() -> void:
 	if first_run:
 		setup()
 		first_run = false
+
+
+func _on_btn_files_pressed() -> void:
+	var dict = main.file_sync.file_mod_times
+	
+	for path in dict.keys():
+		prints(path, dict[path])
