@@ -184,7 +184,6 @@ func receive_file(
 	
 	print("Receiving from server " + path)
 	main.file_sync.write_file(path, buffer, offset, truncate)
-	print("Saved successfully")
 	
 	if not is_fully_synced and target_file_count != 0 and downloaded_file_count >= target_file_count:
 		target_file_count = 0
