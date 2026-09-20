@@ -5,7 +5,7 @@ class_name GDTFileSync
 signal scan_started
 signal scan_complete
 
-const CHUNK_SIZE = 1024 * 1024 * 16 # 16 kB
+const CHUNK_SIZE = 1024 * 1024 * 24 # 24 kB
 
 var scan_timer = Timer.new()
 var file_mod_times := {}
