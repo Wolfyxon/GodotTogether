@@ -5,9 +5,10 @@ class_name GDTFileSync
 signal scan_started
 signal scan_complete
 
-var file_mod_times := {}
+const CHUNK_SIZE = 1024 * 1024 * 24 # 24 kB
 
 var scan_timer = Timer.new()
+var file_mod_times := {}
 
 func _ready() -> void:
 	scan_timer.wait_time = GDTSettings.get_setting("sync/file_refresh_rate")
@@ -29,7 +30,6 @@ func update_file(path: String) -> void:
 		return
 	
 	file_mod_times[path] = FileAccess.get_modified_time(path)
-
 
 func pause() -> void:
 	scan_timer.paused = true
@@ -83,8 +83,41 @@ func _file_removed(path: String) -> void:
 	elif main.server.is_active():
 		server_broadcast_file_delete(path)
 
+static func read_chunks_callback(path: String, fn: Callable, chunk_size := CHUNK_SIZE) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	
+	if not file:
+		GDTUtils.printerr_stack(
+			"Unable to open file: '%s': %s" % 
+			[path, error_string(FileAccess.get_open_error())]
+		)
+		return
+	
+	while true:
+		var buf = file.get_buffer(chunk_size)
+		
+		if buf.size() <= 0:
+			break
+		
+		fn.call(buf)
+	
+	file.close()
+
 @rpc("authority", "reliable")
-func write_file(path: String, buffer: PackedByteArray) -> void:
+func write_file(
+	path: String, 
+	buffer: PackedByteArray, 
+	offset: int = 0,
+	truncate := true
+) -> void:
+	if offset < 0:
+		GDTUtils.printerr_stack("File offset cannot be negative")
+		return
+	
+	if offset != 0 and not truncate:
+		GDTUtils.printerr_stack("Offset only supported with truncate off")
+		return
+	
 	if not GDTValidator.is_path_safe(path):
 		printerr("Server tried to write at unsafe location: %s" % path)
 		return
@@ -92,6 +125,11 @@ func write_file(path: String, buffer: PackedByteArray) -> void:
 	GDTFiles.ensure_dir_exists(path)
 	
 	if path.get_extension() == "gd":
+		if offset != 0:
+			# TODO: Scan the complete buffer BEFORE RELEASE! SCRIPTS DO GET THIS BIG!
+			GDTUtils.printerr_stack("Chunking scripts is not supported")
+			return
+		
 		buffer = main.script_security.sanitize_buffer(buffer)
 	
 	var current_hash = FileAccess.get_sha256(path)
@@ -100,10 +138,25 @@ func write_file(path: String, buffer: PackedByteArray) -> void:
 	if FileAccess.file_exists(path) and current_hash == new_hash:
 		return
 	
-	var file = FileAccess.open(path, FileAccess.WRITE)
+	var mode = FileAccess.WRITE
+	
+	if not truncate:
+		mode = FileAccess.READ_WRITE
+	
+	var file = FileAccess.open(path, mode)
 	var err = FileAccess.get_open_error()
 
 	assert(err == OK, "Failed to open %s: %d" % [path, err])
+	
+	if offset != 0:
+		var file_len = file.get_length()
+		
+		if file_len <= offset:
+			GDTUtils.printerr_stack("Offset greater than file length: %s" % path)
+			file.close()
+			return
+			
+		file.seek_end()
 	
 	pause()
 	

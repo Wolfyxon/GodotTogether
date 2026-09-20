@@ -1156,5 +1156,26 @@ func test_fs_tree() -> bool:
 	
 	return true
 
+func test_file_chunking() -> bool:
+	var path = get_script().resource_path
+	
+	var whole_buf = FileAccess.get_file_as_bytes(path)
+	var constructed_buf = []
+	
+	GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray):
+		constructed_buf.append_array(buf)
+	, 16)
+	
+	if whole_buf.size() != constructed_buf.size():
+		printerr("Buffer length: %s != %s" % [whole_buf.size(), constructed_buf.size()])
+		return false
+	
+	for i in whole_buf.size():
+		if whole_buf[i] != constructed_buf[i]:
+			printerr("Buffers don't match")
+			return false
+	
+	return true
+
 static func _dummy_function(data: String = "") -> String:
 	return data
