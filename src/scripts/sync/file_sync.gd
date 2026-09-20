@@ -120,12 +120,11 @@ func write_file(
 	
 	if offset != 0 and truncate:
 		GDTUtils.printerr_stack(
-			"Offset only supported with truncate off.\nPossible cause is memory corruption, fixing.\n Offset: %s Truncate: %s Path: %s" %
+			"Offset only supported with truncate off. Offset: %s Truncate: %s Path: %s" %
 			[offset, truncate, path]
-			)
+		)
 		
-		truncate = false
-		#return
+		return
 	
 	if not GDTValidator.is_path_safe(path):
 		printerr("Server tried to write at unsafe location: %s" % path)
