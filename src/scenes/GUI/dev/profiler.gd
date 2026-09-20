@@ -21,10 +21,11 @@ func _process(delta: float) -> void:
 	
 	$nodeCount.text = "Total nodes: %s" % main.node_sync.node_data_dict.size()
 	$nodeTime.text = "Avg node scan time: %s s" % GDTUtils.avg(node_scan_durations)
+	$nodeCanSync.text = "Is allowed to run: %s" % main.node_sync.can_sync_nodes()
 	
-	$fileCount.text = "Total files: %s" % main.file_sync.file_hashes.size()
+	$fileCount.text = "Total files: %s" % main.file_sync.file_mod_times.size()
 	$fileTime.text = "Avg file scan time: %s s" % GDTUtils.avg(file_scan_durations)
-	
+	$fileCanSync.text = "Is allowed to run: %s" % main.file_sync.can_sync_files()
 
 func setup() -> void:
 	if not main:

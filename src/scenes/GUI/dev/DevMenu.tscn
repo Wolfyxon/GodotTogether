@@ -131,6 +131,13 @@ text = "Avg node scan time:"
 layout_mode = 2
 text = "Total nodes:"
 
+[node name="nodeCanSync" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=901235950]
+layout_mode = 2
+text = "Allowed to run: ?"
+
+[node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/profiling/vbox" unique_id=1914081028]
+layout_mode = 2
+
 [node name="fileTitle" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=1540368066]
 layout_mode = 2
 theme_type_variation = &"HeaderMedium"
@@ -144,9 +151,16 @@ text = "Avg file scan time:"
 layout_mode = 2
 text = "Total files:"
 
+[node name="fileCanSync" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=456213839]
+layout_mode = 2
+text = "Allowed to run: ?"
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/profiling/vbox" unique_id=92275987]
+layout_mode = 2
+
 [node name="enabled" type="CheckBox" parent="main/scroll/vbox/profiling/vbox" unique_id=1410617470]
 layout_mode = 2
-text = "Enable profiler"
+text = "Enable change detection profiler"
 
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
