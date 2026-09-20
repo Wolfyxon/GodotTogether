@@ -219,13 +219,14 @@ func project_files_request(hashes: Dictionary) -> void:
 	for path in local_hashes.keys():
 		var local_hash = local_hashes[path]
 		
-		if not hashes.has(path) or local_hash != hashes[path]:			
+		if not hashes.has(path) or local_hash != hashes[path]:
 			if FileAccess.file_exists(path):
 				files_to_send.append(path)
 
 	main.client.begin_project_files_download.rpc_id(id, files_to_send.size())
 
-	for path in files_to_send:
+	for i in files_to_send.size():
+		var path = files_to_send[i]
 		print("Sending " + path)
 		
 		GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, i: int):
@@ -238,6 +239,8 @@ func project_files_request(hashes: Dictionary) -> void:
 			)
 		)
 		
+		if i % 4 == 0:
+			await get_tree().process_frame
 
 	#main.client.project_files_downloaded.rpc_id(id)
 
