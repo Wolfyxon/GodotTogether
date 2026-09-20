@@ -1277,7 +1277,18 @@ static func _call_setget_entry_method(
 	return obj.callv(method_entry["func"], full_args)
 
 static func is_encoded_resource(value) -> bool:
-	return value is Dictionary and "_gdtRes" in value
+	if not value is Dictionary:
+		return false
+		
+	if not "_gdtRes" in value:
+		return false
+	
+	if typeof(value["_gdtRes"]) != TYPE_INT:
+		return false
+	
+	
+	
+	return true
 
 static func get_ignored_properties(obj: Object) -> Array:
 	var res = []
@@ -1306,63 +1317,97 @@ static func is_setget_property(obj: Object, property: String) -> bool:
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
 		"_gdtRes": ResourceType.LOCAL,
-		"sub": {}
+		"props": {}
 	}
 
 	var cloned = false
-
-	for key in get_property_keys(resource):
-		var value
-		
-		if is_setget_property(resource, key):
-			value = get_setget_property(resource, key)
-		elif key in resource:
-			value = resource[key]
-		
-		if value is Resource:
-			if not cloned:
-				cloned = true
-				resource = resource.duplicate()
-			
-			resource[key] = null
-			res["sub"][key] = encode_resource(value)
-
-	if not GDTUtils.is_file_resource(resource):
-		res["buf"] = var_to_bytes_with_objects(resource)
-	else:
+	var is_file = GDTUtils.is_file_resource(resource)
+	
+	if is_file:
 		res["_gdtRes"] = ResourceType.FILE
 		res["path"] = resource.resource_path
-
+	else:
+		res["class"] = resource.get_class()
+		
+		for key in get_property_keys(resource):
+			var value
+			
+			if is_setget_property(resource, key):
+				value = get_setget_property(resource, key)
+			elif key in resource:
+				value = resource[key]
+			
+			res["props"][key] = value
+	
 	return res
 
-static func decode_resource(dict: Dictionary) -> Resource:
-	assert(is_encoded_resource(dict), "Provided dict isn't a resource dict")
-
-	var resource: Resource
-
-	if "path" in dict:
-		assert(GDTValidator.is_path_safe(dict["path"]), "Cannot load resource from unsafe path %s" % dict["path"])
-
-		resource = load(dict["path"])
-	elif "buf" in dict:
-		resource = bytes_to_var_with_objects(dict["buf"])
-		assert(resource is Resource, "Decoded resource isn't a resource")
-
-		if "sub" in dict:
-			var sub = dict["sub"]
-
-			if sub is Dictionary:
-				for key in sub.keys():
-					var value = sub[key]
-					
-					if is_setget_property(resource, key):
-						set_setget_property(resource, key, value)
-					elif key in resource:
-						resource[key] = decode_resource(value)
-	else:
-		push_error("Cannot decode resource: 'buf' and 'path' missing from resource dict")
+static func decode_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
+	if not is_encoded_resource(dict):
+		GDTUtils.printerr_stack("Provided dict isn't a valid resource dict")
+		return
 	
-	return resource
+	var tp = dict["_gdtRes"]
+	
+	match tp:
+		ResourceType.LOCAL:
+			return _decode_local_resource(dict)
+		ResourceType.FILE:
+			return _decode_file_resource(dict, allow_unsafe)
+	
+	GDTUtils.printerr_stack("Unknown encoded resource type: %s" % tp)
+	return
+
+static func _decode_local_resource(dict: Dictionary) -> Resource:
+	if not "class" in dict:
+		GDTUtils.printerr_stack("Cannot decode resource. 'class' missing")
+		return
+	
+	if not "props" in dict:
+		GDTUtils.printerr_stack("Cannot decode resource. 'props' missing")
+		return
+	
+	var cls = dict["class"]
+	var props = dict["props"]
+	
+	if not ClassDB.class_exists(cls):
+		GDTUtils.printerr_stack("Cannot decode resource of unknown class: %s" % cls)
+		return
+	
+	if not ClassDB.is_parent_class(cls, "Resource"):
+		GDTUtils.printerr_stack("Cannot decode resource. Class '%s' is not a Resource" % cls)
+		return
+	
+	var res = ClassDB.instantiate(cls)
+	
+	if not res:
+		GDTUtils.printerr_stack("Failed to create resource")
+		return
+	
+	apply_property_dict(res, props)
+	return res
+
+static func _decode_file_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
+	if not "path" in dict:
+		GDTUtils.printerr_stack("Cannot load resource. 'path' missing.")
+		return
+	
+	var path = dict["path"]
+	
+	if not allow_unsafe and not GDTValidator.is_path_safe(path):
+		GDTUtils.printerr_stack("Cannot load resource from unsafe path: %s" % path)
+		return
+	
+	var loaded = load(path)
+	
+	if not loaded:
+		GDTUtils.printerr_stack("Failed to load: %s" % path)
+		return
+		
+	if not loaded is Resource:
+		GDTUtils.printerr_stack("Not a resource: %s" % path)
+		return
+	
+	return loaded
 
 static func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
