@@ -1298,12 +1298,39 @@ static func is_encoded_resource(value) -> bool:
 	if not "_gdtRes" in value:
 		return false
 	
+	if not "hash" in value:
+		return false
+	
 	if typeof(value["_gdtRes"]) != TYPE_INT:
 		return false
 	
-	
+	if typeof(value["hash"]) != TYPE_INT:
+		return false
 	
 	return true
+
+static func get_encoded_resource_hash(dict: Dictionary) -> int:
+	var current = 0
+	
+	for key in dict.keys():
+		if key == "hash":
+			continue
+		
+		var val = dict[key]
+		
+		if is_encoded_resource(val):
+			var sub_hash = hash(get_encoded_resource_hash(val))
+			current += sub_hash
+	
+	return current
+
+# Users may create dictionaries that the plugin will interpret as resources and break.
+# This makes it impossible without automation.
+static func validate_encoded_resource_integrity(dict: Dictionary) -> bool:
+	var claimed_hash = dict["hash"]
+	var real_hash = get_encoded_resource_hash(dict)
+	
+	return claimed_hash == real_hash
 
 static func get_ignored_properties(obj: Object) -> Array:
 	var res = []
@@ -1354,11 +1381,17 @@ static func encode_resource(resource: Resource) -> Dictionary:
 			
 			res["props"][key] = value
 	
+	res["hash"] = get_encoded_resource_hash(res)
+	
 	return res
 
 static func decode_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
 	if not is_encoded_resource(dict):
 		GDTUtils.printerr_stack("Provided dict isn't a valid resource dict")
+		return
+	
+	if not validate_encoded_resource_integrity(dict):
+		GDTUtils.printerr_stack("Encoded resource does not pass integrity check.")
 		return
 	
 	var tp = dict["_gdtRes"]
