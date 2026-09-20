@@ -36,6 +36,12 @@ static func is_path_safe(path: String) -> bool:
 	
 	if local_path.begins_with("res://addons/"):
 		return false
+		
+	if local_path.contains("__pycache__"):
+		return false
+	
+	if local_path.get_extension() == ".exe":
+		return false
 	
 	return true
 
