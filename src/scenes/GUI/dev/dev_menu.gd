@@ -12,7 +12,7 @@ func _ready() -> void:
 	if not main:
 		return
 	
-	$main/scroll/vbox/profiling/vbox.main = main
+	$main/scroll/vbox/sync/vbox.main = main
 	$main/scroll/vbox/updateSigningContainer/updateSigning.main = main
 
 func _on_btn_node_classes_pressed() -> void:

@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="2_qe0lv"]
 [ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="2_usb8t"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="3_kl0hy"]
-[ext_resource type="Script" uid="uid://c1ii8ge5y21f5" path="res://addons/GodotTogether/src/scenes/GUI/dev/profiler.gd" id="5_govu4"]
+[ext_resource type="Script" uid="uid://c1ii8ge5y21f5" path="res://addons/GodotTogether/src/scenes/GUI/dev/sync.gd" id="5_govu4"]
 
 [sub_resource type="GDScriptSyntaxHighlighter" id="GDScriptSyntaxHighlighter_usb8t"]
 
@@ -108,57 +108,57 @@ shortcut = SubResource("Shortcut_ulx1o")
 text = "Execute"
 icon = ExtResource("3_kl0hy")
 
-[node name="profiling" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
+[node name="sync" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
 layout_mode = 2
 folded = true
-title = "Profiling"
+title = "Sync"
 
-[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/profiling" unique_id=786792079]
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/sync" unique_id=786792079]
 visible = false
 layout_mode = 2
 script = ExtResource("5_govu4")
 
-[node name="nodeTitle" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=373811155]
+[node name="nodeTitle" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=373811155]
 layout_mode = 2
 theme_type_variation = &"HeaderMedium"
 text = "Node change detection:"
 
-[node name="nodeTime" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=1757536329]
+[node name="nodeTime" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1757536329]
 layout_mode = 2
 text = "Avg node scan time:"
 
-[node name="nodeCount" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=1559332646]
+[node name="nodeCount" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1559332646]
 layout_mode = 2
 text = "Total nodes:"
 
-[node name="nodeCanSync" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=901235950]
+[node name="nodeCanSync" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=901235950]
 layout_mode = 2
 text = "Allowed to run: ?"
 
-[node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/profiling/vbox" unique_id=1914081028]
+[node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/sync/vbox" unique_id=1914081028]
 layout_mode = 2
 
-[node name="fileTitle" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=1540368066]
+[node name="fileTitle" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1540368066]
 layout_mode = 2
 theme_type_variation = &"HeaderMedium"
 text = "File change detection:"
 
-[node name="fileTime" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=2130753035]
+[node name="fileTime" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=2130753035]
 layout_mode = 2
 text = "Avg file scan time:"
 
-[node name="fileCount" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=2008130147]
+[node name="fileCount" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=2008130147]
 layout_mode = 2
 text = "Total files:"
 
-[node name="fileCanSync" type="Label" parent="main/scroll/vbox/profiling/vbox" unique_id=456213839]
+[node name="fileCanSync" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=456213839]
 layout_mode = 2
 text = "Allowed to run: ?"
 
-[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/profiling/vbox" unique_id=92275987]
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/sync/vbox" unique_id=92275987]
 layout_mode = 2
 
-[node name="enabled" type="CheckBox" parent="main/scroll/vbox/profiling/vbox" unique_id=1410617470]
+[node name="enabled" type="CheckBox" parent="main/scroll/vbox/sync/vbox" unique_id=1410617470]
 layout_mode = 2
 text = "Enable change detection profiler"
 
@@ -198,7 +198,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnScannedFiles" to="." method="_on_btn_scanned_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/profiling/vbox/enabled" to="main/scroll/vbox/profiling/vbox" method="_on_enabled_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/sync/vbox/enabled" to="main/scroll/vbox/sync/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]

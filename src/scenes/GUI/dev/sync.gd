@@ -1,6 +1,6 @@
 @tool
 extends VBoxContainer
-class_name GDTDevMenuProfiler
+class_name GDTDevMenuSync
 
 const MAX_TIME_RESOLUTION = 64
 
