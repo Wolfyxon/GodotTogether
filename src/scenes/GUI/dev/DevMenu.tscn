@@ -14,8 +14,13 @@ device = -1
 ctrl_pressed = true
 keycode = 4194336
 
+[sub_resource type="InputEventKey" id="InputEventKey_6rdoo"]
+device = -1
+ctrl_pressed = true
+keycode = 4194309
+
 [sub_resource type="Shortcut" id="Shortcut_ulx1o"]
-events = [SubResource("InputEventKey_govu4")]
+events = [SubResource("InputEventKey_govu4"), SubResource("InputEventKey_6rdoo")]
 
 [node name="DevMenu" type="PopupPanel" unique_id=968168676]
 oversampling_override = 1.0
