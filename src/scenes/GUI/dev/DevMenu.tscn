@@ -79,9 +79,11 @@ text = "Print files included in scanning"
 
 [node name="exec" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1651164589]
 layout_mode = 2
+folded = true
 title = "Code execution"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/exec" unique_id=1401677742]
+visible = false
 layout_mode = 2
 
 [node name="code" type="CodeEdit" parent="main/scroll/vbox/exec/vbox" unique_id=1783779930]
