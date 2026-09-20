@@ -21,7 +21,7 @@ events = [SubResource("InputEventKey_govu4")]
 oversampling_override = 1.0
 title = "GodotTogether - developer menu"
 initial_position = 4
-size = Vector2i(700, 500)
+size = Vector2i(850, 525)
 visible = true
 borderless = false
 theme = ExtResource("1_o4f5c")
@@ -30,8 +30,8 @@ script = ExtResource("1_2xnq5")
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
 offset_left = 25.0
 offset_top = 25.0
-offset_right = 675.0
-offset_bottom = 475.0
+offset_right = 825.0
+offset_bottom = 500.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
