@@ -79,11 +79,9 @@ text = "Print files included in scanning"
 
 [node name="exec" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1651164589]
 layout_mode = 2
-folded = true
 title = "Code execution"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/exec" unique_id=1401677742]
-visible = false
 layout_mode = 2
 
 [node name="code" type="CodeEdit" parent="main/scroll/vbox/exec/vbox" unique_id=1783779930]
@@ -93,6 +91,9 @@ placeholder_text = "print(\"Hello World\")"
 syntax_highlighter = SubResource("GDScriptSyntaxHighlighter_usb8t")
 code_completion_enabled = true
 auto_brace_completion_enabled = true
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/exec/vbox" unique_id=1244735245]
+layout_mode = 2
 
 [node name="warning" type="Label" parent="main/scroll/vbox/exec/vbox" unique_id=469677777]
 custom_minimum_size = Vector2(20, 20)
