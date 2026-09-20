@@ -1137,9 +1137,24 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	
 	return res
 
+static func should_property_be_ignored(obj: Object, path: String) -> bool:
+	# Fixes "Cannot set material emission intensity when Physical Light Units disabled."
+	if obj is BaseMaterial3D:
+		if (
+			not obj.emission_enabled and
+			path.begins_with("emission_") and 
+			path != "emission_enabled"
+		):
+			return true
+	
+	return false
+
 static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 	for path in dict.keys():
 		var value = dict[path]
+		
+		if should_property_be_ignored(obj, path):
+			continue
 		
 		if is_encoded_resource(value):
 			value = decode_resource(value)
