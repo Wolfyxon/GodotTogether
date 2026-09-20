@@ -198,7 +198,7 @@ func test_plugin_version() -> bool:
 	
 	return true
 
-func test_resource_encoding() -> bool:
+func test_local_resource_encoding() -> bool:
 	var a = StandardMaterial3D.new()
 	a.albedo_texture = NoiseTexture2D.new()
 	
@@ -224,6 +224,43 @@ func test_resource_encoding() -> bool:
 	
 	if not decoded.albedo_texture:
 		printerr("Missing 'albedo_texture'")
+		return false
+	
+	return true
+
+func test_file_resource_encoding() -> bool:
+	const PATH = "res://addons/GodotTogether/src/scenes/Avatar3D/material.tres"
+	
+	if not FileAccess.file_exists(PATH):
+		printerr("Material used in testing missing: %s" % PATH)
+		return false
+	
+	var loaded = load(PATH)
+	
+	if not loaded is StandardMaterial3D:
+		printerr("Test material should be StandardMaterial3D")
+		return false
+	
+	loaded = loaded as StandardMaterial3D
+	
+	var encoded = GDTNodeSync.encode_resource(loaded)
+	
+	if not encoded:
+		printerr("Encoding failed")
+		return false
+	
+	var decoded = GDTNodeSync.decode_resource(encoded, true)
+	
+	if not decoded:
+		printerr("Decoding failed")
+		return false
+	
+	if decoded.get_class() != loaded.get_class():
+		printerr("Wrong class: %s" % decoded.get_class())
+		return false
+	
+	if loaded.albedo_color != decoded.albedo_color:
+		printerr("albedo_color wrong")
 		return false
 	
 	return true
