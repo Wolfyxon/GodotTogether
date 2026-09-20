@@ -1162,7 +1162,7 @@ func test_file_chunking() -> bool:
 	var whole_buf = FileAccess.get_file_as_bytes(path)
 	var constructed_buf = []
 	
-	GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray):
+	GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, _i: int):
 		constructed_buf.append_array(buf)
 	, 16)
 	

@@ -5,7 +5,7 @@ class_name GDTFileSync
 signal scan_started
 signal scan_complete
 
-const CHUNK_SIZE = 1024 * 1024 * 24 # 24 kB
+const CHUNK_SIZE = 1024 * 1024 * 16 # 16 kB
 
 var scan_timer = Timer.new()
 var file_mod_times := {}
@@ -47,13 +47,13 @@ func scan_files() -> void:
 	
 	for path in new_times:
 		# (New file) or (File changed)
-		if (not path in file_mod_times) or (file_mod_times[path] > new_times[path]):
+		if (not path in file_mod_times) or (file_mod_times[path] < new_times[path]):
 			_file_changed(path)
 	
 	for path in file_mod_times:
 		if not path in new_times:
 			_file_removed(path)
-			
+	
 	file_mod_times = new_times
 	scan_complete.emit()
 
@@ -68,11 +68,8 @@ func can_sync_files() -> bool:
 
 func _file_changed(path: String) -> void:
 	if main.client.is_active():
-		var buffer = FileAccess.get_file_as_bytes(path)
-
-		if buffer:
-			_c2s_request_file_write.rpc_id(1, path, buffer)
-
+		client_send_file_to_server(path)
+	
 	elif main.server.is_active():
 		server_broadcast_file_at_path(path)
 
@@ -93,30 +90,42 @@ static func read_chunks_callback(path: String, fn: Callable, chunk_size := CHUNK
 		)
 		return
 	
+	var current_pos = 0
+	
 	while true:
 		var buf = file.get_buffer(chunk_size)
+		var size = buf.size()
 		
-		if buf.size() <= 0:
+		if size <= 0:
 			break
 		
-		fn.call(buf)
+		fn.call(buf, current_pos)
+		current_pos += size
 	
 	file.close()
 
 @rpc("authority", "reliable")
 func write_file(
 	path: String, 
-	buffer: PackedByteArray, 
+	buffer: PackedByteArray,
 	offset: int = 0,
 	truncate := true
 ) -> void:
+	if buffer.size() > CHUNK_SIZE:
+		GDTUtils.printerr_stack("Buffer is greater than chunk size. This will cause problems")
+	
 	if offset < 0:
 		GDTUtils.printerr_stack("File offset cannot be negative")
 		return
 	
-	if offset != 0 and not truncate:
-		GDTUtils.printerr_stack("Offset only supported with truncate off")
-		return
+	if offset != 0 and truncate:
+		GDTUtils.printerr_stack(
+			"Offset only supported with truncate off.\nPossible cause is memory corruption, fixing.\n Offset: %s Truncate: %s Path: %s" %
+			[offset, truncate, path]
+			)
+		
+		truncate = false
+		#return
 	
 	if not GDTValidator.is_path_safe(path):
 		printerr("Server tried to write at unsafe location: %s" % path)
@@ -132,12 +141,6 @@ func write_file(
 		
 		buffer = main.script_security.sanitize_buffer(buffer)
 	
-	var current_hash = FileAccess.get_sha256(path)
-	var new_hash = GDTUtils.sha256_of_buffer(buffer)
-	
-	if FileAccess.file_exists(path) and current_hash == new_hash:
-		return
-	
 	var mode = FileAccess.WRITE
 	
 	if not truncate:
@@ -146,17 +149,22 @@ func write_file(
 	var file = FileAccess.open(path, mode)
 	var err = FileAccess.get_open_error()
 
-	assert(err == OK, "Failed to open %s: %d" % [path, err])
+	if err != OK:
+		GDTUtils.printerr_stack(
+			"Failed to open %s: %s\nOffset: %s Truncate: %s" % 
+			[path, error_string(err), offset, truncate]
+		)
+		return
 	
 	if offset != 0:
 		var file_len = file.get_length()
 		
-		if file_len <= offset:
-			GDTUtils.printerr_stack("Offset greater than file length: %s" % path)
+		if file_len < offset:
+			GDTUtils.printerr_stack("Offset (%s) greater than file length (%s): %s" % [offset, file_len, path])
 			file.close()
 			return
-			
-		file.seek_end()
+		
+		file.seek(offset)
 	
 	pause()
 	
@@ -191,20 +199,47 @@ func delete_file(path: String) -> void:
 	
 	update_file(path)
 
-func server_broadcast_file_write(path: String, buffer: PackedByteArray, sender := 0) -> void:
-	main.server.auth_rpc(write_file, [path, buffer], [sender])
+func server_broadcast_file_write(
+	path: String, 
+	buffer: PackedByteArray, 
+	offset: int = 0,
+	truncate := true,
+	sender := 0
+) -> void:
+	main.server.auth_rpc(write_file, [path, buffer, offset, truncate], [sender])
 
 func server_broadcast_file_at_path(path: String, sender := 0) -> void:
-	var buf = FileAccess.get_file_as_bytes(path)
-	
-	if buf:
-		server_broadcast_file_write(path, buf, sender)
+	read_chunks_callback(path, func(buf: PackedByteArray, i: int):
+		server_broadcast_file_write(
+			path, 
+			buf, 
+			i,
+			i == 0,
+			sender
+		)
+	)
 
 func server_broadcast_file_delete(path: String, sender := 0) -> void:
 	main.server.auth_rpc(delete_file, [path], [sender])
 
+func client_send_file_to_server(path: String) -> void:
+	read_chunks_callback(path, func(buf: PackedByteArray, i: int):
+		_c2s_request_file_write.rpc_id(
+			1, 
+			path, 
+			buf, 
+			i, 
+			i == 0
+		)
+	)
+
 @rpc("any_peer", "reliable")
-func _c2s_request_file_write(path: String, buffer: PackedByteArray) -> void:
+func _c2s_request_file_write(
+	path: String, 
+	buffer: PackedByteArray, 
+	offset: int = 0,
+	truncate := true
+) -> void:
 	if not main.server.is_active(): return
 	
 	var id = multiplayer.get_remote_sender_id()
@@ -216,8 +251,8 @@ func _c2s_request_file_write(path: String, buffer: PackedByteArray) -> void:
 		printerr("User %s tried to write file at unsafe location: %s" % [id, path])
 		return
 	
-	write_file(path, buffer)
-	server_broadcast_file_write(path, buffer, id)
+	write_file(path, buffer, offset, true)
+	server_broadcast_file_write(path, buffer, offset, truncate, id)
 
 @rpc("any_peer", "reliable")
 func _c2s_request_file_delete(path: String) -> void:

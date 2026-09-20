@@ -226,11 +226,18 @@ func project_files_request(hashes: Dictionary) -> void:
 	main.client.begin_project_files_download.rpc_id(id, files_to_send.size())
 
 	for path in files_to_send:
-		var buf = FileAccess.get_file_as_bytes(path)
-		if not buf: continue
-		
 		print("Sending " + path)
-		main.client.receive_file.rpc_id(id, path, buf)
+		
+		GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, i: int):
+			main.client.receive_file.rpc_id(
+				id, 
+				path, 
+				buf, 
+				i, 
+				i == 0
+			)
+		)
+		
 
 	#main.client.project_files_downloaded.rpc_id(id)
 

@@ -167,10 +167,15 @@ func begin_project_files_download(file_count: int) -> void:
 		_project_files_downloaded()
 
 @rpc("authority", "reliable")
-func receive_file(path: String, buffer: PackedByteArray) -> void:
+func receive_file(
+	path: String, 
+	buffer: PackedByteArray, 
+	offset: int = 0,
+	truncate := true
+) -> void:
 	if not is_fully_synced:
 		downloaded_file_count += 1
-		
+	
 	file_received.emit(path)
 
 	if not GDTValidator.is_path_safe(path):
@@ -178,7 +183,7 @@ func receive_file(path: String, buffer: PackedByteArray) -> void:
 		return
 	
 	print("Receiving from server " + path)
-	main.file_sync.write_file(path, buffer)
+	main.file_sync.write_file(path, buffer, offset, truncate)
 	print("Saved successfully")
 	
 	if not is_fully_synced and target_file_count != 0 and downloaded_file_count >= target_file_count:
