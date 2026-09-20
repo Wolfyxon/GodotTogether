@@ -5,8 +5,6 @@ class_name GDTFileSync
 signal scan_started
 signal scan_complete
 
-var filesystem_watcher := Timer.new()
-
 var file_mod_times := {}
 
 var scan_timer = Timer.new()
