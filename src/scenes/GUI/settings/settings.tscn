@@ -19,14 +19,15 @@ borderless = false
 script = ExtResource("1_b5wo4")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1100841752]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 796.0
-offset_bottom = 696.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 775.0
+offset_bottom = 675.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=1872551780]
 layout_mode = 2
 size_flags_vertical = 3
+scroll_vertical = 598
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=2043902136]
 layout_mode = 2
@@ -173,15 +174,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Developer"
 
-[node name="devWarn" type="Label" parent="main/scroll/vbox" unique_id=972898146]
-custom_minimum_size = Vector2(100, 20)
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.8580836, 0, 1)
-theme_override_font_sizes/font_size = 16
-text = "These settings are meant for testing the plugin and should not be touched.
-Leave everything off."
-autowrap_mode = 3
-
 [node name="unitTests" type="CheckButton" parent="main/scroll/vbox" unique_id=951601083]
 layout_mode = 2
 tooltip_text = "Tests internal plugin's features on start and prints the results in the console"
@@ -193,28 +185,6 @@ layout_mode = 2
 tooltip_text = "Show developer menu button next to the settings button"
 text = "Show dev menu button on top"
 metadata/setting = "dev/menu_button"
-
-[node name="realTimeFileSync" type="CheckButton" parent="main/scroll/vbox" unique_id=1654814302]
-layout_mode = 2
-tooltip_text = "Disables real time file synchronization.
-Helps test the plugin more quickly when file syncing isn't necessary."
-text = "Disable real time file sync"
-metadata/setting = "dev/disable_real_time_file_sync"
-
-[node name="nodeScanning" type="CheckButton" parent="main/scroll/vbox" unique_id=1680785472]
-layout_mode = 2
-tooltip_text = "Disables the core plugin's feature: scanning for changes to replicate.
-Helps test basic networking when this feature isn't needed."
-text = "Disable node scanning"
-metadata/setting = "dev/disable_real_time_node_sync"
-
-[node name="restartBroadcast" type="CheckButton" parent="main/scroll/vbox" unique_id=1799023145]
-layout_mode = 2
-tooltip_text = "Do not use when using the plugin normally. This is meant for easier development. 
-Enable sending and receiving a restart signal that restarts the plugin for everyone in the server with this setting enabled.
-"
-text = "Enable restart broadcast"
-metadata/setting = "dev/restart_broadcast"
 
 [node name="devActions" type="HBoxContainer" parent="main/scroll/vbox" unique_id=559797859]
 layout_mode = 2

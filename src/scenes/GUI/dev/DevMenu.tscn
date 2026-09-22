@@ -33,10 +33,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 846.0
-offset_bottom = 521.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 825.0
+offset_bottom = 500.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -118,9 +118,11 @@ icon = ExtResource("3_kl0hy")
 
 [node name="sync" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
 layout_mode = 2
+folded = true
 title = "Sync"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/sync" unique_id=786792079]
+visible = false
 layout_mode = 2
 script = ExtResource("5_govu4")
 
@@ -175,6 +177,37 @@ layout_mode = 2
 [node name="enabled" type="CheckBox" parent="main/scroll/vbox/sync/vbox" unique_id=1410617470]
 layout_mode = 2
 text = "Enable change detection profiler"
+
+[node name="settings" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1709253664]
+layout_mode = 2
+folded = true
+title = "Developer settings"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/settings" unique_id=549520500]
+visible = false
+layout_mode = 2
+
+[node name="fileSyncOff" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=387970416]
+layout_mode = 2
+tooltip_text = "Disables real time file synchronization.
+Helps test the plugin more quickly when file syncing isn't necessary."
+text = "Disable file sync"
+metadata/setting = "dev/disable_real_time_file_sync"
+
+[node name="nodeSyncOff" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1236908610]
+layout_mode = 2
+tooltip_text = "Disables the core plugin's feature: scanning for changes to replicate.
+Helps test basic networking when this feature isn't needed."
+text = "Disable node sync"
+metadata/setting = "dev/disable_real_time_node_sync"
+
+[node name="restartBroadcast" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1370068016]
+layout_mode = 2
+tooltip_text = "Do not use when using the plugin normally. This is meant for easier development. 
+Enable sending and receiving a restart signal that restarts the plugin for everyone in the server with this setting enabled.
+"
+text = "Enable restart broadcast"
+metadata/setting = "dev/restart_broadcast"
 
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2

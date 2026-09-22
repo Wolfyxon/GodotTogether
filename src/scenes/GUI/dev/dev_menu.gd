@@ -15,6 +15,12 @@ func _ready() -> void:
 	$main/scroll/vbox/sync/vbox.main = main
 	$main/scroll/vbox/updateSigningContainer/updateSigning.main = main
 
+	for i in $main/scroll/vbox/settings/vbox.get_children():
+		if not i.get_meta("setting"):
+			continue
+		
+		main.get_settings().make_setting_control(i, i.get_meta("setting"))
+
 func _on_btn_node_classes_pressed() -> void:
 	main.debug.dump_node_classes()
 
