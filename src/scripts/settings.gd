@@ -66,14 +66,12 @@ var error_line := 0
 var save_mutex = Mutex.new()
 
 func _ready() -> void:
-	load_settings()
-	
 	if GDTUtils.has_readonly(data):
 		component_error("Data dict contains read-only values")
 		return
 	
 	var save_timer = Timer.new()
-	save_timer.timeout.connect(_periodic_save)
+	save_timer.timeout.connect(save_if_changed)
 	save_timer.wait_time = 1
 	add_child(save_timer)
 	save_timer.start()
@@ -83,7 +81,7 @@ func _ready() -> void:
 func _component_init() -> void:
 	load_default()
 
-func _periodic_save() -> void:
+func save_if_changed() -> void:
 	if not have_changed: return
 	if not is_unsaved: return
 	
@@ -150,6 +148,8 @@ func load_settings() -> bool:
 	return true
 
 func reset_settings() -> void:
+	have_changed = false
+	
 	load_default()
 	save_settings()
 
@@ -201,6 +201,10 @@ func get_setting(path: String):
 	return GDTUtils.get_nested(data, path)
 
 func set_setting(path: String, value) -> void:
+	if has_error():
+		GDTUtils.printerr_stack("Not updating when settings loaded with errors: %s" % path)
+		return
+	
 	is_unsaved = true
 	have_changed = true
 	

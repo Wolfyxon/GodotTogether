@@ -69,7 +69,7 @@ func _enter_tree() -> void:
 	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
 	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
 	
-	if settings.get_setting("update/auto_check_enabled"):
+	if not settings.has_error() and settings.get_setting("update/auto_check_enabled"):
 		updater.conditional_check()
 	
 	post_check_components()
@@ -80,7 +80,7 @@ func _exit_tree() -> void:
 		return
 	
 	gui.scene_tree_editor.clear_colors()
-	settings.save_settings()
+	settings.save_if_changed()
 	
 	close_connection()
 	remove_control_from_bottom_panel(chat)
