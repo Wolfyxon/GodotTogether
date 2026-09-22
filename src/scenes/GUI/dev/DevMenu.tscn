@@ -118,13 +118,18 @@ icon = ExtResource("3_kl0hy")
 
 [node name="sync" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
 layout_mode = 2
-folded = true
 title = "Sync"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/sync" unique_id=786792079]
-visible = false
 layout_mode = 2
 script = ExtResource("5_govu4")
+
+[node name="enabled" type="CheckBox" parent="main/scroll/vbox/sync/vbox" unique_id=1410617470]
+layout_mode = 2
+text = "Enable change detection profiler"
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/sync/vbox" unique_id=92275987]
+layout_mode = 2
 
 [node name="nodeTitle" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=373811155]
 layout_mode = 2
@@ -170,13 +175,6 @@ text = "Initial sync complete: N/A"
 [node name="btnFiles" type="Button" parent="main/scroll/vbox/sync/vbox" unique_id=423350362]
 layout_mode = 2
 text = "Print tracked files"
-
-[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/sync/vbox" unique_id=92275987]
-layout_mode = 2
-
-[node name="enabled" type="CheckBox" parent="main/scroll/vbox/sync/vbox" unique_id=1410617470]
-layout_mode = 2
-text = "Enable change detection profiler"
 
 [node name="settings" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1709253664]
 layout_mode = 2
@@ -245,8 +243,8 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnScannedFiles" to="." method="_on_btn_scanned_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/enabled" to="main/scroll/vbox/sync/vbox" method="_on_enabled_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]
