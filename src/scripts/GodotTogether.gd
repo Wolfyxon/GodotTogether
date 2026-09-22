@@ -83,11 +83,12 @@ func _exit_tree() -> void:
 	settings.save_settings()
 	
 	close_connection()
-	button.queue_free()
 	remove_control_from_bottom_panel(chat)
-	chat.queue_free()
-	gui.queue_free()
-	queue_free()
+	button.queue_free()
+	
+	for i in components:
+		if i:
+			i.queue_free()
 
 func init_components() -> void:
 	components = [
