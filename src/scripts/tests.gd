@@ -1141,18 +1141,33 @@ func test_settings() -> bool:
 	return true
 
 func test_fs_tree() -> bool:
-	var paths = GDTFiles.get_file_tree("res://", true)
+	var unsafe_paths = GDTFiles.get_file_tree("res://", true)
+	var safe_paths = GDTFiles.get_file_tree("res://", false)
 	
-	var check_paths = [
+	var unsafe_check_paths = [
 		get_script().resource_path,
-		"res://project.godot",
 		"res://addons/GodotTogether/src/scripts/net/user/user.gd"
 	]
 	
-	for i in check_paths:
-		if not i in paths:
-			printerr("Missing in paths: %s. Full: %s" % [i, paths])
+	var safe_check_paths = [
+		"res://project.godot"
+	]
+	
+	for i in unsafe_check_paths:
+		if not i in unsafe_paths:
+			printerr("Missing in unsafe paths: %s. Full: %s" % [i, unsafe_paths])
 			return false
+			
+		if i in safe_paths:
+			printerr("Unsafe found in safe paths: %s. Full: %s" % [i, safe_paths])
+			return false
+	
+	for i in safe_check_paths:
+		if not i in unsafe_paths:
+			printerr("Safe not found in safe paths: %s. Full: %s" % [i, safe_paths])
+	
+		if not i in safe_paths:
+			printerr("Safe not found in unsafe paths: %s. Full: %s" % [i, unsafe_paths])
 	
 	return true
 
