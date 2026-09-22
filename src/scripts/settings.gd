@@ -58,6 +58,8 @@ const _DEFAULT_DATA = {
 }
 
 var data := {}
+var is_unsaved := false
+var have_changed := false
 var error_message := ""
 var error_line := 0
 
@@ -70,10 +72,22 @@ func _ready() -> void:
 		component_error("Data dict contains read-only values")
 		return
 	
+	var save_timer = Timer.new()
+	save_timer.timeout.connect(_periodic_save)
+	save_timer.wait_time = 1
+	add_child(save_timer)
+	save_timer.start()
+	
 	report_ready()
 
 func _component_init() -> void:
 	load_default()
+
+func _periodic_save() -> void:
+	if not have_changed: return
+	if not is_unsaved: return
+	
+	save_settings()
 
 func has_error() -> bool:
 	return not error_message.is_empty()
@@ -93,7 +107,7 @@ func save_settings() -> void:
 		return
 	
 	f.store_string(JSON.stringify(data,"	"))
-	f.close()
+	is_unsaved = false
 	
 	save_mutex.unlock()
 
@@ -187,6 +201,9 @@ func get_setting(path: String):
 	return GDTUtils.get_nested(data, path)
 
 func set_setting(path: String, value) -> void:
+	is_unsaved = true
+	have_changed = true
+	
 	GDTUtils.set_nested(data, path, value)
 	settings_changed.emit()
 

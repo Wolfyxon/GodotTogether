@@ -80,6 +80,7 @@ func _exit_tree() -> void:
 		return
 	
 	gui.scene_tree_editor.clear_colors()
+	settings.save_settings()
 	
 	close_connection()
 	button.queue_free()
@@ -87,7 +88,6 @@ func _exit_tree() -> void:
 	chat.queue_free()
 	gui.queue_free()
 	queue_free()
-
 
 func init_components() -> void:
 	components = [
