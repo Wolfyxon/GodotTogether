@@ -149,6 +149,8 @@ func _on_btn_check_update_now_pressed() -> void:
 	if await gui.confirm("New version available: '%s'! Update now?" % res.version):
 		gui.main.updater.begin_update(res)
 
+func _on_btn_reload_pressed() -> void:
+	gui.main.get_settings().load_settings()
 
 func _on_sandwich_btn_pressed() -> void:
 	sandwich_title.show()
