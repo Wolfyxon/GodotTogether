@@ -247,7 +247,7 @@ func make_setting_control(
 		GDTUtils.printerr_stack("Unsupported control %s %s" % [node.get_class() ,node])
 	
 	update_control(node, path, format)
-	settings_changed.emit(update_control.bind(node, path, format))
+	settings_changed.connect(update_control.bind(node, path, format))
 	
 	if sig:
 		sig.connect(func(_a = null, _b = null, _c = null, _d = null):
