@@ -118,9 +118,11 @@ icon = ExtResource("3_kl0hy")
 
 [node name="sync" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
 layout_mode = 2
+folded = true
 title = "Sync"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/sync" unique_id=786792079]
+visible = false
 layout_mode = 2
 script = ExtResource("5_govu4")
 
@@ -184,6 +186,11 @@ title = "Developer settings"
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/settings" unique_id=549520500]
 visible = false
 layout_mode = 2
+
+[node name="warning" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1035282577]
+layout_mode = 2
+theme_type_variation = &"WarningLabel"
+text = "Changing these settings may break the plugin. Leave everything off."
 
 [node name="fileSyncOff" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=387970416]
 layout_mode = 2
