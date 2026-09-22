@@ -40,9 +40,10 @@ func _ready() -> void:
 		
 		update_btn.visible = false
 		
-		GDTSettings.make_setting_control(username_input, "username")
-		GDTSettings.make_setting_control(join_ip_input, "last_connection/ip")
-		GDTSettings.make_setting_control(join_port_input, "last_connection/port")
+		var settings = main.get_settings()
+		settings.make_setting_control(username_input, "username")
+		settings.make_setting_control(join_ip_input, "last_connection/ip")
+		settings.make_setting_control(join_port_input, "last_connection/port")
 
 func _update_available(update: GDTUpdateCheckResult) -> void:
 	update_btn.text = "Update to v.%s" % update.version
@@ -60,9 +61,6 @@ func _host() -> void:
 		
 		set_session_init_cover("Starting server...")
 		session_cancel.visible = false
-		
-		#GDTSettings.set_setting("server/password", host_password.text)
-		#GDTSettings.set_setting("server/require_approval", $sessionInit/start/host/approveUsers.button_pressed)
 		
 		await RenderingServer.frame_post_draw
 		
@@ -230,4 +228,4 @@ func _on_restart_pressed() -> void:
 
 func _on_update_timeout() -> void:
 	if visuals_available():
-		$session/top/restart.visible = GDTSettings.get_setting("dev/restart_broadcast")
+		$session/top/restart.visible = main.get_settings().get_setting("dev/restart_broadcast")

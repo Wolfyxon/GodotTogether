@@ -19,18 +19,18 @@ func _ready() -> void:
 		$about/main/scroll/vbox/version.text = "Version: %s" % version
 
 	if gui.visuals_available():
-		var settings_json = GDTSettings.get_settings_json()
+		var settings = main.get_settings()
 		var error_gui: GDTSettingsErrorGUI = get_settings_error_gui()
 		var settings_gui: GDTSettingsGUI = get_settings_gui()
 		var menu = get_menu()
 		
 		get_error_gui().visible = false
 		settings_gui.visible = false
-
-		if not GDTSettings.settings_exist() or (settings_json and settings_json.get_error_line() == 0):
+		
+		if not GDTSettings.settings_exist() or (not settings.has_error()):
 			error_gui.visible = false
 			
-			var seen_disclaimer = GDTSettings.get_setting("seen/disclaimer")
+			var seen_disclaimer = settings.get_setting("seen/disclaimer")
 			menu.visible = seen_disclaimer
 			get_disclaimer().visible = not seen_disclaimer
 			
@@ -38,7 +38,7 @@ func _ready() -> void:
 		else:
 			menu.visible = false
 			error_gui.gui = gui
-			error_gui.set_json(settings_json)
+			error_gui.update()
 			error_gui.visible = true
 
 func checked_reflow() -> void:
@@ -99,4 +99,4 @@ func _on_btn_restart_godot_pressed() -> void:
 	EditorInterface.restart_editor()
 
 func _on_settings_settings_changed() -> void:
-	$main/topBar/devMenu.visible = GDTSettings.get_setting("dev/menu_button")
+	$main/topBar/devMenu.visible = main.get_settings().get_setting("dev/menu_button")

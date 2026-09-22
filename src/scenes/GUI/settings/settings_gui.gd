@@ -58,7 +58,7 @@ func register_control(node: Control) -> void:
 		var enabler = node.get_node(node.get_meta("enabled_by_node"))
 		setup_control_with_node_disabler(node, enabler, true)
 	
-	GDTSettings.make_setting_control(node, path, format, _settings_changed)
+	gui.main.get_settings().make_setting_control(node, path, format, _settings_changed)
 
 func setup_control_with_warning(node: Control) -> void:
 	if not node is Button:
@@ -103,7 +103,7 @@ func _on_reset_pressed() -> void:
 		"",
 		"The plugin will restart."
 	], "\n")):
-		GDTSettings.create_settings()
+		gui.main.get_settings().reset_settings()
 		gui.get_menu_window().hide()  # For some reason it resets to the default state and doesn't hide after a reset
 		
 		if gui.main:

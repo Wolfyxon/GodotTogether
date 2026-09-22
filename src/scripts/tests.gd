@@ -1130,11 +1130,11 @@ func test_wrappers() -> bool:
 	return true
 
 func test_settings() -> bool:
-	if GDTUtils.has_readonly(GDTSettings.get_default_settings()):
+	if GDTUtils.has_readonly(GDTSettings.get_default_data()):
 		printerr("Default settings are read only")
 		return false
 	
-	if GDTUtils.has_readonly(GDTSettings.get_settings()):
+	if GDTUtils.has_readonly(main.settings.data):
 		printerr("Loaded settings are read only")
 		return false
 	

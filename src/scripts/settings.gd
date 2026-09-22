@@ -1,6 +1,10 @@
 @tool
-extends Node
+extends GDTComponent
 class_name GDTSettings
+
+signal settings_changed
+
+const FILE_PATH = "res://addons/GodotTogether/settings.json"
 
 const _DEFAULT_DATA = {
 	"username": "Cool person",
@@ -53,70 +57,143 @@ const _DEFAULT_DATA = {
 	}
 }
 
-const FILE_PATH = "res://addons/GodotTogether/settings.json"
+var data := {}
+var error_message := ""
+var error_line := 0
 
-static func get_absolute_path() -> String:
-	return ProjectSettings.globalize_path(FILE_PATH)
+var save_mutex = Mutex.new()
 
-static func write_settings(data: Dictionary) -> void:
+func _ready() -> void:
+	load_settings()
+	
+	if GDTUtils.has_readonly(data):
+		component_error("Data dict contains read-only values")
+		return
+	
+	report_ready()
+
+func _component_init() -> void:
+	load_default()
+
+func has_error() -> bool:
+	return not error_message.is_empty()
+
+func load_default() -> void:
+	data = get_default_data()
+	settings_changed.emit()
+
+func save_settings() -> void:
+	save_mutex.lock()
+	
 	var f = FileAccess.open(FILE_PATH, FileAccess.WRITE)
-
+	
+	if not f:
+		var err_str = error_string(FileAccess.get_open_error())
+		GDTUtils.printerr_stack("Unable to open settings file for saving: %s" % err_str)
+		return
+	
 	f.store_string(JSON.stringify(data,"	"))
 	f.close()
+	
+	save_mutex.unlock()
 
-static func settings_exist() -> bool:
-	return FileAccess.file_exists(FILE_PATH)
-
-static func create_settings() -> void:
-	write_settings(_DEFAULT_DATA)
-
-static func get_default_settings() -> Dictionary:
-	return _DEFAULT_DATA.duplicate(true)
-
-static func get_settings_json() -> JSON:
-	var file = FileAccess.open(FILE_PATH, FileAccess.READ)
-	if not file: return
-
+func load_settings() -> bool:
+	error_message = ""
+	error_line = 0
+	
+	if not settings_exist():
+		load_default()
+		return true
+	
+	var f = FileAccess.open(FILE_PATH, FileAccess.READ)
+	
+	if not f:
+		var err_str = error_string(FileAccess.get_open_error())
+		GDTUtils.printerr_stack("Unable to open settings file for reading: %s" % err_str)
+		return false
+	
 	var json = JSON.new()
+	var err = json.parse(f.get_as_text(), true)
+	
+	if err != OK:
+		GDTUtils.printerr_stack("Parsing settings failed, loading default data")
+		error_message = json.get_error_message()
+		error_line = json.get_error_line()
+		load_default()
+		return false
+	
+	var parsed = json.data
+	
+	if typeof(parsed) == TYPE_ARRAY:
+		error_message = "Data is not a dictionary, but an array"
+		load_default()
+		return false
+	
+	var merged = GDTUtils.merge(parsed.duplicate(true), get_default_data())
+	data = merged.duplicate(true)
+	
+	settings_changed.emit()
+	return true
 
-	json.parse(file.get_as_text(), true)
-	file.close()
+func reset_settings() -> void:
+	load_default()
+	save_settings()
 
-	return json
+func store_update_cache(update: GDTUpdateCheckResult) -> void:
+	const ALLOWED_TYPES = [
+		GDTUpdateCheckResult.ResultType.RunningLatest, 
+		GDTUpdateCheckResult.ResultType.UpdateAvailable
+	]
+	
+	if not update.type in ALLOWED_TYPES:
+		GDTUtils.printerr_stack("Cannot store invalid check result %s" % update.type)
+		return
+	
+	var sig64 = Marshalls.raw_to_base64(update.signature_buf)
+	
+	set_setting("update/latest_version", update.version)
+	set_setting("update/download_url", update.download_url)
+	set_setting("update/download_signature", sig64)
 
-static func get_settings() -> Dictionary:
-	if settings_exist():
-		var json = get_settings_json()
+func reset_setting(path: String) -> void:
+	var default_val = GDTUtils.get_nested(get_default_data(), path)
+	set_setting(path, default_val)
 
-		if not json:
-			push_error("Unable to access the settings file. Returning default data")
-			return get_default_settings()
+func clear_update_cache() -> void:
+	reset_setting("update/")
 
-		var parsed = json.data
-		
-		if not parsed:
-			push_error("Parsing settings failed at line %s: %s Returning default data." % [json.get_error_line(), json.get_error_message()])
-			return get_default_settings()
-		
-		var default_data = _DEFAULT_DATA.duplicate(true)
-		return GDTUtils.merge(parsed.duplicate(true), default_data).duplicate(true)
-		
+func get_update_cache() -> GDTUpdateCheckResult:
+	var ver = get_setting("update/latest_version")
+	var url = get_setting("update/download_url")
+	var sig_text = get_setting("update/download_signature")
+	
+	if not ver or not url:
+		return
+	
+	if sig_text:
+		sig_text = sig_text.remove_chars("\t\n\ufffd\"',. ")
 	else:
-		return get_default_settings()
+		sig_text = ""
+	
+	var res = GDTUpdateCheckResult.new()
+	res.type = GDTUpdateCheckResult.ResultType.UnknownState
+	res.version = ver
+	res.download_url = url
+	res.signature_buf = Marshalls.base64_to_raw(sig_text)
+	
+	return res
 
-static func get_setting(path: String):
-	return GDTUtils.get_nested(get_settings(), path)
+func get_setting(path: String):
+	return GDTUtils.get_nested(data, path)
 
-static func set_setting(path: String, value) -> void:
-	var data = get_settings()
-
+func set_setting(path: String, value) -> void:
 	GDTUtils.set_nested(data, path, value)
-	write_settings(data)
+	settings_changed.emit()
 
-static func _set_setting_reverse(value, path: String) -> void:
+func _set_setting_reverse(value, path: String) -> void:
 	set_setting(path, value)
 
-static func make_setting_control(
+func make_setting_control(
 	node: Control, 
 	path: String, 
 	format := "", 
@@ -149,16 +226,25 @@ static func make_setting_control(
 		GDTUtils.printerr_stack("Unsupported control %s %s" % [node.get_class() ,node])
 	
 	update_control(node, path, format)
+	settings_changed.emit(update_control.bind(node, path, format))
 	
 	if sig:
 		sig.connect(func(_a = null, _b = null, _c = null, _d = null):
 			callback.call()
 		)
 
-static func update_control(node: Control, path: String, format := "") -> void:
+func update_control(node: Control, path: String, format := "") -> void:
 	var value = get_setting(path)
-	
 	GDTUtils.set_control_value(node, value, format)
+
+static func get_absolute_path() -> String:
+	return ProjectSettings.globalize_path(FILE_PATH)
+
+static func settings_exist() -> bool:
+	return FileAccess.file_exists(FILE_PATH)
+
+static func get_default_data() -> Dictionary:
+	return _DEFAULT_DATA.duplicate(true)
 
 static func _none() -> void:
 	pass

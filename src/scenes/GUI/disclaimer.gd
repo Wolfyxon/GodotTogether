@@ -43,4 +43,4 @@ func _on_btn_proceed_pressed() -> void:
 	gui.get_menu().visible = true
 	visible = false
 	
-	GDTSettings.set_setting("seen/disclaimer", true)
+	gui.main.get_settings().set_setting("seen/disclaimer", true)

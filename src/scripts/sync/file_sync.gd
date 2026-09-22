@@ -11,7 +11,8 @@ var scan_timer = Timer.new()
 var file_mod_times := {}
 
 func _ready() -> void:
-	scan_timer.wait_time = GDTSettings.get_setting("sync/file_refresh_rate")
+	update_timer_wait_times()
+	
 	scan_timer.timeout.connect(scan_files)
 	add_child(scan_timer)
 	scan_timer.start()
@@ -20,6 +21,9 @@ func _ready() -> void:
 	
 	ignore_last_changes()
 	report_ready()
+
+func update_timer_wait_times() -> void:
+	scan_timer.wait_time = main.get_settings().get_setting("sync/file_refresh_rate")
 
 func ignore_last_changes() -> void:
 	file_mod_times = GDTFiles.get_file_modification_times()
@@ -63,7 +67,7 @@ func can_sync_files() -> bool:
 		main.is_session_active() and
 		not scan_timer.paused and 
 		not (main.client.is_active() and not main.client.is_fully_synced) and
-		not GDTSettings.get_setting("dev/disable_real_time_file_sync")
+		not main.get_settings().get_setting("dev/disable_real_time_file_sync")
 	)
 
 func _file_changed(path: String) -> void:

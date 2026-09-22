@@ -65,8 +65,8 @@ func _disconnected(id: int) -> void:
 
 func create_server_user() -> GDTUser:
 	var user = GDTUser.new(1, null)
-
-	user.name = GDTSettings.get_setting("username")
+	
+	user.name = main.settings.get_setting("username")
 	user.type = GDTUser.Type.HOST
 	user.main = main
 	user.id = 1
@@ -180,7 +180,7 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	var user = main.dual.get_user_by_id(id)
 
 	var data = GDTJoinData.from_dict(data_dict)
-	var server_password = GDTSettings.get_setting("server/password")
+	var server_password = main.get_settings().get_setting("server/password")
 	
 	if data.password != server_password:
 		print("Invalid password for user %d" % id)
@@ -200,7 +200,7 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	
 	user.name = data.username
 	
-	if GDTSettings.get_setting("server/require_approval"):
+	if main.get_settings().get_setting("server/require_approval"):
 		user.pending = true
 		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) wants to join. Check Pending Users tab." % [user.name, ip])
@@ -246,7 +246,7 @@ func project_files_request(hashes: Dictionary) -> void:
 
 @rpc("any_peer", "call_remote", "reliable")
 func broadcast_restart():
-	if not GDTSettings.get_setting("dev/restart_broadcast"):
+	if not main.get_settings().get_setting("dev/restart_broadcast"):
 		return
 
 	for user in main.dual.users:

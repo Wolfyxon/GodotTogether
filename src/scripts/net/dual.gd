@@ -153,7 +153,7 @@ func broadcast_selection() -> void:
 	receive_selection.rpc_id(0, paths, root.scene_file_path)
 
 func should_notify_user_connection() -> bool:
-	return GDTSettings.get_setting("notifications/users")
+	return main.get_settings().get_setting("notifications/users")
 
 func get_user_by_id(id: int) -> GDTUser:
 	for i in users:
@@ -324,7 +324,7 @@ func receive_selection(node_paths: Array, scene_path: String) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func restart() -> void:
-	if not GDTSettings.get_setting("dev/restart_broadcast"):
+	if not main.get_settings().get_setting("dev/restart_broadcast"):
 		return
 
 	var id = multiplayer.get_remote_sender_id()

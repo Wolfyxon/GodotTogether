@@ -27,7 +27,7 @@ func _ready() -> void:
 
 func register_control(node: Control, path: String):
 	node.set_meta("setting", path)
-	GDTSettings.make_setting_control(node, path)
+	gui.main.get_settings().make_setting_control(node, path)
 	controls.append(node)
 
 func update_settings_mode() -> void:
@@ -36,7 +36,7 @@ func update_settings_mode() -> void:
 
 func load_settings() -> void:
 	for i in controls:
-		GDTSettings.update_control(i, i.get_meta("setting"))
+		gui.main.get_settings().update_control(i, i.get_meta("setting"))
 
 func _on_password_toggled(toggled_on: bool) -> void:
 	password_input.secret = not toggled_on

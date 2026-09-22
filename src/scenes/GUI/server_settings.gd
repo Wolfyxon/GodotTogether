@@ -8,7 +8,7 @@ var gui: GodotTogetherGUI
 @onready var password_toggle = $scroll/vbox/password/toggle
 
 func load_settings() -> void:
-	password_input.text = GDTSettings.get_setting("server/password")
+	password_input.text = gui.main.get_settings().get_setting("server/password")
 
 func set_password_visible(state: bool) -> void:
 	password_input.secret = not state
@@ -19,4 +19,4 @@ func set_password_visible(state: bool) -> void:
 		password_toggle.icon = GodotTogetherGUI.IMG_HIDDEN
 
 func _on_password_changed(new_text: String) -> void:
-	GDTSettings.set_setting("server/password", new_text)
+	gui.main.get_settings().set_setting("server/password", new_text)

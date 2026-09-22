@@ -141,7 +141,8 @@ var always_scan = false # Enables change scanning even when session is inactive
 						# Useful in debugging
 
 func _ready() -> void:
-	change_timer.wait_time = GDTSettings.get_setting("sync/node_refresh_rate")
+	update_timer_wait_times()
+	
 	change_timer.timeout.connect(check_changes)
 	add_child(change_timer)
 	change_timer.start()
@@ -153,6 +154,9 @@ func _ready() -> void:
 	
 	start()
 	report_ready()
+
+func update_timer_wait_times() -> void:
+	change_timer.wait_time = main.get_settings().get_setting("sync/node_refresh_rate")
 
 func check_changes() -> void:
 	if not can_sync_nodes(): return
@@ -973,7 +977,7 @@ func can_sync_nodes() -> bool:
 		(always_scan or main.is_session_active()) and
 		not change_timer.paused and
 		not (main.client.is_active() and not main.client.is_fully_synced) and
-		not GDTSettings.get_setting("dev/disable_real_time_node_sync")
+		not main.get_settings().get_setting("dev/disable_real_time_node_sync")
 	)
 
 static func get_signal_hash_dict(node: Node) -> Dictionary:

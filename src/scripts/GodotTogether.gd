@@ -35,6 +35,7 @@ var chat: GDTChat = CHAT_SCENE.instantiate()
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
 
+var settings = GDTSettings.new(self, "settings")
 var script_security = GDTScriptSecurity.new(self, "script_security")
 var updater = GDTUpdater.new(self, "updater")
 var tests = GDTUnitTests.new(self, "tests")
@@ -53,16 +54,14 @@ func _enter_tree() -> void:
 	
 	init_components()
 	setup_menu_button()
+	settings.load_settings()
 	
 	if not check_path():
 		return
 	
-	if GDTUtils.has_readonly(GDTSettings.get_settings()):
-		printerr("Loaded settings dict is read-only! This should not happen!")
-	
 	await get_tree().process_frame
 	
-	if GDTSettings.get_setting("dev/run_tests_on_start"):
+	if settings.get_setting("dev/run_tests_on_start"):
 		tests.run_boot_tests()
 	
 	setup_chat()
@@ -70,7 +69,7 @@ func _enter_tree() -> void:
 	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
 	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
 	
-	if GDTSettings.get_setting("update/auto_check_enabled"):
+	if settings.get_setting("update/auto_check_enabled"):
 		updater.conditional_check()
 	
 	post_check_components()
@@ -94,6 +93,7 @@ func init_components() -> void:
 	components = [
 		client, server, dual,
 		file_sync, node_sync, 
+		settings,
 		gui,
 		script_security,
 		updater, 
@@ -247,6 +247,9 @@ func get_gui() -> GodotTogetherGUI:
 
 func get_chat() -> GDTChat:
 	return chat
+
+func get_settings() -> GDTSettings:
+	return settings
 
 func close_connection() -> void:
 	client.connection_cancelled = true

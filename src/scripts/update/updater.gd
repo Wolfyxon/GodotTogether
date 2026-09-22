@@ -95,7 +95,7 @@ func verify_data(data: PackedByteArray, signature_buf: PackedByteArray) -> bool:
 	return verify_hash(GDTUtils.sha256_of_buffer(data), signature_buf)
 
 func check_cached() -> GDTUpdateCheckResult:
-	var cached = GDTUpdateCheckResult.get_from_settings()
+	var cached = main.get_settings().get_update_cache()
 	
 	if not cached:
 		latest_result = GDTUpdateCheckResult.status_latest()
@@ -134,8 +134,10 @@ func get_current_version() -> String:
 	return main.get_plugin_version()
 
 func is_time_to_check() -> bool:
-	var last_check = GDTSettings.get_setting(LAST_CHECK_SETTING_PATH)
-	var interval = GDTSettings.get_setting("update/check_interval_hours") * 60 * 60
+	var settings = main.get_settings()
+	
+	var last_check = settings.get_setting(LAST_CHECK_SETTING_PATH)
+	var interval = settings.get_setting("update/check_interval_hours") * 60 * 60
 	var now = Time.get_unix_time_from_system()
 	
 	return now > last_check + interval
@@ -196,7 +198,7 @@ func check() -> GDTUpdateCheckResult:
 	if not res or res.type == GDTUpdateCheckResult.ResultType.RunningLatest:
 		print("[GodotTogether] No updates available")
 	
-	latest_result.save_to_settings()
+	main.get_settings().store_update_cache(latest_result)
 	
 	return res
 
@@ -206,7 +208,11 @@ func _check_from_api() -> GDTUpdateCheckResult:
 		return
 	
 	print("[GodotTogether] Checking for updates...")
-	GDTSettings.set_setting(LAST_CHECK_SETTING_PATH, Time.get_unix_time_from_system())
+	
+	main.get_settings().set_setting(
+		LAST_CHECK_SETTING_PATH, 
+		Time.get_unix_time_from_system()
+	)
 	
 	http.timeout = API_TIMEOUT
 	http.download_file = ""
@@ -461,7 +467,7 @@ func verify_update(update: GDTUpdateCheckResult) -> bool:
 	return true
 
 func apply_update() -> void:
-	GDTUpdateCheckResult.clear_cache()
+	main.get_settings().clear_update_cache()
 	
 	var installer = GDTUpdateInstaller.new()
 	var zip_err = installer.open_zip(ZIP_PATH)
