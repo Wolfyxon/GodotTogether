@@ -142,6 +142,7 @@ var always_scan = false # Enables change scanning even when session is inactive
 
 func _ready() -> void:
 	update_timer_wait_times()
+	main.get_settings().settings_changed.connect(update_timer_wait_times)
 	
 	change_timer.timeout.connect(check_changes)
 	add_child(change_timer)

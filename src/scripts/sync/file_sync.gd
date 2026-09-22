@@ -12,6 +12,7 @@ var file_mod_times := {}
 
 func _ready() -> void:
 	update_timer_wait_times()
+	main.get_settings().settings_changed.connect(update_timer_wait_times)
 	
 	scan_timer.timeout.connect(scan_files)
 	add_child(scan_timer)
