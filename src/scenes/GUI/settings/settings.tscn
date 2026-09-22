@@ -223,6 +223,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Actions"
 
+[node name="btnReload" type="Button" parent="main/scroll/vbox" unique_id=346251827]
+layout_mode = 2
+text = "Reload settings"
+icon = ExtResource("4_r5h7c")
+
 [node name="actions" type="GridContainer" parent="main/scroll/vbox" unique_id=1099110496]
 layout_mode = 2
 columns = 2
@@ -284,6 +289,7 @@ visible = false
 
 [connection signal="pressed" from="main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow" to="." method="_on_btn_check_update_now_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/devActions/btnDevMenu" to="DevMenu" method="popup"]
+[connection signal="pressed" from="main/scroll/vbox/btnReload" to="." method="_on_btn_reload_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/actions/reset" to="." method="_on_reset_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/actions/showFile" to="." method="_on_show_file_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/actions/shutdown" to="." method="_on_shutdown_pressed"]
