@@ -27,7 +27,6 @@ offset_bottom = 675.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=1872551780]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 598
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=2043902136]
 layout_mode = 2
