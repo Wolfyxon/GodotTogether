@@ -47,13 +47,32 @@ button_pressed = true
 text = "User join/leave notifications"
 metadata/setting = "notifications/users"
 
+[node name="nodeScanMode" type="HBoxContainer" parent="main/scroll/vbox" unique_id=442367942]
+layout_mode = 2
+
+[node name="label" type="Label" parent="main/scroll/vbox/nodeScanMode" unique_id=425634599]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Node scan mode"
+
+[node name="value" type="OptionButton" parent="main/scroll/vbox/nodeScanMode" unique_id=489959020]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Continuous"
+popup/item_0/id = 0
+popup/item_1/text = "Performance"
+popup/item_1/id = 1
+metadata/setting = "sync/node_scan_mode"
+
 [node name="nodeSyncRate" type="HBoxContainer" parent="main/scroll/vbox" unique_id=641348456]
 layout_mode = 2
 
 [node name="label" type="Label" parent="main/scroll/vbox/nodeSyncRate" unique_id=751089060]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Node sync rate"
+text = "Node scan rate"
 
 [node name="value" type="SpinBox" parent="main/scroll/vbox/nodeSyncRate" unique_id=169913795]
 layout_mode = 2
@@ -72,7 +91,7 @@ tooltip_text = "How often to check for node changes (in seconds). Lower = faster
 [node name="label" type="Label" parent="main/scroll/vbox/fileSyncRate" unique_id=541592061]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "File sync rate"
+text = "File scan rate"
 
 [node name="value" type="SpinBox" parent="main/scroll/vbox/fileSyncRate" unique_id=1580941394]
 layout_mode = 2

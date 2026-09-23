@@ -26,6 +26,7 @@ const _DEFAULT_DATA = {
 		"require_approval": false
 	},
 	"sync": {
+		"node_scan_mode": GDTNodeSync.NodeScanMode.CONTINUOUS,
 		"node_refresh_rate": 0.1,
 		"file_refresh_rate": 1,
 	},

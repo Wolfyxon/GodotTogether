@@ -10,6 +10,11 @@ enum ResourceType {
 	FILE
 }
 
+enum NodeScanMode {
+	CONTINUOUS,
+	ON_CHANGE
+}
+
 const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_NONE,
 	PROPERTY_USAGE_GROUP,
@@ -141,10 +146,13 @@ var always_scan = false # Enables change scanning even when session is inactive
 						# Useful in debugging
 
 func _ready() -> void:
+	var editor_ur = EditorInterface.get_editor_undo_redo()
+	editor_ur.history_changed.connect(_editor_undo_redo_changed)
+	
 	update_timer_wait_times()
 	main.get_settings().settings_changed.connect(update_timer_wait_times)
 	
-	change_timer.timeout.connect(check_changes)
+	change_timer.timeout.connect(_cycle)
 	add_child(change_timer)
 	change_timer.start()
 	
@@ -155,6 +163,12 @@ func _ready() -> void:
 	
 	start()
 	report_ready()
+
+func _cycle() -> void:
+	if main.settings.get_setting("sync/node_scan_mode") != NodeScanMode.CONTINUOUS:
+		return
+	
+	check_changes()
 
 func update_timer_wait_times() -> void:
 	change_timer.wait_time = main.get_settings().get_setting("sync/node_refresh_rate")
@@ -218,6 +232,12 @@ func _check_node_signals(node, _root: Node, data: Dictionary) -> void:
 	
 	_node_signal_connections_changed(node, diff)
 	data["signal_hashes"] = new_hashes
+
+func _editor_undo_redo_changed() -> void:
+	if main.settings.get_setting("sync/node_scan_mode") != NodeScanMode.ON_CHANGE:
+		return
+		
+	check_changes()
 
 func _node_signal_connections_changed(node: Node, signal_names: Array) -> void:
 	if not can_sync_nodes(): return
@@ -919,7 +939,7 @@ func unobserve_node(node: Node) -> void:
 func observe_node(node: Node) -> Dictionary:
 	if not is_node_valid(node):
 		return {}
-		
+	
 	if node in node_data_dict:
 		return node_data_dict[node]
 	
