@@ -33,10 +33,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 825.0
-offset_bottom = 500.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 846.0
+offset_bottom = 521.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -186,6 +186,29 @@ title = "Developer settings"
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/settings" unique_id=549520500]
 visible = false
 layout_mode = 2
+
+[node name="lblLogging" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1546657365]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Logging"
+
+[node name="logNodeScans" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=6772365]
+layout_mode = 2
+text = "Log node scans"
+metadata/setting = "dev/log_node_scans"
+
+[node name="logNodeChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1181556063]
+layout_mode = 2
+text = "Log node changes"
+metadata/setting = "dev/log_node_changes"
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/settings/vbox" unique_id=703633692]
+layout_mode = 2
+
+[node name="lblGeneral" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1162940082]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "General"
 
 [node name="warning" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1035282577]
 layout_mode = 2

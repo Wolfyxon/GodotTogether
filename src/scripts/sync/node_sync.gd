@@ -187,6 +187,9 @@ func check_changes() -> void:
 	
 	scan_started.emit()
 	
+	if main.get_settings().get_setting("dev/log_node_scans"):
+		print("Scanning nodes...")
+	
 	for node in node_data_dict:
 		check_node(node, root)
 	
@@ -298,6 +301,8 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	
 	if not main.is_session_active():
 		return
+	
+	print("Node changed: %s %s" % [node, property_paths])
 	
 	if main.server.is_active():
 		server_broadcast_node_update(node_path, scene.scene_file_path, property_dict)

@@ -47,7 +47,9 @@ const _DEFAULT_DATA = {
 		"run_tests_on_start": false,
 		"disable_real_time_file_sync": false,
 		"disable_real_time_node_sync": false,
-		"restart_broadcast": false
+		"restart_broadcast": false,
+		"log_node_changes": false,
+		"log_node_scans": false
 	},
 	"notifications": {
 		"users": true
