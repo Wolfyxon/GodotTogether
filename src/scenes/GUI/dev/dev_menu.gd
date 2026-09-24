@@ -16,7 +16,7 @@ func _ready() -> void:
 	$main/scroll/vbox/updateSigningContainer/updateSigning.main = main
 
 	for i in $main/scroll/vbox/settings/vbox.get_children():
-		if not i.get_meta("setting"):
+		if not i.has_meta("setting"):
 			continue
 		
 		main.get_settings().make_setting_control(i, i.get_meta("setting"))
