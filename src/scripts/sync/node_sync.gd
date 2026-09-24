@@ -302,7 +302,8 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	if not main.is_session_active():
 		return
 	
-	print("Node changed: %s %s" % [node, property_paths])
+	if is_change_logging_enabled():
+		print("Node changed: %s %s" % [node, property_paths])
 	
 	if main.server.is_active():
 		server_broadcast_node_update(node_path, scene.scene_file_path, property_dict)
@@ -330,6 +331,9 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	var prop_dict = get_select_property_dict(child, prop_list)
 	
 	var parent_path = scene.get_path_to(parent)
+	
+	if is_change_logging_enabled():
+		print("Node added: %s to %s" % [child, parent])
 	
 	if main.server.is_active():
 		server_broadcast_node_add(parent_path, scene.scene_file_path, child.get_class(), prop_dict)
@@ -373,6 +377,9 @@ func _node_tree_exiting(node: Node) -> void:
 		return
 	# ---------------------
 	
+	if is_change_logging_enabled():
+		print("Node removed: %s" % node)
+	
 	if main.server.is_active():
 		server_broadcast_node_delete(node_path, scene.scene_file_path)
 	else:
@@ -399,6 +406,9 @@ func _node_child_order_changed(parent: Node) -> void:
 			continue
 		
 		names.append(child.name)
+	
+	if is_change_logging_enabled():
+		print("Node children reordered: %s" % parent)
 	
 	if main.server.is_active():
 		server_broadcast_reorder_children(parent_path, scene.scene_file_path, names)
@@ -431,6 +441,9 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 	var data_dict = observe_node(new_node)
 	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {})
 	var prop_dict = get_select_property_dict(new_node, prop_list)
+	
+	if is_change_logging_enabled():
+		print("Node replaced: %s -> %s" % [current_node, new_node])
 	
 	prop_dict["name"] = current_node.name
 	
@@ -1004,6 +1017,12 @@ func can_sync_nodes() -> bool:
 		not change_timer.paused and
 		not (main.client.is_active() and not main.client.is_fully_synced) and
 		not main.get_settings().get_setting("dev/disable_real_time_node_sync")
+	)
+
+func is_change_logging_enabled() -> bool:
+	return (
+		main and main.get_settings() and
+		main.get_settings().get_setting("dev/log_node_changes")
 	)
 
 static func get_signal_hash_dict(node: Node) -> Dictionary:
