@@ -46,6 +46,9 @@ func resume() -> void:
 func scan_files() -> void:
 	if not can_sync_files(): return
 	
+	if main.get_settings().get_setting("dev/log_file_scans"):
+		print("Scanning files...")
+	
 	scan_started.emit()
 	
 	var new_times = GDTFiles.get_file_modification_times()
@@ -71,7 +74,16 @@ func can_sync_files() -> bool:
 		not main.get_settings().get_setting("dev/disable_real_time_file_sync")
 	)
 
+func is_change_logging_enabled() -> bool:
+	return (
+		main and main.get_settings() and
+		main.get_settings().get_setting("dev/log_file_changes")
+	)
+
 func _file_changed(path: String) -> void:
+	if is_change_logging_enabled():
+		print("File changed: %s" % path)
+	
 	if main.client.is_active():
 		client_send_file_to_server(path)
 	
@@ -79,6 +91,9 @@ func _file_changed(path: String) -> void:
 		server_broadcast_file_at_path(path)
 
 func _file_removed(path: String) -> void:
+	if is_change_logging_enabled():
+		print("File removed: %s" % path)
+	
 	if main.client.is_active():
 		_c2s_request_file_delete.rpc_id(1, path)
 

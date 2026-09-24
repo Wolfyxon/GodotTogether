@@ -192,15 +192,25 @@ layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 text = "Logging"
 
+[node name="logNodeChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1181556063]
+layout_mode = 2
+text = "Log node changes"
+metadata/setting = "dev/log_node_changes"
+
 [node name="logNodeScans" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=6772365]
 layout_mode = 2
 text = "Log node scans"
 metadata/setting = "dev/log_node_scans"
 
-[node name="logNodeChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1181556063]
+[node name="logFileChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1195994528]
 layout_mode = 2
-text = "Log node changes"
-metadata/setting = "dev/log_node_changes"
+text = "Log file changes"
+metadata/setting = "dev/log_file_changes"
+
+[node name="logFileScans" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=133663554]
+layout_mode = 2
+text = "Log file scans"
+metadata/setting = "dev/log_file_scans"
 
 [node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/settings/vbox" unique_id=703633692]
 layout_mode = 2
