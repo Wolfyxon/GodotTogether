@@ -113,10 +113,11 @@ const SETGET_PROPERTIES = {
 		}
 	},
 	
-	"TileMap": {
+	"TileMapLayer": {
+		"layer_?/tile_data": {},
 		"tile_set/sources/?": {}
 	},
-	"TileMapLayer": "TileMap",
+	"TileMap": "TileMapLayer",
 }
 
 var change_timer = Timer.new()
