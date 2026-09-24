@@ -19,10 +19,10 @@ borderless = false
 script = ExtResource("1_b5wo4")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1100841752]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 775.0
-offset_bottom = 675.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 796.0
+offset_bottom = 696.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=1872551780]
 layout_mode = 2
@@ -62,7 +62,7 @@ selected = 0
 item_count = 2
 popup/item_0/text = "Continuous"
 popup/item_0/id = 0
-popup/item_1/text = "Performance"
+popup/item_1/text = "On change (performance)"
 popup/item_1/id = 1
 metadata/setting = "sync/node_scan_mode"
 
