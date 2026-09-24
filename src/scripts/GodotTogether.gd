@@ -40,6 +40,7 @@ var script_security = GDTScriptSecurity.new(self, "script_security")
 var updater = GDTUpdater.new(self, "updater")
 var tests = GDTUnitTests.new(self, "tests")
 var debug = GDTDebug.new(self, "debug")
+var extras = GDTExtras.new(self, "extras")
 
 var plugin_started := false
 var components = []
@@ -99,7 +100,8 @@ func init_components() -> void:
 		script_security,
 		updater, 
 		tests,
-		debug
+		debug,
+		extras
 	]
 	
 	# The array may become empty or null if an error occurs
