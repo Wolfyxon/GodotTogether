@@ -899,17 +899,17 @@ func server_broadcast_node_signal_connections_update(
 
 func validate_and_create_node(node_class: String) -> Node:
 	if not ClassDB.class_exists(node_class):
-		printerr("Class '%s' doesn't exist" % node_class)
+		GDTUtils.printerr_stack("Class '%s' doesn't exist" % node_class)
 		return
 	
 	var node = ClassDB.instantiate(node_class)
 	
 	if not node:
-		printerr("Unable to create clas '%s'" % node_class)
+		GDTUtils.printerr_stack("Unable to create clas '%s'" % node_class)
 		return
 	
 	if not node is Node:
-		printerr("Class '%s' is not a Node" % node_class)
+		GDTUtils.printerr_stack("Class '%s' is not a Node" % node_class)
 		return
 		
 	return node
