@@ -225,6 +225,11 @@ layout_mode = 2
 theme_type_variation = &"WarningLabel"
 text = "Changing these settings may break the plugin. Leave everything off."
 
+[node name="nodeScanAlways" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=287885757]
+layout_mode = 2
+text = "Always scan nodes"
+metadata/setting = "dev/always_scan_nodes"
+
 [node name="fileSyncOff" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=387970416]
 layout_mode = 2
 tooltip_text = "Disables real time file synchronization.

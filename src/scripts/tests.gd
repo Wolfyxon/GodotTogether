@@ -114,13 +114,6 @@ func check_version(ver: String) -> String:
 	
 	return ""
 
-func test_debug() -> bool:
-	if main.node_sync.always_scan:
-		printerr("node_sync.always_scan should be false")
-		return false
-	
-	return true
-
 func test_ui() -> bool:
 	var gui = main.get_gui()
 	

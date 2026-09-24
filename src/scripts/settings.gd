@@ -45,9 +45,11 @@ const _DEFAULT_DATA = {
 		# Everything here should be false by default
 		"menu_button": false,
 		"run_tests_on_start": false,
+		"restart_broadcast": false,
+		
 		"disable_real_time_file_sync": false,
 		"disable_real_time_node_sync": false,
-		"restart_broadcast": false,
+		"always_scan_nodes": false,
 		
 		"log_node_changes": false,
 		"log_node_scans": false,

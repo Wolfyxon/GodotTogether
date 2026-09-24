@@ -142,8 +142,6 @@ var node_data_dict = {
 
 var supressed_nodes = {}
 var last_scene_path: String = ""
-var always_scan = false # Enables change scanning even when session is inactive
-						# Useful in debugging
 
 func _ready() -> void:
 	var editor_ur = EditorInterface.get_editor_undo_redo()
@@ -1013,7 +1011,10 @@ func start() -> void:
 func can_sync_nodes() -> bool:
 	return (
 		main != null and
-		(always_scan or main.is_session_active()) and
+		(
+			main.is_session_active() or
+			main.get_settings().get_setting("dev/always_scan_nodes")
+		) and
 		not change_timer.paused and
 		not (main.client.is_active() and not main.client.is_fully_synced) and
 		not main.get_settings().get_setting("dev/disable_real_time_node_sync")
