@@ -54,6 +54,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	scene_editor_tabs.update()
 
+func _exit_tree() -> void:
+	scene_editor_tabs.clear_colors()
+
 func _update() -> void:
 	if not main: return
 	if not main.is_session_active(): return
