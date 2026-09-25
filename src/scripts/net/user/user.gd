@@ -40,6 +40,8 @@ var authenticated_at := -1.0
 var authenticated := false
 var pending := false
 
+var current_scene: String = ""
+
 var _last_address: String = ""
 
 var permissions: Array[GodotTogether.Permission] = [
