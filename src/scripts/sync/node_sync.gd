@@ -93,6 +93,14 @@ const SETGET_PROPERTIES = {
 	},
 	
 	"TileSet": {
+		# "?" doesnt seem to work yet inside names
+		"occlusion_layer_?/light_mask": {},
+		"occlusion_layer_?/sdf_collision": {},
+		
+		"physics_layer_?/collision_priority": {},
+		"physics_layer_?/collision_mask": {},
+		"physics_layer_?/physics_material": {},
+		
 		"sources/?": {
 			"get": {
 				"func": "get_source",
@@ -115,7 +123,7 @@ const SETGET_PROPERTIES = {
 	
 	"TileMapLayer": {
 		"layer_?/tile_data": {},
-		"tile_set/sources/?": {}
+		"tile_set/?": {},
 	},
 	"TileMap": "TileMapLayer",
 }
