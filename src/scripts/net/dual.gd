@@ -24,6 +24,8 @@ var avatar_2d_scene = load("res://addons/GodotTogether/src/scenes/Avatar2D/Avata
 var avatar_3d_markers: Array[GDTAvatar3D] = []
 var avatar_2d_markers: Array[GDTAvatar2D] = []
 
+var scene_editor_tabs = GDTEditorSceneTabs.new()
+
 func _ready() -> void:
 	if not main: return
 	
@@ -48,6 +50,9 @@ func _ready() -> void:
 	EditorInterface.get_selection().selection_changed.connect(broadcast_selection)
 	
 	report_ready()
+
+func _process(_delta: float) -> void:
+	scene_editor_tabs.update()
 
 func _update() -> void:
 	if not main: return
@@ -151,6 +156,15 @@ func broadcast_selection() -> void:
 			paths.append(path)
 	
 	receive_selection.rpc_id(0, paths, root.scene_file_path)
+	receive_current_scene.rpc_id(0, root.scene_file_path)
+
+func update_scene_colors() -> void:
+	scene_editor_tabs.clear_colors()
+	
+	for user in users:
+		if not user.current_scene: continue
+		
+		scene_editor_tabs.set_scene_color(user.current_scene, user.color)
 
 func should_notify_user_connection() -> bool:
 	return main.get_settings().get_setting("notifications/users")
@@ -321,6 +335,15 @@ func receive_selection(node_paths: Array, scene_path: String) -> void:
 		if not item: continue
 		
 		item.set_custom_bg_color(0, color)
+
+@rpc("any_peer", "reliable")
+func receive_current_scene(path: String) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	var user = get_user_by_id(id)
+	if not user: return
+	
+	user.current_scene = path
+	update_scene_colors()
 
 @rpc("authority", "call_remote", "reliable")
 func restart() -> void:
