@@ -272,6 +272,10 @@ func make_setting_control(
 
 func update_control(node: Control, path: String, format := "") -> void:
 	var value = get_setting(path)
+	
+	if node is LineEdit and node.is_editing():
+		return
+	
 	GDTUtils.set_control_value(node, value, format)
 
 static func get_absolute_path() -> String:
