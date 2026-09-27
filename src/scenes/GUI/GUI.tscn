@@ -349,9 +349,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="title" type="Label" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=1145894850]
+[node name="hbox" type="HBoxContainer" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=1490764786]
 layout_mode = 2
+
+[node name="title" type="Label" parent="mainMenu/main/sessionInit/cover/vbox/hbox" unique_id=1145894850]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Starting server"
+
+[node name="timer" type="Label" parent="mainMenu/main/sessionInit/cover/vbox/hbox" unique_id=728808517]
+custom_minimum_size = Vector2(0.1, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.5921569)
+text = "0"
+horizontal_alignment = 1
 
 [node name="btnCancel" type="Button" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=1228142158]
 layout_mode = 2

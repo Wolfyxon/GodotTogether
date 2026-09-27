@@ -21,6 +21,8 @@ var gui: GodotTogetherGUI
 
 @onready var host_settings = $sessionInit/start/host/settings
 
+var cover_timeout: float = -1
+
 func _ready() -> void:
 	await get_tree().process_frame
 	
@@ -44,6 +46,18 @@ func _ready() -> void:
 		settings.make_setting_control(username_input, "username")
 		settings.make_setting_control(join_ip_input, "last_connection/ip")
 		settings.make_setting_control(join_port_input, "last_connection/port")
+
+func _process(_delta: float) -> void:
+	var timer_label = session_init_cover.get_node("vbox/hbox/timer")
+	
+	if cover_timeout != -1:
+		var time = Time.get_unix_time_from_system()
+		var time_diff = max(cover_timeout - time, 0)
+		
+		timer_label.text = str(int(time_diff))
+		timer_label.visible = true
+	else:
+		timer_label.visible = false
 
 func _update_available(update: GDTUpdateCheckResult) -> void:
 	update_btn.text = "Update to v.%s" % update.version
@@ -98,6 +112,7 @@ func _join() -> void:
 	session_cancel.visible = true
 
 	set_session_init_cover("Connecting...")
+	set_session_init_timeout(main.client.get_timeout_seconds())
 	
 	var err = main.client.join(ip, port, main.client.current_join_data)
 	
@@ -162,8 +177,14 @@ func set_session_init_cover(text: String = "") -> void:
 		session_init_cover.hide()
 		return
 	
-	session_init_cover.get_node("vbox/title").text = text
+	session_init_cover.get_node("vbox/hbox/title").text = text
+	session_init_cover.get_node("vbox/hbox/timer").text = ""
+	cover_timeout = -1
+	
 	session_init_cover.show()
+
+func set_session_init_timeout(seconds: float) -> void:
+	cover_timeout = Time.get_unix_time_from_system() + seconds
 
 func end_session() -> void:
 	if main and main.is_session_active():
