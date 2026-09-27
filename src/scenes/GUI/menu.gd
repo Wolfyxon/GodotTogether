@@ -43,9 +43,13 @@ func _ready() -> void:
 		update_btn.visible = false
 		
 		var settings = main.get_settings()
+		settings.settings_changed.connect(_settings_changed)
+		
 		settings.make_setting_control(username_input, "username")
 		settings.make_setting_control(join_ip_input, "last_connection/ip")
 		settings.make_setting_control(join_port_input, "last_connection/port")
+
+		_settings_changed()
 
 func _process(_delta: float) -> void:
 	var timer_label = session_init_cover.get_node("vbox/hbox/timer")
@@ -58,6 +62,9 @@ func _process(_delta: float) -> void:
 		timer_label.visible = true
 	else:
 		timer_label.visible = false
+
+func _settings_changed() -> void:
+	$topBar/devMenu.visible = main.get_settings().get_setting("dev/menu_button")
 
 func _update_available(update: GDTUpdateCheckResult) -> void:
 	update_btn.text = "Update to v.%s" % update.version
