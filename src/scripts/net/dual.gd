@@ -24,8 +24,6 @@ var avatar_2d_scene = load("res://addons/GodotTogether/src/scenes/Avatar2D/Avata
 var avatar_3d_markers: Array[GDTAvatar3D] = []
 var avatar_2d_markers: Array[GDTAvatar2D] = []
 
-var scene_editor_tabs = GDTEditorSceneTabs.new()
-
 func _ready() -> void:
 	if not main: return
 	
@@ -50,12 +48,6 @@ func _ready() -> void:
 	EditorInterface.get_selection().selection_changed.connect(broadcast_selection)
 	
 	report_ready()
-
-func _process(_delta: float) -> void:
-	scene_editor_tabs.update()
-
-func _exit_tree() -> void:
-	scene_editor_tabs.clear_colors()
 
 func _update() -> void:
 	if not main: return
@@ -165,12 +157,13 @@ func broadcast_selection() -> void:
 	receive_current_scene.rpc_id(0, root.scene_file_path)
 
 func update_scene_colors() -> void:
-	scene_editor_tabs.clear_colors()
+	var tabs = main.get_gui().scene_editor_tabs
+	tabs.clear_colors()
 	
 	for user in users:
 		if not user.current_scene: continue
 		
-		scene_editor_tabs.set_scene_color(user.current_scene, user.color)
+		tabs.set_scene_color(user.current_scene, user.color)
 
 func should_notify_user_connection() -> bool:
 	return main.get_settings().get_setting("notifications/users")

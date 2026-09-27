@@ -6,6 +6,7 @@ const IMG_HIDDEN = preload("../../img/hidden.svg")
 const IMG_VISIBLE = preload("../../img/visible.svg")
 
 var scene_tree_editor = GDTSceneTreeEditor.new()
+var scene_editor_tabs = GDTEditorSceneTabs.new()
 
 func _ready() -> void:
 	var menu_window = get_menu_window()
@@ -35,7 +36,12 @@ func _ready() -> void:
 		
 		report_ready()
 
+func _exit_tree() -> void:
+	scene_editor_tabs.clear_colors()
+
 func _process(_delta: float) -> void:
+	scene_editor_tabs.update()
+	
 	if not Engine.is_editor_hint():
 		get_menu_window().visible = true
 

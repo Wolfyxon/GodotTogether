@@ -270,7 +270,7 @@ func post_session_end() -> void:
 	
 	button.reset()
 	dual.clear_avatars()
-
+	
 	gui.get_menu().users.clear()
 	gui.get_menu().main_menu()
 
