@@ -65,7 +65,7 @@ func _handle_connecting() -> void:
 
 	var status = -1
 	var start = Time.get_unix_time_from_system()
-	var timeout = start + 10
+	var timeout = start + get_timeout_seconds()
 
 	while (status == -1 or status != success) and Time.get_unix_time_from_system() < timeout and not connection_cancelled:
 		status = client_peer.get_connection_status()
@@ -79,6 +79,9 @@ func _handle_connecting() -> void:
 	if client_peer.get_connection_status() != success:
 		client_peer.close()
 		_connecting_finished(false)
+
+func get_timeout_seconds() -> float:
+	return main.get_settings().get_setting("client/timeout")
 
 func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()

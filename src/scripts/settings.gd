@@ -25,6 +25,9 @@ const _DEFAULT_DATA = {
 		"allow_external_connections": true,
 		"require_approval": false
 	},
+	"client": {
+		"timeout": 10,
+	},
 	"sync": {
 		"node_scan_mode": GDTNodeSync.NodeScanMode.CONTINUOUS,
 		"node_refresh_rate": 0.1,
