@@ -15,7 +15,7 @@ var file_scan_durations = []
 var _last_node_scan_time = 0
 var _last_file_scan_time = 0
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not main: return
 	if not check.button_pressed: return
 	

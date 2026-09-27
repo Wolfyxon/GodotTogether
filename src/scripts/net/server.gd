@@ -136,7 +136,7 @@ func caller_has_permission(permission: GodotTogether.Permission) -> bool:
 
 func _post_start() -> void:
 	main.file_sync.resume()
-	main.session_started.emit()
+	main.session_start()
 	
 	await get_tree().process_frame
 
@@ -225,21 +225,21 @@ func project_files_request(hashes: Dictionary) -> void:
 
 	main.client.begin_project_files_download.rpc_id(id, files_to_send.size())
 
-	for i in files_to_send.size():
-		var path = files_to_send[i]
+	for file_i in files_to_send.size():
+		var path = files_to_send[file_i]
 		print("Sending " + path)
 		
-		GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, i: int):
+		GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
 			main.client.receive_file.rpc_id(
 				id, 
 				path, 
 				buf, 
-				i, 
-				i == 0
+				cursor, 
+				cursor == 0
 			)
 		)
 		
-		if i % 4 == 0:
+		if file_i % 4 == 0:
 			await get_tree().process_frame
 
 	#main.client.project_files_downloaded.rpc_id(id)

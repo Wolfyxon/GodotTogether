@@ -58,7 +58,7 @@ func _connecting_finished(success: bool) -> void:
 	connecting_finished.emit(success)
 	
 	if success:
-		main.session_started.emit()
+		main.session_start()
 
 func _handle_connecting() -> void:
 	var success = MultiplayerPeer.ConnectionStatus.CONNECTION_CONNECTED

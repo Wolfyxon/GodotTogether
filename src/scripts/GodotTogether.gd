@@ -264,6 +264,9 @@ func close_connection() -> void:
 	
 	post_session_end()
 
+func session_start() -> void:
+	session_started.emit()
+
 func post_session_end() -> void:
 	gui.scene_tree_editor.clear_colors()
 	dual.update_scene_colors()

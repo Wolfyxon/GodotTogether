@@ -1425,8 +1425,7 @@ static func encode_resource(resource: Resource) -> Dictionary:
 		"_gdtRes": ResourceType.LOCAL,
 		"props": {}
 	}
-
-	var cloned = false
+	
 	var is_file = GDTUtils.is_file_resource(resource)
 	
 	if is_file:

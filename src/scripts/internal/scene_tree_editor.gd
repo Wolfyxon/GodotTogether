@@ -15,11 +15,11 @@ func get_tree_control() -> Tree:
 	_tree_control = GDTUtils.get_descendant_with_class(node, "Tree")
 	return _tree_control
 
-func get_tree_item_matching_node(node: Node) -> TreeItem:
-	var scene = GDTUtils.get_node_scene(node)
+func get_tree_item_matching_node(match_node: Node) -> TreeItem:
+	var scene = GDTUtils.get_node_scene(match_node)
 	if not scene: return
 	
-	var path = scene.get_path_to(node)
+	var path = scene.get_path_to(match_node)
 	return get_tree_item_at_path(path)
 
 func clear_colors(root: TreeItem = null) -> void:
