@@ -138,6 +138,9 @@ func _users_listed(new_users: Array[GDTUser]) -> void:
 		create_avatar_3d(user)
 
 func broadcast_selection() -> void:
+	if not main:
+		return
+	
 	if not main.is_session_active():
 		return
 	
@@ -230,6 +233,8 @@ func clear_avatars() -> void:
 	avatar_3d_markers.clear()
 
 func broadcast_avatars() -> void:
+	if not main: return
+	
 	if not main.is_session_active():
 		return
 	
