@@ -85,41 +85,47 @@ func _host() -> void:
 	$session/top/end.text = "Stop server"
 
 func _join() -> void:
-	if main.client:
-		main.client.current_join_data.username = username_input.text
-		main.client.current_join_data.password = join_password_input.text
-		
-		var ip = join_ip_input.text
-		var port = join_port_input.value
-		
-		session_cancel.visible = true
+	var ip: String = join_ip_input.text
+	var port: int = join_port_input.value
+	
+	if not ip.strip_edges():
+		gui.alert("Enter a valid IP address or domain.", "Invalid address")
+		return
+	
+	main.client.current_join_data.username = username_input.text
+	main.client.current_join_data.password = join_password_input.text
+	
+	session_cancel.visible = true
 
-		set_session_init_cover("Connecting...")
+	set_session_init_cover("Connecting...")
+	
+	var err = main.client.join(ip, port, main.client.current_join_data)
+	
+	if err != OK:
+		set_session_init_cover()
+		gui.alert(
+			GDTUtils.join([
+				"Unable to begin connection.",
+				"Make sure the IP and port is valid.",
+				"Error code: %s" % error_string(err),
+			], "\n"),
+			"Failed to start client"
+		)
+
+		return
 		
-		var err = main.client.join(ip, port, main.client.current_join_data)
-		
-		if err:
+	if not await main.client.connecting_finished:
+		if main.client.connection_cancelled:
 			set_session_init_cover()
-			gui.alert(
-				"Error: %s. \nMake sure the IP and port is valid. \nSee output for more details" % error_string(err),
-				"Failed to start client"
-			)
-
 			return
 		
-		if not await main.client.connecting_finished:
-			if main.client.connection_cancelled:
-				set_session_init_cover()
-				return
+		set_session_init_cover()
+		gui.alert(
+			"Connection to %s:%s timed out. \nMake sure the IP and port is valid and the host's server \nis running and configured properly." % [ip, port],
+			"Failed to connect"
+		)
 
-
-			set_session_init_cover()
-			gui.alert(
-				"Connection to %s:%s timed out. \nMake sure the IP and port is valid and the host's server \nis running and configured properly." % [ip, port],
-				"Failed to connect"
-			)
-
-			return
+		return
 
 	set_session_init_cover("Waiting for host's approval...")
 	
@@ -130,7 +136,7 @@ func _join() -> void:
 	while main.client.target_file_count != 0:
 		set_session_init_cover("Downloading files %s/%s" % [main.client.downloaded_file_count, main.client.target_file_count])
 		await main.client.file_received
-
+	
 	_joined()
 
 func _joined() -> void:
