@@ -172,7 +172,12 @@ func _ready() -> void:
 	report_ready()
 
 func _cycle() -> void:
-	if main.settings.get_setting("sync/node_scan_mode") != NodeScanMode.CONTINUOUS:
+	if not main: return
+	
+	var settings = main.get_settings()
+	if not settings: return
+	
+	if settings.get_setting("sync/node_scan_mode") != NodeScanMode.CONTINUOUS:
 		return
 	
 	check_changes()
