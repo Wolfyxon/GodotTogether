@@ -54,6 +54,8 @@ const _DEFAULT_DATA = {
 		"disable_real_time_node_sync": false,
 		"always_scan_nodes": false,
 		
+		"log_settings": false,
+		
 		"log_node_changes": false,
 		"log_node_scans": false,
 		
@@ -93,6 +95,9 @@ func _ready() -> void:
 func _component_init() -> void:
 	load_default()
 
+func is_logging_enabled() -> bool:
+	return get_setting("dev/log_settings")
+
 func save_if_changed() -> void:
 	if not have_changed: return
 	if not is_unsaved: return
@@ -105,6 +110,9 @@ func has_error() -> bool:
 func load_default() -> void:
 	data = get_default_data()
 	settings_changed.emit()
+	
+	if is_logging_enabled():
+		print("Loaded default settings")
 
 func save_settings() -> void:
 	save_mutex.lock()
@@ -156,10 +164,16 @@ func load_settings() -> bool:
 	var merged = GDTUtils.merge(parsed.duplicate(true), get_default_data())
 	data = merged.duplicate(true)
 	
+	if is_logging_enabled():
+		print("Settings loaded")
+	
 	settings_changed.emit()
 	return true
 
 func reset_settings() -> void:
+	if is_logging_enabled():
+		print("Resetting settings")
+	
 	have_changed = false
 	
 	load_default()
@@ -222,6 +236,9 @@ func set_setting(path: String, value) -> void:
 	
 	GDTUtils.set_nested(data, path, value)
 	settings_changed.emit()
+	
+	if is_logging_enabled():
+		print("Setting changed: %s: %s" % [path, value])
 
 func _set_setting_reverse(value, path: String) -> void:
 	set_setting(path, value)
