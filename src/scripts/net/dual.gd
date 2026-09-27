@@ -116,6 +116,7 @@ func _user_connected(user: GDTUser) -> void:
 		main.toaster.push_toast("User %s (%s) joined" % [user.name, ip])
 
 func _user_disconnected(user: GDTUser) -> void:
+	user.current_scene = ""
 	users.erase(user)
 	user_disconnected.emit(user)
 	
@@ -126,6 +127,8 @@ func _user_disconnected(user: GDTUser) -> void:
 	if user.was_ever_authenticated() and should_notify_user_connection():
 		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) disconnected" % [user.name, ip])
+	
+	update_scene_colors()
 
 func _users_listed(new_users: Array[GDTUser]) -> void:
 	var self_id = multiplayer.get_unique_id()
