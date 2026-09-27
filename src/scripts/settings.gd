@@ -26,7 +26,7 @@ const _DEFAULT_DATA = {
 		"require_approval": false
 	},
 	"client": {
-		"timeout": 10,
+		"timeout": 15,
 	},
 	"sync": {
 		"node_scan_mode": GDTNodeSync.NodeScanMode.CONTINUOUS,
