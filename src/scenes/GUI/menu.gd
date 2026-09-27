@@ -121,7 +121,19 @@ func _join() -> void:
 		
 		set_session_init_cover()
 		gui.alert(
-			"Connection to %s:%s timed out. \nMake sure the IP and port is valid and the host's server \nis running and configured properly." % [ip, port],
+			GDTUtils.join([
+				"Connection to %s:%s timed out." % [ip, port],
+				"Make sure that:",
+				"- You entered the right IP and port",
+				"- Both you and host are in the same local or tunnelled network",
+				"- Both of you are authorized to access the network",
+				"- Your firewall settings aren't blocking the used port",
+				"- Godot can access the internet, or your network",
+				"",
+				"You can verify connectivity between you and the host by running:",
+				"	ping enter.their.ip.address.here",
+				"in your terminal (cmd on Windows)."
+			], "\n"),
 			"Failed to connect"
 		)
 
