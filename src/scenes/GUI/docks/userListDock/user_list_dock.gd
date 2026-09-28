@@ -28,7 +28,7 @@ func _ready() -> void:
 	user_template.visible = false
 	custom_maximum_size.x = -1
 	
-	gui.main.session_started.connect(update_status)
+	gui.main.session_started.connect(_session_started)
 	gui.main.session_ended.connect(update_status)
 	gui.main.session_ended.connect(clear)
 	
@@ -43,6 +43,10 @@ func _ready() -> void:
 	
 	for user_type in GDTUser.Type.values():
 		role_btn.add_item(GDTUser.type_to_string(user_type))
+
+func _session_started() -> void:
+	update_status()
+	show()
 
 func _user_action(action: UserAction, user: GDTUser) -> void:
 	match action:
