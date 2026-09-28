@@ -29,10 +29,10 @@ func _ready() -> void:
 	gui.main.dual.user_disconnected.connect(remove_user)
 	gui.main.session_ended.connect(clear)
 	
+	var role_btn: OptionButton = user_template.get_node("vbox/hbox/role")
+	role_btn.clear()
+	
 	for user_type_name in GDTUser.Type.keys():
-		var role_btn: OptionButton = user_template.get_node("vbox/hbox/role")
-		
-		role_btn.clear()
 		role_btn.add_item(user_type_name)
 
 func _user_action(action: UserAction, user: GDTUser) -> void:
