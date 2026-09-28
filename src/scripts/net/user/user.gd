@@ -141,6 +141,12 @@ func is_peer_connected(truly_connected := false) -> bool:
 func is_server_user() -> bool:
 	return peer != null
 
+func is_local() -> bool:
+	if not main:
+		return false
+	
+	return id == main.multiplayer.get_unique_id()
+
 func to_dict() -> Dictionary:
 	var res = {}
 
