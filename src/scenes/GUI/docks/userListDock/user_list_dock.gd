@@ -30,11 +30,13 @@ func _ready() -> void:
 	
 	gui.main.session_started.connect(update_status)
 	gui.main.session_ended.connect(update_status)
+	gui.main.session_ended.connect(clear)
 	
 	gui.main.dual.users_listed.connect(load_users)
 	gui.main.dual.user_connected.connect(add_user)
 	gui.main.dual.user_disconnected.connect(remove_user)
-	gui.main.session_ended.connect(clear)
+	gui.main.dual.user_scene_changed.connect(_user_file_update)
+	gui.main.dual.user_script_changed.connect(_user_file_update)
 	
 	var role_btn: OptionButton = user_template.get_node("vbox/hbox/role")
 	role_btn.clear()
@@ -49,6 +51,25 @@ func _user_action(action: UserAction, user: GDTUser) -> void:
 		UserAction.COPY_ID:
 			DisplayServer.clipboard_set(str(user.id))
 			print("Copied user ID to clipboard")
+
+func _user_goto(user: GDTUser) -> void:
+	if user.current_scene:
+		EditorInterface.open_scene_from_path(user.current_scene)
+	
+	if user.current_script:
+		var script = load(user.current_script)
+		
+		if script:
+			EditorInterface.edit_resource(script)
+
+func _user_file_update(user: GDTUser, _path: String) -> void:
+	update_user.call_deferred(user)
+
+func update_user(user: GDTUser) -> void:
+	var node = get_control_of_user(user)
+	
+	if node:
+		update_user_control(node, user)
 
 func update_status() -> void:
 	if not gui: return
@@ -85,6 +106,7 @@ func load_users(users: Array) -> void:
 func add_user(user: GDTUser) -> void:
 	var node = user_template.duplicate()
 	var menu_btn: MenuButton = node.get_node("vbox/hbox/menu")
+	var status_btn: Button = node.get_node("vbox/status")
 	
 	node.visible = true
 	
@@ -94,8 +116,12 @@ func add_user(user: GDTUser) -> void:
 			node.self_modulate.a
 		)
 	
+	status_btn.pressed.connect(_user_goto.bind(user))
+	
 	setup_menu(menu_btn, user)
 	update_user_control(node, user)
+	
+	node.set_meta("user_id", user.id)
 	user_list.add_child(node)
 	
 	update_status()
@@ -118,10 +144,33 @@ func update_user_control(node: Control, user: GDTUser) -> void:
 	var color_rect: ColorRect = node.get_node("vbox/hbox/color")
 	var name_label: LineEdit = node.get_node("vbox/hbox/name")
 	var role_btn: OptionButton = node.get_node("vbox/hbox/role")
+	var status_btn: Button = node.get_node("vbox/status")
 	
 	color_rect.color = user.color
 	name_label.text = user.name
 	role_btn.selected = user.type
+	
+	if user.current_scene or user.current_script:
+		status_btn.disabled = false
+		
+		var file = "<error>"
+		const LENGTH_LIMIT = 20
+		
+		if user.current_script:
+			file = user.current_script
+		else:
+			file = user.current_scene
+			
+		if file.length() > LENGTH_LIMIT:
+			file = "..." + file.substr(file.length() - LENGTH_LIMIT)
+		
+		status_btn.text = "Editing: " + file
+	elif user.is_local():
+		status_btn.text = "It's you"
+		status_btn.disabled = true
+	else:
+		status_btn.text = "..."
+		status_btn.disabled = true
 
 func get_control_of_user(user: GDTUser) -> Control:
 	for i in user_list.get_children():

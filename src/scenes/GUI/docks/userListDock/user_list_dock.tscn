@@ -154,7 +154,7 @@ tooltip_text = "Go where this user is"
 mouse_default_cursor_shape = 2
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 1
-text = "Editing whatever.gd"
+text = "..."
 alignment = 0
 
 [node name="inactiveLabel" type="Label" parent="main/scroll/vbox" unique_id=1582934441]
