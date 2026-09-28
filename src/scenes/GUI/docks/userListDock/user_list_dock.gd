@@ -55,6 +55,12 @@ func add_user(user: GDTUser) -> void:
 	
 	node.visible = true
 	
+	if user.is_local():
+		node.self_modulate = Color(
+			0, 1, 0,
+			node.self_modulate.a
+		)
+	
 	setup_menu(menu_btn, user)
 	update_user_control(node, user)
 	user_list.add_child(node)
