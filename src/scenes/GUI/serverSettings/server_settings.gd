@@ -15,8 +15,8 @@ var controls: Array = []
 func _ready() -> void:
 	await get_tree().process_frame
 	
-	if not gui:
-		return
+	if not gui: return
+	if not gui.main: return
 	
 	update_settings_mode()
 	
