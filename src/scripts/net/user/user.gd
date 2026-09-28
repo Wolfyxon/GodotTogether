@@ -41,6 +41,7 @@ var authenticated := false
 var pending := false
 
 var current_scene: String = ""
+var current_script: String = ""
 
 var _last_address: String = ""
 

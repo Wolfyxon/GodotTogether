@@ -6,6 +6,9 @@ signal user_connected(user: GDTUser)
 signal user_disconnected(user: GDTUser)
 signal users_listed(users: Array[GDTUser])
 
+signal user_script_changed(path: String)
+signal user_scene_changed(path: String)
+
 var camera: Camera3D
 var users: Array[GDTUser]
 
@@ -109,6 +112,8 @@ func _user_connected(user: GDTUser) -> void:
 
 func _user_disconnected(user: GDTUser) -> void:
 	user.current_scene = ""
+	user.current_script = ""
+	
 	users.erase(user)
 	user_disconnected.emit(user)
 	
@@ -158,6 +163,14 @@ func broadcast_selection() -> void:
 	
 	receive_selection.rpc_id(0, paths, root.scene_file_path)
 	receive_current_scene.rpc_id(0, root.scene_file_path)
+	
+	var script_editor = EditorInterface.get_script_editor()
+	var current_script = script_editor.get_current_script()
+	
+	if script_editor.is_visible_in_tree() and current_script:
+		receive_current_script.rpc_id(0, current_script.resource_path)
+	else:
+		receive_current_script.rpc_id(0, "")
 
 func update_scene_colors() -> void:
 	var tabs = main.get_gui().scene_editor_tabs
@@ -346,8 +359,22 @@ func receive_current_scene(path: String) -> void:
 	var user = get_user_by_id(id)
 	if not user: return
 	
+	if user.current_scene != path:
+		user_scene_changed.emit(path)
+	
 	user.current_scene = path
 	update_scene_colors()
+
+@rpc("any_peer", "reliable")
+func receive_current_script(path: String) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	var user = get_user_by_id(id)
+	if not user: return
+	
+	if user.current_script != path:
+		user_script_changed.emit(path)
+	
+	user.current_script = path
 
 @rpc("authority", "call_remote", "reliable")
 func restart() -> void:
