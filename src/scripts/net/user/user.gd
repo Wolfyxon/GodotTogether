@@ -138,9 +138,6 @@ func is_peer_connected(truly_connected := false) -> bool:
 	
 	return not state in dis
 
-func is_server_user() -> bool:
-	return peer != null
-
 func is_local() -> bool:
 	if not main:
 		return false
