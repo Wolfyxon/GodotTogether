@@ -6,8 +6,8 @@ signal user_connected(user: GDTUser)
 signal user_disconnected(user: GDTUser)
 signal users_listed(users: Array[GDTUser])
 
-signal user_script_changed(path: String)
-signal user_scene_changed(path: String)
+signal user_script_changed(user: GDTUser, path: String)
+signal user_scene_changed(user: GDTUser, path: String)
 
 var camera: Camera3D
 var users: Array[GDTUser]
@@ -360,7 +360,7 @@ func receive_current_scene(path: String) -> void:
 	if not user: return
 	
 	if user.current_scene != path:
-		user_scene_changed.emit(path)
+		user_scene_changed.emit(user, path)
 	
 	user.current_scene = path
 	update_scene_colors()
@@ -372,7 +372,7 @@ func receive_current_script(path: String) -> void:
 	if not user: return
 	
 	if user.current_script != path:
-		user_script_changed.emit(path)
+		user_script_changed.emit(user, path)
 	
 	user.current_script = path
 
