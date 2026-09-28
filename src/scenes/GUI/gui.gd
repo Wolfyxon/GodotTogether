@@ -21,20 +21,22 @@ func _ready() -> void:
 	menu.get_node("session/tabs/Pending Users").gui = self
 	disclaimer.gui = self
 	
-	if main:
-		menu_window.visible = false
-		menu_window.main = main
-		menu.main = main
-		
-		if not menu_window.get_menu():
-			component_error("get_menu() failed")
-			return
-		
-		if not menu_window.get_settings_gui():
-			component_error("get_settings_gui() failed")
-			return
-		
-		report_ready()
+	if not main:
+		return
+	
+	menu_window.visible = false
+	menu_window.main = main
+	menu.main = main
+	
+	if not menu_window.get_menu():
+		component_error("get_menu() failed")
+		return
+	
+	if not menu_window.get_settings_gui():
+		component_error("get_settings_gui() failed")
+		return
+	
+	report_ready()
 
 func _exit_tree() -> void:
 	scene_editor_tabs.clear_colors()
