@@ -75,11 +75,7 @@ func update_status() -> void:
 	if not gui: return
 	if not gui.main: return
 	
-	# They are freed before this node can even exit the tree. Godot screams about it
 	if not inactive_label: return
-	if not status_bar: return
-	if not status_label: return
-	if not user_count_label: return
 	
 	if gui.main.server.is_active():
 		status_label.text = "You are hosting"
@@ -102,6 +98,7 @@ func load_users(users: Array) -> void:
 	
 	for i in users:
 		add_user(i)
+	
 
 func add_user(user: GDTUser) -> void:
 	var node = user_template.duplicate()
@@ -183,5 +180,5 @@ func clear() -> void:
 	user_count_label.text = "0"
 	
 	for i in user_list.get_children():
-		if i != user_template:
+		if i != user_template and i != inactive_label:
 			i.queue_free()
