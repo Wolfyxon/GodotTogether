@@ -65,6 +65,8 @@ func setup_docks() -> void:
 		return
 	
 	user_list_dock = scene.instantiate()
+	user_list_dock.gui = self
+	
 	main.add_dock(user_list_dock)
 
 func get_menu() -> GDTMenu:
@@ -84,6 +86,11 @@ func add_window(window: Window) -> void:
 			menu_w.add_child(window)
 	else:
 		add_child(window)
+
+func open_menu() -> void:
+	var window = get_menu_window()
+	window.popup()
+	window.checked_reflow()
 
 func progress(description := "Please wait...") -> GDTProgressPopup:
 	var popup = GDTProgressPopup.new(description)

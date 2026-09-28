@@ -190,7 +190,7 @@ func setup_menu_button() -> void:
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	
 	button.get_parent().move_child(button, 1)
-	button.pressed.connect(open_menu)
+	button.pressed.connect(gui.open_menu)
 
 func pre_start_check() -> bool:
 	if not gui:
@@ -238,11 +238,6 @@ func setup_chat() -> void:
 	var chat_btn = add_control_to_bottom_panel(chat, "Chat")
 	chat_btn.tooltip_text = "Toggle GodotTogether chat"
 
-func open_menu() -> void:
-	var window = gui.get_menu_window()
-	window.popup()
-	window.checked_reflow()
-	
 func prepare_session() -> void:
 	EditorInterface.save_all_scenes()
 

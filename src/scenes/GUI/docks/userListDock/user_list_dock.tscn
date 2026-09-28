@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://v6ptx8dvurbd"]
 
 [ext_resource type="Script" uid="uid://euj0v3iuclpm" path="res://addons/GodotTogether/src/scenes/GUI/docks/userListDock/user_list_dock.gd" id="1_f5qcx"]
+[ext_resource type="Texture2D" uid="uid://cwnrusacfdot4" path="res://addons/GodotTogether/src/img/VSeparator.svg" id="2_io5tm"]
+[ext_resource type="Texture2D" uid="uid://d34l21l3lo00e" path="res://addons/GodotTogether/src/img/menu.svg" id="3_0srvs"]
+[ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="4_0srvs"]
+[ext_resource type="Texture2D" uid="uid://b8tqo5inh7rj1" path="res://addons/GodotTogether/src/img/copy.svg" id="5_og0bi"]
 
 [node name="UserListDock" type="EditorDock" unique_id=1401763783]
+custom_maximum_size = Vector2(400, -1)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,12 +15,142 @@ grow_horizontal = 2
 grow_vertical = 2
 title = "Users"
 global = false
-default_slot = 4
+default_slot = 5
+available_layouts = 7
 script = ExtResource("1_f5qcx")
 
-[node name="vbox" type="VBoxContainer" parent="." unique_id=51935239]
+[node name="main" type="VBoxContainer" parent="." unique_id=51935239]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="vbox" unique_id=1295902745]
+[node name="header" type="HBoxContainer" parent="main" unique_id=849409016]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="main/header" unique_id=768689512]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
 text = "GodotTogether"
+
+[node name="btnMenu" type="Button" parent="main/header" unique_id=658725138]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Open the GodotTogether menu"
+mouse_default_cursor_shape = 2
+text = "GodotTogether"
+
+[node name="statusBar" type="Panel" parent="main" unique_id=647605690]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="vbox" type="HBoxContainer" parent="main/statusBar" unique_id=1415589477]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="padding" type="Control" parent="main/statusBar/vbox" unique_id=1255877245]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="main/statusBar/vbox" unique_id=654510461]
+layout_mode = 2
+texture = ExtResource("2_io5tm")
+stretch_mode = 5
+
+[node name="userCount" type="Label" parent="main/statusBar/vbox" unique_id=2121255598]
+layout_mode = 2
+text = "0"
+
+[node name="usersLabel" type="Label" parent="main/statusBar/vbox" unique_id=1306122142]
+layout_mode = 2
+text = "Users"
+
+[node name="VSeparator" type="VSeparator" parent="main/statusBar/vbox" unique_id=1904066956]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="status" type="Label" parent="main/statusBar/vbox" unique_id=1742675678]
+layout_mode = 2
+text = "You are hosting"
+
+[node name="padding2" type="Control" parent="main/statusBar/vbox" unique_id=907615804]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="scroll" type="ScrollContainer" parent="main" unique_id=1768274572]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=788611519]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="user" type="Panel" parent="main/scroll/vbox" unique_id=705797629]
+self_modulate = Color(1, 1, 1, 0.54509807)
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/user" unique_id=893071161]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="hbox" type="HBoxContainer" parent="main/scroll/vbox/user/vbox" unique_id=377824174]
+layout_mode = 2
+
+[node name="padding" type="Control" parent="main/scroll/vbox/user/vbox/hbox" unique_id=291400844]
+layout_mode = 2
+
+[node name="color" type="ColorRect" parent="main/scroll/vbox/user/vbox/hbox" unique_id=283055312]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="name" type="LineEdit" parent="main/scroll/vbox/user/vbox/hbox" unique_id=992715269]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cool person"
+editable = false
+
+[node name="role" type="OptionButton" parent="main/scroll/vbox/user/vbox/hbox" unique_id=680217249]
+layout_mode = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "Editor"
+popup/item_0/id = 0
+
+[node name="menu" type="MenuButton" parent="main/scroll/vbox/user/vbox/hbox" unique_id=327466266]
+layout_mode = 2
+tooltip_text = "User actions"
+button_mask = 3
+icon = ExtResource("3_0srvs")
+flat = false
+item_count = 2
+popup/item_0/text = "Kick"
+popup/item_0/icon = ExtResource("4_0srvs")
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_1/text = "Copy peer ID"
+popup/item_1/icon = ExtResource("5_og0bi")
+popup/item_1/id = 1
+
+[node name="padding2" type="Control" parent="main/scroll/vbox/user/vbox/hbox" unique_id=875433989]
+layout_mode = 2
+
+[node name="status" type="Button" parent="main/scroll/vbox/user/vbox" unique_id=28016925]
+custom_maximum_size = Vector2(-1, 35)
+layout_mode = 2
+tooltip_text = "Go where this user is"
+mouse_default_cursor_shape = 2
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+text = "Editing whatever.gd"
+alignment = 0

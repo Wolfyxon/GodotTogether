@@ -37,7 +37,7 @@ func _ready() -> void:
 	main.dual.user_connected.connect(add_user_notification.bind(IMG_JOINED, "joined"))
 	main.dual.user_disconnected.connect(add_user_notification.bind(IMG_DISCONNECTED, "disconnected"))
 
-	$cover/vbox/btnMenu.pressed.connect(main.open_menu)
+	$cover/vbox/btnMenu.pressed.connect(main.get_gui().open_menu)
 	
 	clear()
 
