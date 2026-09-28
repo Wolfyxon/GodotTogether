@@ -7,8 +7,10 @@ enum UserAction {
 	COPY_ID
 }
 
+@onready var status_bar = $main/statusBar
 @onready var user_count_label = $main/statusBar/vbox/userCount
-@onready var status_label = $main/statusBar/vbox/usersLabel
+@onready var status_label = $main/statusBar/vbox/status
+@onready var inactive_label = $main/scroll/vbox/inactiveLabel
 
 @onready var user_list = $main/scroll/vbox
 @onready var user_template = $main/scroll/vbox/user
@@ -21,8 +23,13 @@ func _ready() -> void:
 	
 	$main/header/btnMenu.pressed.connect(gui.open_menu)
 	
+	update_status()
+	
 	user_template.visible = false
 	custom_maximum_size.x = -1
+	
+	gui.main.session_started.connect(update_status)
+	gui.main.session_ended.connect(update_status)
 	
 	gui.main.dual.users_listed.connect(load_users)
 	gui.main.dual.user_connected.connect(add_user)
@@ -42,6 +49,32 @@ func _user_action(action: UserAction, user: GDTUser) -> void:
 		UserAction.COPY_ID:
 			DisplayServer.clipboard_set(str(user.id))
 			print("Copied user ID to clipboard")
+
+func update_status() -> void:
+	if not gui: return
+	if not gui.main: return
+	
+	# They are freed before this node can even exit the tree. Godot screams about it
+	if not inactive_label: return
+	if not status_bar: return
+	if not status_label: return
+	if not user_count_label: return
+	
+	if gui.main.server.is_active():
+		status_label.text = "You are hosting"
+	elif gui.main.client.is_active():
+		status_label.text = "Connected"
+	else:
+		status_label.text = "Inactive"
+	
+	if gui.main.is_session_active():
+		status_bar.modulate.a = 1
+		inactive_label.visible = false
+	else:
+		status_bar.modulate.a = 0.5
+		inactive_label.visible = true
+	
+	user_count_label.text = str(gui.main.dual.users.size())
 
 func load_users(users: Array) -> void:
 	clear()
@@ -64,12 +97,16 @@ func add_user(user: GDTUser) -> void:
 	setup_menu(menu_btn, user)
 	update_user_control(node, user)
 	user_list.add_child(node)
+	
+	update_status()
 
 func remove_user(user: GDTUser) -> void:
 	var node = get_control_of_user(user)
 	
 	if node:
 		node.queue_free()
+		
+	update_status()
 
 func setup_menu(menu: MenuButton, user: GDTUser) -> void:
 	menu.get_popup().id_pressed.connect(_user_action.bind(user))

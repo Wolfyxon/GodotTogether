@@ -73,8 +73,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="status" type="Label" parent="main/statusBar/vbox" unique_id=1742675678]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-text = "You are hosting"
+size_flags_horizontal = 3
+text = "Not active"
+horizontal_alignment = 1
 
 [node name="padding2" type="Control" parent="main/statusBar/vbox" unique_id=907615804]
 layout_mode = 2
@@ -153,3 +156,12 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 1
 text = "Editing whatever.gd"
 alignment = 0
+
+[node name="inactiveLabel" type="Label" parent="main/scroll/vbox" unique_id=1582934441]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Join or start hosting a session to see who's in it."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
