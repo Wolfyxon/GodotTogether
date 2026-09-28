@@ -80,10 +80,11 @@ func _exit_tree() -> void:
 	if not plugin_started:
 		return
 	
-	gui.scene_tree_editor.clear_colors()
+	close_connection()
+	
+	gui.cleanup()
 	settings.save_if_changed()
 	
-	close_connection()
 	remove_control_from_bottom_panel(chat)
 	button.queue_free()
 	

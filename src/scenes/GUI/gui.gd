@@ -5,6 +5,10 @@ class_name GodotTogetherGUI
 const IMG_HIDDEN = preload("../../img/hidden.svg")
 const IMG_VISIBLE = preload("../../img/visible.svg")
 
+const USER_LIST_DOCK_PATH = "res://addons/GodotTogether/src/scenes/GUI/docks/userListDock/user_list_dock.tscn"
+
+var user_list_dock: GDTUserListDock = null
+
 var scene_tree_editor = GDTSceneTreeEditor.new()
 var scene_editor_tabs = GDTEditorSceneTabs.new()
 
@@ -36,16 +40,32 @@ func _ready() -> void:
 		component_error("get_settings_gui() failed")
 		return
 	
+	setup_docks()
 	report_ready()
-
-func _exit_tree() -> void:
-	scene_editor_tabs.clear_colors()
 
 func _process(_delta: float) -> void:
 	scene_editor_tabs.update()
 	
 	if not Engine.is_editor_hint():
 		get_menu_window().visible = true
+
+func cleanup() -> void:
+	scene_editor_tabs.clear_colors()
+	scene_tree_editor.clear_colors()
+	
+	if user_list_dock:
+		main.remove_dock(user_list_dock)
+		user_list_dock.queue_free.call_deferred()
+
+func setup_docks() -> void:
+	var scene = load(USER_LIST_DOCK_PATH)
+	
+	if not scene:
+		GDTUtils.printerr_stack("Unable to load scene: %s" % USER_LIST_DOCK_PATH)
+		return
+	
+	user_list_dock = scene.instantiate()
+	main.add_dock(user_list_dock)
 
 func get_menu() -> GDTMenu:
 	return get_menu_window().get_menu()

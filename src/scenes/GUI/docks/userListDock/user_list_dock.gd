@@ -1,0 +1,2 @@
+extends EditorDock
+class_name GDTUserListDock

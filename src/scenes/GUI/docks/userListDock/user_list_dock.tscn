@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://v6ptx8dvurbd"]
+
+[ext_resource type="Script" uid="uid://euj0v3iuclpm" path="res://addons/GodotTogether/src/scenes/GUI/docks/userListDock/user_list_dock.gd" id="1_f5qcx"]
+
+[node name="UserListDock" type="EditorDock" unique_id=1401763783]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+title = "Users"
+default_slot = 4
+script = ExtResource("1_f5qcx")
+
+[node name="vbox" type="VBoxContainer" parent="." unique_id=51935239]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="vbox" unique_id=1295902745]
+layout_mode = 2
+text = "GodotTogether"
