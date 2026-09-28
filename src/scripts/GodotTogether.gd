@@ -265,6 +265,8 @@ func session_start() -> void:
 
 func post_session_end() -> void:
 	gui.scene_tree_editor.clear_colors()
+	gui.scene_editor_tabs.clear_colors()
+	
 	dual.update_scene_colors()
 	
 	button.reset()
