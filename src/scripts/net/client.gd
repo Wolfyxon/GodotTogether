@@ -126,19 +126,26 @@ func receive_user_list(user_dicts: Array) -> void:
 	var users: Array[GDTUser]
 
 	for dict in user_dicts:
-		users.append(GDTUser.from_dict(dict))
+		var user = GDTUser.from_dict(dict)
+		
+		if user:
+			user.main = main
+			users.append(user)
 
 	main.dual._users_listed(users)
 
 @rpc("authority", "call_remote", "reliable")
 func user_connected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
-
+	if not user: return
+	
+	user.main = main
 	main.dual._user_connected(user)
 
 @rpc("authority", "call_remote", "reliable")
 func user_disconnected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
+	if not user: return
 
 	main.dual._user_disconnected(user)
 
