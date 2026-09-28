@@ -9,6 +9,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 title = "Users"
+global = false
 default_slot = 4
 script = ExtResource("1_f5qcx")
 
