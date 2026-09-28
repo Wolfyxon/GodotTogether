@@ -41,8 +41,8 @@ func _ready() -> void:
 	var role_btn: OptionButton = user_template.get_node("vbox/hbox/role")
 	role_btn.clear()
 	
-	for user_type_name in GDTUser.Type.keys():
-		role_btn.add_item(user_type_name)
+	for user_type in GDTUser.Type.values():
+		role_btn.add_item(GDTUser.type_to_string(user_type))
 
 func _user_action(action: UserAction, user: GDTUser) -> void:
 	match action:
