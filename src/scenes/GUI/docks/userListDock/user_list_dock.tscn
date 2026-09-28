@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 title = "Users"
 global = false
-default_slot = 5
+default_slot = 4
 available_layouts = 7
 script = ExtResource("1_f5qcx")
 
