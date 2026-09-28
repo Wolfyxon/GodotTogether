@@ -3,8 +3,8 @@ extends EditorDock
 class_name GDTUserListDock
 
 enum UserAction {
-	Kick,
-	CopyId
+	KICK,
+	COPY_ID
 }
 
 @onready var user_count_label = $main/statusBar/vbox/userCount
@@ -35,6 +35,14 @@ func _ready() -> void:
 		role_btn.clear()
 		role_btn.add_item(user_type_name)
 
+func _user_action(action: UserAction, user: GDTUser) -> void:
+	match action:
+		UserAction.KICK:
+			user.kick()
+		UserAction.COPY_ID:
+			DisplayServer.clipboard_set(str(user.id))
+			print("Copied user ID to clipboard")
+
 func load_users(users: Array) -> void:
 	clear()
 	
@@ -47,7 +55,7 @@ func add_user(user: GDTUser) -> void:
 	
 	node.visible = true
 	
-	connect_menu(menu_btn, user)
+	setup_menu(menu_btn, user)
 	update_user_control(node, user)
 	user_list.add_child(node)
 
@@ -57,8 +65,11 @@ func remove_user(user: GDTUser) -> void:
 	if node:
 		node.queue_free()
 
-func connect_menu(menu: MenuButton, user: GDTUser) -> void:
-	pass
+func setup_menu(menu: MenuButton, user: GDTUser) -> void:
+	menu.get_popup().id_pressed.connect(_user_action.bind(user))
+	
+	if not gui.main.server.is_active() or user.type == GDTUser.Type.HOST:
+		menu.get_popup().set_item_disabled(UserAction.KICK, true)
 
 func update_user_control(node: Control, user: GDTUser) -> void:
 	var color_rect: ColorRect = node.get_node("vbox/hbox/color")
