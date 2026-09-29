@@ -166,6 +166,7 @@ func _join() -> void:
 		return
 
 	set_session_init_cover("Waiting for host's approval...")
+	set_session_init_timeout(GDTServer.APPROVE_TIMEOUT)
 	
 	await main.client.auth_succeed
 

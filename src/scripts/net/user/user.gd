@@ -13,6 +13,7 @@ enum DisconnectReason {
 	BANNED,
 	PASSWORD_INVALID,
 	REJECTED,
+	APPROVE_TIMEOUT,
 	JOINING_TOO_FAST,
 	CLIENT_OUTDATED,
 	SERVER_OUTDATED
@@ -166,6 +167,8 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 			return "Invalid password"
 		DisconnectReason.REJECTED:
 			return "Connection rejected by host"
+		DisconnectReason.APPROVE_TIMEOUT:
+			return "Took too long waiting for approval"
 		DisconnectReason.JOINING_TOO_FAST:
 			return "You are joining too quickly"
 		DisconnectReason.CLIENT_OUTDATED:

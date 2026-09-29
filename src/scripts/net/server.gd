@@ -4,7 +4,9 @@ class_name GDTServer
 
 signal hosting_started
 
-const JOIN_DELAY: float = 1
+const JOIN_DELAY: float = 1.0
+const APPROVE_TIMEOUT: float = 30.0
+
 const LOCALHOST := [
 	"0:0:0:0:0:0:0:1", 
 	"127.0.0.1", 
@@ -19,6 +21,16 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_connected)
 	multiplayer.peer_disconnected.connect(_disconnected)
 	report_ready()
+
+func _process(_delta: float) -> void:
+	if not main: return
+	if not main.is_session_active(): return
+	
+	var now = Time.get_unix_time_from_system()
+	
+	for user: GDTUser in main.dual.users:
+		if user.pending and now > user.joined_at + APPROVE_TIMEOUT:
+			user.reject(GDTUser.DisconnectReason.APPROVE_TIMEOUT)
 
 func _connected(id: int) -> void:
 	if not multiplayer.is_server(): 
