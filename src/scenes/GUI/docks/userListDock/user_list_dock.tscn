@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://d34l21l3lo00e" path="res://addons/GodotTogether/src/img/menu.svg" id="3_0srvs"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="4_0srvs"]
 [ext_resource type="Texture2D" uid="uid://b8tqo5inh7rj1" path="res://addons/GodotTogether/src/img/copy.svg" id="5_og0bi"]
+[ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="6_nad3p"]
 
 [node name="UserListDock" type="EditorDock" unique_id=1401763783]
 custom_maximum_size = Vector2(400, -1)
@@ -92,12 +93,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="user" type="Panel" parent="main/scroll/vbox" unique_id=705797629]
+[node name="users" type="VBoxContainer" parent="main/scroll/vbox" unique_id=949447015]
+layout_mode = 2
+
+[node name="user" type="Panel" parent="main/scroll/vbox/users" unique_id=705797629]
 self_modulate = Color(1, 1, 1, 0.54509807)
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 
-[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/user" unique_id=893071161]
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/users/user" unique_id=893071161]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
 anchors_preset = 15
@@ -107,30 +111,30 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="hbox" type="HBoxContainer" parent="main/scroll/vbox/user/vbox" unique_id=377824174]
+[node name="hbox" type="HBoxContainer" parent="main/scroll/vbox/users/user/vbox" unique_id=377824174]
 layout_mode = 2
 
-[node name="padding" type="Control" parent="main/scroll/vbox/user/vbox/hbox" unique_id=291400844]
+[node name="padding" type="Control" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=291400844]
 layout_mode = 2
 
-[node name="color" type="ColorRect" parent="main/scroll/vbox/user/vbox/hbox" unique_id=283055312]
+[node name="color" type="ColorRect" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=283055312]
 custom_minimum_size = Vector2(5, 5)
 layout_mode = 2
 
-[node name="name" type="LineEdit" parent="main/scroll/vbox/user/vbox/hbox" unique_id=992715269]
+[node name="name" type="LineEdit" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=992715269]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Cool person"
 editable = false
 
-[node name="role" type="OptionButton" parent="main/scroll/vbox/user/vbox/hbox" unique_id=680217249]
+[node name="role" type="OptionButton" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=680217249]
 layout_mode = 2
 disabled = true
 item_count = 1
 popup/item_0/text = "Editor"
 popup/item_0/id = 0
 
-[node name="menu" type="MenuButton" parent="main/scroll/vbox/user/vbox/hbox" unique_id=327466266]
+[node name="menu" type="MenuButton" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=327466266]
 layout_mode = 2
 tooltip_text = "User actions"
 button_mask = 3
@@ -144,10 +148,10 @@ popup/item_1/text = "Copy peer ID"
 popup/item_1/icon = ExtResource("5_og0bi")
 popup/item_1/id = 1
 
-[node name="padding2" type="Control" parent="main/scroll/vbox/user/vbox/hbox" unique_id=875433989]
+[node name="padding2" type="Control" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=875433989]
 layout_mode = 2
 
-[node name="status" type="Button" parent="main/scroll/vbox/user/vbox" unique_id=28016925]
+[node name="status" type="Button" parent="main/scroll/vbox/users/user/vbox" unique_id=28016925]
 custom_maximum_size = Vector2(-1, 35)
 layout_mode = 2
 tooltip_text = "Go where this user is"
@@ -155,6 +159,84 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 text = "..."
 alignment = 0
+
+[node name="pendingUsers" type="VBoxContainer" parent="main/scroll/vbox" unique_id=1075242045]
+layout_mode = 2
+
+[node name="lblPending" type="Label" parent="main/scroll/vbox/pendingUsers" unique_id=186930063]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Pending users"
+horizontal_alignment = 1
+
+[node name="pendingUser" type="Panel" parent="main/scroll/vbox/pendingUsers" unique_id=1067544668]
+self_modulate = Color(1, 1, 1, 0.54509807)
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/pendingUsers/pendingUser" unique_id=1232101437]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="top" type="HBoxContainer" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox" unique_id=1615690019]
+layout_mode = 2
+
+[node name="padding" type="Control" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox/top" unique_id=286458755]
+layout_mode = 2
+
+[node name="name" type="LineEdit" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox/top" unique_id=2014982301]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "User name"
+text = "Cool person"
+editable = false
+
+[node name="ip" type="LineEdit" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox/top" unique_id=858085097]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "IP address"
+text = "192.168.1.2"
+editable = false
+
+[node name="padding2" type="Control" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox/top" unique_id=355862427]
+layout_mode = 2
+
+[node name="actions" type="HBoxContainer" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox" unique_id=874402459]
+layout_mode = 2
+alignment = 2
+
+[node name="padding" type="Control" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox/actions" unique_id=1970256872]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="btnApprove" type="Button" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox/actions" unique_id=1796760686]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Approve the user to join"
+text = "Approve"
+icon = ExtResource("6_nad3p")
+
+[node name="btnReject" type="Button" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox/actions" unique_id=687778695]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Reject the user"
+text = "Reject"
+icon = ExtResource("4_0srvs")
+
+[node name="btnMenu" type="MenuButton" parent="main/scroll/vbox/pendingUsers/pendingUser/vbox/actions" unique_id=561199394]
+layout_mode = 2
+button_mask = 3
+icon = ExtResource("3_0srvs")
+item_count = 1
+popup/item_0/text = "Copy peer ID"
+popup/item_0/icon = ExtResource("5_og0bi")
+popup/item_0/id = 0
 
 [node name="inactiveLabel" type="Label" parent="main/scroll/vbox" unique_id=1582934441]
 custom_minimum_size = Vector2(100, 50)

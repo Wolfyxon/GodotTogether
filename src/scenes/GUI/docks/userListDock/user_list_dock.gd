@@ -12,8 +12,11 @@ enum UserAction {
 @onready var status_label = $main/statusBar/vbox/status
 @onready var inactive_label = $main/scroll/vbox/inactiveLabel
 
-@onready var user_list = $main/scroll/vbox
-@onready var user_template = $main/scroll/vbox/user
+@onready var user_list = $main/scroll/vbox/users
+@onready var user_template = $main/scroll/vbox/users/user
+
+@onready var pending_list = $main/scroll/vbox/pendingUsers
+@onready var pending_template = $main/scroll/vbox/pendingUsers/pendingUser
 
 var gui: GodotTogetherGUI = null
 
@@ -26,6 +29,8 @@ func _ready() -> void:
 	update_status()
 	
 	user_template.visible = false
+	pending_template.visible = false
+	
 	custom_maximum_size.x = -1
 	
 	gui.main.session_started.connect(_session_started)
@@ -95,6 +100,7 @@ func update_status() -> void:
 		status_bar.modulate.a = 0.5
 		inactive_label.visible = true
 	
+	pending_list.visible = not gui.main.server.get_pending_users().is_empty()
 	user_count_label.text = str(gui.main.dual.users.size())
 
 func load_users(users: Array) -> void:
