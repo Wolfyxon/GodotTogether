@@ -40,7 +40,9 @@ func _ready() -> void:
 	gui.main.dual.users_listed.connect(load_users)
 	gui.main.dual.user_connected.connect(add_user)
 	gui.main.dual.user_disconnected.connect(remove_user)
-	gui.main.dual.user_rejected.connect(remove_user)
+	
+	gui.main.dual.user_connected.connect(remove_pending)
+	gui.main.dual.user_rejected.connect(remove_pending)
 	gui.main.dual.user_pending.connect(add_pending)
 	
 	gui.main.dual.user_scene_changed.connect(_user_file_update)
@@ -137,14 +139,19 @@ func add_user(user: GDTUser) -> void:
 
 func remove_user(user: GDTUser) -> void:
 	var node = get_control_of_user(user)
-	var pending = get_control_of_pending(user)
+
+	if node:
+		node.queue_free()
+	
+	remove_pending(user)
+	update_status()
+
+func remove_pending(user: GDTUser) -> void:
+	var node = get_control_of_pending(user)
 	
 	if node:
 		node.queue_free()
 		
-	if pending:
-		pending.queue_free()
-	
 	update_status()
 
 func setup_menu(menu: MenuButton, user: GDTUser) -> void:
