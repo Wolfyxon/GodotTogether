@@ -47,6 +47,10 @@ value = 5.0
 layout_mode = 2
 text = "Approve users before join"
 
+[node name="allowSameIp" type="CheckButton" parent="." unique_id=1927984341]
+layout_mode = 2
+text = "Allow multiple users from same IP address"
+
 [node name="password" type="HBoxContainer" parent="." unique_id=386999169]
 layout_mode = 2
 theme_override_constants/separation = 0

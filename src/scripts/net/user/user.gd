@@ -16,7 +16,8 @@ enum DisconnectReason {
 	APPROVE_TIMEOUT,
 	JOINING_TOO_FAST,
 	CLIENT_OUTDATED,
-	SERVER_OUTDATED
+	SERVER_OUTDATED,
+	ADDRESS_IN_USE
 }
 
 const FIELDS = [
@@ -81,12 +82,8 @@ func get_address() -> String:
 	if res.is_empty():
 		return _last_address
 	
-	if res in ["0:0:0:0:0:0:0:1", "::1", "127.0.0.1"]:
-		_last_address = "localhost"
-		return "localhost"
-	
-	_last_address = res
-	return res
+	_last_address = normalize_address(res)
+	return _last_address
 
 func auth() -> void:
 	assert(not authenticated, "User %d (%s) already authenticated" % [id, name])
@@ -175,8 +172,16 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 			return "You are running an older version of the plugin than the server"
 		DisconnectReason.SERVER_OUTDATED:
 			return "The host's plugin version is outdated"
+		DisconnectReason.ADDRESS_IN_USE:
+			return "Host does not allow multiple connections from the same IP address"
 	
 	return "Connection lost"
+
+static func normalize_address(ip: String):
+	if ip in ["0:0:0:0:0:0:0:1", "::1", "127.0.0.1"]:
+		return "localhost"
+		
+	return ip
 
 static func type_to_string(user_type: Type) -> String:
 	var key: String = Type.find_key(user_type)

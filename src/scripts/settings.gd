@@ -23,6 +23,7 @@ const _DEFAULT_DATA = {
 		"blacklist": [],
 		"whitelist_enabled": false,
 		"allow_external_connections": true,
+		"allow_multiple_users_from_same_address": true,
 		"require_approval": false
 	},
 	"client": {

@@ -43,6 +43,11 @@ func _connected(id: int) -> void:
 
 	print("New connection from %s ID: %d" % [peer.get_remote_address(), id])
 
+	if get_users_with_address(ip) and not main.get_settings().get_setting("server/allow_multiple_users_from_same_address"):
+		user.kick(GDTUser.DisconnectReason.ADDRESS_IN_USE)
+		print("Address already used, refusing connection")
+		return
+	
 	if ip in ip_join_times:
 		var last_join = ip_join_times[ip]
 		prints(last_join, now, last_join + JOIN_DELAY, JOIN_DELAY)
@@ -86,6 +91,17 @@ func create_server_user() -> GDTUser:
 	user.auth()
 
 	return user
+
+func get_users_with_address(ip: String) -> Array:
+	var res = []
+	
+	ip = GDTUser.normalize_address(ip)
+	
+	for i: GDTUser in main.dual.users:
+		if i.get_address() == ip:
+			res.append(i)
+	
+	return res
 
 func get_authenticated_users(include_server := true) -> Array[GDTUser]:
 	var res: Array[GDTUser] = []

@@ -24,6 +24,7 @@ func _ready() -> void:
 	register_control($max_users/value, "server/max_users")
 	register_control($password/value, "server/password")
 	register_control($approveUsers, "server/require_approval")
+	register_control($allowSameIp, "server/allow_multiple_users_from_same_address")
 
 func register_control(node: Control, path: String):
 	node.set_meta("setting", path)
@@ -33,6 +34,7 @@ func register_control(node: Control, path: String):
 func update_settings_mode() -> void:
 	$port/value.editable = not server_active
 	$max_users/value.editable = not server_active
+	$allowSameIp.visible = server_active
 
 func load_settings() -> void:
 	for i in controls:
