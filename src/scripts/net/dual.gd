@@ -4,6 +4,10 @@ class_name GDTDual
 
 signal user_connected(user: GDTUser)
 signal user_disconnected(user: GDTUser)
+
+signal user_pending(user: GDTUser)
+signal user_rejected(user: GDTUser)
+
 signal users_listed(users: Array[GDTUser])
 
 signal user_script_changed(user: GDTUser, path: String)
@@ -95,6 +99,12 @@ func _peer_disconnected(id: int) -> void:
 	print("Peer %s disconnected" % id)
 
 	remove_avatars_of_user(id)
+
+func _user_pending(user: GDTUser) -> void:
+	user_pending.emit(user)
+
+func _user_rejected(user: GDTUser) -> void:
+	user_rejected.emit(user)
 
 func _user_connected(user: GDTUser) -> void:
 	if not user in users:

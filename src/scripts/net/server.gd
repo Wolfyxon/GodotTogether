@@ -202,6 +202,8 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	
 	if main.get_settings().get_setting("server/require_approval"):
 		user.pending = true
+		main.dual._user_pending(user)
+		
 		var ip = user.get_address()
 		main.toaster.push_toast("User %s (%s) wants to join. Check Pending Users tab." % [user.name, ip])
 		return

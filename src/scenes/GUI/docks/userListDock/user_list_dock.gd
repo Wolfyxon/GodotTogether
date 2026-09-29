@@ -40,6 +40,9 @@ func _ready() -> void:
 	gui.main.dual.users_listed.connect(load_users)
 	gui.main.dual.user_connected.connect(add_user)
 	gui.main.dual.user_disconnected.connect(remove_user)
+	gui.main.dual.user_rejected.connect(remove_user)
+	gui.main.dual.user_pending.connect(add_pending)
+	
 	gui.main.dual.user_scene_changed.connect(_user_file_update)
 	gui.main.dual.user_script_changed.connect(_user_file_update)
 	
@@ -108,7 +111,6 @@ func load_users(users: Array) -> void:
 	
 	for i in users:
 		add_user(i)
-	
 
 func add_user(user: GDTUser) -> void:
 	var node = user_template.duplicate()
@@ -135,10 +137,14 @@ func add_user(user: GDTUser) -> void:
 
 func remove_user(user: GDTUser) -> void:
 	var node = get_control_of_user(user)
+	var pending = get_control_of_pending(user)
 	
 	if node:
 		node.queue_free()
 		
+	if pending:
+		pending.queue_free()
+	
 	update_status()
 
 func setup_menu(menu: MenuButton, user: GDTUser) -> void:
@@ -186,9 +192,35 @@ func get_control_of_user(user: GDTUser) -> Control:
 	
 	return
 
+func add_pending(user: GDTUser) -> void:
+	var node = pending_template.duplicate()
+	
+	node.get_node("vbox/top/name").text = user.name
+	node.get_node("vbox/top/ip").text = user.get_address()
+	
+	node.get_node("vbox/actions/btnApprove").pressed.connect(user.approve)
+	node.get_node("vbox/actions/btnReject").pressed.connect(user.reject)
+	
+	node.set_meta("user_id", user.id)
+	node.visible = true
+	
+	pending_list.add_child(node)
+	update_status()
+
+func get_control_of_pending(user: GDTUser) -> Control:
+	for i in pending_list.get_children():
+		if i.has_meta("user_id") and i.get_meta("user_id") == user.id:
+			return i
+	
+	return
+
 func clear() -> void:
 	user_count_label.text = "0"
 	
 	for i in user_list.get_children():
 		if i != user_template and i != inactive_label:
+			i.queue_free()
+	
+	for i in pending_list.get_children():
+		if i != pending_template and i is not Label:
 			i.queue_free()
