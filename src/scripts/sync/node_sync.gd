@@ -1231,8 +1231,11 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 		if is_setget_property(obj, path):
 			set_setget_property(obj, path, value)
 		else:
+			var original = obj.get_indexed(path)
 			obj.set_indexed(path, value)
-			#GDTUtils.set_nested(obj, path, value, PROPERTY_SEPARATOR)
+			
+			if value == null and original != null:
+				GDTUtils.printerr_stack("Set failed: %s Value: " % [path, str(value)])
 
 static func get_setget_properties_of_class(cls_name: String) -> Variant:
 	if cls_name in SETGET_PROPERTIES:
