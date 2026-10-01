@@ -128,6 +128,8 @@ const SETGET_PROPERTIES = {
 	"TileMap": "TileMapLayer",
 }
 
+const PROPERTY_SEPARATOR = ":"
+
 var change_timer = Timer.new()
 var rescan_timer = Timer.new()
 
@@ -224,7 +226,7 @@ func check_node(node, root: Node) -> void:
 func _check_node_properties(node, root: Node, data: Dictionary) -> void:
 	var last_hashes = data["property_hashes"]
 	var new_hashes = get_property_hash_dict(node)
-	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes)
+	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes, PROPERTY_SEPARATOR)
 	
 	if "name" in diff:
 		_node_renamed(node, data["last_path"])
@@ -339,7 +341,7 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	var data_dict = observe_node(child)
 	
 	# Cursed. TODO: Optimize later
-	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {})
+	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {}, PROPERTY_SEPARATOR)
 	var prop_dict = get_select_property_dict(child, prop_list)
 	
 	var parent_path = scene.get_path_to(parent)
@@ -451,7 +453,7 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 	var path = scene.get_path_to(new_node) # Must get path to new node. Old is already gone
 	
 	var data_dict = observe_node(new_node)
-	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {})
+	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {}, PROPERTY_SEPARATOR)
 	var prop_dict = get_select_property_dict(new_node, prop_list)
 	
 	if is_change_logging_enabled():
@@ -1169,7 +1171,7 @@ static func fill_property_hash_dict(res: Dictionary, obj: Object, depth := 64) -
 		if value is Object and depth > 0:
 			res[key] = {
 				"." = hash(value)
-			} 
+			}
 			fill_property_hash_dict(res[key], value, depth - 1)
 		else:
 			res[key] = hash(value)
@@ -1180,7 +1182,7 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	var res = {}
 	
 	for path: String in paths:
-		var true_path = path.replace(GDTUtils.DICT_PATH_SEPARATOR + ".", "")
+		var true_path = path.replace(PROPERTY_SEPARATOR + ".", "")
 		var is_setget = is_setget_property(obj, path)
 		
 		var value = null
@@ -1188,7 +1190,7 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 		if is_setget:
 			value = get_setget_property(obj, path)
 		else:
-			value = GDTUtils.get_nested(obj, true_path)
+			value = GDTUtils.get_nested(obj, true_path, PROPERTY_SEPARATOR)
 		
 		if value is Resource:
 			value = encode_resource(value)
@@ -1226,7 +1228,7 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 		if is_setget_property(obj, path):
 			set_setget_property(obj, path, value)
 		else:
-			GDTUtils.set_nested(obj, path, value)
+			GDTUtils.set_nested(obj, path, value, PROPERTY_SEPARATOR)
 
 static func get_setget_properties_of_class(cls_name: String) -> Variant:
 	if cls_name in SETGET_PROPERTIES:

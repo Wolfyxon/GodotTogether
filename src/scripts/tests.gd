@@ -452,8 +452,8 @@ func test_hash_dict() -> bool:
 	
 	var h3 = GDTNodeSync.get_property_hash_dict(lbl)
 	
-	var diff3 = GDTUtils.compare_dicts(h2, h3)
-	var expected_diff3 = ["label_settings/."]
+	var diff3 = GDTUtils.compare_dicts(h2, h3, GDTNodeSync.PROPERTY_SEPARATOR)
+	var expected_diff3 = ["label_settings:."]
 	
 	if diff3.size() != expected_diff3.size():
 		printerr("Diff wrong: '%s' != '%s'" % [expected_diff3, diff3])
@@ -552,7 +552,7 @@ func test_node_change_applying() -> bool:
 	
 	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
 	
-	var diff = GDTUtils.compare_dicts(h1, h2)
+	var diff = GDTUtils.compare_dicts(h1, h2, GDTNodeSync.PROPERTY_SEPARATOR)
 	var props = GDTNodeSync.get_select_property_dict(lbl, diff)
 	
 	var lbl_output = Label.new()
@@ -627,10 +627,10 @@ func test_node_change_applying_deep_setget() -> bool:
 	
 	var h2 = GDTNodeSync.get_property_hash_dict(tmap)
 	
-	var diff = GDTUtils.compare_dicts(h1, h2)
+	var diff = GDTUtils.compare_dicts(h1, h2, GDTNodeSync.PROPERTY_SEPARATOR)
 	
-	if not "tile_set/sources/0" in diff:
-		printerr("tile_set/sources/0 not found in diff")
+	if not "tile_set:sources/0" in diff:
+		printerr("tile_set:sources/0 not found in diff")
 		return false
 	
 	var props = GDTNodeSync.get_select_property_dict(tmap, diff)

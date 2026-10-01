@@ -103,7 +103,12 @@ static func append_array_prefixed(array: Array, new_values: Array, prefix: Strin
 	for i in new_values:
 		array.append(prefix + i)
 
-static func compare_dicts(a: Dictionary, b: Dictionary, depth := 16) -> Array:
+static func compare_dicts(
+	a: Dictionary, 
+	b: Dictionary, 
+	separator := DICT_PATH_SEPARATOR, 
+	depth := 16
+) -> Array:
 	var changed_paths = []
 	
 	for key in a.keys():
@@ -119,8 +124,8 @@ static func compare_dicts(a: Dictionary, b: Dictionary, depth := 16) -> Array:
 			continue
 			
 		if val_a is Dictionary and val_b is Dictionary and depth > 0:
-			var sub_changes = compare_dicts(val_a, val_b, depth - 1)
-			append_array_prefixed(changed_paths, sub_changes, key + DICT_PATH_SEPARATOR)
+			var sub_changes = compare_dicts(val_a, val_b, separator, depth - 1)
+			append_array_prefixed(changed_paths, sub_changes, key + separator)
 			continue
 		
 		if val_a != val_b:
