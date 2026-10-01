@@ -226,7 +226,7 @@ func check_node(node, root: Node) -> void:
 func _check_node_properties(node, root: Node, data: Dictionary) -> void:
 	var last_hashes = data["property_hashes"]
 	var new_hashes = get_property_hash_dict(node)
-	var diff = GDTUtils.compare_dicts(last_hashes, new_hashes, PROPERTY_SEPARATOR)
+	var diff = get_property_diff(last_hashes, new_hashes)
 	
 	if "name" in diff:
 		_node_renamed(node, data["last_path"])
@@ -341,7 +341,7 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	var data_dict = observe_node(child)
 	
 	# Cursed. TODO: Optimize later
-	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {}, PROPERTY_SEPARATOR)
+	var prop_list = get_property_diff(data_dict["property_hashes"], {})
 	var prop_dict = get_select_property_dict(child, prop_list)
 	
 	var parent_path = scene.get_path_to(parent)
@@ -453,7 +453,7 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 	var path = scene.get_path_to(new_node) # Must get path to new node. Old is already gone
 	
 	var data_dict = observe_node(new_node)
-	var prop_list = GDTUtils.compare_dicts(data_dict["property_hashes"], {}, PROPERTY_SEPARATOR)
+	var prop_list = get_property_diff(data_dict["property_hashes"], {})
 	var prop_dict = get_select_property_dict(new_node, prop_list)
 	
 	if is_change_logging_enabled():
@@ -1155,6 +1155,9 @@ static func apply_signal_connection_dict(node: Node, dict: Dictionary) -> void:
 				continue
 			
 			node.connect(sig_name, cal, ConnectFlags.CONNECT_PERSIST)
+
+static func get_property_diff(hash_dict_a: Dictionary, hash_dict_b: Dictionary) -> Array:
+	return GDTUtils.compare_dicts(hash_dict_a, hash_dict_b, PROPERTY_SEPARATOR)
 
 static func get_property_hash_dict(obj: Object, depth := 64) -> Dictionary:
 	var res = {}

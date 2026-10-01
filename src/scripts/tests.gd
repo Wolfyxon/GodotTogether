@@ -420,7 +420,7 @@ func test_hash_dict() -> bool:
 	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
 	var h1_unchanged = GDTNodeSync.get_property_hash_dict(lbl)
 	
-	var diff_unchanged = GDTUtils.compare_dicts(h1, h1_unchanged)
+	var diff_unchanged = GDTNodeSync.get_property_diff(h1, h1_unchanged)
 	
 	if not diff_unchanged.is_empty():
 		printerr("Hashes differ without changes: %s", diff_unchanged)
@@ -434,7 +434,7 @@ func test_hash_dict() -> bool:
 	
 	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
 	
-	var diff2 = GDTUtils.compare_dicts(h1, h2)
+	var diff2 = GDTNodeSync.get_property_diff(h1, h2)
 	var expected_diff2 = ["text", "visible", "label_settings"]
 	
 	if diff2.size() != expected_diff2.size():
@@ -452,7 +452,7 @@ func test_hash_dict() -> bool:
 	
 	var h3 = GDTNodeSync.get_property_hash_dict(lbl)
 	
-	var diff3 = GDTUtils.compare_dicts(h2, h3, GDTNodeSync.PROPERTY_SEPARATOR)
+	var diff3 = GDTNodeSync.get_property_diff(h2, h3)
 	var expected_diff3 = ["label_settings:."]
 	
 	if diff3.size() != expected_diff3.size():
@@ -552,7 +552,7 @@ func test_node_change_applying() -> bool:
 	
 	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
 	
-	var diff = GDTUtils.compare_dicts(h1, h2, GDTNodeSync.PROPERTY_SEPARATOR)
+	var diff = GDTNodeSync.get_property_diff(h1, h2)
 	var props = GDTNodeSync.get_select_property_dict(lbl, diff)
 	
 	var lbl_output = Label.new()
@@ -627,7 +627,7 @@ func test_node_change_applying_deep_setget() -> bool:
 	
 	var h2 = GDTNodeSync.get_property_hash_dict(tmap)
 	
-	var diff = GDTUtils.compare_dicts(h1, h2, GDTNodeSync.PROPERTY_SEPARATOR)
+	var diff = GDTNodeSync.get_property_diff(h1, h2)
 	
 	if not "tile_set:sources/0" in diff:
 		printerr("tile_set:sources/0 not found in diff")
@@ -732,7 +732,7 @@ func test_basic_setget_props() -> bool:
 	lbl.add_theme_font_size_override("font_size", 42)
 	
 	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
-	var diff = GDTUtils.compare_dicts(h1, h2)
+	var diff = GDTNodeSync.get_property_diff(h1, h2)
 	
 	if diff.size() != 1:
 		printerr("Diff wrong: %s" % diff)
@@ -782,7 +782,7 @@ func test_object_setget_props() -> bool:
 	lbl.add_theme_stylebox_override("normal", style1)
 	
 	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
-	var diff = GDTUtils.compare_dicts(h1, h2)
+	var diff = GDTNodeSync.get_property_diff(h1, h2)
 	
 	if diff.size() != 1:
 		printerr("Diff wrong: %s" % diff)
