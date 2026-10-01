@@ -473,7 +473,10 @@ func test_setget_nested() -> bool:
 		}
 	}
 	
-	GDTUtils.set_nested(dict, "a/b", "c")
+	if not GDTUtils.set_nested(dict, "a/b", "c"):
+		printerr("set_nested() should return true")
+		return false
+	
 	var dict_val = GDTUtils.get_nested(dict, "a/b")
 	
 	if dict_val != "c":

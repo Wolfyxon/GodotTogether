@@ -65,7 +65,12 @@ static func get_nested(obj, path: String, separator := DICT_PATH_SEPARATOR):
 	
 	return current
 
-static func set_nested(obj, path: String, value, separator := DICT_PATH_SEPARATOR) -> void:
+static func set_nested(
+	obj, 
+	path: String, 
+	value, 
+	separator := DICT_PATH_SEPARATOR
+) -> bool:
 	if obj is Dictionary:
 		assert(not obj.is_read_only(), "Dictionary is read only")
 	
@@ -76,13 +81,13 @@ static func set_nested(obj, path: String, value, separator := DICT_PATH_SEPARATO
 		var level = levels[i]
 		
 		if not current is Dictionary and not current is Object:
-			return
+			return false
 		
 		if not level in current:
 			if current is Dictionary:
 				current[level] = {}
 			elif current is Object:
-				return
+				return false
 		
 		#if current is Dictionary and not level in current:
 			#current[level] = {}
@@ -92,12 +97,13 @@ static func set_nested(obj, path: String, value, separator := DICT_PATH_SEPARATO
 		current = current[level]
 	
 	if not current:
-		return
+		return false
 	
 	if not levels[-1]:
-		return
+		return false
 	
 	current[levels[-1]] = value
+	return true
 
 static func append_array_prefixed(array: Array, new_values: Array, prefix: String) -> void:
 	for i in new_values:
