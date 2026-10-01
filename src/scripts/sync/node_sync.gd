@@ -133,7 +133,6 @@ const PROPERTY_SEPARATOR = ":"
 var change_timer = Timer.new()
 var rescan_timer = Timer.new()
 
-# Using dictionary without objects for better performance
 var node_data_dict = {
 	# [node]: {
 	#	"property_hashes": {
