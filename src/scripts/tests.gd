@@ -696,7 +696,7 @@ func test_node_change_applying_deep_setget() -> bool:
 		return false
 	
 	if tmap.tile_set.get_source_count() != 1:
-		printerr("TileSet source count %s != 1", tmap.tile_set.get_source_count())
+		printerr("TileSet source count %s != 1" % tmap.tile_set.get_source_count())
 		return false
 	
 	var source_output = tmap.tile_set.get_source(0)
