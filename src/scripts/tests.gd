@@ -221,6 +221,52 @@ func test_local_resource_encoding() -> bool:
 	
 	return true
 
+func test_resource_encoding_setget_props() -> bool:
+	var tset = TileSet.new()
+	
+	var img = load("res://addons/GodotTogether/src/img/x.svg")
+	
+	if not img:
+		printerr("Unable to load sample texture")
+		return false
+	
+	var src = TileSetAtlasSource.new()
+	src.texture = img
+	tset.add_source(src)
+	
+	tset.tile_size = Vector2(2, 8)
+	tset.add_occlusion_layer()
+	tset.set_occlusion_layer_light_mask(0, 2)
+	
+	var encoded: Dictionary = GDTNodeSync.encode_resource(tset)
+	var decoded: TileSet = GDTNodeSync.decode_resource(encoded, true)
+	
+	if not decoded:
+		printerr("Decoded is null")
+		return false
+	
+	var decoded_mask = decoded.get_occlusion_layer_light_mask(0)
+	
+	if decoded_mask != tset.get_occlusion_layer_light_mask(0):
+		printerr("Occlusion layer mask mismatch")
+		return false
+	
+	var decoded_src = decoded.get_source(0)
+	
+	if not decoded_src:
+		printerr("Source 0 is null")
+		return false
+		
+	if not decoded_src is TileSetAtlasSource:
+		printerr("Source 0 not TileSetAtlasSource: %s" % decoded_src.get_class())
+		return false
+		
+	if decoded_src.texture.resource_path != src.texture.resource_path:
+		printerr("Texture path mismatch")
+		return false
+	
+	return true
+
 func test_file_resource_encoding() -> bool:
 	const PATH = "res://addons/GodotTogether/src/scenes/Avatar3D/material.tres"
 	
