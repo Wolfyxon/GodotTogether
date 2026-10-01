@@ -46,6 +46,8 @@ var plugin_started := false
 var components = []
 
 func _enter_tree() -> void:
+	await get_tree().process_frame
+	
 	if not pre_start_check():
 		printerr("GodotTogether will not run.")
 		return
