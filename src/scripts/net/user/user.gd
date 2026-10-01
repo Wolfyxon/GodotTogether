@@ -156,6 +156,8 @@ func get_type_as_string() -> String:
 
 static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 	match reason:
+		DisconnectReason.UNKNOWN:
+			return "Connection lost"
 		DisconnectReason.KICKED:
 			return "Kicked by host"
 		DisconnectReason.BANNED:
@@ -175,7 +177,7 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 		DisconnectReason.ADDRESS_IN_USE:
 			return "Host does not allow multiple connections from the same IP address"
 	
-	return "Connection lost"
+	return "Disconnected. Unknown status: %s" % reason
 
 static func normalize_address(ip: String):
 	if ip in ["0:0:0:0:0:0:0:1", "::1", "127.0.0.1"]:

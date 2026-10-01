@@ -46,8 +46,18 @@ func _disconnected() -> void:
 	
 	is_fully_synced = false
 
+	var str_reason = "Connection lost. Reason unknown"
+
+	if disconnect_reason < GDTUser.DisconnectReason.size():
+		str_reason = GDTUser.disconnect_reason_to_string(disconnect_reason)
+	else:
+		str_reason = GDTUtils.join([
+			"Kicked with unknown reason: %s." % disconnect_reason,
+			"You and the host are likely running different versions of GodotTogether."
+		], "\n")
+		
 	main.get_gui().alert(
-		GDTUser.disconnect_reason_to_string(disconnect_reason),
+		str_reason,
 		"Disconnected from the server"
 	)
 
