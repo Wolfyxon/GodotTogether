@@ -104,17 +104,16 @@ layout_mode = 2
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/users/user" unique_id=893071161]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = -1
+anchor_left = 0.02
+anchor_right = 0.98
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="hbox" type="HBoxContainer" parent="main/scroll/vbox/users/user/vbox" unique_id=377824174]
-layout_mode = 2
-
-[node name="padding" type="Control" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=291400844]
 layout_mode = 2
 
 [node name="color" type="ColorRect" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=283055312]
@@ -147,9 +146,6 @@ popup/item_0/id = 0
 popup/item_1/text = "Copy peer ID"
 popup/item_1/icon = ExtResource("5_og0bi")
 popup/item_1/id = 1
-
-[node name="padding2" type="Control" parent="main/scroll/vbox/users/user/vbox/hbox" unique_id=875433989]
-layout_mode = 2
 
 [node name="status" type="Button" parent="main/scroll/vbox/users/user/vbox" unique_id=28016925]
 custom_maximum_size = Vector2(-1, 35)
