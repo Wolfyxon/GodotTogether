@@ -1399,7 +1399,7 @@ static func _call_setget_entry_method(
 			if k.is_valid_int():
 				full_args[i] = int(k)
 			else:
-				printerr("Invalid int %s for property %s of %s" % [k, property, obj.get_class()])
+				printerr("Invalid int '%s' for property '%s' of %s" % [k, property, obj.get_class()])
 				full_args[i] = 0
 	
 	return obj.callv(method_entry["func"], full_args)
