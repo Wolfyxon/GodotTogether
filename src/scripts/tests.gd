@@ -721,6 +721,24 @@ func test_node_change_applying_deep_setget() -> bool:
 	
 	return true
 
+func test_setget_remove() -> bool:
+	var tmap = TileMap.new()
+	created_nodes.append(tmap)
+	tmap.tile_set = TileSet.new()
+	
+	tmap.tile_set.add_occlusion_layer(0)
+	tmap.tile_set.set_occlusion_layer_light_mask(0, 9)
+	
+	GDTNodeSync.apply_property_dict(tmap, {
+		"tile_set:occlusion_layer_0/light_mask": null
+	})
+	
+	if tmap.tile_set.get_occlusion_layers_count() != 0:
+		printerr("Occlusion layer not removed")
+		return false
+	
+	return true
+
 func test_setget_property_dict() -> bool:
 	const METHOD_KEYS = ["set", "get", "has", "reset"]
 	const ESSENTIALS = []
