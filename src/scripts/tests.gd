@@ -634,81 +634,20 @@ func test_setget_property_dict() -> bool:
 	
 	return true
 
-func test_node_change_applying() -> bool:
-	var lbl = Label.new()
-	created_nodes.append(lbl)
-	
-	lbl.label_settings = LabelSettings.new()
-	lbl.label_settings.font_size = 7
-	
-	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color.RED
-	
-	lbl.add_theme_stylebox_override("normal", style)
-	lbl.text = "when the THE"
-	lbl.label_settings = LabelSettings.new()
-	lbl.label_settings.font_color = Color.RED
-	
-	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
-	
-	var diff = GDTNodeSync.get_property_diff(h1, h2)
-	var props = GDTNodeSync.get_select_property_dict(lbl, diff)
-	
-	var lbl_output = Label.new()
-	created_nodes.append(lbl_output)
-	GDTNodeSync.apply_property_dict(lbl_output, props)
-	
-	var has_setget = false
-	
-	for i in diff:
-		if GDTNodeSync.is_setget_property(lbl, i):
-			has_setget = true
-			break
-	
-	if not has_setget:
-		printerr("The diff should include a setget property")
-		return false
-	
-	if lbl_output.text != lbl.text:
-		printerr("text wrong")
-		return false
-	
-	if not lbl_output.label_settings:
-		printerr("label_settings is null")
-		return false 
-	
-	if lbl_output.label_settings.font_color != lbl.label_settings.font_color:
-		printerr("font color wrong")
-		return false
-	
-	if lbl_output.label_settings.font_size != 16: # default font size
-		printerr("font size remained changed")
-		return false
-	
-	if not lbl_output.has_theme_stylebox_override("normal"):
-		printerr("'normal' stylebox override not set")
-		return false
-	
-	var style_output = GDTNodeSync.get_setget_property(lbl_output, "theme_override_styles/normal")
-	
-	if not style_output:
-		printerr("Stylebox is null")
-		return false
-	
-	if not style_output is StyleBoxFlat:
-		printerr("Stylebox class wrong: %s" % style_output.get_class())
-		return false
-	
-	if style_output.bg_color != style.bg_color:
-		printerr("Stylebox bg_color %s != %s" % [style_output.bg_color, style.bg_color])
-		return false
-	
-	return true
-
 func test_basic_setget_props() -> bool:
 	var lbl = Label.new()
 	created_nodes.append(lbl)
+	
+	var non_setget = [
+		"text",
+		"label_settings:.",
+		"label_settings:font_size"
+	]
+	
+	for path in non_setget:
+		if GDTNodeSync.is_setget_property(lbl, path):
+			printerr("Should not be recognized as setget: %s" % path)
+			return false
 	
 	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
 	
@@ -894,6 +833,77 @@ func test_setget_remove() -> bool:
 	
 	return true
 
+func test_node_change_applying() -> bool:
+	var lbl = Label.new()
+	created_nodes.append(lbl)
+	
+	lbl.label_settings = LabelSettings.new()
+	lbl.label_settings.font_size = 7
+	
+	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color.RED
+	
+	lbl.add_theme_stylebox_override("normal", style)
+	lbl.text = "when the THE"
+	lbl.label_settings = LabelSettings.new()
+	lbl.label_settings.font_color = Color.RED
+	
+	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
+	
+	var diff = GDTNodeSync.get_property_diff(h1, h2)
+	var props = GDTNodeSync.get_select_property_dict(lbl, diff)
+	
+	var lbl_output = Label.new()
+	created_nodes.append(lbl_output)
+	GDTNodeSync.apply_property_dict(lbl_output, props)
+	
+	var has_setget = false
+	
+	for i in diff:
+		if GDTNodeSync.is_setget_property(lbl, i):
+			has_setget = true
+			break
+	
+	if not has_setget:
+		printerr("The diff should include a setget property")
+		return false
+	
+	if lbl_output.text != lbl.text:
+		printerr("text wrong")
+		return false
+	
+	if not lbl_output.label_settings:
+		printerr("label_settings is null")
+		return false 
+	
+	if lbl_output.label_settings.font_color != lbl.label_settings.font_color:
+		printerr("font color wrong")
+		return false
+	
+	if lbl_output.label_settings.font_size != 16: # default font size
+		printerr("font size remained changed")
+		return false
+	
+	if not lbl_output.has_theme_stylebox_override("normal"):
+		printerr("'normal' stylebox override not set")
+		return false
+	
+	var style_output = GDTNodeSync.get_setget_property(lbl_output, "theme_override_styles/normal")
+	
+	if not style_output:
+		printerr("Stylebox is null")
+		return false
+	
+	if not style_output is StyleBoxFlat:
+		printerr("Stylebox class wrong: %s" % style_output.get_class())
+		return false
+	
+	if style_output.bg_color != style.bg_color:
+		printerr("Stylebox bg_color %s != %s" % [style_output.bg_color, style.bg_color])
+		return false
+	
+	return true
 
 func test_scenes() -> bool:
 	var scenes = [
