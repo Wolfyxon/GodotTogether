@@ -1475,7 +1475,7 @@ static func get_setget_property_regex(path: String) -> RegEx:
 	var regex = RegEx.new()
 	
 	var err = regex.compile(
-		path.replace("?", ".*")
+		path.replace("?", "(.*)")
 			.replace("/", "\\/")
 			.replace(":", "\\:")
 		)
@@ -1485,6 +1485,15 @@ static func get_setget_property_regex(path: String) -> RegEx:
 		return
 	
 	return regex
+
+static func extract_setget_property_string_args(property: String, source: String) -> Array:
+	var regex = get_setget_property_regex(source)
+	var res = regex.search(property)
+	
+	if not res:
+		return []
+		
+	return res.strings.slice(1)
 
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
