@@ -1300,6 +1300,10 @@ static func get_setget_entry(obj: Object, property: String) -> Variant:
 	return
 
 static func get_setget_property(obj: Object, property: String) -> Variant:
+	if not property:
+		GDTUtils.printerr_stack("Trying to set empty property of %s" % obj.get_class())
+		return
+	
 	var first = property.split("/")[0]
 	
 	if first in obj and obj[first] is Object:
@@ -1322,6 +1326,10 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 	return obj.get(property)
 
 static func set_setget_property(obj: Object, property: String, value: Variant) -> void:
+	if not property:
+		GDTUtils.printerr_stack("Trying to get empty property of %s" % obj.get_class())
+		return
+	
 	var first = property.split("/")[0]
 	
 	if first in obj and obj[first] is Object:
