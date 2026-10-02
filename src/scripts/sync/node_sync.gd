@@ -93,13 +93,35 @@ const SETGET_PROPERTIES = {
 	},
 	
 	"TileSet": {
-		# "?" doesnt seem to work yet inside names
-		"occlusion_layer_?/light_mask": {},
-		"occlusion_layer_?/sdf_collision": {},
+		"occlusion_layer_?/light_mask": {
+			"reset": {
+				"func": "remove_occlusion_layer",
+				"post_args": ["?int"]
+			}
+		},
+		"occlusion_layer_?/sdf_collision": {
+			"reset": {
+				"func": "remove_occlusion_layer",
+				"post_args": ["?int"]
+			}
+		},
 		
 		"physics_layer_?/collision_priority": {},
 		"physics_layer_?/collision_mask": {},
 		"physics_layer_?/physics_material": {},
+		
+		"custom_data_layer_?/name": {
+			"reset": {
+				"func": "remove_custom_data_layer",
+				"post_args": ["?int"]
+			}
+		},
+		"custom_data_layer_?/type": {
+			"reset": {
+				"func": "remove_custom_data_layer",
+				"post_args": ["?int"]
+			}
+		},
 		
 		"sources/?": {
 			"get": {
@@ -123,7 +145,7 @@ const SETGET_PROPERTIES = {
 	
 	"TileMapLayer": {
 		"layer_?/tile_data": {},
-		"tile_set/?": {},
+		"tile_set:?": {},
 	},
 	"TileMap": "TileMapLayer",
 }
@@ -1261,9 +1283,11 @@ static func get_setget_entry(obj: Object, property: String) -> Variant:
 	if property in class_props:
 		return class_props[property]
 	else:
-		for prop in class_props.keys():
-			if property.begins_with(prop.replace("?", "")):
-				return class_props[prop]
+		for path in class_props.keys():
+			var regex = get_setget_property_regex(path)
+			
+			if regex.search(property):
+				return class_props[path]
 				
 	return null
 
@@ -1300,7 +1324,7 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 	var prop_entry = get_setget_entry(obj, property)
 	
 	if prop_entry == null:
-		push_error("Missing setget entry for %s:%s" % [obj.get_class(), property])
+		GDTUtils.printerr_stack("Missing setget entry for %s:%s" % [obj.get_class(), property])
 		return
 	
 	if "reset" in prop_entry:
@@ -1424,10 +1448,27 @@ static func is_setget_property(obj: Object, property: String) -> bool:
 		return true
 	
 	for path: String in class_props.keys():
-		if property.begins_with(path.replace("?", "")):
+		var regex := get_setget_property_regex(path)
+		
+		if regex.search(property):
 			return true
-	
+		
 	return false
+
+static func get_setget_property_regex(path: String) -> RegEx:
+	var regex = RegEx.new()
+	
+	var err = regex.compile(
+		path.replace("?", ".*")
+			.replace("/", "\\/")
+			.replace(":", "\\:")
+		)
+	
+	if err != OK:
+		GDTUtils.printerr_stack("Invalid regex: %s" % path)
+		return
+	
+	return regex
 
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
