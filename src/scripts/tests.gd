@@ -583,6 +583,57 @@ func test_property_keys() -> bool:
 	
 	return true
 
+func test_setget_property_dict() -> bool:
+	const METHOD_KEYS = ["set", "get", "has", "reset"]
+	const ESSENTIALS = []
+	
+	for node_class in GDTNodeSync.SETGET_PROPERTIES.keys():
+		if not ClassDB.class_exists(node_class):
+			printerr("Class '%s' doesn't exist" % node_class)
+			return false
+		
+		var class_entry = GDTNodeSync.SETGET_PROPERTIES[node_class]
+		
+		if typeof(class_entry) == TYPE_STRING:
+			if not class_entry in GDTNodeSync.SETGET_PROPERTIES:
+				printerr("Duplicate setget entry %s not found" % class_entry)
+				return false
+			
+			continue
+		
+		for prop in class_entry.keys():
+			var prop_entry = class_entry[prop]
+			
+			for key in ESSENTIALS:
+				if not key in prop_entry:
+					printerr("Missing '%s' in %s of class %s" % [key, prop, node_class])
+					return false
+			
+			for method_key in METHOD_KEYS:
+				if not method_key in prop_entry:
+					continue
+				
+				var method_entry = prop_entry[method_key]
+				
+				if method_entry is String:
+					if not ClassDB.class_has_method(node_class, method_entry):
+						printerr("%s has no method '%s'" % [node_class, method_entry])
+						return false
+				elif method_entry is Dictionary:
+					if not "func" in method_entry:
+						printerr("Missing 'func' in '%s' of %s:%s" % [method_key, node_class, prop])
+						return false
+						
+					if not ClassDB.class_has_method(node_class, method_entry["func"]):
+						printerr("%s has no method '%s'" % [node_class, method_entry["func"]])
+						return false
+					
+				else:
+					printerr("Invalid method entry type of '%s' in %s:%s" % [method_key, node_class, prop])
+					return false
+	
+	return true
+
 func test_node_change_applying() -> bool:
 	var lbl = Label.new()
 	created_nodes.append(lbl)
@@ -652,141 +703,6 @@ func test_node_change_applying() -> bool:
 	if style_output.bg_color != style.bg_color:
 		printerr("Stylebox bg_color %s != %s" % [style_output.bg_color, style.bg_color])
 		return false
-	
-	return true
-
-func test_node_change_applying_deep_setget() -> bool:
-	var texture = load("res://icon.svg")
-	
-	if not texture:
-		printerr("res://icon.svg doesn't exist in project. The test cannot continue")
-		return false
-	
-	var tmap = TileMapLayer.new()
-	var tset = TileSet.new()
-	
-	created_nodes.append(tmap)
-	tmap.tile_set = tset
-	
-	var h1 = GDTNodeSync.get_property_hash_dict(tmap)
-	
-	var source = TileSetAtlasSource.new()
-	source.texture = texture
-	tset.add_source(source)
-	
-	var h2 = GDTNodeSync.get_property_hash_dict(tmap)
-	
-	var diff = GDTNodeSync.get_property_diff(h1, h2)
-	
-	if not "tile_set:sources/0" in diff:
-		printerr("tile_set:sources/0 not found in diff")
-		return false
-	
-	var props = GDTNodeSync.get_select_property_dict(tmap, diff)
-	
-	var tmap_output = TileMapLayer.new()
-	tmap_output.tile_set = TileSet.new()
-	
-	created_nodes.append(tmap_output)
-	
-	GDTNodeSync.apply_property_dict(tmap_output, props)
-	
-	if not tmap_output.tile_set:
-		printerr("TileSet not set")
-		return false
-	
-	if tmap.tile_set.get_source_count() != 1:
-		printerr("TileSet source count %s != 1" % tmap.tile_set.get_source_count())
-		return false
-	
-	var source_output = tmap.tile_set.get_source(0)
-	
-	if not source_output:
-		printerr("Source is null")
-		return false
-		
-	if not source_output is TileSetAtlasSource:
-		printerr("Expected TileSetAtlasSource, got %s" % source_output.get_class())
-		return false
-	
-	source_output = source_output as TileSetAtlasSource
-	
-	if not source_output.texture:
-		printerr("Source texture not set")
-		return false
-	
-	if source_output.texture.resource_path != texture.resource_path:
-		printerr("Texture path '%s' != '%s'" % [source_output.texture.resource_path, texture.resource_path])
-		return false
-	
-	return true
-
-func test_setget_remove() -> bool:
-	var tmap = TileMap.new()
-	created_nodes.append(tmap)
-	tmap.tile_set = TileSet.new()
-	
-	tmap.tile_set.add_occlusion_layer(0)
-	tmap.tile_set.set_occlusion_layer_light_mask(0, 9)
-	
-	GDTNodeSync.apply_property_dict(tmap, {
-		"tile_set:occlusion_layer_0/light_mask": null
-	})
-	
-	if tmap.tile_set.get_occlusion_layers_count() != 0:
-		printerr("Occlusion layer not removed")
-		return false
-	
-	return true
-
-func test_setget_property_dict() -> bool:
-	const METHOD_KEYS = ["set", "get", "has", "reset"]
-	const ESSENTIALS = []
-	
-	for node_class in GDTNodeSync.SETGET_PROPERTIES.keys():
-		if not ClassDB.class_exists(node_class):
-			printerr("Class '%s' doesn't exist" % node_class)
-			return false
-		
-		var class_entry = GDTNodeSync.SETGET_PROPERTIES[node_class]
-		
-		if typeof(class_entry) == TYPE_STRING:
-			if not class_entry in GDTNodeSync.SETGET_PROPERTIES:
-				printerr("Duplicate setget entry %s not found" % class_entry)
-				return false
-			
-			continue
-		
-		for prop in class_entry.keys():
-			var prop_entry = class_entry[prop]
-			
-			for key in ESSENTIALS:
-				if not key in prop_entry:
-					printerr("Missing '%s' in %s of class %s" % [key, prop, node_class])
-					return false
-			
-			for method_key in METHOD_KEYS:
-				if not method_key in prop_entry:
-					continue
-				
-				var method_entry = prop_entry[method_key]
-				
-				if method_entry is String:
-					if not ClassDB.class_has_method(node_class, method_entry):
-						printerr("%s has no method '%s'" % [node_class, method_entry])
-						return false
-				elif method_entry is Dictionary:
-					if not "func" in method_entry:
-						printerr("Missing 'func' in '%s' of %s:%s" % [method_key, node_class, prop])
-						return false
-						
-					if not ClassDB.class_has_method(node_class, method_entry["func"]):
-						printerr("%s has no method '%s'" % [node_class, method_entry["func"]])
-						return false
-					
-				else:
-					printerr("Invalid method entry type of '%s' in %s:%s" % [method_key, node_class, prop])
-					return false
 	
 	return true
 
@@ -882,6 +798,91 @@ func test_object_setget_props() -> bool:
 		return false
 	
 	return true
+
+func test_node_change_applying_deep_setget() -> bool:
+	var texture = load("res://icon.svg")
+	
+	if not texture:
+		printerr("res://icon.svg doesn't exist in project. The test cannot continue")
+		return false
+	
+	var tmap = TileMapLayer.new()
+	var tset = TileSet.new()
+	
+	created_nodes.append(tmap)
+	tmap.tile_set = tset
+	
+	var h1 = GDTNodeSync.get_property_hash_dict(tmap)
+	
+	var source = TileSetAtlasSource.new()
+	source.texture = texture
+	tset.add_source(source)
+	
+	var h2 = GDTNodeSync.get_property_hash_dict(tmap)
+	
+	var diff = GDTNodeSync.get_property_diff(h1, h2)
+	
+	if not "tile_set:sources/0" in diff:
+		printerr("tile_set:sources/0 not found in diff")
+		return false
+	
+	var props = GDTNodeSync.get_select_property_dict(tmap, diff)
+	
+	var tmap_output = TileMapLayer.new()
+	tmap_output.tile_set = TileSet.new()
+	
+	created_nodes.append(tmap_output)
+	
+	GDTNodeSync.apply_property_dict(tmap_output, props)
+	
+	if not tmap_output.tile_set:
+		printerr("TileSet not set")
+		return false
+	
+	if tmap.tile_set.get_source_count() != 1:
+		printerr("TileSet source count %s != 1" % tmap.tile_set.get_source_count())
+		return false
+	
+	var source_output = tmap.tile_set.get_source(0)
+	
+	if not source_output:
+		printerr("Source is null")
+		return false
+		
+	if not source_output is TileSetAtlasSource:
+		printerr("Expected TileSetAtlasSource, got %s" % source_output.get_class())
+		return false
+	
+	source_output = source_output as TileSetAtlasSource
+	
+	if not source_output.texture:
+		printerr("Source texture not set")
+		return false
+	
+	if source_output.texture.resource_path != texture.resource_path:
+		printerr("Texture path '%s' != '%s'" % [source_output.texture.resource_path, texture.resource_path])
+		return false
+	
+	return true
+
+func test_setget_remove() -> bool:
+	var tmap = TileMap.new()
+	created_nodes.append(tmap)
+	tmap.tile_set = TileSet.new()
+	
+	tmap.tile_set.add_occlusion_layer(0)
+	tmap.tile_set.set_occlusion_layer_light_mask(0, 9)
+	
+	GDTNodeSync.apply_property_dict(tmap, {
+		"tile_set:occlusion_layer_0/light_mask": null
+	})
+	
+	if tmap.tile_set.get_occlusion_layers_count() != 0:
+		printerr("Occlusion layer not removed")
+		return false
+	
+	return true
+
 
 func test_scenes() -> bool:
 	var scenes = [
