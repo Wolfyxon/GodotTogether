@@ -1280,6 +1280,14 @@ static func get_setget_properties(obj: Object) -> Variant:
 static func get_setget_entry(obj: Object, property: String) -> Variant:
 	var class_props = get_setget_properties(obj)
 	
+	if not property:
+		GDTUtils.printerr_stack("Property path empty. Object class: %s" % obj.get_class())
+		return
+	
+	if not class_props:
+		GDTUtils.printerr_stack("No setget properties for class: %s. Setting %s" % [obj.get_class(), property])
+		return
+	
 	if property in class_props:
 		return class_props[property]
 	else:
@@ -1289,7 +1297,7 @@ static func get_setget_entry(obj: Object, property: String) -> Variant:
 			if regex.search(property):
 				return class_props[path]
 				
-	return null
+	return
 
 static func get_setget_property(obj: Object, property: String) -> Variant:
 	var first = property.split("/")[0]
