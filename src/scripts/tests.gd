@@ -873,8 +873,19 @@ func test_setget_remove() -> bool:
 	tmap.tile_set.add_occlusion_layer(0)
 	tmap.tile_set.set_occlusion_layer_light_mask(0, 9)
 	
+	var prop = "tile_set:occlusion_layer_0/light_mask"
+	var sub_prop = prop.split(":")[1]
+	
+	if not GDTNodeSync.is_setget_property(tmap, prop):
+		printerr("Not recognized as setget: %s" % prop)
+		return false
+	
+	if not GDTNodeSync.is_setget_property(tmap.tile_set, sub_prop):
+		printerr("Not recognized as setget: %s" % sub_prop)
+		return false
+	
 	GDTNodeSync.apply_property_dict(tmap, {
-		"tile_set:occlusion_layer_0/light_mask": null
+		prop: null
 	})
 	
 	if tmap.tile_set.get_occlusion_layers_count() != 0:
