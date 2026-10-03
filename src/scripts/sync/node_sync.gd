@@ -1277,19 +1277,17 @@ static func get_setget_properties_of_class(cls_name: String) -> Variant:
 static func get_setget_properties(obj: Object) -> Variant:
 	return get_setget_properties_of_class(obj.get_class())
 
-static func get_setget_entry(obj: Object, property: String) -> Variant:
-	var class_props = get_setget_properties(obj)
-	
+static func get_setget_entry_name(class_props: Dictionary, property: String) -> String:
 	if property in class_props:
-		return class_props[property]
+		return property
 	else:
 		for path in class_props.keys():
 			var regex = get_setget_property_regex(path)
 			
 			if regex.search(property):
-				return class_props[path]
-				
-	return null
+				return path
+	
+	return ""
 
 static func get_setget_property(obj: Object, property: String) -> Variant:
 	var first = property.split("/")[0]
@@ -1298,7 +1296,9 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 		var new_path = property.substr(first.length() + 1)
 		return get_setget_property(obj[first], new_path)
 	
-	var prop_entry = get_setget_entry(obj, property)
+	var props = get_setget_properties(obj)
+	var prop_key = get_setget_entry_name(props, property)
+	var prop_entry = props[prop_key]
 	
 	if prop_entry == null:
 		GDTUtils.printerr_stack("Missing setget entry for %s: %s" % [obj.get_class(), property])
@@ -1321,7 +1321,9 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		set_setget_property(obj[first], new_path, value)
 		return
 	
-	var prop_entry = get_setget_entry(obj, property)
+	var props = get_setget_properties(obj)
+	var prop_key = get_setget_entry_name(props, property)
+	var prop_entry = props[prop_key]
 	
 	if prop_entry == null:
 		GDTUtils.printerr_stack("Missing setget entry for %s:%s" % [obj.get_class(), property])
