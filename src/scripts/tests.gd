@@ -727,6 +727,74 @@ func test_setget_arg_extraction() -> bool:
 	
 	return true
 
+func test_setget_arg_processing() -> bool:
+	var prop_dict = {
+		"hello/?": {
+			"method": {
+				"pre_args": ["?int"]
+			},
+			"props": [
+				"hello/0",
+				"hello/1",
+				"hello/-5",
+				"hello/129"
+			],
+			"exp_args": [
+				[0],
+				[1],
+				[-5],
+				[129]
+			]
+		},
+		"thing/?_?": {
+			"method": {
+					"pre_args": ["?int"],
+					"post_args": ["?"]
+			},
+			"props": [
+				"thing/16_hello",
+				"thing/5_cuh",
+				"thing/123_45"
+			],
+			"exp_args": [
+				[16, "hello"],
+				[5, "cuh"],
+				[123, "45"]
+			]
+		},
+		"empty": {
+			"method": {},
+			"props": [
+				"empty"
+			],
+			"exp_args": [
+				[]
+			]
+		}
+	}
+	
+	for entry_name in prop_dict.keys():
+		var entry: Dictionary = prop_dict[entry_name]
+		var test_props: Array = entry["props"]
+		var exp_arg_list: Array = entry["exp_args"]
+		
+		for i in test_props.size():
+			var property = test_props[i]
+			var exp_args = exp_arg_list[i]
+			
+			var res_args = GDTNodeSync.get_setget_func_args(entry["method"], entry_name, property)
+			
+			if exp_args.size() != res_args.size():
+				printerr("Arg mismatch: '%s' %s != %s" % [property, res_args, exp_args])
+				return false
+			
+			for arg_i in res_args.size():
+				if res_args[arg_i] != exp_args[arg_i]:
+					printerr("Arg mismatch: '%s' %s != %s" % [property, res_args, exp_args])
+					return false
+	
+	return true
+
 func test_object_setget_props() -> bool:
 	var lbl = Label.new()
 	created_nodes.append(lbl)
