@@ -620,6 +620,12 @@ func test_setget_property_dict() -> bool:
 						printerr("%s has no method '%s'" % [node_class, method_entry])
 						return false
 				elif method_entry is Dictionary:
+					var key_types = {
+						"func": TYPE_STRING,
+						"pre_args": TYPE_ARRAY,
+						"post_args": TYPE_ARRAY
+					}
+					
 					if not "func" in method_entry:
 						printerr("Missing 'func' in '%s' of %s:%s" % [method_key, node_class, prop])
 						return false
@@ -627,6 +633,22 @@ func test_setget_property_dict() -> bool:
 					if not ClassDB.class_has_method(node_class, method_entry["func"]):
 						printerr("%s has no method '%s'" % [node_class, method_entry["func"]])
 						return false
+					
+					for key in method_entry.keys():
+						if not key in key_types:
+							printerr("Unexpected '%s' in %s '%s'" % [key, node_class, prop])
+							return false
+						
+						var res_type = typeof(method_entry[key])
+						var exp_type = key_types[key]
+						
+						if res_type != exp_type:
+							printerr(
+								"Type mismatch %s '%s' %s '%s' != %s" % 
+								[node_class, prop, key, type_string(res_type), type_string(exp_type)]
+							)
+							
+							return false
 					
 				else:
 					printerr("Invalid method entry type of '%s' in %s:%s" % [method_key, node_class, prop])
