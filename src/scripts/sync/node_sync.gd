@@ -1309,19 +1309,19 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 		return get_setget_property(obj[first], new_path)
 	
 	var props = get_setget_properties(obj)
-	var prop_key = get_setget_entry_name(props, property)
-	var prop_entry = props[prop_key]
+	var prop_entry_name = get_setget_entry_name(props, property)
+	var prop_entry = props[prop_entry_name]
 	
 	if prop_entry == null:
 		GDTUtils.printerr_stack("Missing setget entry for %s: %s" % [obj.get_class(), property])
 		return
 	
 	if "has" in prop_entry:
-		if not _call_setget_entry_method(obj, prop_entry, "has", property):
+		if not _call_setget_entry_method(obj, prop_entry, prop_entry_name, "has", property):
 			return
 	
 	if "get" in prop_entry:
-		return _call_setget_entry_method(obj, prop_entry, "get", property)
+		return _call_setget_entry_method(obj, prop_entry, prop_entry_name, "get", property)
 
 	return obj.get(property)
 
@@ -1338,8 +1338,8 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		return
 	
 	var props = get_setget_properties(obj)
-	var prop_key = get_setget_entry_name(props, property)
-	var prop_entry = props[prop_key]
+	var prop_entry_name = get_setget_entry_name(props, property)
+	var prop_entry = props[prop_entry_name]
 	
 	if prop_entry == null:
 		GDTUtils.printerr_stack("Missing setget entry for %s:%s" % [obj.get_class(), property])
@@ -1347,27 +1347,83 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 	
 	if "reset" in prop_entry:
 		if "default" in property:
-			var def_val = _call_setget_entry_method(obj, prop_entry, "default", property)
+			var def_val = _call_setget_entry_method(obj, prop_entry, prop_entry_name, "default", property)
 			
 			if def_val == value:
-				_call_setget_entry_method(obj, prop_entry, "reset", property)
+				_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
 				return
 			
 		elif "has" in property:
-			if not _call_setget_entry_method(obj, prop_entry, "has", property):
-				_call_setget_entry_method(obj, prop_entry, "reset", property)
+			if not _call_setget_entry_method(obj, prop_entry, prop_entry_name, "has", property):
+				_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
 		
 		if value == null:
-			_call_setget_entry_method(obj, prop_entry, "reset", property)
+			_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
 	
 	if "set" in prop_entry:
-		_call_setget_entry_method(obj, prop_entry, "set", property, [value])
+		_call_setget_entry_method(obj, prop_entry, prop_entry_name, "set", property, [value])
 	else:
 		obj.set(property, value)
 
+static func get_setget_func_args_fragment(
+	source_args: Array,
+	prop_entry_name: String,
+	property: String,
+	pos := 0
+) -> Array:
+	if not property:
+		GDTUtils.printerr_stack("Got empty property")
+		return []
+		
+	if not prop_entry_name:
+		GDTUtils.printerr_stack("Got empty property entry name")
+		return []
+	
+	var extracted = extract_setget_property_string_args(property, prop_entry_name).slice(pos)
+	source_args = source_args.slice(pos)
+	
+	var res = []
+	
+	for i in min(extracted.size(), source_args.size()):
+		var ex: String = extracted[i]
+		var src: String = source_args[i]
+		
+		if src == "?":
+			res.append(ex)
+		if src == "?int":
+			if ex.is_valid_int():
+				res.append(int(ex))
+			else:
+				GDTUtils.printerr_stack("Invalid int '%s'. Property: %s" % [ex, property])
+	
+	return res
+	
+static func get_setget_func_args(
+	method_entry: Dictionary,
+	prop_entry_name: String,
+	property: String, 
+	input_args: Array = []
+) -> Array:
+	var full_args = []
+	var templ_args_pos = 0
+	
+	if "pre_args" in method_entry:
+		var arr = get_setget_func_args_fragment(method_entry["pre_args"], prop_entry_name, property)
+		full_args.append_array(arr)
+		templ_args_pos = arr.size()
+	
+	full_args.append_array(input_args)
+	
+	if "post_args" in method_entry:
+		var arr = get_setget_func_args_fragment(method_entry["post_args"], prop_entry_name, property, templ_args_pos)
+		full_args.append_array(arr)
+		
+	return full_args
+
 static func _call_setget_entry_method(
 	obj: Object, 
-	prop_entry: Dictionary, 
+	prop_entry: Dictionary,
+	prop_entry_name: String,
 	method_name: String, 
 	property: String, 
 	args: Array = []
@@ -1376,33 +1432,8 @@ static func _call_setget_entry_method(
 	
 	if method_entry is String:
 		return obj.call(method_entry)
-		
-	var full_args = []
 	
-	if "pre_args" in method_entry:
-		full_args.append_array(method_entry["pre_args"])
-	
-	full_args.append_array(args)
-	
-	if "post_args" in method_entry:
-		full_args.append_array(method_entry["post_args"])
-	
-	for i in full_args.size():
-		if full_args[i] is not String:
-			continue
-		
-		if full_args[i] == "?":
-			var k = property.split("/")[1]
-			full_args[i] = k
-		
-		if full_args[i] == "?int":
-			var k = property.split("/")[1]
-			
-			if k.is_valid_int():
-				full_args[i] = int(k)
-			else:
-				printerr("Invalid int '%s' for property '%s' of %s" % [k, property, obj.get_class()])
-				full_args[i] = 0
+	var full_args = get_setget_func_args(method_entry, prop_entry_name, property, args)
 	
 	return obj.callv(method_entry["func"], full_args)
 
