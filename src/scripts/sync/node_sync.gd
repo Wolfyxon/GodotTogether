@@ -1380,7 +1380,6 @@ static func get_setget_func_args_fragment(
 		return []
 	
 	var extracted = extract_setget_property_string_args(property, prop_entry_name).slice(pos)
-	source_args = source_args.slice(pos)
 	
 	var res = []
 	
