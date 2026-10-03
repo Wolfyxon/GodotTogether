@@ -106,8 +106,24 @@ const SETGET_PROPERTIES = {
 			}
 		},
 		
-		"physics_layer_?/collision_priority": {},
-		"physics_layer_?/collision_mask": {},
+		"physics_layer_?/collision_priority": {
+			"reset": {
+				"func": "remove_physics_layer",
+				"post_args": ["?int"]
+			}
+		},
+		"physics_layer_?/collision_layer": {
+			"reset": {
+				"func": "remove_physics_layer",
+				"post_args": ["?int"]
+			}
+		},
+		"physics_layer_?/collision_mask": {
+			"reset": {
+				"func": "remove_physics_layer",
+				"post_args": ["?int"]
+			}
+		},
 		"physics_layer_?/physics_material": {},
 		
 		"custom_data_layer_?/name": {
@@ -119,6 +135,13 @@ const SETGET_PROPERTIES = {
 		"custom_data_layer_?/type": {
 			"reset": {
 				"func": "remove_custom_data_layer",
+				"post_args": ["?int"]
+			}
+		},
+		
+		"terain_set_?/mode": {
+			"reset": {
+				"func": "remove_terrain_set",
 				"post_args": ["?int"]
 			}
 		},
@@ -1323,6 +1346,14 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 		return
 	
 	var prop_entry_name = get_setget_entry_name(props, property)
+	
+	if not prop_entry_name:
+		GDTUtils.printerr_stack(
+			"No setget property entry for %s '%s'. Attempted get" % 
+			[obj.get_class(), property]
+		)
+		return
+	
 	var prop_entry = props[prop_entry_name]
 	
 	if prop_entry == null:
@@ -1360,6 +1391,14 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		return
 	
 	var prop_entry_name = get_setget_entry_name(props, property)
+	
+	if not prop_entry_name:
+		GDTUtils.printerr_stack(
+			"No setget property entry for %s '%s'. Attempted set" % 
+			[obj.get_class(), property]
+		)
+		return
+	
 	var prop_entry = props[prop_entry_name]
 	
 	if prop_entry == null:
