@@ -1411,6 +1411,7 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 			
 			if def_val == value:
 				_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
+				
 				return
 			
 		elif "has" in property:
@@ -1424,6 +1425,11 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		_call_setget_entry_method(obj, prop_entry, prop_entry_name, "set", property, [value])
 	else:
 		obj.set(property, value)
+		
+	var new_val = get_setget_property(obj, property)
+	
+	if new_val != value:
+		GDTUtils.printerr_stack("Setting setget property failed: %s '%s'" % [obj.get_class(), property])
 
 static func get_setget_func_args_fragment(
 	source_args: Array,
