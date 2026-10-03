@@ -126,6 +126,13 @@ const SETGET_PROPERTIES = {
 		},
 		"physics_layer_?/physics_material": {},
 		
+		"navigation_layer_?/layers": {
+			"reset": {
+				"func": "remove_navigation_layer",
+				"post_args": ["?int"]
+			}
+		},
+		
 		"custom_data_layer_?/name": {
 			"reset": {
 				"func": "remove_custom_data_layer",
