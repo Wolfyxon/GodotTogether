@@ -692,6 +692,41 @@ func test_basic_setget_props() -> bool:
 	
 	return true
 
+func test_setget_arg_extraction() -> bool:
+	var prop_dict = {
+		"theme_override_font_sizes/?": [
+			{
+				"path": "theme_override_font_sizes/font_size",
+				"res": ["font_size"]
+			}
+		],
+		
+		"occlusion_layer_?/light_mask": [
+			{
+				"path": "occlusion_layer_12/light_mask",
+				"res": ["12"]
+			}
+		]
+	}
+	
+	for source in prop_dict.keys():
+		for test in prop_dict[source]:
+			var path = test["path"]
+			var exp_res = test["res"]
+			
+			var res = GDTNodeSync.extract_setget_property_string_args(path, source)
+			
+			if res.size() != exp_res.size():
+				printerr("Mismatch: %s != %s" % [res, exp_res])
+				return false
+			
+			for i in exp_res.size():
+				if exp_res[i] != res[i]:
+					printerr("Mismatch: %s != %s" % [res, exp_res])
+					return false
+	
+	return true
+
 func test_object_setget_props() -> bool:
 	var lbl = Label.new()
 	created_nodes.append(lbl)

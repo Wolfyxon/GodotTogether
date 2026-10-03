@@ -1278,6 +1278,14 @@ static func get_setget_properties(obj: Object) -> Variant:
 	return get_setget_properties_of_class(obj.get_class())
 
 static func get_setget_entry_name(class_props: Dictionary, property: String) -> String:
+	if not class_props:
+		GDTUtils.printerr_stack("Got empty prop dict")
+		return ""
+	
+	if not property:
+		GDTUtils.printerr_stack("Property path empty.")
+		return ""
+	
 	if property in class_props:
 		return property
 	else:
@@ -1290,10 +1298,14 @@ static func get_setget_entry_name(class_props: Dictionary, property: String) -> 
 	return ""
 
 static func get_setget_property(obj: Object, property: String) -> Variant:
-	var first = property.split("/")[0]
+	if not property:
+		GDTUtils.printerr_stack("Trying to get empty property of %s" % obj.get_class())
+		return
 	
-	if first in obj and obj[first] is Object:
-		var new_path = property.substr(first.length() + 1)
+	var first = property.split(":")[0]
+	var new_path = property.substr(first.length() + 1)
+	
+	if new_path and first in obj and obj[first] is Object:
 		return get_setget_property(obj[first], new_path)
 	
 	var props = get_setget_properties(obj)
@@ -1314,10 +1326,14 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 	return obj.get(property)
 
 static func set_setget_property(obj: Object, property: String, value: Variant) -> void:
-	var first = property.split("/")[0]
+	if not property:
+		GDTUtils.printerr_stack("Trying to set empty property of %s" % obj.get_class())
+		return
 	
-	if first in obj and obj[first] is Object:
-		var new_path = property.substr(first.length() + 1)
+	var first = property.split(":")[0]
+	var new_path = property.substr(first.length() + 1)
+	
+	if new_path and first in obj and obj[first] is Object:
 		set_setget_property(obj[first], new_path, value)
 		return
 	
@@ -1385,7 +1401,7 @@ static func _call_setget_entry_method(
 			if k.is_valid_int():
 				full_args[i] = int(k)
 			else:
-				printerr("Invalid int %s for property %s of %s" % [k, property, obj.get_class()])
+				printerr("Invalid int '%s' for property '%s' of %s" % [k, property, obj.get_class()])
 				full_args[i] = 0
 	
 	return obj.callv(method_entry["func"], full_args)
@@ -1461,7 +1477,7 @@ static func get_setget_property_regex(path: String) -> RegEx:
 	var regex = RegEx.new()
 	
 	var err = regex.compile(
-		path.replace("?", ".*")
+		path.replace("?", "(.*)")
 			.replace("/", "\\/")
 			.replace(":", "\\:")
 		)
@@ -1471,6 +1487,15 @@ static func get_setget_property_regex(path: String) -> RegEx:
 		return
 	
 	return regex
+
+static func extract_setget_property_string_args(property: String, source: String) -> Array:
+	var regex = get_setget_property_regex(source)
+	var res = regex.search(property)
+	
+	if not res:
+		return []
+		
+	return res.strings.slice(1)
 
 static func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
