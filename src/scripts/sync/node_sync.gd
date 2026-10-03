@@ -1309,6 +1309,14 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 		return get_setget_property(obj[first], new_path)
 	
 	var props = get_setget_properties(obj)
+	
+	if not props:
+		GDTUtils.printerr_stack(
+			"No setget properties for class '%s'. Tried getting: '%s'" % 
+			[obj.get_class(), property]
+		)
+		return
+	
 	var prop_entry_name = get_setget_entry_name(props, property)
 	var prop_entry = props[prop_entry_name]
 	
@@ -1338,6 +1346,14 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		return
 	
 	var props = get_setget_properties(obj)
+	
+	if not props:
+		GDTUtils.printerr_stack(
+			"No setget properties for class '%s'. Tried setting: '%s'" % 
+			[obj.get_class(), property]
+		)
+		return
+	
 	var prop_entry_name = get_setget_entry_name(props, property)
 	var prop_entry = props[prop_entry_name]
 	
