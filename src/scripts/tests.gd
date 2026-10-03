@@ -847,6 +847,10 @@ func test_setget_remove() -> bool:
 	tmap.tile_set.add_occlusion_layer(0)
 	tmap.tile_set.set_occlusion_layer_light_mask(0, 9)
 	
+	if tmap.tile_set.get_occlusion_layers_count() == 0:
+		printerr("Occlusion layer not initially added")
+		return false
+	
 	var prop = "tile_set:occlusion_layer_0/light_mask"
 	var sub_prop = prop.split(":")[1]
 	
