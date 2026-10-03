@@ -143,6 +143,11 @@ const SETGET_PROPERTIES = {
 		}
 	},
 	
+	"TileSetAtlasSource": {
+		# <coords_x>:<coords_y>/<alternative_id>/<tile_data_property>
+		"?:?/?/?": {}
+	},
+	
 	"TileMapLayer": {
 		"layer_?/tile_data": {},
 		"tile_set:?": {},
