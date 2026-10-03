@@ -118,7 +118,7 @@ func _join() -> void:
 	
 	session_cancel.visible = true
 
-	set_session_init_cover("Connecting...")
+	set_session_init_cover("Trying to connect...")
 	set_session_init_timeout(main.client.get_timeout_seconds())
 	
 	var err = main.client.join(ip, port, main.client.current_join_data)
