@@ -45,6 +45,7 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -885,14 +886,13 @@ text = "Activate plugin"
 icon = ExtResource("13_u8ku5")
 
 [node name="error" type="VBoxContainer" parent="mainMenu" unique_id=245770348]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 25.0
 offset_top = 25.0
 offset_right = -25.0
-offset_bottom = -17.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -914,10 +914,22 @@ Please try restarting the plugin, Godot and if it still doesn't work, report thi
 Make sure to include the console output and say that this screen failed."
 autowrap_mode = 2
 
-[node name="bugReportLink" type="LinkButton" parent="mainMenu/error" unique_id=277944716]
+[node name="links" type="HBoxContainer" parent="mainMenu/error" unique_id=832467066]
+layout_mode = 2
+alignment = 1
+
+[node name="bugReport" type="LinkButton" parent="mainMenu/error/links" unique_id=277944716]
 layout_mode = 2
 text = "File a bug report"
 uri = "https://github.com/wolfyxon/godotTogether/issues"
+
+[node name="VSeparator" type="VSeparator" parent="mainMenu/error/links" unique_id=993826603]
+layout_mode = 2
+
+[node name="troubleshooting" type="LinkButton" parent="mainMenu/error/links" unique_id=1074459571]
+layout_mode = 2
+text = "See troubleshooting"
+uri = "https://github.com/Wolfyxon/GodotTogether/wiki/Troubleshooting"
 
 [node name="sep" type="Control" parent="mainMenu/error" unique_id=2073683309]
 layout_mode = 2
