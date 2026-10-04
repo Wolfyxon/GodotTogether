@@ -112,6 +112,17 @@ func check_cached() -> GDTUpdateCheckResult:
 	return cached
 
 func conditional_check() -> GDTUpdateCheckResult:
+	if not main: return
+	
+	var settings = main.get_settings()
+	if not settings: return
+	
+	if settings.has_error():
+		return
+	
+	if not settings.get_setting("update/auto_check_enabled"):
+		return
+	
 	if is_time_to_check():
 		await check()
 		

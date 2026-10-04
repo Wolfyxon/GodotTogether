@@ -76,11 +76,10 @@ func _enter_tree() -> void:
 	GDTSceneWarning.new(self).add(CONTAINER_CANVAS_EDITOR_MENU)
 	GDTSceneWarning.new(self).add(CONTAINER_SPATIAL_EDITOR_MENU)
 	
-	if not settings.has_error() and settings.get_setting("update/auto_check_enabled"):
-		updater.conditional_check()
+	updater.conditional_check()
 	
 	post_check_components()
-	
+
 
 func _exit_tree() -> void:
 	if not plugin_started:
