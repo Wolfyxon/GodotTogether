@@ -16,6 +16,7 @@ enum Permission {
 
 const PROTOCOL_VERSION = 2
 const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
+const _META_LOCK_NAME = "gdt_lock"
 
 const GUI_SCENE = preload("../scenes/GUI/GUI.tscn")
 const CHAT_SCENE = preload("../scenes/GUI/chat/chat.tscn")
@@ -62,6 +63,9 @@ func _enter_tree() -> void:
 	if not check_path():
 		return
 	
+	if not create_lock():
+		return
+	
 	await get_tree().process_frame
 	
 	if settings.get_setting("dev/run_tests_on_start"):
@@ -93,6 +97,8 @@ func _exit_tree() -> void:
 	for i in components:
 		if i:
 			i.queue_free()
+			
+	EditorInterface.remove_meta(_META_LOCK_NAME)
 
 func init_components() -> void:
 	components = [
@@ -122,6 +128,25 @@ func init_components() -> void:
 		i.main = self
 		root.add_child(i)
 
+func create_lock() -> bool:
+	if EditorInterface.has_meta(_META_LOCK_NAME):
+		GDTUtils.printerr_stack("Lock already set. Plugin will not run.")
+		
+		gui.get_menu_window().set_error_of_death(
+			"Dead instance of the plugin detected", 
+			GDTUtils.join([
+				"Seems like a dead instance of GodotTogether is running the editor",
+				"Please restart Godot to remove it, or the plugin will not work properly.",
+				"",
+				"If restarting doesn't help, please report this."
+			], "\n")
+		)
+		
+		return false
+	
+	EditorInterface.set_meta(_META_LOCK_NAME, true)
+	
+	return true
 
 func post_check_components() -> void:
 	await get_tree().create_timer(0.25).timeout
