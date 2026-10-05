@@ -213,25 +213,31 @@ func update_user_control(node: Control, user: GDTUser) -> void:
 		status_btn.disabled = false
 		
 		var file = "<error>"
+		var source_file = "<error>"
 		const LENGTH_LIMIT = 20
 		
 		if user.current_script:
-			file = user.current_script
+			source_file = user.current_script
 		else:
-			file = user.current_scene
-			
+			source_file = user.current_scene
+		
+		file = source_file
+		
 		if file.length() > LENGTH_LIMIT:
 			file = "..." + file.substr(file.length() - LENGTH_LIMIT)
 		
-		status_btn.text = "Editing: " + file
+		status_btn.text = "Editing: %s" % file
+		status_btn.tooltip_text = "Go to: %s" % source_file
 		status_btn.icon = IMG_EDITING
 		
 	elif user.is_local():
 		status_btn.text = "It's you"
+		status_btn.tooltip_text = "Despite everything, it's still you"
 		status_btn.disabled = true
 		status_btn.icon = IMG_SELF
 	else:
 		status_btn.text = "..."
+		status_btn.tooltip_text = "The user's status is unknown"
 		status_btn.disabled = true
 		status_btn.icon = IMG_IDLE
 
