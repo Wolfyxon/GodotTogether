@@ -201,6 +201,17 @@ func test_rpc_checksum() -> bool:
 	
 	return true
 
+func test_disconnect_reasons() -> bool:
+	for code in GDTUser.DisconnectReason.values():
+		var msg = GDTUser.disconnect_reason_to_string(code)
+		
+		if "Unknown status" in msg:
+			var key = GDTUser.DisconnectReason.find_key(code)
+			printerr("No string message for disconnect reason %s (%s)" % [code, key])
+			return false
+	
+	return true
+
 func test_local_resource_encoding() -> bool:
 	var a = StandardMaterial3D.new()
 	a.albedo_texture = NoiseTexture2D.new()
