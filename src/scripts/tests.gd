@@ -41,11 +41,11 @@ func exec_test(f: Callable) -> void:
 
 func cleanup_tests() -> void:
 	for i in created_nodes:
-		if i is Node:
+		if i and i is Node:
 			i.queue_free()
 		else:
 			created_nodes.erase(i)
-			printerr("%s is not a Node, but was added to created_nodes" % i)
+			#printerr("%s is not a Node, but was added to created_nodes" % i)
 
 func run_tests() -> void:
 	if not main:
