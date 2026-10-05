@@ -9,4 +9,4 @@ Please use the [GitHub's security advisories](https://github.com/Wolfyxon/GodotT
 - ✅ Latest pre-release (if newer than the latest stable release)
 - ✅ Latest release
 
-If you're looking for safety tips, see [the wiki](https://github.com/Wolfyxon/GodotTogether/wiki/Safety-tips).
+If you're looking for safety tips, see [the wiki page on safety](https://github.com/Wolfyxon/GodotTogether/wiki/Safety-tips).
