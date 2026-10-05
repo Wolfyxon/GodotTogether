@@ -47,6 +47,40 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="exec" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1651164589]
+layout_mode = 2
+folded = true
+title = "Code execution"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/exec" unique_id=1401677742]
+visible = false
+layout_mode = 2
+
+[node name="code" type="CodeEdit" parent="main/scroll/vbox/exec/vbox" unique_id=1783779930]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+placeholder_text = "print(\"Hello World\")"
+syntax_highlighter = SubResource("GDScriptSyntaxHighlighter_usb8t")
+code_completion_enabled = true
+auto_brace_completion_enabled = true
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/exec/vbox" unique_id=1244735245]
+layout_mode = 2
+
+[node name="warning" type="Label" parent="main/scroll/vbox/exec/vbox" unique_id=469677777]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_type_variation = &"WarningLabel"
+text = "Do not execute code you don't understand!
+If someone told you to paste something here, they might be trying to hack you."
+autowrap_mode = 2
+
+[node name="btnExecute" type="Button" parent="main/scroll/vbox/exec/vbox" unique_id=1894905706]
+layout_mode = 2
+shortcut = SubResource("Shortcut_ulx1o")
+text = "Execute"
+icon = ExtResource("3_kl0hy")
+
 [node name="prints" type="FoldableContainer" parent="main/scroll/vbox" unique_id=282098678]
 layout_mode = 2
 folded = true
@@ -81,40 +115,6 @@ text = "Print file tree with unsafe paths"
 [node name="btnScannedFiles" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1837834936]
 layout_mode = 2
 text = "Print files included in scanning"
-
-[node name="exec" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1651164589]
-layout_mode = 2
-folded = true
-title = "Code execution"
-
-[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/exec" unique_id=1401677742]
-visible = false
-layout_mode = 2
-
-[node name="code" type="CodeEdit" parent="main/scroll/vbox/exec/vbox" unique_id=1783779930]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-placeholder_text = "print(\"Hello World\")"
-syntax_highlighter = SubResource("GDScriptSyntaxHighlighter_usb8t")
-code_completion_enabled = true
-auto_brace_completion_enabled = true
-
-[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/exec/vbox" unique_id=1244735245]
-layout_mode = 2
-
-[node name="warning" type="Label" parent="main/scroll/vbox/exec/vbox" unique_id=469677777]
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-theme_type_variation = &"WarningLabel"
-text = "Do not execute code you don't understand!
-If someone told you to paste something here, they might be trying to hack you."
-autowrap_mode = 2
-
-[node name="btnExecute" type="Button" parent="main/scroll/vbox/exec/vbox" unique_id=1894905706]
-layout_mode = 2
-shortcut = SubResource("Shortcut_ulx1o")
-text = "Execute"
-icon = ExtResource("3_kl0hy")
 
 [node name="sync" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
 layout_mode = 2
@@ -288,11 +288,11 @@ size_flags_horizontal = 4
 text = "Close"
 icon = ExtResource("2_qe0lv")
 
+[connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeClasses" to="." method="_on_btn_node_classes_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnFileTree" to="." method="_on_btn_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnScannedFiles" to="." method="_on_btn_scanned_files_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/enabled" to="main/scroll/vbox/sync/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
