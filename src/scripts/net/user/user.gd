@@ -183,7 +183,7 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 		DisconnectReason.ADDRESS_IN_USE:
 			return "Host does not allow multiple connections from the same IP address"
 		DisconnectReason.RPC_CHECKSUM_MISMATCH:
-			return "You and the host are running different versions of the plugin"
+			return "RPC checksum mismatch. You and the host are running different versions of the plugin."
 		DisconnectReason.INVALID:
 			return "Your client sent invalid data to the server"
 	
