@@ -34,7 +34,7 @@ func setup_signals() -> void:
 	})
 
 func _rpc(peer: int, object: Object, method: StringName, args: Array) -> Error:
-	if main and main.get_settings().get_setting("dev/log_rpc"):
+	if main and main.get_settings().get_setting("dev/log_rpc_in"):
 		print("Sending RPC to %d: %s::%s(%s)" % [peer, object, method, args])
 	
 	return base.rpc(peer, object, method, args)
