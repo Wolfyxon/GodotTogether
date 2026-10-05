@@ -53,6 +53,15 @@ button_pressed = true
 text = "Go to inspector when a node is selected while in user dock"
 metadata/setting = "ui/show_inspector_on_select_while_in_user_dock"
 
+[node name="HSeparator6" type="HSeparator" parent="main/scroll/vbox" unique_id=1690028581]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="lblPerformance" type="Label" parent="main/scroll/vbox" unique_id=1129346244]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Performance"
+
 [node name="nodeScanMode" type="HBoxContainer" parent="main/scroll/vbox" unique_id=442367942]
 layout_mode = 2
 
