@@ -153,6 +153,20 @@ const SETGET_PROPERTIES = {
 			}
 		},
 		
+		"terrain_set_?/terrain_?/name": {
+			"reset": {
+				"func": "remove_terrain",
+				"post_args": ["?int", "?int"]
+			}
+		},
+		
+		"terrain_set_?/terrain_?/color": {
+			"reset": {
+				"func": "remove_terrain",
+				"post_args": ["?int", "?int"]
+			}
+		},
+		
 		"sources/?": {
 			"get": {
 				"func": "get_source",
