@@ -15,15 +15,26 @@ static func get_rpc_checksum(node: Node) -> int:
 	var res = 0
 	
 	if script:
-		res = hash(script.get_rpc_config())
+		var script_conf: Dictionary = script.get_rpc_config()
+		
+		if script_conf:
+			res = script_conf.hash()
 	
-	return hash(res + hash(node.get_node_rpc_config()))
+	var node_conf = node.get_node_rpc_config()
+	
+	if node_conf:
+		res += node_conf.hash()
+	
+	return res 
 
 static func get_rpc_checksum_recursive(root: Node, max_depth := 8) -> int:
 	var res = get_rpc_checksum(root)
 	
 	if max_depth > 1:
-		for i in root.get_children():
+		var children = root.get_children()
+		children.sort()
+		
+		for i in children:
 			var sub_hash = get_rpc_checksum_recursive(i, max_depth - 1)
 			res = hash(res + hash(sub_hash))
 	
