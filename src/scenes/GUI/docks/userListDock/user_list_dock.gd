@@ -7,6 +7,10 @@ enum UserAction {
 	COPY_ID
 }
 
+const IMG_EDITING = preload("../../../../img/extLink.svg")
+const IMG_SELF = preload("../../../../img/info.svg")
+const IMG_IDLE = null
+
 @onready var status_bar = $main/statusBar
 @onready var user_count_label = $main/statusBar/vbox/userCount
 @onready var status_label = $main/statusBar/vbox/status
@@ -204,6 +208,7 @@ func update_user_control(node: Control, user: GDTUser) -> void:
 	name_label.text = user.name
 	role_btn.selected = user.type
 	
+	
 	if user.current_scene or user.current_script:
 		status_btn.disabled = false
 		
@@ -219,12 +224,16 @@ func update_user_control(node: Control, user: GDTUser) -> void:
 			file = "..." + file.substr(file.length() - LENGTH_LIMIT)
 		
 		status_btn.text = "Editing: " + file
+		status_btn.icon = IMG_EDITING
+		
 	elif user.is_local():
 		status_btn.text = "It's you"
 		status_btn.disabled = true
+		status_btn.icon = IMG_SELF
 	else:
 		status_btn.text = "..."
 		status_btn.disabled = true
+		status_btn.icon = IMG_IDLE
 
 func get_control_of_user(user: GDTUser) -> Control:
 	for i in user_list.get_children():
