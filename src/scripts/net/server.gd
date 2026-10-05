@@ -29,7 +29,7 @@ func _process(_delta: float) -> void:
 	var now = Time.get_unix_time_from_system()
 	
 	for user: GDTUser in main.dual.users:
-		if user.pending and now > user.joined_at + APPROVE_TIMEOUT:
+		if not user.was_ever_authenticated() and now > user.joined_at + APPROVE_TIMEOUT:
 			user.reject(GDTUser.DisconnectReason.APPROVE_TIMEOUT)
 
 func _connected(id: int) -> void:
