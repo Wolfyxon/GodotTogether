@@ -12,14 +12,23 @@ func _ready() -> void:
 	if not main:
 		return
 	
-	$main/scroll/vbox/sync/vbox.main = main
-	$main/scroll/vbox/updateSigningContainer/updateSigning.main = main
-
+	fill_main()
+	
 	for i in $main/scroll/vbox/settings/vbox.get_children():
 		if not i.has_meta("setting"):
 			continue
 		
 		main.get_settings().make_setting_control(i, i.get_meta("setting"))
+
+func fill_main() -> void:
+	var list = $main/scroll/vbox
+	
+	for i in list.get_children():
+		if i is FoldableContainer:
+			var first = i.get_child(0)
+			
+			if first and "main" in first:
+				first.main = main
 
 func _on_btn_node_classes_pressed() -> void:
 	GDTDebug.dump_node_classes()
