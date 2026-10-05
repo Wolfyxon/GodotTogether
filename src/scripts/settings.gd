@@ -69,7 +69,9 @@ const _DEFAULT_DATA = {
 	"notifications": {
 		"users": true
 	},
-	
+	"ui": {
+		"show_inspector_on_select_while_in_user_dock": true,
+	},
 	"seen" : {
 		"disclaimer": false
 	}

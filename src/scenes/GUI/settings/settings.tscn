@@ -19,10 +19,10 @@ borderless = false
 script = ExtResource("1_b5wo4")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1100841752]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 796.0
-offset_bottom = 696.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 775.0
+offset_bottom = 675.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=1872551780]
 layout_mode = 2
@@ -46,6 +46,12 @@ layout_mode = 2
 button_pressed = true
 text = "User join/leave notifications"
 metadata/setting = "notifications/users"
+
+[node name="selUserDock" type="CheckButton" parent="main/scroll/vbox" unique_id=731431506]
+layout_mode = 2
+button_pressed = true
+text = "Go to inspector when a node is selected while in user dock"
+metadata/setting = "ui/show_inspector_on_select_while_in_user_dock"
 
 [node name="nodeScanMode" type="HBoxContainer" parent="main/scroll/vbox" unique_id=442367942]
 layout_mode = 2

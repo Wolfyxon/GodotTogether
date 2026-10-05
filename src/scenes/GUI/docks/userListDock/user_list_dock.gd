@@ -19,6 +19,7 @@ enum UserAction {
 @onready var pending_template = $main/scroll/vbox/pendingUsers/pendingUser
 
 var gui: GodotTogetherGUI = null
+var _inspector_dock: Control = null
 
 func _ready() -> void:
 	if not gui: return
@@ -39,10 +40,30 @@ func _ready() -> void:
 	
 	for user_type in GDTUser.Type.values():
 		role_btn.add_item(GDTUser.type_to_string(user_type))
+		
+	EditorInterface.get_selection().selection_changed.connect(_selection_changed)
 
 func _session_started() -> void:
 	update_status()
 	show()
+
+func _selection_changed() -> void:
+	if not gui: return
+	if not gui.main: return
+	
+	var settings = gui.main.get_settings()
+	if not settings: return
+	
+	var sel = EditorInterface.get_selection()
+	
+	var inspector_dock = get_inspector_dock()
+	if not inspector_dock: return
+	
+	if not settings.get_setting("ui/show_inspector_on_select_while_in_user_dock"):
+		return
+	
+	if visible and not sel.get_selected_nodes().is_empty():
+		inspector_dock.show()
 
 func _user_action(action: UserAction, user: GDTUser) -> void:
 	match action:
@@ -86,6 +107,17 @@ func setup_signals() -> void:
 	
 	gui.main.dual.user_scene_changed.connect(_user_file_update)
 	gui.main.dual.user_script_changed.connect(_user_file_update)
+
+func get_inspector_dock() -> Control:
+	if _inspector_dock:
+		return _inspector_dock
+		
+	for i in get_parent().get_children():
+		if i.get_class() == "InspectorDock":
+			_inspector_dock = i
+			break
+			
+	return _inspector_dock
 
 func update_status() -> void:
 	if not gui: return
