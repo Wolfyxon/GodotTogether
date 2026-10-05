@@ -46,7 +46,7 @@ func _on_btn_unsafe_file_tree_pressed() -> void:
 		print(i)
 
 func _on_btn_scanned_files_pressed() -> void:
-	var paths = main.file_sync.file_hashes
+	var paths = main.file_sync.file_mod_times
 	
 	for i in paths:
 		print(i)
