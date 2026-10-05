@@ -205,8 +205,17 @@ func broadcast_chat_user_message(user_id: int, text: String) -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func receive_join_data(data_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
+	
 	var user = main.dual.get_user_by_id(id)
-
+	
+	if not user:
+		GDTUtils.printerr_stack("Got user data from id %s but the user doesn't exist" % id) 
+		return
+	
+	if user.authenticated:
+		GDTUtils.printerr_stack("Got join data, but %s is already authenticated" % id)
+		return
+	
 	var data = GDTJoinData.from_dict(data_dict)
 	var server_password = main.get_settings().get_setting("server/password")
 	

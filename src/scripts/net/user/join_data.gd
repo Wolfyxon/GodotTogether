@@ -5,12 +5,14 @@ class_name GDTJoinData
 const FIELDS = [
 	"username",
 	"password",
-	"protocol_version"
+	"protocol_version",
+	"rpc_checksum"
 ]
 
 var username: String
 var password: String
 var protocol_version := GodotTogether.PROTOCOL_VERSION
+var rpc_checksum := -1
 
 func to_dict() -> Dictionary:
 	var dict = {}
