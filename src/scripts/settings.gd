@@ -57,6 +57,9 @@ const _DEFAULT_DATA = {
 		
 		"log_settings": false,
 		
+		"log_rpc_out": false,
+		"log_rpc_in": false,
+		
 		"log_node_changes": false,
 		"log_node_scans": false,
 		

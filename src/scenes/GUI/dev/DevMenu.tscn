@@ -180,11 +180,9 @@ text = "Print tracked files"
 
 [node name="settings" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1709253664]
 layout_mode = 2
-folded = true
 title = "Developer settings"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/settings" unique_id=549520500]
-visible = false
 layout_mode = 2
 
 [node name="lblLogging" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1546657365]
@@ -196,6 +194,17 @@ text = "Logging"
 layout_mode = 2
 text = "Log settings"
 metadata/setting = "dev/log_settings"
+
+[node name="logOutgoingRpc" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1123585071]
+layout_mode = 2
+text = "Log outgoing RPC calls"
+metadata/setting = "dev/log_rpc_out"
+
+[node name="logIncomingRpc" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=334500812]
+layout_mode = 2
+disabled = true
+text = "Log incoming RPC calls"
+metadata/setting = "dev/log_rpc_in"
 
 [node name="logNodeChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1181556063]
 layout_mode = 2

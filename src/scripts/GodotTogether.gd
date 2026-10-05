@@ -16,6 +16,8 @@ enum Permission {
 
 const PROTOCOL_VERSION = 2
 const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
+const ENABLE_MULTIPLAYER_OVERRIDE = true
+
 const _META_LOCK_NAME = "gdt_lock"
 
 const GUI_SCENE = preload("../scenes/GUI/GUI.tscn")
@@ -43,6 +45,8 @@ var tests = GDTUnitTests.new(self, "tests")
 var debug = GDTDebug.new(self, "debug")
 var extras = GDTExtras.new(self, "extras")
 
+var mp_override: GDTMultiplayerExtension = null
+
 var plugin_started := false
 var components = []
 
@@ -55,6 +59,10 @@ func _enter_tree() -> void:
 	
 	name = "GodotTogether"
 	plugin_started = true
+	
+	if ENABLE_MULTIPLAYER_OVERRIDE:
+		mp_override = GDTMultiplayerExtension.new(self, SceneMultiplayer.new())
+		get_tree().set_multiplayer(mp_override, GDTMultiplayerExtension.ROOT_PATH)
 	
 	init_components()
 	setup_menu_button()
@@ -80,7 +88,6 @@ func _enter_tree() -> void:
 	
 	post_check_components()
 
-
 func _exit_tree() -> void:
 	if not plugin_started:
 		return
@@ -98,6 +105,9 @@ func _exit_tree() -> void:
 			i.queue_free()
 			
 	EditorInterface.remove_meta(_META_LOCK_NAME)
+	
+	if ENABLE_MULTIPLAYER_OVERRIDE:
+		get_tree().set_multiplayer(SceneMultiplayer.new(), GDTMultiplayerExtension.ROOT_PATH)
 
 func init_components() -> void:
 	components = [
