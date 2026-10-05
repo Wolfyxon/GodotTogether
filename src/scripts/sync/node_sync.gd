@@ -146,7 +146,7 @@ const SETGET_PROPERTIES = {
 			}
 		},
 		
-		"terain_set_?/mode": {
+		"terrain_set_?/mode": {
 			"reset": {
 				"func": "remove_terrain_set",
 				"post_args": ["?int"]
