@@ -8,15 +8,18 @@ enum Type {
 }
 
 enum DisconnectReason {
+	# Do not reorder. Old versions will break
 	UNKNOWN,
 	KICKED,
 	BANNED,
 	PASSWORD_INVALID,
 	REJECTED,
-	APPROVE_TIMEOUT,
 	JOINING_TOO_FAST,
+	
+	# Can reorder. Not yet released
 	CLIENT_OUTDATED,
 	SERVER_OUTDATED,
+	APPROVE_TIMEOUT,
 	ADDRESS_IN_USE
 }
 
