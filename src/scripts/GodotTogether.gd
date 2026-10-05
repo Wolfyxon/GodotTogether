@@ -162,7 +162,7 @@ func get_global_rpc_checksum() -> int:
 	
 	for i in components:
 		if i:
-			res + hash(res + GDTUtils.get_rpc_checksum_recursive(i))
+			res = res + hash(res + GDTUtils.get_rpc_checksum_recursive(i))
 	
 	return res
 
