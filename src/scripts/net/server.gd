@@ -226,11 +226,6 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	var server_password = main.get_settings().get_setting("server/password")
 	var rpc_checksum = main.get_global_rpc_checksum()
 	
-	if rpc_checksum != data.rpc_checksum:
-		printerr("RPC checksum mismatch. %s != %s" % [data.rpc_checksum, rpc_checksum])
-		user.kick(GDTUser.DisconnectReason.RPC_CHECKSUM_MISMATCH)
-		return
-	
 	if data.password != server_password:
 		print("Invalid password for user %d" % id)
 		user.kick(GDTUser.DisconnectReason.PASSWORD_INVALID)
@@ -245,6 +240,11 @@ func receive_join_data(data_dict: Dictionary) -> void:
 	
 	if data.protocol_version > GodotTogether.PROTOCOL_VERSION:
 		user.kick(GDTUser.DisconnectReason.SERVER_OUTDATED)
+		return
+	
+	if rpc_checksum != data.rpc_checksum:
+		printerr("RPC checksum mismatch. %s != %s" % [data.rpc_checksum, rpc_checksum])
+		user.kick(GDTUser.DisconnectReason.RPC_CHECKSUM_MISMATCH)
 		return
 	
 	user.name = data.username
