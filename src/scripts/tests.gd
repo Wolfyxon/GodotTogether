@@ -191,6 +191,16 @@ func test_plugin_version() -> bool:
 	
 	return true
 
+func test_rpc_checksum() -> bool:
+	var a = main.get_global_rpc_checksum()
+	var b = main.get_global_rpc_checksum()
+	
+	if a != b:
+		printerr("RPC checksum doesn't match %s != %s" % [a, b])
+		return false
+	
+	return true
+
 func test_local_resource_encoding() -> bool:
 	var a = StandardMaterial3D.new()
 	a.albedo_texture = NoiseTexture2D.new()

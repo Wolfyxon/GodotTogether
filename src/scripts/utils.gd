@@ -10,6 +10,25 @@ static func sha256_of_buffer(buffer: PackedByteArray) -> String:
 	
 	return hasher.finish().hex_encode()
 
+static func get_rpc_checksum(node: Node) -> int:
+	var script: Script = node.get_script()
+	var res = 0
+	
+	if script:
+		res = hash(script.get_rpc_config())
+	
+	return hash(res + hash(node.get_node_rpc_config()))
+
+static func get_rpc_checksum_recursive(root: Node, max_depth := 8) -> int:
+	var res = get_rpc_checksum(root)
+	
+	if max_depth > 1:
+		for i in root.get_children():
+			var sub_hash = get_rpc_checksum_recursive(i, max_depth - 1)
+			res = hash(res + hash(sub_hash))
+	
+	return res
+
 static func join(array: Array, separator := "\n") -> String:
 	var res = ""
 	var ln = array.size()

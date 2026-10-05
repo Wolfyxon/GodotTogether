@@ -157,6 +157,15 @@ func create_lock() -> bool:
 	
 	return true
 
+func get_global_rpc_checksum() -> int:
+	var res = 0
+	
+	for i in components:
+		if i:
+			res + hash(res + GDTUtils.get_rpc_checksum_recursive(i))
+	
+	return res
+
 func post_check_components() -> void:
 	await get_tree().create_timer(0.25).timeout
 	await get_tree().process_frame
