@@ -38,7 +38,7 @@ layout_mode = 2
 
 [node name="lblGeneral" type="Label" parent="main/scroll/vbox" unique_id=1349616593]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_type_variation = &"HeaderSmall"
 text = "General"
 
 [node name="userNotif" type="CheckButton" parent="main/scroll/vbox" unique_id=1881905859]
@@ -59,7 +59,7 @@ layout_mode = 2
 
 [node name="lblPerformance" type="Label" parent="main/scroll/vbox" unique_id=1129346244]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_type_variation = &"HeaderSmall"
 text = "Performance"
 
 [node name="nodeScanMode" type="HBoxContainer" parent="main/scroll/vbox" unique_id=442367942]
@@ -126,7 +126,7 @@ layout_mode = 2
 
 [node name="lblSecurity" type="Label" parent="main/scroll/vbox" unique_id=963114312]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_type_variation = &"HeaderSmall"
 text = "Security"
 
 [node name="sanitizeToolScripts" type="CheckButton" parent="main/scroll/vbox" unique_id=1755650218]
@@ -146,7 +146,7 @@ layout_mode = 2
 
 [node name="lblUpdate" type="Label" parent="main/scroll/vbox" unique_id=249030983]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_type_variation = &"HeaderSmall"
 text = "Updates"
 
 [node name="autoCheckUpdates" type="CheckButton" parent="main/scroll/vbox" unique_id=1131273041]
@@ -204,7 +204,7 @@ layout_mode = 2
 
 [node name="lblDev" type="Label" parent="main/scroll/vbox" unique_id=1573509755]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_type_variation = &"HeaderSmall"
 text = "Developer"
 
 [node name="unitTests" type="CheckButton" parent="main/scroll/vbox" unique_id=951601083]
@@ -253,7 +253,7 @@ layout_mode = 2
 
 [node name="lblActions" type="Label" parent="main/scroll/vbox" unique_id=2106971306]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_type_variation = &"HeaderSmall"
 text = "Actions"
 
 [node name="btnReload" type="Button" parent="main/scroll/vbox" unique_id=346251827]
