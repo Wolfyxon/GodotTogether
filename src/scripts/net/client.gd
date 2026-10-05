@@ -107,6 +107,8 @@ func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 
 	multiplayer.multiplayer_peer = client_peer
 	current_join_data = data
+	current_join_data.rpc_checksum = main.get_global_rpc_checksum()
+	
 	_handle_connecting()
 
 	return OK

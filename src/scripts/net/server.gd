@@ -217,7 +217,19 @@ func receive_join_data(data_dict: Dictionary) -> void:
 		return
 	
 	var data = GDTJoinData.from_dict(data_dict)
+	
+	if not data:
+		GDTUtils.printerr_stack("Invalid join data from %s" % id)
+		user.kick(GDTUser.DisconnectReason.INVALID)
+		return
+	
 	var server_password = main.get_settings().get_setting("server/password")
+	var rpc_checksum = main.get_global_rpc_checksum()
+	
+	if rpc_checksum != data.rpc_checksum:
+		printerr("RPC checksum mismatch. %s != %s" % [data.rpc_checksum, rpc_checksum])
+		user.kick(GDTUser.DisconnectReason.RPC_CHECKSUM_MISMATCH)
+		return
 	
 	if data.password != server_password:
 		print("Invalid password for user %d" % id)

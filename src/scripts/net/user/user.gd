@@ -19,8 +19,11 @@ enum DisconnectReason {
 	# Can reorder. Not yet released
 	CLIENT_OUTDATED,
 	SERVER_OUTDATED,
+	
 	APPROVE_TIMEOUT,
-	ADDRESS_IN_USE
+	ADDRESS_IN_USE,
+	RPC_CHECKSUM_MISMATCH,
+	INVALID
 }
 
 const FIELDS = [
@@ -179,6 +182,10 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 			return "The host's plugin version is outdated"
 		DisconnectReason.ADDRESS_IN_USE:
 			return "Host does not allow multiple connections from the same IP address"
+		DisconnectReason.RPC_CHECKSUM_MISMATCH:
+			return "You and the host are running different versions of the plugin"
+		DisconnectReason.INVALID:
+			return "Your client sent invalid data to the server"
 	
 	return "Disconnected. Unknown status: %s" % reason
 
