@@ -27,26 +27,12 @@ func _ready() -> void:
 	$main/header/btnMenu.pressed.connect(gui.open_menu)
 	
 	update_status()
+	setup_signals()
 	
 	user_template.visible = false
 	pending_template.visible = false
 	
 	custom_maximum_size.x = -1
-	
-	gui.main.session_started.connect(_session_started)
-	gui.main.session_ended.connect(update_status)
-	gui.main.session_ended.connect(clear)
-	
-	gui.main.dual.users_listed.connect(load_users)
-	gui.main.dual.user_connected.connect(add_user)
-	gui.main.dual.user_disconnected.connect(remove_user)
-	
-	gui.main.dual.user_connected.connect(remove_pending)
-	gui.main.dual.user_rejected.connect(remove_pending)
-	gui.main.dual.user_pending.connect(add_pending)
-	
-	gui.main.dual.user_scene_changed.connect(_user_file_update)
-	gui.main.dual.user_script_changed.connect(_user_file_update)
 	
 	var role_btn: OptionButton = user_template.get_node("vbox/hbox/role")
 	role_btn.clear()
@@ -84,6 +70,22 @@ func update_user(user: GDTUser) -> void:
 	
 	if node:
 		update_user_control(node, user)
+
+func setup_signals() -> void:
+	gui.main.session_started.connect(_session_started)
+	gui.main.session_ended.connect(update_status)
+	gui.main.session_ended.connect(clear)
+	
+	gui.main.dual.users_listed.connect(load_users)
+	gui.main.dual.user_connected.connect(add_user)
+	gui.main.dual.user_disconnected.connect(remove_user)
+	
+	gui.main.dual.user_connected.connect(remove_pending)
+	gui.main.dual.user_rejected.connect(remove_pending)
+	gui.main.dual.user_pending.connect(add_pending)
+	
+	gui.main.dual.user_scene_changed.connect(_user_file_update)
+	gui.main.dual.user_script_changed.connect(_user_file_update)
 
 func update_status() -> void:
 	if not gui: return
