@@ -824,7 +824,7 @@ func reorder_children(parent_path: String, scene_path: String, ordered_names: Ar
 		var child = parent.get_node_or_null(path)
 		
 		if not child: 
-			printerr("Failed to get node in %s for reorder: %s" % [parent, path])
+			#printerr("Failed to get node in %s for reorder: %s" % [parent, path])
 			continue
 		
 		parent.move_child(child, i)
