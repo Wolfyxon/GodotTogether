@@ -37,7 +37,7 @@ func _connected() -> void:
 	main.button.set_session_icon(GDTMenuButton.ICON_CLIENT)
 
 	await get_tree().physics_frame
-	main.server.receive_join_data.rpc_id(1, current_join_data.to_dict())
+	send_join_data()
 
 func _disconnected() -> void:
 	if multiplayer.is_server(): return
@@ -112,6 +112,18 @@ func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	_handle_connecting()
 
 	return OK
+
+func send_join_data(obj: GDTJoinData = null) -> void:
+	if not obj:
+		obj = current_join_data
+		
+	if not obj:
+		GDTUtils.printerr_stack("Join data is null")
+		return
+	
+	var dict = obj.to_dict()
+	
+	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
 @rpc("authority", "reliable")
 func kick(reason: GDTUser.DisconnectReason) -> void:

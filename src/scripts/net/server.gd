@@ -203,9 +203,8 @@ func broadcast_chat_user_message(user_id: int, text: String) -> void:
 	auth_rpc(main.client._s2c_receive_chat_message, [text, user_id])
 
 @rpc("any_peer", "call_remote", "reliable")
-func receive_join_data(data_dict: Dictionary) -> void:
+func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
-	
 	var user = main.dual.get_user_by_id(id)
 	
 	if not user:
