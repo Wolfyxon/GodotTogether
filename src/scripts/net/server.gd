@@ -77,7 +77,7 @@ func _disconnected(id: int) -> void:
 	
 	var user_dict = user.to_dict()
 
-	auth_rpc(main.client.user_disconnected, [user_dict])
+	auth_rpc(main.client._s2c_user_disconnected, [user_dict])
 	main.dual._user_disconnected(user)
 
 func create_server_user() -> GDTUser:
@@ -259,7 +259,7 @@ func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 	user.auth()
 
 @rpc("any_peer", "call_remote", "reliable")
-func project_files_request(hashes: Dictionary) -> void:
+func _c2s_project_files_request(hashes: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = main.dual.get_user_by_id(id)
 	

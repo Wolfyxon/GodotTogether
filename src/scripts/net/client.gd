@@ -125,12 +125,14 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 	
 	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
+# NOTE: Do not rename this to the new _s2c_kick format so old versions can still get a kick code.
+# At least for a couple releases
 @rpc("authority", "reliable")
 func kick(reason: GDTUser.DisconnectReason) -> void:
 	disconnect_reason = reason
 
 @rpc("authority", "reliable")
-func auth_successful() -> void:
+func _s2c_auth_successful() -> void:
 	print("Server accepted connection, requesting files (if needed)")
 	
 	auth_succeed.emit()
@@ -143,10 +145,10 @@ func auth_successful() -> void:
 
 	await get_tree().create_timer(0.25).timeout
 
-	main.server.project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
+	main.server._c2s_project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
 
 @rpc("authority", "call_remote", "reliable")
-func receive_user_list(user_dicts: Array) -> void:
+func _s2c_receive_user_list(user_dicts: Array) -> void:
 	var users: Array[GDTUser]
 
 	for dict in user_dicts:
@@ -159,7 +161,7 @@ func receive_user_list(user_dicts: Array) -> void:
 	main.dual._users_listed(users)
 
 @rpc("authority", "call_remote", "reliable")
-func user_connected(user_dict: Dictionary) -> void:
+func _s2c_user_connected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
 	if not user: return
 	
@@ -167,7 +169,7 @@ func user_connected(user_dict: Dictionary) -> void:
 	main.dual._user_connected(user)
 
 @rpc("authority", "call_remote", "reliable")
-func user_disconnected(user_dict: Dictionary) -> void:
+func _s2c_user_disconnected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
 	if not user: return
 
