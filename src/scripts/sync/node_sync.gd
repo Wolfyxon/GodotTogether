@@ -1355,7 +1355,10 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 	var new_path = property.substr(first.length() + 1)
 	
 	if new_path and first in obj and obj[first] is Object:
-		return get_setget_property(obj[first], new_path)
+		if is_setget_property(obj[first], new_path):
+			return get_setget_property(obj[first], new_path)
+		else:
+			return obj[first].get_indexed(new_path)
 	
 	var props = get_setget_properties(obj)
 	
@@ -1399,7 +1402,11 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 	var new_path = property.substr(first.length() + 1)
 	
 	if new_path and first in obj and obj[first] is Object:
-		set_setget_property(obj[first], new_path, value)
+		if is_setget_property(obj[first], new_path):
+			set_setget_property(obj[first], new_path, value)
+		else:
+			obj[first].set_indexed(new_path, value)
+		
 		return
 	
 	var props = get_setget_properties(obj)
