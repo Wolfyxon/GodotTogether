@@ -261,9 +261,17 @@ func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func project_files_request(hashes: Dictionary) -> void:
 	var id = multiplayer.get_remote_sender_id()
+	var user = main.dual.get_user_by_id(id)
+	
+	if not user:
+		GDTUtils.printerr_stack("Peer %s requested files, but isn't in the user list" % id)
+		return
+	
+	if not user.authenticated:
+		GDTUtils.printerr_stack("User %s requested project files but isn't authenticated" % id)
+		return
 	
 	var local_hashes = GDTFiles.get_file_tree_hashes()
-
 	var files_to_send = []
 
 	for path in local_hashes.keys():
