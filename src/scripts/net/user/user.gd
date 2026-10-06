@@ -219,6 +219,5 @@ func approve() -> void:
 	auth()
 	
 func reject(reason: DisconnectReason = DisconnectReason.REJECTED) -> void:
-	assert(pending, "User %d (%s) is not pending" % [id, name])
 	main.dual._user_rejected(self)
 	kick(reason)
