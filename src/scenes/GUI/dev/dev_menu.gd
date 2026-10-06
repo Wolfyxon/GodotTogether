@@ -25,6 +25,7 @@ func fill_main() -> void:
 	
 	for i in list.get_children():
 		if i is FoldableContainer:
+			i.fold()
 			var first = i.get_child(0)
 			
 			if first and "main" in first:
