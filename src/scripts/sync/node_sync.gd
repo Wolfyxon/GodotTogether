@@ -44,6 +44,7 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"global_rotation",
 		"global_transform",
 		"global_scale",
+		"global_skew"
 	],
 	"Node3D": [
 		# Handled by 'transform'
