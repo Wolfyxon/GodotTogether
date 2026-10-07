@@ -651,9 +651,12 @@ func test_setget_property_dict() -> bool:
 						printerr("Missing 'func' in '%s' of %s:%s" % [method_key, node_class, prop])
 						return false
 						
-					if not ClassDB.class_has_method(node_class, method_entry["func"]):
-						printerr("%s has no method '%s'" % [node_class, method_entry["func"]])
-						return false
+					var func_val = method_entry["func"]
+					
+					if func_val is String:
+						if not ClassDB.class_has_method(node_class, func_val):
+							printerr("%s has no method '%s'" % [node_class, method_entry["func"]])
+							return false
 					
 					for key in method_entry.keys():
 						if not key in key_types:

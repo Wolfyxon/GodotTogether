@@ -1528,7 +1528,16 @@ static func _call_setget_entry_method(
 	
 	var full_args = get_setget_func_args(method_entry, prop_entry_name, property, args)
 	
-	return obj.callv(method_entry["func"], full_args)
+	var func_value = method_entry["func"]
+	
+	if func_value is String:
+		return obj.callv(method_entry["func"], full_args)
+	elif func_value is Callable:
+		full_args.push_front(obj)
+		return func_value.callv(full_args)
+	else:
+		GDTUtils.printerr_stack("Unsupported func value type: %s" % typeof(func_value))
+		return
 
 static func is_encoded_resource(value) -> bool:
 	if not value is Dictionary:
