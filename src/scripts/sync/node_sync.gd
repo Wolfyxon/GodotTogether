@@ -35,12 +35,15 @@ const IGNORED_PROPERTIES: Dictionary = {
 	],
 	"Node2D": [
 		"global_position",
-		"global_rotation"
+		"global_rotation",
+		"global_transform",
+		"global_scale",
 	],
 	"Node3D": [
 		"transform",
 		"global_transform",
 		"global_basis",
+		"global_scale",
 		"global_position",
 		"global_rotation",
 		"global_rotation_degrees"
