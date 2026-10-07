@@ -7,6 +7,8 @@ const IMG_VISIBLE = preload("../../img/visible.svg")
 
 const USER_LIST_DOCK_PATH = "res://addons/GodotTogether/src/scenes/GUI/docks/userListDock/user_list_dock.tscn"
 
+var alert_heat := 0
+
 var user_list_dock: GDTUserListDock = null
 
 var scene_tree_editor = GDTSceneTreeEditor.new()
@@ -101,6 +103,14 @@ func progress(description := "Please wait...") -> GDTProgressPopup:
 	return popup
 
 func alert(text: String, title := "GodotTogether") -> AcceptDialog:
+	if alert_heat > 5:
+		printerr("Too many alerts poopups! Blocking.")
+		printerr("Title: %s" % title)
+		printerr(text)
+		return
+	
+	alert_heat += 1
+	
 	var popup := AcceptDialog.new()
 	
 	popup.dialog_text = text
@@ -114,7 +124,7 @@ func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 
 	popup.canceled.connect(popup.queue_free)
 	popup.confirmed.connect(popup.queue_free)
-
+	
 	return popup
 
 func confirm(text: String) -> bool:
@@ -138,3 +148,7 @@ func confirm(text: String) -> bool:
 
 func visuals_available() -> bool:
 	return main or not Engine.is_editor_hint() 
+
+func _on_alert_cooldown_timeout() -> void:
+	if alert_heat > 0:
+		alert_heat -= 1
