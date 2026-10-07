@@ -1339,7 +1339,7 @@ static func get_setget_entry_name(class_props: Dictionary, property: String) -> 
 		return property
 	else:
 		for path in class_props.keys():
-			var regex = get_setget_property_regex(path)
+			var regex = get_property_match_regex(path)
 			
 			if regex.search(property):
 				return path
@@ -1599,14 +1599,14 @@ static func is_setget_property(obj: Object, property: String) -> bool:
 		return true
 	
 	for path: String in class_props.keys():
-		var regex := get_setget_property_regex(path)
+		var regex := get_property_match_regex(path)
 		
 		if regex.search(property):
 			return true
 		
 	return false
 
-static func get_setget_property_regex(path: String) -> RegEx:
+static func get_property_match_regex(path: String) -> RegEx:
 	var regex = RegEx.new()
 	
 	var err = regex.compile(
@@ -1622,7 +1622,7 @@ static func get_setget_property_regex(path: String) -> RegEx:
 	return regex
 
 static func extract_setget_property_string_args(property: String, source: String) -> Array:
-	var regex = get_setget_property_regex(source)
+	var regex = get_property_match_regex(source)
 	var res = regex.search(property)
 	
 	if not res:
