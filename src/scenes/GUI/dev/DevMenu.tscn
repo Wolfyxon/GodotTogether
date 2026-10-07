@@ -180,9 +180,11 @@ text = "Print tracked files"
 
 [node name="settings" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1709253664]
 layout_mode = 2
+folded = true
 title = "Developer settings"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/settings" unique_id=549520500]
+visible = false
 layout_mode = 2
 
 [node name="lblLogging" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1546657365]
@@ -266,6 +268,17 @@ Enable sending and receiving a restart signal that restarts the plugin for every
 text = "Enable restart broadcast"
 metadata/setting = "dev/restart_broadcast"
 
+[node name="tests" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1503605208]
+layout_mode = 2
+title = "Tests"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/tests" unique_id=1246388436]
+layout_mode = 2
+
+[node name="btnAlertSpam" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=563898447]
+layout_mode = 2
+text = "Test alert spam"
+
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -304,6 +317,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnScannedFiles" to="." method="_on_btn_scanned_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/enabled" to="main/scroll/vbox/sync/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]

@@ -69,3 +69,7 @@ func _on_btn_execute_pressed() -> void:
 		print("Code result: %s" % res)
 	
 	print("Took: %s s" % str(end - start)) # why doesn't it automatically convert  to string here?
+
+func _on_btn_alert_spam_pressed() -> void:
+	for i in 1000:
+		main.get_gui().alert(str(i))
