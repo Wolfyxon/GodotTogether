@@ -1734,19 +1734,28 @@ static func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
 	
 	var ignored = get_ignored_properties(obj)
+	var ignored_regex = []
+	
+	for i in ignored:
+		var regex = get_property_match_regex(i)
+		
+		if regex:
+			ignored_regex.append(regex)
 	
 	for i in obj.get_property_list():
-		var con := true
-
-		if i.name in ignored:
-			continue
-
-		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
-			if i.usage & usage:
-				con = false
+		var ok := true
+		
+		for regex: RegEx in ignored_regex:
+			if regex.search(i["name"]):
+				ok = false
 				break
 
-		if not con: continue
+		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
+			if i["usage"] & usage:
+				ok = false
+				break
+
+		if not ok: continue
 		res.append(i.name)
 
 	return res
