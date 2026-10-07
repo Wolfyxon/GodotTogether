@@ -585,7 +585,7 @@ func test_property_keys() -> bool:
 	
 	var keys = GDTNodeSync.get_property_keys(node3d)
 	
-	var essentials = ["name", "position", "visible"]
+	var essentials = ["name", "transform", "visible"]
 	
 	for i in essentials:
 		if not i in essentials:

@@ -34,13 +34,24 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"offset_top", "offset_bottom"
 	],
 	"Node2D": [
+		# Handled by 'transform'
+		"position",
+		"scale",
+		"rotation",
+		"rotation_degrees",
+		
 		"global_position",
 		"global_rotation",
 		"global_transform",
 		"global_scale",
 	],
 	"Node3D": [
-		"transform",
+		# Handled by 'transform'
+		"position",
+		"scale",
+		"rotation",
+		"rotation_degrees",
+		
 		"global_transform",
 		"global_basis",
 		"global_scale",
