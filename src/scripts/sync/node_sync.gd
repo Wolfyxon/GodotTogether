@@ -1367,7 +1367,10 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 			var new_value = obj.get_indexed(path)
 			
 			if value != original and new_value != value:
-				GDTUtils.printerr_stack("Set failed: %s Value: %s" % [path, str(value)])
+				GDTUtils.printerr_stack(
+					"Set failed: %s Attempted: %s Got: %s" % 
+					[path, str(value), str(new_value)]
+				)
 
 static func get_setget_properties_of_class(cls_name: String) -> Variant:
 	if cls_name in SETGET_PROPERTIES:
