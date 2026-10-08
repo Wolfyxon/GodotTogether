@@ -276,6 +276,9 @@ var last_input_time: float = 0.0
 var last_cycle_time: float = 0.0
 var last_scan_time: float = 0.0
 
+var last_change_time: float = 0.0
+var recent_change_count: int = 0
+
 func _ready() -> void:
 	var editor_ur = EditorInterface.get_editor_undo_redo()
 	editor_ur.history_changed.connect(_editor_undo_redo_changed)
@@ -318,6 +321,10 @@ func _cycle() -> void:
 		return
 	
 	check_changes()
+
+func _got_changes() -> void:
+	last_change_time = Time.get_unix_time_from_system()
+	recent_change_count += 1
 
 func update_timer_wait_times() -> void:
 	change_timer.wait_time = main.get_settings().get_setting("sync/node_refresh_rate")
