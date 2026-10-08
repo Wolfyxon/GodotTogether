@@ -81,108 +81,13 @@ shortcut = SubResource("Shortcut_ulx1o")
 text = "Execute"
 icon = ExtResource("3_kl0hy")
 
-[node name="prints" type="FoldableContainer" parent="main/scroll/vbox" unique_id=282098678]
-layout_mode = 2
-folded = true
-title = "Data printing"
-
-[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/prints" unique_id=557890141]
-visible = false
-layout_mode = 2
-
-[node name="lblEditor" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=1814752883]
-layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "Editor"
-
-[node name="btnNodeClasses" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1816482059]
-layout_mode = 2
-text = "Print all node classes in editor"
-
-[node name="lblFiles" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=720643382]
-layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "Filesystem"
-
-[node name="btnFileTree" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1760289925]
-layout_mode = 2
-text = "Print file tree"
-
-[node name="btnUnsafeFileTree" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=345370361]
-layout_mode = 2
-text = "Print file tree with unsafe paths"
-
-[node name="btnScannedFiles" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1837834936]
-layout_mode = 2
-text = "Print files included in scanning"
-
-[node name="sync" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
-layout_mode = 2
-folded = true
-title = "Sync"
-
-[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/sync" unique_id=786792079]
-visible = false
-layout_mode = 2
-script = ExtResource("5_govu4")
-
-[node name="enabled" type="CheckBox" parent="main/scroll/vbox/sync/vbox" unique_id=1410617470]
-layout_mode = 2
-text = "Enable change detection profiler"
-
-[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/sync/vbox" unique_id=92275987]
-layout_mode = 2
-
-[node name="nodeTitle" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=373811155]
-layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "Node change detection:"
-
-[node name="nodeTime" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1757536329]
-layout_mode = 2
-text = "Avg node scan time:"
-
-[node name="nodeCount" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1559332646]
-layout_mode = 2
-text = "Total nodes:"
-
-[node name="nodeCanSync" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=901235950]
-layout_mode = 2
-text = "Allowed to run: ?"
-
-[node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/sync/vbox" unique_id=1914081028]
-layout_mode = 2
-
-[node name="fileTitle" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1540368066]
-layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "File change detection:"
-
-[node name="fileTime" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=2130753035]
-layout_mode = 2
-text = "Avg file scan time:"
-
-[node name="fileCount" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=2008130147]
-layout_mode = 2
-text = "Total files:"
-
-[node name="fileCanSync" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=456213839]
-layout_mode = 2
-text = "Allowed to run: ?"
-
-[node name="filesInitSynced" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1741041255]
-layout_mode = 2
-text = "Initial sync complete: N/A"
-
-[node name="btnFiles" type="Button" parent="main/scroll/vbox/sync/vbox" unique_id=423350362]
-layout_mode = 2
-text = "Print tracked files"
-
 [node name="logging" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1349864807]
 layout_mode = 2
+folded = true
 title = "Logging"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/logging" unique_id=658249290]
+visible = false
 layout_mode = 2
 
 [node name="HSeparator4" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1329406644]
@@ -298,6 +203,103 @@ Enable sending and receiving a restart signal that restarts the plugin for every
 "
 text = "Enable restart broadcast"
 metadata/setting = "dev/restart_broadcast"
+
+[node name="prints" type="FoldableContainer" parent="main/scroll/vbox" unique_id=282098678]
+layout_mode = 2
+folded = true
+title = "Data printing"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/prints" unique_id=557890141]
+visible = false
+layout_mode = 2
+
+[node name="lblEditor" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=1814752883]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Editor"
+
+[node name="btnNodeClasses" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1816482059]
+layout_mode = 2
+text = "Print all node classes in editor"
+
+[node name="lblFiles" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=720643382]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Filesystem"
+
+[node name="btnFileTree" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1760289925]
+layout_mode = 2
+text = "Print file tree"
+
+[node name="btnUnsafeFileTree" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=345370361]
+layout_mode = 2
+text = "Print file tree with unsafe paths"
+
+[node name="btnScannedFiles" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1837834936]
+layout_mode = 2
+text = "Print files included in scanning"
+
+[node name="sync" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
+layout_mode = 2
+folded = true
+title = "Sync"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/sync" unique_id=786792079]
+visible = false
+layout_mode = 2
+script = ExtResource("5_govu4")
+
+[node name="enabled" type="CheckBox" parent="main/scroll/vbox/sync/vbox" unique_id=1410617470]
+layout_mode = 2
+text = "Enable change detection profiler"
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/sync/vbox" unique_id=92275987]
+layout_mode = 2
+
+[node name="nodeTitle" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=373811155]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Node change detection:"
+
+[node name="nodeTime" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1757536329]
+layout_mode = 2
+text = "Avg node scan time:"
+
+[node name="nodeCount" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1559332646]
+layout_mode = 2
+text = "Total nodes:"
+
+[node name="nodeCanSync" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=901235950]
+layout_mode = 2
+text = "Allowed to run: ?"
+
+[node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/sync/vbox" unique_id=1914081028]
+layout_mode = 2
+
+[node name="fileTitle" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1540368066]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "File change detection:"
+
+[node name="fileTime" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=2130753035]
+layout_mode = 2
+text = "Avg file scan time:"
+
+[node name="fileCount" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=2008130147]
+layout_mode = 2
+text = "Total files:"
+
+[node name="fileCanSync" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=456213839]
+layout_mode = 2
+text = "Allowed to run: ?"
+
+[node name="filesInitSynced" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1741041255]
+layout_mode = 2
+text = "Initial sync complete: N/A"
+
+[node name="btnFiles" type="Button" parent="main/scroll/vbox/sync/vbox" unique_id=423350362]
+layout_mode = 2
+text = "Print tracked files"
 
 [node name="tests" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1503605208]
 layout_mode = 2
