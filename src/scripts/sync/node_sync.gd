@@ -297,6 +297,9 @@ func _cycle() -> void:
 	var settings = main.get_settings()
 	if not settings: return
 	
+	if not DisplayServer.window_is_focused():
+		return
+	
 	if settings.get_setting("sync/node_scan_mode") != NodeScanMode.CONTINUOUS:
 		return
 	
