@@ -1373,17 +1373,35 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 				)
 
 static func get_setget_properties_of_class(cls_name: String) -> Variant:
-	if cls_name in SETGET_PROPERTIES:
-		var entry = SETGET_PROPERTIES[cls_name] 
-		
-		if typeof(entry) == TYPE_STRING or typeof(entry) == TYPE_STRING_NAME:
-			return get_setget_properties_of_class(entry)
-		
-		return entry
+	var res = {}
+	var found = false
 	
-	for key in SETGET_PROPERTIES.keys():
-		if ClassDB.is_parent_class(cls_name, key):
-			return SETGET_PROPERTIES[key]
+	if cls_name in SETGET_PROPERTIES:
+		var value = SETGET_PROPERTIES[cls_name]
+		
+		if value is String:
+			if value in SETGET_PROPERTIES:
+				value = SETGET_PROPERTIES[value]
+				
+		return value
+	
+	for cls_key in SETGET_PROPERTIES.keys():
+		if cls_name != cls_key and not ClassDB.is_parent_class(cls_name, cls_key):
+			continue
+		
+		var value = SETGET_PROPERTIES[cls_key]
+		
+		if value is String:
+			if not value in SETGET_PROPERTIES:
+				continue
+			
+			value = SETGET_PROPERTIES[value]
+		
+		res = GDTUtils.merge(res, value.duplicate(true))
+		found = true
+	
+	if found:
+		return res
 	
 	return null
 
