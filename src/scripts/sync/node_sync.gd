@@ -775,7 +775,6 @@ func rename_node(node_path: String, scene_path: String, new_name: String) -> voi
 	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
 	if not node: return
 	
-	# TODO: Add logging elsewhere, I'm lazy
 	if is_remote_change_logging_enabled():
 		print("Got node rename '%s' in scene '%s'" % [node_path, scene_path])
 		print("New name: %s" % new_name)
@@ -815,6 +814,10 @@ func add_node(
 	if parent.has_node(NodePath(property_dict["name"])):
 		return
 	
+	if is_remote_change_logging_enabled():
+		print("Got new node in parent '%s' scene '%s'" % [parent_path, scene_path])
+		print(property_dict)
+	
 	var new_node = validate_and_create_node(node_class)
 	if not new_node: return
 	
@@ -845,6 +848,9 @@ func delete_node(node_path: String, scene_path: String) -> void:
 	if node == scene:
 		printerr("Deleting scene root not supported")
 		return
+	
+	if is_remote_change_logging_enabled():
+		print("Got node delete '%s' in '%s'" % [node_path, scene_path])
 	
 	var selection = EditorInterface.get_selection()
 	
@@ -910,6 +916,10 @@ func change_node_class(
 	if not is_user_node(new_node):
 		printerr("Replacing node failed, name was not applied")
 		return
+	
+	if is_remote_change_logging_enabled():
+		print("Got node class change %s in %s" % [node_path, scene_path])
+		print("New class: %s" % new_class)
 	
 	set_node_supressed(old_node, true)
 	
