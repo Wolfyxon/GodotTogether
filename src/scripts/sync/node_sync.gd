@@ -74,6 +74,18 @@ const IGNORED_PROPERTIES: Dictionary = {
 }
 
 const SETGET_PROPERTIES = {
+	"Object": {
+		"metadata/?": {
+			"reset": {
+				"func": "remove_meta",
+				"pre_args": ["?"]
+			},
+			"has": {
+				"func": "has_meta",
+				"pre_args": ["?"]
+			}
+		}
+	},
 	"Control": {
 		"theme_override_colors/?": {
 			"reset": {
