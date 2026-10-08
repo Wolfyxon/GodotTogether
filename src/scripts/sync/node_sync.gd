@@ -154,6 +154,11 @@ const SETGET_PROPERTIES = {
 				"func": "_tileset_remove_physics_layer",
 				"target": GDTNodeSync,
 				"post_args": ["?int"]
+			},
+			"set": {
+				"func": "_tileset_set_physics_layer_material",
+				"target": GDTNodeSync,
+				"pre_args": ["?int"]
 			}
 		},
 		
@@ -1839,6 +1844,10 @@ static func _tileset_has_physics_layer(tileset: TileSet, id: int) -> bool:
 static func _tileset_remove_physics_layer(tileset: TileSet, id: int) -> void:
 	if _tileset_has_physics_layer(tileset, id):
 		tileset.remove_physics_layer(id)
+
+static func _tileset_set_physics_layer_material(tileset: TileSet, id: int, material: PhysicsMaterial) -> void:
+	if _tileset_has_physics_layer(tileset, id):
+		tileset.set_physics_layer_physics_material(id, material)
 
 static func _invalid_callable() -> void:
 	GDTUtils.printerr_stack("Placeholder invalid callable called!")
