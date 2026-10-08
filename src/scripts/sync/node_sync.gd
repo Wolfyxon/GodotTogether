@@ -139,7 +139,9 @@ const SETGET_PROPERTIES = {
 				"post_args": ["?int"]
 			}
 		},
-		"physics_layer_?/physics_material": {},
+		"physics_layer_?/physics_material": {
+			"reset_on_null": false
+		},
 		
 		"navigation_layer_?/layers": {
 			"reset": {
@@ -1461,7 +1463,7 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 			if not _call_setget_entry_method(obj, prop_entry, prop_entry_name, "has", property):
 				_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
 		
-		if value == null:
+		if value == null and (not "reset_on_null" in prop_entry or not prop_entry["reset_on_null"]):
 			_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
 	
 	if "set" in prop_entry:
