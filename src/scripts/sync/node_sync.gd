@@ -272,6 +272,10 @@ var node_data_dict = {
 var supressed_nodes = {}
 var last_scene_path: String = ""
 
+var last_input_time: float = 0.0
+var last_cycle_time: float = 0.0
+var last_scan_time: float = 0.0
+
 func _ready() -> void:
 	var editor_ur = EditorInterface.get_editor_undo_redo()
 	editor_ur.history_changed.connect(_editor_undo_redo_changed)
@@ -291,13 +295,22 @@ func _ready() -> void:
 	start()
 	report_ready()
 
+func _input(_event: InputEvent) -> void:
+	last_input_time = Time.get_unix_time_from_system()
+
 func _cycle() -> void:
 	if not main: return
 	
 	var settings = main.get_settings()
 	if not settings: return
 	
+	var now = Time.get_unix_time_from_system()
+	last_cycle_time = now
+	
 	if not DisplayServer.window_is_focused():
+		return
+	
+	if (now - last_input_time) > 2 and (now - last_scan_time) < 1:
 		return
 	
 	if settings.get_setting("sync/node_scan_mode") != NodeScanMode.CONTINUOUS:
@@ -310,6 +323,8 @@ func update_timer_wait_times() -> void:
 
 func check_changes() -> void:
 	if not can_sync_nodes(): return
+	
+	last_scan_time = Time.get_unix_time_from_system()
 	
 	var root := EditorInterface.get_edited_scene_root()
 	if not root: return
