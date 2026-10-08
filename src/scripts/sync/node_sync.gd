@@ -140,7 +140,17 @@ const SETGET_PROPERTIES = {
 			}
 		},
 		"physics_layer_?/physics_material": {
-			"reset_on_null": false
+			"reset_on_null": false,
+			
+			"has": {
+				"func": "_tileset_has_physics_layer",
+				"target": GDTNodeSync,
+				"post_args": ["?int"]
+			},
+			"reset": {
+				"func": "remove_physics_layer",
+				"post_args": ["?int"]
+			}
 		},
 		
 		"navigation_layer_?/layers": {
@@ -1546,15 +1556,15 @@ static func _call_setget_entry_method(
 	var full_args = get_setget_func_args(method_entry, prop_entry_name, property, args)
 	
 	var func_value = method_entry["func"]
+	var func_target = obj
 	
-	if func_value is String:
-		return obj.callv(method_entry["func"], full_args)
-	elif func_value is Callable:
-		full_args.push_front(obj)
-		return func_value.callv(full_args)
-	else:
-		GDTUtils.printerr_stack("Unsupported func value type: %s" % typeof(func_value))
-		return
+	if "target" in method_entry:
+		var target_val = method_entry["target"]
+		
+		if target_val is Object:
+			func_target = target_val
+	
+	return func_target[func_value].callv(full_args)
 
 static func is_encoded_resource(value) -> bool:
 	if not value is Dictionary:
@@ -1792,6 +1802,9 @@ static func is_node_valid(node) -> bool:
 			node in EditorInterface.get_open_scene_roots()
 		)
 	)
+
+static func _tileset_has_physics_layer(tileset: TileSet, id: int) -> bool:
+	return tileset and tileset.get_physics_layers_count() > id
 
 static func _invalid_callable() -> void:
 	GDTUtils.printerr_stack("Placeholder invalid callable called!")

@@ -644,7 +644,8 @@ func test_setget_property_dict() -> bool:
 					var key_types = {
 						"func": TYPE_STRING,
 						"pre_args": TYPE_ARRAY,
-						"post_args": TYPE_ARRAY
+						"post_args": TYPE_ARRAY,
+						"target": TYPE_OBJECT
 					}
 					
 					if not "func" in method_entry:
@@ -654,9 +655,10 @@ func test_setget_property_dict() -> bool:
 					var func_val = method_entry["func"]
 					
 					if func_val is String:
-						if not ClassDB.class_has_method(node_class, func_val):
-							printerr("%s has no method '%s'" % [node_class, method_entry["func"]])
-							return false
+						if not "target" in method_entry:
+							if not ClassDB.class_has_method(node_class, func_val):
+								printerr("%s has no method '%s'" % [node_class, method_entry["func"]])
+								return false
 					
 					for key in method_entry.keys():
 						if not key in key_types:
