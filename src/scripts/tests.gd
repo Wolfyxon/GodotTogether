@@ -26,7 +26,8 @@ func exec_test(f: Callable) -> void:
 	var time = Time.get_unix_time_from_system() - start
 	
 	var test_name = str(f.get_method())
-	var spaced_name = test_name + " ".repeat(longest_test_name - test_name.length())
+	var separator = ".".repeat(longest_test_name - test_name.length())
+	var spaced_name = test_name + " " + separator
 	
 	test_times[test_name] = time
 	
