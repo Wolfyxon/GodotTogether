@@ -751,6 +751,10 @@ func update_node_properties(node_path: String, scene_path: String, property_dict
 	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
 	if not node: return
 	
+	if is_remote_change_logging_enabled():
+		print("Got node update for: '%s' in scene: '%s'" % [node_path, scene_path])
+		print(property_dict)
+	
 	set_node_supressed(node, true)
 	
 	apply_property_dict(node, property_dict)
@@ -765,7 +769,12 @@ func rename_node(node_path: String, scene_path: String, new_name: String) -> voi
 	
 	var node = GDTUtils.get_node_in_scene(node_path, scene_path)
 	if not node: return
-		
+	
+	# TODO: Add logging elsewhere, I'm lazy
+	if is_remote_change_logging_enabled():
+		print("Got node rename '%s' in scene '%s'" % [node_path, scene_path])
+		print("New name: %s" % new_name)
+	
 	set_node_supressed(node, true)
 	
 	if node in node_data_dict:
@@ -1141,6 +1150,12 @@ func is_change_logging_enabled() -> bool:
 	return (
 		main and main.get_settings() and
 		main.get_settings().get_setting("dev/log_node_changes")
+	)
+
+func is_remote_change_logging_enabled() -> bool:
+	return (
+		main and main.get_settings() and
+		main.get_settings().get_setting("dev/log_node_remote_changes")
 	)
 
 static func get_signal_hash_dict(node: Node) -> Dictionary:

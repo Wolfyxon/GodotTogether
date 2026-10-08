@@ -33,10 +33,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 825.0
-offset_bottom = 500.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 832.0
+offset_bottom = 507.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -180,11 +180,9 @@ text = "Print tracked files"
 
 [node name="settings" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1709253664]
 layout_mode = 2
-folded = true
 title = "Developer settings"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/settings" unique_id=549520500]
-visible = false
 layout_mode = 2
 
 [node name="lblLogging" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1546657365]
@@ -217,6 +215,11 @@ metadata/setting = "dev/log_node_changes"
 layout_mode = 2
 text = "Log node scans"
 metadata/setting = "dev/log_node_scans"
+
+[node name="logNodeRemoteChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1018424046]
+layout_mode = 2
+text = "Log remote node changes"
+metadata/setting = "dev/log_node_remote_changes"
 
 [node name="logFileChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1195994528]
 layout_mode = 2
@@ -270,9 +273,11 @@ metadata/setting = "dev/restart_broadcast"
 
 [node name="tests" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1503605208]
 layout_mode = 2
+folded = true
 title = "Tests"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/tests" unique_id=1246388436]
+visible = false
 layout_mode = 2
 
 [node name="btnAlertSpam" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=563898447]
