@@ -94,17 +94,20 @@ func _exit_tree() -> void:
 	
 	close_connection()
 	
-	gui.cleanup()
-	settings.save_if_changed()
+	if gui:
+		gui.cleanup()
 	
-	remove_control_from_bottom_panel(chat)
-	button.queue_free()
+	if settings:
+		settings.save_if_changed()
 	
-	for i in components:
-		if i:
-			i.queue_free()
-			
-	EditorInterface.remove_meta(_META_LOCK_NAME)
+	if chat:
+		remove_control_from_bottom_panel(chat)
+	
+	if button:
+		button.queue_free()
+	
+	cleanup_components()
+	release_lock()
 	
 	if ENABLE_MULTIPLAYER_OVERRIDE:
 		get_tree().set_multiplayer(SceneMultiplayer.new(), GDTMultiplayerExtension.ROOT_PATH)
@@ -137,6 +140,11 @@ func init_components() -> void:
 		i.main = self
 		root.add_child(i)
 
+func cleanup_components() -> void:
+	for i in components:
+		if i:
+			i.queue_free()
+
 func create_lock() -> bool:
 	if EditorInterface.has_meta(_META_LOCK_NAME):
 		GDTUtils.printerr_stack("Lock already set. Plugin will not run.")
@@ -156,6 +164,9 @@ func create_lock() -> bool:
 	EditorInterface.set_meta(_META_LOCK_NAME, true)
 	
 	return true
+
+func release_lock() -> void:
+	EditorInterface.remove_meta(_META_LOCK_NAME)
 
 func get_global_rpc_checksum() -> int:
 	var res = 0
@@ -296,12 +307,14 @@ func get_settings() -> GDTSettings:
 	return settings
 
 func close_connection() -> void:
-	client.connection_cancelled = true
-		
+	if client:
+		client.connection_cancelled = true
+		client.client_peer.close()
+	
+	if server:
+		server.server_peer.close()
+	
 	multiplayer.multiplayer_peer = null
-
-	client.client_peer.close()
-	server.server_peer.close()
 	
 	post_session_end()
 
