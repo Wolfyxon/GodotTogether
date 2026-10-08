@@ -1000,6 +1000,9 @@ func test_setget_nullable_remove() -> bool:
 	tmap.tile_set.add_physics_layer()
 	tmap.tile_set.set_physics_layer_physics_material(0, PhysicsMaterial.new())
 	
+	tmap.tile_set.add_physics_layer()
+	tmap.tile_set.set_physics_layer_collision_mask(1, 7)
+	
 	# This is what happens when a physics layer gets removed
 	GDTNodeSync.apply_property_dict(tmap, {
 		"tile_set:physics_layer_0/collision_layer": null,
@@ -1008,10 +1011,26 @@ func test_setget_nullable_remove() -> bool:
 		"tile_set:physics_layer_0/physics_material": null
 	})
 	
-	if GDTNodeSync._tileset_has_physics_layer(tmap.tile_set, 0):
+	var layer_count = tmap.tile_set.get_physics_layers_count()
+	
+	if layer_count == 2:
 		printerr("Physics layer not removed")
 		printerr("Count:", tmap.tile_set.get_physics_layers_count())
 		printerr("Material:", tmap.tile_set.get_physics_layer_physics_material(0))
+		return false
+	
+	if layer_count < 1:
+		printerr("Too much layers removed")
+		return false
+		
+	if layer_count != 1:
+		printerr("Layers were added instead of removed")
+		return false
+	
+	var mask_val = tmap.tile_set.get_physics_layer_collision_mask(0)
+	
+	if mask_val != 7:
+		printerr("Collision mask %s != %s" % [mask_val, 7])
 		return false
 	
 	return true
