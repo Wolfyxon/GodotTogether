@@ -999,6 +999,7 @@ func test_setget_nullable_remove() -> bool:
 	
 	tmap.tile_set.add_physics_layer()
 	tmap.tile_set.set_physics_layer_physics_material(0, PhysicsMaterial.new())
+	tmap.tile_set.set_physics_layer_collision_mask(0, 2)
 	
 	tmap.tile_set.add_physics_layer()
 	tmap.tile_set.set_physics_layer_collision_mask(1, 7)
