@@ -82,34 +82,34 @@ popup/item_1/text = "On change (performance)"
 popup/item_1/id = 1
 metadata/setting = "sync/node_scan_mode"
 
-[node name="nodeSyncRate" type="HBoxContainer" parent="main/scroll/vbox" unique_id=641348456]
+[node name="nodeScanInterval" type="HBoxContainer" parent="main/scroll/vbox" unique_id=641348456]
 layout_mode = 2
 
-[node name="label" type="Label" parent="main/scroll/vbox/nodeSyncRate" unique_id=751089060]
+[node name="label" type="Label" parent="main/scroll/vbox/nodeScanInterval" unique_id=751089060]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Node scan rate"
+text = "Node scan interval"
 
-[node name="value" type="SpinBox" parent="main/scroll/vbox/nodeSyncRate" unique_id=169913795]
+[node name="value" type="SpinBox" parent="main/scroll/vbox/nodeScanInterval" unique_id=169913795]
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "How often to check for node changes (in seconds). Lower = faster syncing, higher = better performance on complex scenes. Default: 0.1"
+tooltip_text = "How often to check for node changes (in seconds). Lower = faster syncing, higher = better performance on complex scenes. Default: 0.025"
 min_value = 0.01
 max_value = 30.0
 step = 0.001
-value = 0.09999999999999999
+value = 0.01
 metadata/setting = "sync/node_refresh_rate"
 
-[node name="fileSyncRate" type="HBoxContainer" parent="main/scroll/vbox" unique_id=1794905470]
+[node name="fileScanInterval" type="HBoxContainer" parent="main/scroll/vbox" unique_id=1794905470]
 layout_mode = 2
 tooltip_text = "How often to check for node changes (in seconds). Lower = faster syncing, higher = better performance on complex scenes. Default: 0.1"
 
-[node name="label" type="Label" parent="main/scroll/vbox/fileSyncRate" unique_id=541592061]
+[node name="label" type="Label" parent="main/scroll/vbox/fileScanInterval" unique_id=541592061]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "File scan rate"
+text = "File scan interval"
 
-[node name="value" type="SpinBox" parent="main/scroll/vbox/fileSyncRate" unique_id=1580941394]
+[node name="value" type="SpinBox" parent="main/scroll/vbox/fileScanInterval" unique_id=1580941394]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "How often to check for file changes (in seconds). Lower = faster syncing, higher = better performance.
