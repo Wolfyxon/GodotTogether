@@ -307,8 +307,9 @@ func _cycle() -> void:
 	var now = Time.get_unix_time_from_system()
 	last_cycle_time = now
 	
-	if not DisplayServer.window_is_focused():
-		return
+	if settings.get_setting("sync/node_scan_pause_unfocused"):
+		if not DisplayServer.window_is_focused():
+			return
 	
 	if (now - last_input_time) > 2 and (now - last_scan_time) < 1:
 		return

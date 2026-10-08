@@ -63,6 +63,13 @@ layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 text = "Performance"
 
+[node name="noUnfocusedScan" type="CheckButton" parent="main/scroll/vbox" unique_id=671651738]
+layout_mode = 2
+tooltip_text = "Pause scanning nodes for changes when the Godot window is unfocused."
+button_pressed = true
+text = "Pause node scanning when unfocused"
+metadata/setting = "sync/node_scan_pause_unfocused"
+
 [node name="nodeScanMode" type="HBoxContainer" parent="main/scroll/vbox" unique_id=442367942]
 layout_mode = 2
 

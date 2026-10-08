@@ -30,6 +30,7 @@ const _DEFAULT_DATA = {
 		"timeout": 15,
 	},
 	"sync": {
+		"node_scan_pause_unfocused": true,
 		"node_scan_mode": GDTNodeSync.NodeScanMode.CONTINUOUS,
 		"node_refresh_rate": 0.025,
 		"file_refresh_rate": 1,
