@@ -123,19 +123,22 @@ const SETGET_PROPERTIES = {
 		
 		"physics_layer_?/collision_priority": {
 			"reset": {
-				"func": "remove_physics_layer",
+				"func": "_tileset_remove_physics_layer",
+				"target": GDTNodeSync,
 				"post_args": ["?int"]
 			}
 		},
 		"physics_layer_?/collision_layer": {
 			"reset": {
-				"func": "remove_physics_layer",
+				"func": "_tileset_remove_physics_layer",
+				"target": GDTNodeSync,
 				"post_args": ["?int"]
 			}
 		},
 		"physics_layer_?/collision_mask": {
 			"reset": {
-				"func": "remove_physics_layer",
+				"func": "_tileset_remove_physics_layer",
+				"target": GDTNodeSync,
 				"post_args": ["?int"]
 			}
 		},
@@ -148,7 +151,8 @@ const SETGET_PROPERTIES = {
 				"post_args": ["?int"]
 			},
 			"reset": {
-				"func": "remove_physics_layer",
+				"func": "_tileset_remove_physics_layer",
+				"target": GDTNodeSync,
 				"post_args": ["?int"]
 			}
 		},
@@ -1808,6 +1812,10 @@ static func is_node_valid(node) -> bool:
 
 static func _tileset_has_physics_layer(tileset: TileSet, id: int) -> bool:
 	return tileset and tileset.get_physics_layers_count() > id
+
+static func _tileset_remove_physics_layer(tileset: TileSet, id: int) -> void:
+	if _tileset_has_physics_layer(tileset, id):
+		tileset.remove_physics_layer(id)
 
 static func _invalid_callable() -> void:
 	GDTUtils.printerr_stack("Placeholder invalid callable called!")
