@@ -580,16 +580,22 @@ func test_ignored_properties() -> bool:
 	return true
 
 func test_property_keys() -> bool:
-	var node3d = Node3D.new()
+	var node3d = Sprite2D.new()
 	created_nodes.append(node3d)
 	
 	var keys = GDTNodeSync.get_property_keys(node3d)
 	
 	var essentials = ["name", "transform", "visible"]
+	var ignores = ["global_position"]
 	
 	for i in essentials:
-		if not i in essentials:
-			printerr("%s not found " % i)
+		if not i in keys:
+			printerr("%s not found in Node2D keys" % i)
+			return false
+	
+	for i in ignores:
+		if i in keys:
+			printerr("Ignored %s found in Node2D keys" % i)
 			return false
 	
 	for i in GDTNodeSync.IGNORED_PROPERTIES["Node"]:
