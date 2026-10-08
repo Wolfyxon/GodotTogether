@@ -1561,6 +1561,8 @@ static func _call_setget_entry_method(
 	if "target" in method_entry:
 		var target_val = method_entry["target"]
 		
+		full_args.push_front(obj)
+		
 		if target_val is Object:
 			func_target = target_val
 	
