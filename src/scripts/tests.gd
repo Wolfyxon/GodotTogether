@@ -978,9 +978,6 @@ func test_setget_remove() -> bool:
 		printerr("Not recognized as setget: %s" % sub_prop)
 		return false
 	
-	# TODO: Fix error message
-	# ERROR: scene/resources/2d/tile_set.cpp:3852 - Condition "p_value.get_type() != Variant::INT" is true. Returning: false
-	
 	GDTNodeSync.apply_property_dict(tmap, {
 		prop: null
 	})
