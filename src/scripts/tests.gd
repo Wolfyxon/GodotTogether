@@ -1010,6 +1010,8 @@ func test_setget_nullable_remove() -> bool:
 	
 	if GDTNodeSync._tileset_has_physics_layer(tmap.tile_set, 0):
 		printerr("Physics layer not removed")
+		printerr("Count:", tmap.tile_set.get_physics_layers_count())
+		printerr("Material:", tmap.tile_set.get_physics_layer_physics_material(0))
 		return false
 	
 	return true
