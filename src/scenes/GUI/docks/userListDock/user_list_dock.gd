@@ -3,6 +3,7 @@ extends EditorDock
 class_name GDTUserListDock
 
 enum UserAction {
+	INFO,
 	KICK,
 	COPY_ID
 }
@@ -71,6 +72,14 @@ func _selection_changed() -> void:
 
 func _user_action(action: UserAction, user: GDTUser) -> void:
 	match action:
+		UserAction.INFO:
+			gui.alert(GDTUtils.join([
+				"Name: %s" % user.name,
+				"Type: %s" % GDTUser.type_to_string(user.type),
+				"Peer ID: %s" % user.id,
+				"IP address: %s" % user.get_address(),
+				"Joined at: %s" % Time.get_time_string_from_unix_time(int(user.joined_at))
+			], "\n"), "User info")
 		UserAction.KICK:
 			user.kick()
 		UserAction.COPY_ID:

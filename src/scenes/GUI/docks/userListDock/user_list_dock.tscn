@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cwnrusacfdot4" path="res://addons/GodotTogether/src/img/VSeparator.svg" id="2_io5tm"]
 [ext_resource type="Texture2D" uid="uid://d34l21l3lo00e" path="res://addons/GodotTogether/src/img/menu.svg" id="3_0srvs"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="4_0srvs"]
+[ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="4_lnv3w"]
 [ext_resource type="Texture2D" uid="uid://b8tqo5inh7rj1" path="res://addons/GodotTogether/src/img/copy.svg" id="5_og0bi"]
 [ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="6_nad3p"]
 
@@ -139,13 +140,16 @@ tooltip_text = "User actions"
 button_mask = 3
 icon = ExtResource("3_0srvs")
 flat = false
-item_count = 2
-popup/item_0/text = "Kick"
-popup/item_0/icon = ExtResource("4_0srvs")
+item_count = 3
+popup/item_0/text = "View info"
+popup/item_0/icon = ExtResource("4_lnv3w")
 popup/item_0/id = 0
-popup/item_1/text = "Copy peer ID"
-popup/item_1/icon = ExtResource("5_og0bi")
+popup/item_1/text = "Kick"
+popup/item_1/icon = ExtResource("4_0srvs")
 popup/item_1/id = 1
+popup/item_2/text = "Copy peer ID"
+popup/item_2/icon = ExtResource("5_og0bi")
+popup/item_2/id = 2
 
 [node name="status" type="Button" parent="main/scroll/vbox/users/user/vbox" unique_id=28016925]
 custom_maximum_size = Vector2(-1, 35)
