@@ -1475,6 +1475,7 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 		
 		if value == null and (not "reset_on_null" in prop_entry or not prop_entry["reset_on_null"]):
 			_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
+			return
 	
 	if "set" in prop_entry:
 		_call_setget_entry_method(obj, prop_entry, prop_entry_name, "set", property, [value])
