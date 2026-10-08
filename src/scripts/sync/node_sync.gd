@@ -15,6 +15,14 @@ enum NodeScanMode {
 	ON_CHANGE
 }
 
+enum SetGetBehavior {
+	IGNORE,
+	SET,
+	RESET
+}
+
+const DEFAULT_SETGET_NULL_BEHAVIOR = SetGetBehavior.RESET
+
 const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_NONE,
 	PROPERTY_USAGE_GROUP,
@@ -121,13 +129,6 @@ const SETGET_PROPERTIES = {
 			}
 		},
 		
-		"physics_layer_?/collision_priority": {
-			"reset": {
-				"func": "_tileset_remove_physics_layer",
-				"target": GDTNodeSync,
-				"post_args": ["?int"]
-			}
-		},
 		"physics_layer_?/collision_layer": {
 			"reset": {
 				"func": "_tileset_remove_physics_layer",
@@ -135,15 +136,14 @@ const SETGET_PROPERTIES = {
 				"post_args": ["?int"]
 			}
 		},
+		"physics_layer_?/collision_priority": {
+			"null_behavior": SetGetBehavior.IGNORE
+		},
 		"physics_layer_?/collision_mask": {
-			"reset": {
-				"func": "_tileset_remove_physics_layer",
-				"target": GDTNodeSync,
-				"post_args": ["?int"]
-			}
+			"null_behavior": SetGetBehavior.IGNORE
 		},
 		"physics_layer_?/physics_material": {
-			"reset_on_null": false,
+			"null_behavior": SetGetBehavior.SET,
 			
 			"has": {
 				"func": "_tileset_has_physics_layer",
@@ -1463,7 +1463,15 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 	if prop_entry == null:
 		GDTUtils.printerr_stack("Missing setget entry for %s:%s" % [obj.get_class(), property])
 		return
-	
+		
+	var null_bhv = DEFAULT_SETGET_NULL_BEHAVIOR
+		
+	if "null_behavior" in prop_entry:
+		null_bhv = prop_entry["null_behavior"]
+		
+	if value == null and null_bhv == SetGetBehavior.IGNORE:
+		return
+
 	if "reset" in prop_entry:
 		if "default" in property:
 			var def_val = _call_setget_entry_method(obj, prop_entry, prop_entry_name, "default", property)
@@ -1477,7 +1485,7 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 			if not _call_setget_entry_method(obj, prop_entry, prop_entry_name, "has", property):
 				_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
 		
-		if value == null and (not "reset_on_null" in prop_entry or not prop_entry["reset_on_null"]):
+		if value == null and null_bhv == SetGetBehavior.RESET:
 			_call_setget_entry_method(obj, prop_entry, prop_entry_name, "reset", property)
 			return
 	
