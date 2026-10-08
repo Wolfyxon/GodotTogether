@@ -14,7 +14,11 @@ func _ready() -> void:
 	
 	fill_main()
 	
-	for i in $main/scroll/vbox/settings/vbox.get_children():
+	register_settings($main/scroll/vbox/logging/vbox.get_children())
+	register_settings($main/scroll/vbox/settings/vbox.get_children())
+
+func register_settings(nodes: Array) -> void:
+	for i in nodes:
 		if not i.has_meta("setting"):
 			continue
 		

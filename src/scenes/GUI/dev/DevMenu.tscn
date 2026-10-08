@@ -33,10 +33,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 832.0
-offset_bottom = 507.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 825.0
+offset_bottom = 500.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -178,66 +178,94 @@ text = "Initial sync complete: N/A"
 layout_mode = 2
 text = "Print tracked files"
 
-[node name="settings" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1709253664]
+[node name="logging" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1349864807]
 layout_mode = 2
-title = "Developer settings"
+title = "Logging"
 
-[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/settings" unique_id=549520500]
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/logging" unique_id=658249290]
 layout_mode = 2
 
-[node name="lblLogging" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1546657365]
+[node name="HSeparator4" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1329406644]
+layout_mode = 2
+
+[node name="lblNodes" type="Label" parent="main/scroll/vbox/logging/vbox" unique_id=29168253]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
-text = "Logging"
+text = "Nodes"
 
-[node name="logSettings" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=558346095]
+[node name="logNodeChanges" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=202991659]
 layout_mode = 2
-text = "Log settings"
-metadata/setting = "dev/log_settings"
+text = "Log node changes"
+metadata/setting = "dev/log_node_changes"
 
-[node name="logOutgoingRpc" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1123585071]
+[node name="logNodeScans" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=623431618]
+layout_mode = 2
+text = "Log node scans"
+metadata/setting = "dev/log_node_scans"
+
+[node name="logNodeRemoteChanges" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=108778535]
+layout_mode = 2
+text = "Log remote node changes"
+metadata/setting = "dev/log_node_remote_changes"
+
+[node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1899386045]
+layout_mode = 2
+
+[node name="lblFiles" type="Label" parent="main/scroll/vbox/logging/vbox" unique_id=1978891806]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "File system"
+
+[node name="logFileChanges" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=1653789952]
+layout_mode = 2
+text = "Log file changes"
+metadata/setting = "dev/log_file_changes"
+
+[node name="logFileScans" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=1378912361]
+layout_mode = 2
+text = "Log file scans"
+metadata/setting = "dev/log_file_scans"
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=544100602]
+layout_mode = 2
+
+[node name="lblNetwork" type="Label" parent="main/scroll/vbox/logging/vbox" unique_id=1677222004]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Network"
+
+[node name="logOutgoingRpc" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=1204758547]
 layout_mode = 2
 text = "Log outgoing RPC calls"
 metadata/setting = "dev/log_rpc_out"
 
-[node name="logIncomingRpc" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=334500812]
+[node name="logIncomingRpc" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=610622392]
 layout_mode = 2
 disabled = true
 text = "Log incoming RPC calls"
 metadata/setting = "dev/log_rpc_in"
 
-[node name="logNodeChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1181556063]
-layout_mode = 2
-text = "Log node changes"
-metadata/setting = "dev/log_node_changes"
-
-[node name="logNodeScans" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=6772365]
-layout_mode = 2
-text = "Log node scans"
-metadata/setting = "dev/log_node_scans"
-
-[node name="logNodeRemoteChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1018424046]
-layout_mode = 2
-text = "Log remote node changes"
-metadata/setting = "dev/log_node_remote_changes"
-
-[node name="logFileChanges" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1195994528]
-layout_mode = 2
-text = "Log file changes"
-metadata/setting = "dev/log_file_changes"
-
-[node name="logFileScans" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=133663554]
-layout_mode = 2
-text = "Log file scans"
-metadata/setting = "dev/log_file_scans"
-
-[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/settings/vbox" unique_id=703633692]
-layout_mode = 2
-
-[node name="lblGeneral" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1162940082]
+[node name="lblOther" type="Label" parent="main/scroll/vbox/logging/vbox" unique_id=1680668888]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
-text = "General"
+text = "Other"
+
+[node name="HSeparator3" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1593410851]
+layout_mode = 2
+
+[node name="logSettings" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=1898006131]
+layout_mode = 2
+text = "Log settings"
+metadata/setting = "dev/log_settings"
+
+[node name="settings" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1709253664]
+layout_mode = 2
+folded = true
+title = "Developer settings"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/settings" unique_id=549520500]
+visible = false
+layout_mode = 2
 
 [node name="warning" type="Label" parent="main/scroll/vbox/settings/vbox" unique_id=1035282577]
 layout_mode = 2
