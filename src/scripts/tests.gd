@@ -991,6 +991,29 @@ func test_setget_remove() -> bool:
 	
 	return true
 
+func test_setget_nullable_remove() -> bool:
+	var tmap = TileMap.new()
+	created_nodes.append(tmap)
+	
+	tmap.tile_set = TileSet.new()
+	
+	tmap.tile_set.add_physics_layer()
+	tmap.tile_set.set_physics_layer_physics_material(0, PhysicsMaterial.new())
+	
+	# This is what happens when a physics layer gets removed
+	GDTNodeSync.apply_property_dict(tmap, {
+		"tile_set:physics_layer_0/collision_layer": null,
+		"tile_set:physics_layer_0/collision_mask": null,
+		"tile_set:physics_layer_0/collision_priority": null,
+		"tile_set:physics_layer_0/physics_material": null
+	})
+	
+	if GDTNodeSync._tileset_has_physics_layer(tmap.tile_set, 0):
+		printerr("Physics layer not removed")
+		return false
+	
+	return true
+
 func test_node_change_applying() -> bool:
 	var lbl = Label.new()
 	created_nodes.append(lbl)
