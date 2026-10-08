@@ -28,6 +28,7 @@ title = "GodotTogether - developer menu"
 initial_position = 4
 size = Vector2i(850, 525)
 visible = true
+unresizable = false
 borderless = false
 theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
