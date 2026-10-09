@@ -6,6 +6,7 @@ signal scan_started
 signal scan_complete
 
 const CHUNK_SIZE = 1024 * 1024 * 24 # 24 MB
+const MAX_SCRIPT_SIZE = 1024 * 1024 * 8 # 8 MB
 
 var scan_timer = Timer.new()
 var file_mod_times := {}
@@ -153,6 +154,10 @@ func write_file(
 	GDTFiles.ensure_dir_exists(path)
 	
 	if path.get_extension() == "gd":
+		if offset > MAX_SCRIPT_SIZE or buffer.size() > MAX_SCRIPT_SIZE:
+			printerr("File %s exceeds the maximum script size" % path)
+			return
+		
 		if offset != 0:
 			var f = FileAccess.open(path, FileAccess.READ)
 			var pre_buffer = f.get_buffer(offset)
