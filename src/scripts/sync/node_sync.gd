@@ -308,6 +308,7 @@ func _cycle() -> void:
 	if not settings: return
 	
 	var now = Time.get_unix_time_from_system()
+	
 	last_cycle_time = now
 	
 	if settings.get_setting("sync/node_scan_pause_unfocused"):
@@ -319,6 +320,10 @@ func _cycle() -> void:
 	
 	if settings.get_setting("sync/node_scan_mode") != NodeScanMode.CONTINUOUS:
 		return
+	
+	if settings.get_setting("sync/node_adaptive_scan_interval"):
+		if(now - last_change_time) > 2 and (now - last_scan_time) < 0.25:
+			return
 	
 	check_changes()
 
@@ -445,6 +450,8 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	if not can_sync_nodes(): return
 	if not is_node_valid(node): return
 	
+	_got_changes()
+	
 	var scene = GDTUtils.get_node_scene(node)
 	if not scene: return
 	
@@ -547,6 +554,8 @@ func _node_child_order_changed(parent: Node) -> void:
 	if not is_node_valid(parent): return
 	if is_node_supressed(parent): return
 	if not can_sync_nodes(): return
+	
+	_got_changes()
 	
 	var scene = GDTUtils.get_node_scene(parent)
 	if not scene: return
