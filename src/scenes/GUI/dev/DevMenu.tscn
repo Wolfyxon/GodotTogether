@@ -152,13 +152,13 @@ disabled = true
 text = "Log incoming RPC calls"
 metadata/setting = "dev/log_rpc_in"
 
+[node name="HSeparator3" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1593410851]
+layout_mode = 2
+
 [node name="lblOther" type="Label" parent="main/scroll/vbox/logging/vbox" unique_id=1680668888]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 text = "Other"
-
-[node name="HSeparator3" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1593410851]
-layout_mode = 2
 
 [node name="logSettings" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=1898006131]
 layout_mode = 2
