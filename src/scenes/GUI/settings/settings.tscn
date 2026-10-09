@@ -109,7 +109,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "How often to check for node changes (in seconds). Lower = faster syncing, higher = better performance on complex scenes. Default: 0.025"
 min_value = 0.01
-max_value = 30.0
+max_value = 5.0
 step = 0.001
 value = 0.01
 metadata/setting = "sync/node_refresh_rate"
