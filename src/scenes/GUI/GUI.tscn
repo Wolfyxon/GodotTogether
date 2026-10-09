@@ -49,10 +49,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 49.0
-offset_bottom = -25.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -731,11 +731,10 @@ metadata/_tab_index = 2
 autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
-visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 952.0
+offset_bottom = 582.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -777,7 +776,7 @@ stretch_mode = 4
 custom_minimum_size = Vector2(50, 10)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Only use the plugin with people you FULLY trust. You may get easily hacked."
+text = "Only use the plugin with people you FULLY trust. You may get sent malware."
 label_settings = SubResource("LabelSettings_doc2o")
 autowrap_mode = 2
 
@@ -886,13 +885,14 @@ text = "Activate plugin"
 icon = ExtResource("13_u8ku5")
 
 [node name="error" type="VBoxContainer" parent="mainMenu" unique_id=245770348]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -25.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -956,10 +956,10 @@ icon = ExtResource("17_u8ku5")
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 952.0
+offset_bottom = 582.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -1030,10 +1030,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 729.0
-offset_bottom = 479.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 735.0
+offset_bottom = 485.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]
