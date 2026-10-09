@@ -155,11 +155,20 @@ func write_file(
 	
 	if path.get_extension() == "gd":
 		if offset > MAX_SCRIPT_SIZE or buffer.size() > MAX_SCRIPT_SIZE:
-			printerr("File %s exceeds the maximum script size" % path)
+			GDTUtils.printerr_stack("File %s exceeds the maximum script size" % path)
 			return
 		
 		if offset != 0:
 			var f = FileAccess.open(path, FileAccess.READ)
+			
+			if not f:
+				GDTUtils.printerr_stack(
+					"Unable to read %s for chunk sanitization: %s" % 
+					[path, error_string(FileAccess.get_open_error())]
+				)
+				
+				return
+			
 			var pre_buffer = f.get_buffer(offset)
 			var post_buffer = buffer.duplicate()
 			
