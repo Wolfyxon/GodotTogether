@@ -295,6 +295,8 @@ func _ready() -> void:
 	add_child(rescan_timer)
 	rescan_timer.start()
 	
+	EditorInterface.get_selection().selection_changed.connect(_got_changes)
+	
 	start()
 	report_ready()
 
