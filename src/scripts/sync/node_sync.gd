@@ -1371,7 +1371,7 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 		if is_setget:
 			value = get_setget_property(obj, path)
 		else:
-			value = obj.get_indexed(true_path)#GDTUtils.get_nested(obj, true_path, PROPERTY_SEPARATOR)
+			value = obj.get_indexed(true_path)
 		
 		if value is Resource:
 			value = encode_resource(value)
