@@ -45,7 +45,6 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -241,7 +240,12 @@ layout_mode = 2
 text = "Start server"
 icon = ExtResource("4_lrlm7")
 
+[node name="sep" type="Control" parent="mainMenu/main/sessionInit/start/host" unique_id=701084467]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="netWikiLink" type="LinkButton" parent="mainMenu/main/sessionInit/start/host" unique_id=1935553111]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "How do I host outside of my local network?"
@@ -252,8 +256,15 @@ layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 16
-text = "Do not let untrusted people join!
-Back up your project before using!"
+text = "Do not let untrusted people join!"
+horizontal_alignment = 1
+
+[node name="warning2" type="Label" parent="mainMenu/main/sessionInit/start/host" unique_id=247584665]
+layout_mode = 2
+theme = ExtResource("5_dxbrh")
+theme_type_variation = &"WarningLabel"
+theme_override_font_sizes/font_size = 16
+text = "Make sure to back up your project."
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=1313580569]
@@ -301,20 +312,34 @@ layout_mode = 2
 text = "Join server"
 icon = ExtResource("4_lrlm7")
 
+[node name="sep" type="Control" parent="mainMenu/main/sessionInit/start/join" unique_id=605824632]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="netWikiLink" type="LinkButton" parent="mainMenu/main/sessionInit/start/join" unique_id=1070537760]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "How do I join someone not in my local network?"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki/Hosting-outside-your-network"
 
 [node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=764680905]
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 16
-text = "Make sure you trust the host!
-Also this project will be overwritten."
+text = "Make sure you trust the host and other users!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="warning2" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=1740616275]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme = ExtResource("5_dxbrh")
+theme_type_variation = &"WarningLabel"
+theme_override_font_sizes/font_size = 16
+text = "Also this project will be overwritten."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -731,6 +756,7 @@ metadata/_tab_index = 2
 autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
+visible = false
 offset_left = 12.0
 offset_top = 12.0
 offset_right = 958.0
