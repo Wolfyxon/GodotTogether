@@ -270,7 +270,7 @@ static func set_control_value(node: Control, value, format := "") -> void:
 		node.select(idx)
 	elif node is Button:
 		if not value is bool:
-			printerr("value must be bool. %s: %s" % [node, value])
+			printerr("value must be bool. %s: %s" % [node.get_path(), value])
 			print_stack()
 			return
 		
