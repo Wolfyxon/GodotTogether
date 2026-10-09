@@ -322,7 +322,15 @@ func _cycle() -> void:
 		return
 	
 	if settings.get_setting("sync/node_adaptive_scan_interval"):
-		if(now - last_change_time) > 2 and (now - last_scan_time) < 0.25:
+		var itv = change_timer.wait_time
+		
+		if(now - last_change_time) > 2 and (now - last_scan_time) < 0.5:
+			return
+		
+		if(now - last_change_time) > 1 and (now - last_scan_time) < 0.25:
+			return
+		
+		if(now - last_change_time) > 0.5 and (now - last_scan_time) < itv * 1.25:
 			return
 	
 	check_changes()
