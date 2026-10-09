@@ -776,7 +776,8 @@ stretch_mode = 4
 custom_minimum_size = Vector2(50, 10)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Only use the plugin with people you FULLY trust. You may get sent malware."
+text = "Only use the plugin with people you FULLY trust. 
+You may get sent malware, have your project stolen or ruined by another person."
 label_settings = SubResource("LabelSettings_doc2o")
 autowrap_mode = 2
 
@@ -813,7 +814,7 @@ stretch_mode = 4
 custom_minimum_size = Vector2(50, 10)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Always back up your work in case your project gets corrupted."
+text = "Always back up your work in case your project gets corrupted or someone messes it up."
 label_settings = SubResource("LabelSettings_doc2o")
 autowrap_mode = 2
 
