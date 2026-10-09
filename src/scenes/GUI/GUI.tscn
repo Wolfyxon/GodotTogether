@@ -792,6 +792,12 @@ mouse_default_cursor_shape = 2
 text = "I will not be a menace to society who sends people malware."
 autowrap_mode = 2
 
+[node name="check3" type="CheckBox" parent="mainMenu/disclaimer/checksScroll/vbox/security" unique_id=439557171]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "I understand that ruining the work others is not funny."
+autowrap_mode = 2
+
 [node name="backup" type="VBoxContainer" parent="mainMenu/disclaimer/checksScroll/vbox" unique_id=1416791306]
 layout_mode = 2
 theme_override_constants/separation = 0
