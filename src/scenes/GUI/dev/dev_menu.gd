@@ -16,6 +16,8 @@ func _ready() -> void:
 	
 	register_settings($main/scroll/vbox/logging/vbox.get_children())
 	register_settings($main/scroll/vbox/settings/vbox.get_children())
+	
+	$main/scroll/vbox/tests/vbox/btnRunUnitTests.pressed.connect(main.tests.run_tests)
 
 func register_settings(nodes: Array) -> void:
 	for i in nodes:
