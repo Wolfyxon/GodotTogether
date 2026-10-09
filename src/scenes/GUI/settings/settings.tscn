@@ -19,10 +19,10 @@ borderless = false
 script = ExtResource("1_b5wo4")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1100841752]
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 782.0
-offset_bottom = 682.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 788.0
+offset_bottom = 688.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=1872551780]
 layout_mode = 2
@@ -72,7 +72,8 @@ metadata/setting = "sync/node_scan_pause_unfocused"
 
 [node name="adaptiveNodeScan" type="CheckButton" parent="main/scroll/vbox" unique_id=497487816]
 layout_mode = 2
-tooltip_text = "Dynamically adjust the interval based on the amount of changes."
+tooltip_text = "Dynamically adjust the interval based on the amount of changes to reduce CPU usage.
+Disable this if you experience sync stutter."
 button_pressed = true
 text = "Adaptive node scan interval"
 metadata/setting = "sync/node_adaptive_scan_interval"
