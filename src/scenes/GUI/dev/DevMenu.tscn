@@ -34,10 +34,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 825.0
-offset_bottom = 500.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 832.0
+offset_bottom = 507.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -315,6 +315,11 @@ layout_mode = 2
 layout_mode = 2
 text = "Test alert spam"
 
+[node name="btnTestChunkToolScript" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=318201983]
+visible = false
+layout_mode = 2
+text = "Create chunkable tool script"
+
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -354,6 +359,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/enabled" to="main/scroll/vbox/sync/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnTestChunkToolScript" to="." method="_on_btn_test_chunk_tool_script_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]
