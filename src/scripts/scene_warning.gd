@@ -10,12 +10,23 @@ func _init(_main: GodotTogether) -> void:
 	main.tree_exiting.connect(remove)
 
 func _ready() -> void:
-	text = "Unsaved scenes are not synced!"
 	modulate = Color(1.0, 0.767, 0.0)
 
 func _process(_delta: float) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
-	visible = not scene or scene.scene_file_path.is_empty()
+	
+	if not scene:
+		text = "Scenes without root node are not synced!"
+		visible = true
+	elif scene.scene_file_path.is_empty():
+		text = "Unsaved scenes are not synced!"
+		visible = true
+	elif not GDTValidator.is_path_safe(scene.scene_file_path):
+		text = "This scene is not synced for security."
+		visible = true
+	else:
+		visible = false
+
 
 func add(new_container: int):
 	container = new_container
