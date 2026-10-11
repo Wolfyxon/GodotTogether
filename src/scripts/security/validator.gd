@@ -40,6 +40,9 @@ static func is_path_safe(path: String) -> bool:
 	if local_path.contains("__pycache__"):
 		return false
 	
+	if local_path.contains("site-packages") and local_path.contains("venv"):
+		return false
+	
 	if local_path.get_extension() == ".exe":
 		return false
 	
