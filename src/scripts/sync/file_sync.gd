@@ -5,7 +5,8 @@ class_name GDTFileSync
 signal scan_started
 signal scan_complete
 
-const CHUNK_SIZE = 1024 * 1024 * 24 # 24 kB
+const CHUNK_SIZE = 1024 * 1024 * 24 # 24 MB
+const MAX_SCRIPT_SIZE = 1024 * 1024 * 8 # 8 MB
 
 var scan_timer = Timer.new()
 var file_mod_times := {}
@@ -153,10 +154,30 @@ func write_file(
 	GDTFiles.ensure_dir_exists(path)
 	
 	if path.get_extension() == "gd":
-		if offset != 0:
-			# TODO: Scan the complete buffer BEFORE RELEASE! SCRIPTS DO GET THIS BIG!
-			GDTUtils.printerr_stack("Chunking scripts is not supported")
+		if offset > MAX_SCRIPT_SIZE or buffer.size() > MAX_SCRIPT_SIZE:
+			GDTUtils.printerr_stack("File %s exceeds the maximum script size" % path)
 			return
+		
+		if offset != 0:
+			var f = FileAccess.open(path, FileAccess.READ)
+			
+			if not f:
+				GDTUtils.printerr_stack(
+					"Unable to read %s for chunk sanitization: %s" % 
+					[path, error_string(FileAccess.get_open_error())]
+				)
+				
+				return
+			
+			var pre_buffer = f.get_buffer(offset)
+			var post_buffer = buffer.duplicate()
+			
+			buffer = []
+			buffer.append_array(pre_buffer)
+			buffer.append_array(post_buffer)
+			
+			truncate = true
+			offset = 0
 		
 		buffer = main.script_security.sanitize_buffer(buffer)
 	

@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="2_qe0lv"]
 [ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="2_usb8t"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="3_kl0hy"]
+[ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="5_6rdoo"]
 [ext_resource type="Script" uid="uid://c1ii8ge5y21f5" path="res://addons/GodotTogether/src/scenes/GUI/dev/sync.gd" id="5_govu4"]
 
 [sub_resource type="GDScriptSyntaxHighlighter" id="GDScriptSyntaxHighlighter_usb8t"]
@@ -34,10 +35,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 825.0
-offset_bottom = 500.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 838.0
+offset_bottom = 513.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -151,13 +152,13 @@ disabled = true
 text = "Log incoming RPC calls"
 metadata/setting = "dev/log_rpc_in"
 
+[node name="HSeparator3" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1593410851]
+layout_mode = 2
+
 [node name="lblOther" type="Label" parent="main/scroll/vbox/logging/vbox" unique_id=1680668888]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 text = "Other"
-
-[node name="HSeparator3" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1593410851]
-layout_mode = 2
 
 [node name="logSettings" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=1898006131]
 layout_mode = 2
@@ -311,9 +312,19 @@ title = "Tests"
 visible = false
 layout_mode = 2
 
+[node name="btnRunUnitTests" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=347522384]
+layout_mode = 2
+text = "Run unit tests"
+icon = ExtResource("5_6rdoo")
+
 [node name="btnAlertSpam" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=563898447]
 layout_mode = 2
 text = "Test alert spam"
+
+[node name="btnTestChunkToolScript" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=318201983]
+visible = false
+layout_mode = 2
+text = "Create chunkable tool script"
 
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
@@ -354,6 +365,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/enabled" to="main/scroll/vbox/sync/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnTestChunkToolScript" to="." method="_on_btn_test_chunk_tool_script_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]

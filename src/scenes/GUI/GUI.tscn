@@ -45,14 +45,13 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 49.0
-offset_bottom = -25.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -241,7 +240,12 @@ layout_mode = 2
 text = "Start server"
 icon = ExtResource("4_lrlm7")
 
+[node name="sep" type="Control" parent="mainMenu/main/sessionInit/start/host" unique_id=701084467]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="netWikiLink" type="LinkButton" parent="mainMenu/main/sessionInit/start/host" unique_id=1935553111]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "How do I host outside of my local network?"
@@ -252,8 +256,15 @@ layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 16
-text = "Do not let untrusted people join!
-Back up your project before using!"
+text = "Do not let untrusted people join!"
+horizontal_alignment = 1
+
+[node name="warning2" type="Label" parent="mainMenu/main/sessionInit/start/host" unique_id=247584665]
+layout_mode = 2
+theme = ExtResource("5_dxbrh")
+theme_type_variation = &"WarningLabel"
+theme_override_font_sizes/font_size = 16
+text = "Make sure to back up your project."
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=1313580569]
@@ -301,20 +312,34 @@ layout_mode = 2
 text = "Join server"
 icon = ExtResource("4_lrlm7")
 
+[node name="sep" type="Control" parent="mainMenu/main/sessionInit/start/join" unique_id=605824632]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="netWikiLink" type="LinkButton" parent="mainMenu/main/sessionInit/start/join" unique_id=1070537760]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "How do I join someone not in my local network?"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki/Hosting-outside-your-network"
 
 [node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=764680905]
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme = ExtResource("5_dxbrh")
 theme_type_variation = &"WarningLabel"
 theme_override_font_sizes/font_size = 16
-text = "Make sure you trust the host!
-Also this project will be overwritten."
+text = "Make sure you trust the host and other users!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="warning2" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=1740616275]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme = ExtResource("5_dxbrh")
+theme_type_variation = &"WarningLabel"
+theme_override_font_sizes/font_size = 16
+text = "Also this project will be overwritten."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -732,10 +757,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 958.0
+offset_bottom = 588.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -777,7 +802,7 @@ stretch_mode = 4
 custom_minimum_size = Vector2(50, 10)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Only use the plugin with people you FULLY trust. You may get easily hacked."
+text = "Only use the plugin with people you FULLY trust.  You may get sent malware, have your project stolen or ruined by another person."
 label_settings = SubResource("LabelSettings_doc2o")
 autowrap_mode = 2
 
@@ -791,6 +816,12 @@ autowrap_mode = 2
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "I will not be a menace to society who sends people malware."
+autowrap_mode = 2
+
+[node name="check3" type="CheckBox" parent="mainMenu/disclaimer/checksScroll/vbox/security" unique_id=439557171]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "I understand that ruining the work others is not funny."
 autowrap_mode = 2
 
 [node name="backup" type="VBoxContainer" parent="mainMenu/disclaimer/checksScroll/vbox" unique_id=1416791306]
@@ -814,7 +845,7 @@ stretch_mode = 4
 custom_minimum_size = Vector2(50, 10)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Always back up your work in case your project gets corrupted."
+text = "Always back up your work in case your project gets corrupted or someone messes it up."
 label_settings = SubResource("LabelSettings_doc2o")
 autowrap_mode = 2
 
@@ -886,13 +917,14 @@ text = "Activate plugin"
 icon = ExtResource("13_u8ku5")
 
 [node name="error" type="VBoxContainer" parent="mainMenu" unique_id=245770348]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -25.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -956,10 +988,10 @@ icon = ExtResource("17_u8ku5")
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 958.0
+offset_bottom = 588.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -1030,10 +1062,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 729.0
-offset_bottom = 479.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 741.0
+offset_bottom = 491.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]

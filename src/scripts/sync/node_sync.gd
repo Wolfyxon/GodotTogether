@@ -298,6 +298,8 @@ func _ready() -> void:
 	add_child(rescan_timer)
 	rescan_timer.start()
 	
+	EditorInterface.get_selection().selection_changed.connect(_got_changes)
+	
 	start()
 	report_ready()
 
@@ -311,6 +313,7 @@ func _cycle() -> void:
 	if not settings: return
 	
 	var now = Time.get_unix_time_from_system()
+	
 	last_cycle_time = now
 	
 	if settings.get_setting("sync/node_scan_pause_unfocused"):
@@ -322,6 +325,18 @@ func _cycle() -> void:
 	
 	if settings.get_setting("sync/node_scan_mode") != NodeScanMode.CONTINUOUS:
 		return
+	
+	if settings.get_setting("sync/node_adaptive_scan_interval"):
+		var itv = change_timer.wait_time
+		
+		if(now - last_change_time) > 5 and (now - last_scan_time) < 0.5:
+			return
+		
+		if(now - last_change_time) > 2 and (now - last_scan_time) < 0.25:
+			return
+		
+		if(now - last_change_time) > 0.5 and (now - last_scan_time) < min(itv * 1.25, 1):
+			return
 	
 	check_changes()
 
@@ -398,9 +413,11 @@ func _check_node_signals(node, _root: Node, data: Dictionary) -> void:
 	data["signal_hashes"] = new_hashes
 
 func _editor_undo_redo_changed() -> void:
+	_got_changes()
+	
 	if main.settings.get_setting("sync/node_scan_mode") != NodeScanMode.ON_CHANGE:
 		return
-		
+	
 	check_changes()
 
 func _node_signal_connections_changed(node: Node, signal_names: Array) -> void:
@@ -447,6 +464,8 @@ func _node_renamed(node: Node, old_path: String) -> void:
 func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	if not can_sync_nodes(): return
 	if not is_node_valid(node): return
+	
+	_got_changes()
 	
 	var scene = GDTUtils.get_node_scene(node)
 	if not scene: return
@@ -550,6 +569,8 @@ func _node_child_order_changed(parent: Node) -> void:
 	if not is_node_valid(parent): return
 	if is_node_supressed(parent): return
 	if not can_sync_nodes(): return
+	
+	_got_changes()
 	
 	var scene = GDTUtils.get_node_scene(parent)
 	if not scene: return
@@ -1365,7 +1386,7 @@ static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 		if is_setget:
 			value = get_setget_property(obj, path)
 		else:
-			value = obj.get_indexed(true_path)#GDTUtils.get_nested(obj, true_path, PROPERTY_SEPARATOR)
+			value = obj.get_indexed(true_path)
 		
 		if value is Resource:
 			value = encode_resource(value)
