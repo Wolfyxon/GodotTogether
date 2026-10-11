@@ -11,20 +11,25 @@ func _init(_main: GodotTogether) -> void:
 
 func _ready() -> void:
 	modulate = Color(1.0, 0.767, 0.0)
+	mouse_filter = Control.MOUSE_FILTER_STOP
 
 func _process(_delta: float) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	
 	if not scene:
 		text = "Scenes without root node are not synced!"
+		tooltip_text = "Syncing scenes without a root node is not supported by GodotTogether."
 		visible = true
 	elif scene.scene_file_path.is_empty():
 		text = "Unsaved scenes are not synced!"
+		tooltip_text = "Save this scene to a file to make others see it."
 		visible = true
 	elif not GDTValidator.is_path_safe(scene.scene_file_path):
 		text = "This scene is not synced for security."
+		tooltip_text = "This scene belongs to a plugin or is at a location, GodotTogether deems unsafe."
 		visible = true
 	else:
+		tooltip_text = ""
 		visible = false
 
 
