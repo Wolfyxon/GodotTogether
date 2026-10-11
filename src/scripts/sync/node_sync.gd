@@ -22,6 +22,7 @@ enum SetGetBehavior {
 }
 
 const DEFAULT_SETGET_NULL_BEHAVIOR = SetGetBehavior.RESET
+const SCAN_DURATION_MEASUREMENT_RESOLUTION = 8
 
 const IGNORED_PROPERTY_USAGE_FLAGS := [
 	PROPERTY_USAGE_NONE,
@@ -282,6 +283,8 @@ var last_scan_time: float = 0.0
 var last_change_time: float = 0.0
 var recent_change_count: int = 0
 
+var scan_durations: Array = []
+
 func _ready() -> void:
 	var editor_ur = EditorInterface.get_editor_undo_redo()
 	editor_ur.history_changed.connect(_editor_undo_redo_changed)
@@ -350,18 +353,21 @@ func update_timer_wait_times() -> void:
 func check_changes() -> void:
 	if not can_sync_nodes(): return
 	
-	last_scan_time = Time.get_unix_time_from_system()
+	_scan_started()
 	
 	var root := EditorInterface.get_edited_scene_root()
-	if not root: return
+	
+	if not root:
+		_scan_complete() 
+		return
 	
 	if not root.scene_file_path:
+		_scan_complete()
 		return
 	
 	if not GDTValidator.is_path_safe(root.scene_file_path):
+		_scan_complete()
 		return
-	
-	scan_started.emit()
 	
 	if main.get_settings().get_setting("dev/log_node_scans"):
 		print("Scanning nodes...")
@@ -369,6 +375,36 @@ func check_changes() -> void:
 	for node in node_data_dict:
 		check_node(node, root)
 	
+	_scan_complete()
+
+func get_avg_scan_time() -> float:
+	var sum = 0
+	var count = 0
+	
+	for i in scan_durations:
+		sum += i
+		count += 1
+		
+	if count == 0:
+		return 0
+	
+	return sum / count
+
+func _scan_started() -> void:
+	last_scan_time = Time.get_unix_time_from_system()
+	scan_started.emit()
+	
+func _scan_complete() -> void:
+	if scan_durations.size() > SCAN_DURATION_MEASUREMENT_RESOLUTION:
+		scan_durations.remove_at(0)
+		
+	if scan_durations.size() > SCAN_DURATION_MEASUREMENT_RESOLUTION * 5:
+		printerr("Node scan duration measurement overflow! Resetting.")
+		scan_durations.clear()
+	
+	var now = Time.get_unix_time_from_system()
+	
+	scan_durations.append(now - last_scan_time)
 	scan_complete.emit()
 
 # "node" must be untyped to prevent freed nodes from stopping the code
