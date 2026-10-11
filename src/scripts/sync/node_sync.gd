@@ -330,18 +330,43 @@ func _cycle() -> void:
 		return
 	
 	if settings.get_setting("sync/node_adaptive_scan_interval"):
-		var itv = change_timer.wait_time
-		
-		if(now - last_change_time) > 5 and (now - last_scan_time) < 0.5:
+		if not check_adaptive_scan_change_time():
 			return
-		
-		if(now - last_change_time) > 2 and (now - last_scan_time) < 0.25:
-			return
-		
-		if(now - last_change_time) > 0.5 and (now - last_scan_time) < min(itv * 1.25, 1):
+			
+		if not check_adaptive_scan_performance():
 			return
 	
 	check_changes()
+
+func check_adaptive_scan_change_time() -> bool:
+	var itv = change_timer.wait_time
+	var now = Time.get_unix_time_from_system()
+	
+	if(now - last_change_time) > 5 and (now - last_scan_time) < 0.5:
+		return false
+	
+	if(now - last_change_time) > 2 and (now - last_scan_time) < 0.25:
+		return false
+	
+	if(now - last_change_time) > 0.5 and (now - last_scan_time) < min(itv * 1.25, 1):
+		return false
+	
+	return true
+
+func check_adaptive_scan_performance() -> bool:
+	var avg_time = get_avg_scan_time()
+	var delay = Time.get_unix_time_from_system() - last_change_time
+	
+	if avg_time > 0.1 and delay < 2:
+		return false
+	
+	if avg_time > 0.04 and delay < 0.25:
+		return false
+	
+	if avg_time > 0.02 and delay < 0.1:
+		return false
+	
+	return true
 
 func _got_changes() -> void:
 	last_change_time = Time.get_unix_time_from_system()
