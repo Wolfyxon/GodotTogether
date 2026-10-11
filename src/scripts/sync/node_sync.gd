@@ -37,6 +37,9 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"owner",
 		"multiplayer"
 	],
+	"AnimationPlayer": [
+		"current_animation"
+	],
 	"Control": [
 		"offset_left", "offset_right",
 		"offset_top", "offset_bottom"
