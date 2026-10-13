@@ -13,6 +13,7 @@ var user_list_dock: GDTUserListDock = null
 
 var scene_tree_editor = GDTSceneTreeEditor.new()
 var scene_editor_tabs = GDTEditorSceneTabs.new()
+var external_file_change_dialog = GDTExternalFileChangeDialog.new()
 
 func _ready() -> void:
 	var menu_window = get_menu_window()
