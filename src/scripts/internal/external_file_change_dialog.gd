@@ -2,7 +2,8 @@
 extends GDTNodeWrapper
 class_name GDTExternalFileChangeDialog
 
-signal changes_ignored 
+signal got_external_changes(paths: Array)
+signal changes_ignored
 signal changes_resaved
 signal changes_reloaded
 
@@ -11,8 +12,12 @@ var tree: Tree
 
 func _wrapper_init() -> void:
 	_acquire_node()
-	_setup_signals()
 	
+	if not node: 
+		return
+	
+	_setup_signals()
+
 # Godot commit: 63b7e027254e6b77b3d1036c89973060fb5be088
 # Source: editor/editor_node.cpp line: 9648
 # Structure: 
@@ -42,13 +47,19 @@ func _check_and_use(dialog: ConfirmationDialog) -> bool:
 	
 	var cons = dialog.get_signal_connection_list("custom_action")
 	
+	var con_found = false
+	
 	for con in cons:
 		if con and "callable" in con:
 			var callable: Callable = con["callable"]
 			
 			if callable and typeof(callable) == TYPE_CALLABLE:
 				if not "_resave_externally_modified_scenes" in callable.get_method():
-					return false
+					con_found = true
+					break
+	
+	if not con_found:
+		return false
 	
 	node = dialog
 	tree = file_tree
@@ -72,6 +83,15 @@ func _setup_signals() -> void:
 	)
 	node.canceled.connect(_cancelled)
 	node.confirmed.connect(_reloaded)
+	
+	node.visibility_changed.connect(_window_visibility_changed)
+
+func _window_visibility_changed():
+	if node.visible:
+		_got_changes(get_paths())
+
+func _got_changes(paths: Array) -> void:
+	got_external_changes.emit(paths)
 
 func _cancelled():
 	changes_ignored.emit()
