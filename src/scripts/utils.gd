@@ -259,6 +259,20 @@ static func get_descendant_with_class(root: Node, search_class: String) -> Node:
 	
 	return
 
+static func get_descendants_with_class(root: Node, search_class: String) -> Array:
+	var res = []
+	
+	for i in root.get_children():
+		if i and i.is_class(search_class):
+			res.append(i)
+			
+		var sub = get_descendants_with_class(i, search_class)
+		
+		if sub:
+			res.append_array(sub)
+	
+	return res
+
 static func is_peer_connected(peer: MultiplayerPeer) -> bool:
 	return peer.get_connection_status() == peer.CONNECTION_CONNECTED
 
