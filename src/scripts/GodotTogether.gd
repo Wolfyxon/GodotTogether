@@ -237,9 +237,13 @@ func restart() -> void:
 	gui.alert("Godot is having problems restarting the plugin. Please do it manually")
 
 func is_session_active() -> bool:
-	return multiplayer.has_multiplayer_peer() and Engine.is_editor_hint() and (
-		GDTUtils.is_peer_connected(client.client_peer) or 
-		GDTUtils.is_peer_connected(server.server_peer)
+	return (
+		multiplayer.has_multiplayer_peer() and
+		Engine.is_editor_hint() and
+		(
+			GDTUtils.is_peer_connected(client.client_peer) or 
+			GDTUtils.is_peer_connected(server.server_peer)
+		)
 	)
 
 func setup_menu_button() -> void:
