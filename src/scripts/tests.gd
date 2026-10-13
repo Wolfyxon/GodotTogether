@@ -178,6 +178,22 @@ func test_versions() -> bool:
 	
 	return ok 
 
+func test_internals() -> bool:
+	var gui = main.get_gui()
+	
+	var node_wrappers = [
+		gui.scene_editor_tabs,
+		gui.scene_tree_editor,
+		gui.external_file_change_dialog
+	]
+	
+	for i: GDTNodeWrapper in node_wrappers:
+		if not i.get_wrapped_node():
+			printerr("Wrapper %s failed" % i)
+			return false
+	
+	return true
+
 func test_plugin_version() -> bool:
 	var ver = main.get_plugin_version()
 	var err = check_version(ver)
