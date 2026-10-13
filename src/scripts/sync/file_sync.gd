@@ -94,11 +94,6 @@ func _gd_got_external_changes(paths: Array) -> void:
 	if not settings.get_setting("files/auto_reload_files"):
 		return
 	
-	for path: String in paths:
-		if path.get_extension() == "tscn":
-			push_warning("Refusing to auto reload scene due to significant crash possibility")
-			return
-		
 	main.get_gui().external_file_change_dialog.reload()
 
 func _file_changed(path: String) -> void:
