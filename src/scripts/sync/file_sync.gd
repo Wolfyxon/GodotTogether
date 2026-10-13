@@ -82,7 +82,7 @@ func is_change_logging_enabled() -> bool:
 		main.get_settings().get_setting("dev/log_file_changes")
 	)
 
-func _gd_got_external_changes(paths: Array) -> void:
+func _gd_got_external_changes(_paths: Array) -> void:
 	if not main: return
 	
 	var settings = main.get_settings()
