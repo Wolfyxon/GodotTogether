@@ -101,6 +101,8 @@ func _resaved():
 	pass
 
 func _reloaded():
+	EditorInterface.get_selection().clear()
+	
 	changes_reloaded.emit()
 
 func ignore_and_resave() -> void:
