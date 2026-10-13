@@ -10,15 +10,9 @@ var node: ConfirmationDialog
 var tree: Tree
 
 func _wrapper_init() -> void:
-	var root_nodes = EditorInterface.get_base_control().get_children()
+	_acquire_node()
+	_setup_signals()
 	
-	for i in root_nodes:
-		if i is ConfirmationDialog and _check_and_use(i):
-			break
-	
-	if not node:
-		GDTUtils.printerr_stack("Failed to find file change window")
-
 # Godot commit: 63b7e027254e6b77b3d1036c89973060fb5be088
 # Source: editor/editor_node.cpp line: 9648
 # Structure: 
@@ -60,6 +54,16 @@ func _check_and_use(dialog: ConfirmationDialog) -> bool:
 	tree = file_tree
 	
 	return true
+
+func _acquire_node() -> void:
+	var root_nodes = EditorInterface.get_base_control().get_children()
+	
+	for i in root_nodes:
+		if i is ConfirmationDialog and _check_and_use(i):
+			break
+	
+	if not node:
+		GDTUtils.printerr_stack("Failed to find file change window")
 
 func _setup_signals() -> void:
 	node.custom_action.connect(func(action: String):
