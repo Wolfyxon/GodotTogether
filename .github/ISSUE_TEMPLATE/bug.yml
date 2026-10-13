@@ -19,6 +19,17 @@ body:
       placeholder: ex. "1.1-alpha", "Source d437d64", "Source around 2026-09-13"  
     validations:
       required: true
+
+  - type: input
+    id: other-plugins
+    attributes:
+      label: Other plugins
+      description: Other plugins you use and their pages. Leave it empty if you don't use any.
+      placeholder: |
+                  - Godot Epic Tool addon: https://github.com/SomePluginAuthor/GodotEpicToolAddon
+                  - Some another plugin: https://store.godotengine.org/asset/somebodysomeone/some-another-plugin/
+    validations:
+      required: false
       
   - type: input
     id: godot-version
