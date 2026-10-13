@@ -298,7 +298,7 @@ func _c2s_project_files_request(hashes: Dictionary) -> void:
 		)
 		
 		if file_i % 4 == 0:
-			await get_tree().process_frame
+			await get_tree().create_timer(0.25).timeout
 
 	#main.client.project_files_downloaded.rpc_id(id)
 
