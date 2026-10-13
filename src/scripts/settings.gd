@@ -52,6 +52,7 @@ const _DEFAULT_DATA = {
 		"menu_button": false,
 		"run_tests_on_start": false,
 		"restart_broadcast": false,
+		"allow_file_reload_outside_sessions": false,
 		
 		"disable_real_time_file_sync": false,
 		"disable_real_time_node_sync": false,

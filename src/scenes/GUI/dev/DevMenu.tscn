@@ -35,10 +35,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 838.0
-offset_bottom = 513.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 825.0
+offset_bottom = 500.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -205,6 +205,14 @@ Enable sending and receiving a restart signal that restarts the plugin for every
 "
 text = "Enable restart broadcast"
 metadata/setting = "dev/restart_broadcast"
+
+[node name="fileReloadOutsideSessions" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=724194430]
+layout_mode = 2
+tooltip_text = "Do not use when using the plugin normally. This is meant for easier development. 
+Enable sending and receiving a restart signal that restarts the plugin for everyone in the server with this setting enabled.
+"
+text = "Allow file reload outside sessions"
+metadata/setting = "dev/allow_file_reload_outside_sessions"
 
 [node name="prints" type="FoldableContainer" parent="main/scroll/vbox" unique_id=282098678]
 layout_mode = 2

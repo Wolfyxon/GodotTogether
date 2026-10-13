@@ -20,6 +20,7 @@ func _ready() -> void:
 	scan_timer.start()
 	
 	EditorInterface.get_resource_filesystem().filesystem_changed.connect(scan_files)
+	main.get_gui().external_file_change_dialog.got_external_changes.connect(_gd_got_external_changes)
 	
 	ignore_last_changes()
 	report_ready()
@@ -80,6 +81,22 @@ func is_change_logging_enabled() -> bool:
 		main and main.get_settings() and
 		main.get_settings().get_setting("dev/log_file_changes")
 	)
+
+func _gd_got_external_changes(paths: Array) -> void:
+	if not main: return
+	
+	var settings = main.get_settings()
+	if not settings: return
+	
+	if not main.is_session_active() and not settings.get_setting("dev/allow_file_reload_outside_sessions"):
+		return
+	
+	for path: String in paths:
+		if path.get_extension() == "tscn":
+			push_warning("Refusing to auto reload scene due to significant crash possibility")
+			return
+		
+	main.get_gui().external_file_change_dialog.reload()
 
 func _file_changed(path: String) -> void:
 	if is_change_logging_enabled():
