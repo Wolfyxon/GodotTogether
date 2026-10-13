@@ -110,6 +110,9 @@ func ignore_without_saving() -> void:
 	node.hide()
 
 func reload() -> void:
+	push_warning("[GodotTogether] Reloading external changes. This can cause a crash!")
+	
+	await node.get_tree().process_frame
 	node.confirmed.emit()
 
 func get_paths() -> Array:
