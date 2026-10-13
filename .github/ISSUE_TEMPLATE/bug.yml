@@ -10,6 +10,26 @@ body:
       placeholder: Describe the bug in as much detail as you can. You can also attach screenshots and videos...
     validations:
       required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: The version of the plugin you're running. If you use the source code version, specify the commit hash or the approximate date of downloading
+      placeholder: ex. "1.1-alpha", "Source d437d64", "Source around 2026-09-13"  
+    validations:
+      required: true
+
+  - type: textarea
+    id: other-plugins
+    attributes:
+      label: Other plugins
+      description: Other plugins you use and their pages. Leave it empty if you don't use any.
+      placeholder: |
+                  - Godot Epic Tool addon: https://github.com/SomePluginAuthor/GodotEpicToolAddon
+                  - Some another plugin: https://store.godotengine.org/asset/somebodysomeone/some-another-plugin/
+    validations:
+      required: false
       
   - type: input
     id: godot-version
@@ -19,16 +39,16 @@ body:
       placeholder: ex. v4.4.1.stable.arch_linux
     validations:
       required: true
-      
+
   - type: input
-    id: plugin-version
+    id: platform
     attributes:
-      label: Plugin version
-      description: The version of the plugin you're running. If you use the source code version, specify the commit hash or the approximate date of downloading
-      placeholder: ex. "1.1-alpha", "Source d437d64", "Source around 2026-09-13"  
+      label: Platform
+      description: Your OS
+      placeholder: ex. Windows 11, Arch Linux, Android
     validations:
       required: true
-      
+            
   - type: checkboxes
     id: checks
     attributes:
