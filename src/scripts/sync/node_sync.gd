@@ -1994,6 +1994,7 @@ static func is_node_valid(node) -> bool:
 		node and
 		is_instance_valid(node) and
 		node.is_inside_tree() and
+		not node.is_queued_for_deletion() and
 		(
 			(node.owner and is_instance_valid(node.owner))
 			or
