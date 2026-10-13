@@ -54,7 +54,7 @@ func _check_and_use(dialog: ConfirmationDialog) -> bool:
 			var callable: Callable = con["callable"]
 			
 			if callable and typeof(callable) == TYPE_CALLABLE:
-				if not "_resave_externally_modified_scenes" in callable.get_method():
+				if callable.get_method().contains("_resave_externally_modified_scenes"):
 					con_found = true
 					break
 	
