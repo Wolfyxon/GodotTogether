@@ -190,6 +190,10 @@ func _project_files_downloaded() -> void:
 	
 	await get_tree().process_frame
 	
+	main.get_gui().external_file_change_dialog.reload()
+	
+	await get_tree().process_frame
+	
 	main.file_sync.resume()
 
 @rpc("authority", "reliable")
