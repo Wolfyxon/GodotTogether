@@ -91,6 +91,9 @@ func _gd_got_external_changes(paths: Array) -> void:
 	if not main.is_session_active() and not settings.get_setting("dev/allow_file_reload_outside_sessions"):
 		return
 	
+	if not settings.get_setting("files/auto_reload_files"):
+		return
+	
 	for path: String in paths:
 		if path.get_extension() == "tscn":
 			push_warning("Refusing to auto reload scene due to significant crash possibility")

@@ -44,6 +44,9 @@ const _DEFAULT_DATA = {
 		"check_interval_hours": 168, # weekly
 		"auto_check_enabled": true
 	},
+	"files": {
+		"auto_reload_files": true
+	},
 	"security": {
 		"sanitize_tool_scripts": true
 	},

@@ -54,6 +54,14 @@ button_pressed = true
 text = "Go to inspector when a node is selected while in user dock"
 metadata/setting = "ui/show_inspector_on_select_while_in_user_dock"
 
+[node name="fileReload" type="CheckButton" parent="main/scroll/vbox" unique_id=1351632974]
+layout_mode = 2
+tooltip_text = "Automatically reload files (including project settings and scenes) upon change.
+Turn this off if you experience Godot freezing or crashing."
+button_pressed = true
+text = "Auto reload files, skipping Godot's the external changes dialog"
+metadata/setting = "files/auto_reload_files"
+
 [node name="HSeparator6" type="HSeparator" parent="main/scroll/vbox" unique_id=1690028581]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
