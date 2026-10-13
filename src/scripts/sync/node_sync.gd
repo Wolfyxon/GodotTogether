@@ -397,7 +397,13 @@ func check_changes() -> void:
 	if main.get_settings().get_setting("dev/log_node_scans"):
 		print("Scanning nodes...")
 	
-	for node in node_data_dict:
+	for node in node_data_dict.keys():
+		# These checks seem redudant for being in check_node()
+		# but actually seem to prevent crashes
+		if not node: continue
+		if not root: break
+		if root.is_queued_for_deletion(): break
+		
 		check_node(node, root)
 	
 	_scan_complete()
@@ -436,6 +442,9 @@ func _scan_complete() -> void:
 func check_node(node, root: Node) -> void:
 	if not is_node_valid(node): return
 	if not root: return
+	
+	if not root.get_parent(): return
+	if not node.get_parent(): return
 	
 	if not root.is_ancestor_of(node) and node != root:
 		return
