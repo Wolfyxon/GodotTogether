@@ -1445,6 +1445,39 @@ func test_settings() -> bool:
 	
 	return true
 
+func test_data_encoding() -> bool:
+	var jd1 = GDTJoinData.new()
+	jd1.username = "Hello There"
+	jd1.password = "123"
+	jd1.rpc_checksum = 4256
+	jd1.protocol_version = GodotTogether.PROTOCOL_VERSION
+	
+	var jd_dict = jd1.to_dict()
+	
+	if not jd_dict:
+		printerr("Got empty or null dict")
+		return false
+	
+	var jd2 = GDTJoinData.from_dict(jd_dict)
+	
+	if not jd2:
+		printerr("Got null join data")
+		return false
+	
+	if jd1.username != jd2.username:
+		printerr("Username mismatch")
+		return false
+		
+	if jd1.password != jd2.password:
+		printerr("Password mismatch")
+		return false
+	
+	if jd1.rpc_checksum != jd2.rpc_checksum:
+		printerr("RPC checksum mismatch")
+		return false
+	
+	return true
+
 func test_fs_tree() -> bool:
 	var unsafe_paths = GDTFiles.get_file_tree("res://", true)
 	var safe_paths = GDTFiles.get_file_tree("res://", false)
