@@ -1,5 +1,5 @@
 @tool
-
+extends GDTEncodableData
 class_name GDTUser
 
 enum Type {
@@ -25,17 +25,6 @@ enum DisconnectReason {
 	RPC_CHECKSUM_MISMATCH,
 	INVALID
 }
-
-const FIELDS = [
-	"id",
-	"name",
-	#"peer",
-	"color",
-	"type",
-	"joined_at",
-	"authenticated_at",
-	#"authenticated"
-]
 
 var id: int
 var name: String
@@ -72,6 +61,18 @@ func _init(_id: int, _peer: ENetPacketPeer = null, _main: GodotTogether = null):
 		randf(),
 		randf()
 	)
+
+func get_encodable_fields() -> Array:
+	return [
+		"id",
+		"name",
+		#"peer",
+		"color",
+		"type",
+		"joined_at",
+		"authenticated_at",
+		#"authenticated"
+	]
 
 func has_permission(permission: GodotTogether.Permission) -> bool:
 	return authenticated and permission in permissions
@@ -149,14 +150,6 @@ func is_local() -> bool:
 	
 	return id == main.multiplayer.get_unique_id()
 
-func to_dict() -> Dictionary:
-	var res = {}
-
-	for i in FIELDS:
-		res[i] = self[i]
-
-	return res
-
 func get_type_as_string() -> String:
 	return type_to_string(type)
 
@@ -205,10 +198,10 @@ static func type_to_string(user_type: Type) -> String:
 
 static func from_dict(dict: Dictionary) -> GDTUser:
 	var user = GDTUser.new(dict["id"], null)
-
-	for i in FIELDS:
-		user[i] = dict[i]
-
+	
+	if not user.apply_dict(dict):
+		return
+	
 	return user
 
 func approve() -> void:
