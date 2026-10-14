@@ -93,7 +93,9 @@ func get_address() -> String:
 	return _last_address
 
 func auth() -> void:
-	assert(not authenticated, "User %d (%s) already authenticated" % [id, name])
+	if authenticated:
+		GDTUtils.printerr_stack("Already authenticated: %s %s" % [id, name])
+		return
 
 	print("User %d authenticated as '%s'" % [id, name])
 
@@ -111,7 +113,9 @@ func auth() -> void:
 
 
 func kick(reason: DisconnectReason = DisconnectReason.KICKED) -> void:
-	assert(peer, "Unable to kick user %s: missing peer" % id)
+	if not peer:
+		GDTUtils.printerr_stack("Cannot kick %s: missing peer object" % id)
+		return
 	
 	authenticated = false
 
@@ -205,8 +209,13 @@ static func from_dict(dict: Dictionary) -> GDTUser:
 	return user
 
 func approve() -> void:
-	assert(pending, "User %d (%s) is not pending" % [id, name])
-	assert(main, "Main is null")
+	if not pending:
+		GDTUtils.printerr_stack("User %d (%s) is not pending" % [id, name])
+		return
+	
+	if not main:
+		GDTUtils.printerr_stack("main is null")
+		return
 
 	pending = false
 	auth()
