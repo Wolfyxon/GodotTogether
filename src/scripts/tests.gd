@@ -1451,7 +1451,7 @@ func test_fs_tree() -> bool:
 	
 	var unsafe_check_paths = [
 		get_script().resource_path,
-		"res://addons/GodotTogether/src/scripts/net/user/user.gd"
+		"res://addons/GodotTogether/src/scripts/net/data/join_data.gd"
 	]
 	
 	var safe_check_paths = [
