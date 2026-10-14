@@ -1502,8 +1502,8 @@ static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 			
 			if value != original and new_value != value:
 				GDTUtils.printerr_stack(
-					"Set failed: %s Attempted: %s Got: %s" % 
-					[path, str(value), str(new_value)]
+					"Set failed: %s Attempted: %s Got: %s Object: %s" % 
+					[path, str(value), str(new_value), obj]
 				)
 
 static func get_setget_properties_of_class(cls_name: String) -> Variant:
