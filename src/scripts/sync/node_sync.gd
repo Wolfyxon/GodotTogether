@@ -43,7 +43,9 @@ const IGNORED_PROPERTIES: Dictionary = {
 	],
 	"Control": [
 		"offset_left", "offset_right",
-		"offset_top", "offset_bottom"
+		"offset_top", "offset_bottom",
+		"global_position",
+		"rotation_degrees"
 	],
 	"Node2D": [
 		# Handled by 'transform'
