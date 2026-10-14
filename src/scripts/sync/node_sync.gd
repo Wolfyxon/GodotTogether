@@ -340,6 +340,11 @@ func _cycle() -> void:
 	
 	check_changes()
 
+# Investors! Look! We're using AI!!!! AI!!!! LOOK IT'S AI!!!
+# AI POWERED PERFORMANCE BOOSTING!!!!
+# INVEST!!!!! BOOST OUR STOCK!!!!! YAYAHHAHAHAA MONEY MONEY MONEY
+# EVERYONE LOVES AI!!!!! AI BOOSTS PERFORMANCE!!!!!
+# (Actually If-s)
 func check_adaptive_scan_change_time() -> bool:
 	var itv = change_timer.wait_time
 	var now = Time.get_unix_time_from_system()
