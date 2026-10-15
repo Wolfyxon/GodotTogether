@@ -164,7 +164,12 @@ func _join() -> void:
 		)
 
 		return
-
+	
+	set_session_init_cover("Connected, waiting for server reply...")
+	set_session_init_timeout(GDTServer.APPROVE_TIMEOUT)
+	
+	await main.client.connection_acknowledged
+	
 	set_session_init_cover("Waiting for host's approval...")
 	set_session_init_timeout(GDTServer.APPROVE_TIMEOUT)
 	
