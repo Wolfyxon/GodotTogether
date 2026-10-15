@@ -149,11 +149,16 @@ func _s2c_connection_ack() -> void:
 	connection_acknowledged.emit()
 
 @rpc("authority", "reliable")
-func _s2c_auth_successful() -> void:
-	print("Server accepted connection, requesting files (if needed)")
+func _s2c_auth_successful(data_dict: Dictionary) -> void:
+	print("Server accepted connection")
+	
+	var data = GDTServerAuthResponse.from_dict(data_dict)
+	
+	if not data:
+		GDTUtils.printerr_stack("Unable to decode response: %s" % data_dict)
+		return
 	
 	auth_succeed.emit()
-	
 	main.file_sync.pause()
 
 	EditorInterface.get_selection().clear()

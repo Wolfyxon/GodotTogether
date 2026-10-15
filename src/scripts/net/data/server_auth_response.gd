@@ -1,8 +1,6 @@
 @tool
 extends GDTEncodableData
-class_name GDTServerJoinResponse
-
-# IMPORTANT: This data must be sent only after a user is authenticated
+class_name GDTServerAuthResponse
 
 var file_config := {
 	# path: [size, hash]
@@ -66,8 +64,8 @@ func _fill_file_config() -> void:
 		
 		file_config[path] = [size, file_hash]
 
-static func from_dict(dict: Dictionary) -> GDTServerJoinResponse:
-	var res = GDTServerJoinResponse.new()
+static func from_dict(dict: Dictionary) -> GDTServerAuthResponse:
+	var res = GDTServerAuthResponse.new()
 	
 	if not res.apply_dict(dict):
 		return
