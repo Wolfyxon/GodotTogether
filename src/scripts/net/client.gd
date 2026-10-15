@@ -103,7 +103,7 @@ func reset() -> void:
 	target_file_count = 0
 	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
 
-func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
+func join_server(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()
 	
 	reset()
@@ -133,10 +133,8 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 	
 	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
-# NOTE: Do not rename this to the new _s2c_kick format so old versions can still get a kick code.
-# At least for a couple releases
 @rpc("authority", "reliable")
-func kick(reason: GDTUser.DisconnectReason) -> void:
+func _s2c_receive_kick_reason(reason: GDTUser.DisconnectReason) -> void:
 	disconnect_reason = reason
 
 @rpc("authority", "reliable")
