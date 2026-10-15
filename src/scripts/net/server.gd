@@ -88,11 +88,10 @@ func _user_authenticated(user: GDTUser) -> void:
 		return
 	
 	var user_dict = user.to_dict()
-	var server_data = GDTServerAuthResponse.new()
+	var server_data = GDTServerAuthResponse.create(main)
 	
 	main.client._s2c_auth_successful.rpc_id(user.id, server_data.to_dict())
 	main.server.auth_rpc(main.client._s2c_user_connected, [user_dict], [user.id])
-	main.client._s2c_receive_user_list.rpc_id(user.id, main.server.get_user_dicts())
 	main.dual._user_connected(user)
 
 func create_server_user() -> GDTUser:

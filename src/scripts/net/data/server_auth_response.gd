@@ -2,16 +2,29 @@
 extends GDTEncodableData
 class_name GDTServerAuthResponse
 
+var users: Array = [] # User dicts
+
 var file_config := {
 	# path: [size, hash]
 }
 
-func _init() -> void:
-	_fill_file_config()
+
+static func create(main: GodotTogether) -> GDTServerAuthResponse:
+	if not main:
+		GDTUtils.printerr_stack("main is null")
+		return
+	
+	var res = GDTServerAuthResponse.new()
+
+	res.users = main.server.get_user_dicts()
+	res._fill_file_config()
+	
+	return res
 
 func get_encodable_fields() -> Array:
 	return [
-		"file_config"
+		"file_config",
+		"users"
 	]
 
 func get_file_size(path: String) -> int:

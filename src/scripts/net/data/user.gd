@@ -201,6 +201,17 @@ static func from_dict(dict: Dictionary) -> GDTUser:
 	
 	return user
 
+static func from_dict_bulk(dicts: Array) -> Array[GDTUser]:
+	var res: Array[GDTUser] = []
+	
+	for i in dicts:
+		var user = GDTUser.from_dict(i)
+		
+		if user:
+			res.append(user)
+	
+	return res
+
 func approve() -> void:
 	if not pending:
 		GDTUtils.printerr_stack("User %d (%s) is not pending" % [id, name])

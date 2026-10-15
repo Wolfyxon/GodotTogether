@@ -177,6 +177,9 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 		GDTUtils.printerr_stack("Unable to decode response: %s" % data_dict)
 		return
 	
+	var users = GDTUser.from_dict_bulk(data.users)
+	main.dual._users_listed(users)
+	
 	auth_succeed.emit()
 	main.file_sync.pause()
 
@@ -187,19 +190,6 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 	await get_tree().create_timer(0.25).timeout
 
 	main.server._c2s_project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
-
-@rpc("authority", "call_remote", "reliable")
-func _s2c_receive_user_list(user_dicts: Array) -> void:
-	var users: Array[GDTUser]
-
-	for dict in user_dicts:
-		var user = GDTUser.from_dict(dict)
-		
-		if user:
-			user.main = main
-			users.append(user)
-
-	main.dual._users_listed(users)
 
 @rpc("authority", "call_remote", "reliable")
 func _s2c_user_connected(user_dict: Dictionary) -> void:
