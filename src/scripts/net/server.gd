@@ -18,8 +18,8 @@ var server_peer = ENetMultiplayerPeer.new()
 var ip_join_times = {}
 
 func _ready() -> void:
-	multiplayer.peer_connected.connect(_connected)
-	multiplayer.peer_disconnected.connect(_disconnected)
+	multiplayer.peer_connected.connect(_peer_connected)
+	multiplayer.peer_disconnected.connect(_peer_disconnected)
 	report_ready()
 
 func _process(_delta: float) -> void:
@@ -32,7 +32,7 @@ func _process(_delta: float) -> void:
 		if not user.was_ever_authenticated() and now > user.joined_at + APPROVE_TIMEOUT:
 			user.reject(GDTUser.DisconnectReason.APPROVE_TIMEOUT)
 
-func _connected(id: int) -> void:
+func _peer_connected(id: int) -> void:
 	if not multiplayer.is_server(): 
 		return
 
@@ -60,11 +60,13 @@ func _connected(id: int) -> void:
 			return
 		
 	ip_join_times[ip] = now
-
+	
 	# The user needs to be added early
-	main.dual.users.append(user) 
-
-func _disconnected(id: int) -> void:
+	main.dual.users.append(user)
+	
+	main.client._s2c_connection_ack.rpc_id(id)
+ 
+func _peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server(): return
 
 	var user = main.dual.get_user_by_id(id)
@@ -79,6 +81,19 @@ func _disconnected(id: int) -> void:
 
 	auth_rpc(main.client._s2c_user_disconnected, [user_dict])
 	main.dual._user_disconnected(user)
+
+func _user_authenticated(user: GDTUser) -> void:
+	if not user:
+		GDTUtils.printerr_stack("User is null")
+		return
+	
+	var user_dict = user.to_dict()
+	var server_data = GDTServerAuthResponse.new()
+	
+	main.client._s2c_auth_successful.rpc_id(user.id, server_data.to_dict())
+	main.server.auth_rpc(main.client._s2c_user_connected, [user_dict], [user.id])
+	main.client._s2c_receive_user_list.rpc_id(user.id, main.server.get_user_dicts())
+	main.dual._user_connected(user)
 
 func create_server_user() -> GDTUser:
 	var user = GDTUser.new(1, null)

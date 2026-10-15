@@ -4,6 +4,7 @@ class_name GDTClient
 
 signal disconnected
 signal connecting_finished(success: bool)
+signal connection_acknowledged
 signal auth_succeed
 signal project_files_download_started(amount: int)
 signal file_received(path: String)
@@ -14,6 +15,7 @@ var current_join_data := GDTJoinData.new()
 var downloaded_file_count := 0
 var target_file_count := 0
 
+var connection_is_ack = false
 var connection_cancelled := false
 var disconnect_reason: GDTUser.DisconnectReason = GDTUser.DisconnectReason.UNKNOWN
 
@@ -93,13 +95,19 @@ func _handle_connecting() -> void:
 func get_timeout_seconds() -> float:
 	return main.get_settings().get_setting("client/timeout")
 
-func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
-	main.prepare_session()
-
-	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
-	connection_cancelled = false
+func reset() -> void:
+	connection_is_ack = false
 	is_fully_synced = false
+	connection_cancelled = false
+	downloaded_file_count = 0
+	target_file_count = 0
+	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
 
+func join_server(ip: String, port: int, data := GDTJoinData.new()) -> int:
+	main.prepare_session()
+	
+	reset()
+	
 	var err = client_peer.create_client(ip, port)
 	if err: return err
 
@@ -125,18 +133,30 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 	
 	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
-# NOTE: Do not rename this to the new _s2c_kick format so old versions can still get a kick code.
-# At least for a couple releases
 @rpc("authority", "reliable")
-func kick(reason: GDTUser.DisconnectReason) -> void:
+func _s2c_receive_kick_reason(reason: GDTUser.DisconnectReason) -> void:
 	disconnect_reason = reason
 
 @rpc("authority", "reliable")
-func _s2c_auth_successful() -> void:
-	print("Server accepted connection, requesting files (if needed)")
+func _s2c_connection_ack() -> void:
+	if connection_is_ack:
+		GDTUtils.printerr_stack("Connection already acknowledged")
+		return
+	
+	connection_is_ack = true
+	connection_acknowledged.emit()
+
+@rpc("authority", "reliable")
+func _s2c_auth_successful(data_dict: Dictionary) -> void:
+	print("Server accepted connection")
+	
+	var data = GDTServerAuthResponse.from_dict(data_dict)
+	
+	if not data:
+		GDTUtils.printerr_stack("Unable to decode response: %s" % data_dict)
+		return
 	
 	auth_succeed.emit()
-	
 	main.file_sync.pause()
 
 	EditorInterface.get_selection().clear()

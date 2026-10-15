@@ -103,14 +103,7 @@ func auth() -> void:
 	authenticated_at = Time.get_unix_time_from_system()
 
 	if type != Type.HOST:
-		main.client._s2c_auth_successful.rpc_id(id)
-
-		var user_dict = to_dict()
-		
-		main.server.auth_rpc(main.client._s2c_user_connected, [user_dict], [id])
-		main.client._s2c_receive_user_list.rpc_id(id, main.server.get_user_dicts())
-		main.dual._user_connected(self)
-
+		main.server._user_authenticated(self)
 
 func kick(reason: DisconnectReason = DisconnectReason.KICKED) -> void:
 	if not peer:
@@ -120,7 +113,7 @@ func kick(reason: DisconnectReason = DisconnectReason.KICKED) -> void:
 	authenticated = false
 
 	if main:
-		main.client.kick.rpc_id(id, reason)
+		main.client._s2c_receive_kick_reason.rpc_id(id, reason)
 	else:
 		push_warning("Unable to send kick reason, main is null")
 
