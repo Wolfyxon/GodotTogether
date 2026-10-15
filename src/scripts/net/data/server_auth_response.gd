@@ -27,6 +27,14 @@ func get_encodable_fields() -> Array:
 		"users"
 	]
 
+func get_file_hash(path: String) -> String:
+	var entry = get_file_entry(path)
+	
+	if not entry:
+		return ""
+		
+	return entry[1]
+
 func get_file_size(path: String) -> int:
 	var entry = get_file_entry(path)
 	
