@@ -12,7 +12,7 @@ Please use the [security advisories](https://github.com/Wolfyxon/GodotTogether/s
 - Must not be already listed in the [TODO list](https://github.com/Wolfyxon/GodotTogether/issues/1). (The vulnerability itself or its mitigation).
 - The vulnerability must impact a supported version of the plugin.
 - The report must not be vague. Provide as much details as possible.
-- You need to provide a practical example of someone exploiting the vulnerability. Proof-of-concept code is also highly appreciated.
+- You need to provide a practical example of someone exploiting the vulnerability. That can be a step-by-step guide or a PoC script.
 - It must not just be the fact that you can send someone malware. It's a risk of file sharing in every software. (Unless it's remote execution that doesn't require running the game)
 
 ---
