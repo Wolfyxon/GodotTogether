@@ -121,7 +121,7 @@ func _join() -> void:
 	set_session_init_cover("Trying to connect...")
 	set_session_init_timeout(main.client.get_timeout_seconds())
 	
-	var err = main.client.join(ip, port, main.client.current_join_data)
+	var err = main.client.join_server(ip, port, main.client.current_join_data)
 	
 	if err != OK:
 		set_session_init_cover()
