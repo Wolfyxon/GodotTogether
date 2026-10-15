@@ -95,13 +95,19 @@ func _handle_connecting() -> void:
 func get_timeout_seconds() -> float:
 	return main.get_settings().get_setting("client/timeout")
 
+func reset() -> void:
+	connection_is_ack = false
+	is_fully_synced = false
+	connection_cancelled = false
+	downloaded_file_count = 0
+	target_file_count = 0
+	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
+
 func join(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()
-
-	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
-	connection_cancelled = false
-	is_fully_synced = false
-
+	
+	reset()
+	
 	var err = client_peer.create_client(ip, port)
 	if err: return err
 
