@@ -18,8 +18,8 @@ var server_peer = ENetMultiplayerPeer.new()
 var ip_join_times = {}
 
 func _ready() -> void:
-	multiplayer.peer_connected.connect(_connected)
-	multiplayer.peer_disconnected.connect(_disconnected)
+	multiplayer.peer_connected.connect(_peer_connected)
+	multiplayer.peer_disconnected.connect(_peer_disconnected)
 	report_ready()
 
 func _process(_delta: float) -> void:
@@ -32,7 +32,7 @@ func _process(_delta: float) -> void:
 		if not user.was_ever_authenticated() and now > user.joined_at + APPROVE_TIMEOUT:
 			user.reject(GDTUser.DisconnectReason.APPROVE_TIMEOUT)
 
-func _connected(id: int) -> void:
+func _peer_connected(id: int) -> void:
 	if not multiplayer.is_server(): 
 		return
 
@@ -66,7 +66,7 @@ func _connected(id: int) -> void:
 	
 	main.client._s2c_connection_ack.rpc_id(id)
  
-func _disconnected(id: int) -> void:
+func _peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server(): return
 
 	var user = main.dual.get_user_by_id(id)
