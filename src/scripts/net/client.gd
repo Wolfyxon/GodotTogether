@@ -4,6 +4,7 @@ class_name GDTClient
 
 signal disconnected
 signal connecting_finished(success: bool)
+signal connection_acknowledged
 signal auth_succeed
 signal project_files_download_started(amount: int)
 signal file_received(path: String)
@@ -14,6 +15,7 @@ var current_join_data := GDTJoinData.new()
 var downloaded_file_count := 0
 var target_file_count := 0
 
+var connection_is_ack = false
 var connection_cancelled := false
 var disconnect_reason: GDTUser.DisconnectReason = GDTUser.DisconnectReason.UNKNOWN
 
@@ -130,6 +132,15 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 @rpc("authority", "reliable")
 func kick(reason: GDTUser.DisconnectReason) -> void:
 	disconnect_reason = reason
+
+@rpc("authority", "reliable")
+func _s2c_connection_ack() -> void:
+	if connection_is_ack:
+		GDTUtils.printerr_stack("Connection already acknowledged")
+		return
+	
+	connection_is_ack = true
+	connection_acknowledged.emit()
 
 @rpc("authority", "reliable")
 func _s2c_auth_successful() -> void:

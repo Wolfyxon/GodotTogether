@@ -60,10 +60,12 @@ func _connected(id: int) -> void:
 			return
 		
 	ip_join_times[ip] = now
-
+	
 	# The user needs to be added early
-	main.dual.users.append(user) 
-
+	main.dual.users.append(user)
+	
+	main.client._s2c_connection_ack.rpc_id(id)
+ 
 func _disconnected(id: int) -> void:
 	if not multiplayer.is_server(): return
 
