@@ -273,48 +273,36 @@ func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 	user.auth()
 
 @rpc("any_peer", "call_remote", "reliable")
-func _c2s_project_files_request(hashes: Dictionary) -> void:
+func _c2s_file_request(path: String) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = main.dual.get_user_by_id(id)
-	
-	if not user:
-		GDTUtils.printerr_stack("Peer %s requested files, but isn't in the user list" % id)
+
+	if not validate_c2s():
 		return
 	
-	if not user.authenticated:
-		GDTUtils.printerr_stack("User %s requested project files but isn't authenticated" % id)
-		return
+	if not user: return
+	if not user.authenticated: return
 	
-	var local_hashes = GDTFiles.get_file_tree_hashes()
-	var files_to_send = []
-
-	for path in local_hashes.keys():
-		var local_hash = local_hashes[path]
-		
-		if not hashes.has(path) or local_hash != hashes[path]:
-			if FileAccess.file_exists(path):
-				files_to_send.append(path)
-
-	main.client.begin_project_files_download.rpc_id(id, files_to_send.size())
-
-	for file_i in files_to_send.size():
-		var path = files_to_send[file_i]
-		print("Sending " + path)
-		
-		GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
-			main.client.receive_file.rpc_id(
-				id, 
-				path, 
-				buf, 
-				cursor, 
-				cursor == 0
-			)
+	if not GDTValidator.is_path_safe(path):
+		GDTUtils.printerr_stack(
+			"User %s (%s) tried to request file at unsafe path: %s" %
+			[user.name, user.id, path]
 		)
-		
-		if file_i % 4 == 0:
-			await get_tree().create_timer(0.25).timeout
+		return
+	
+	if not FileAccess.file_exists(path):
+		return
+	
+	GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
+		main.client.receive_file.rpc_id(
+			id, 
+			path, 
+			buf, 
+			cursor, 
+			cursor == 0
+		)
+	)
 
-	#main.client.project_files_downloaded.rpc_id(id)
 
 @rpc("any_peer", "call_remote", "reliable")
 func broadcast_restart():

@@ -154,6 +154,37 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 	
 	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
+func download_project_files(server_data: GDTServerAuthResponse) -> void:
+	EditorInterface.get_selection().clear()
+	last_open_scenes = EditorInterface.get_open_scenes().duplicate()
+	GDTUtils.close_all_scenes()
+	
+	await get_tree().process_frame
+	await get_tree().create_timer(0.25).timeout
+	
+	var to_download: Array = []
+	
+	for path in server_data.file_config:
+		if not GDTValidator.is_path_safe(path):
+			continue
+		
+		if not FileAccess.file_exists(path):
+			to_download.append(path)
+			continue
+			
+		var local_hash = FileAccess.get_sha256(path)
+		
+		if server_data.get_file_hash(path) != local_hash:
+			to_download.append(path)
+			
+	for path in to_download:
+		main.server._c2s_file_request.rpc_id(1, path)
+		await get_tree().process_frame
+		
+	await get_tree().create_timer(1).timeout
+	# TODO: Properly wait for the files to arrive
+	_project_files_downloaded() # TEMP!!!!
+
 @rpc("authority", "reliable")
 func _s2c_receive_kick_reason(reason: GDTUser.DisconnectReason) -> void:
 	disconnect_reason = reason
@@ -182,15 +213,9 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 	
 	auth_succeed.emit()
 	main.file_sync.pause()
-
-	EditorInterface.get_selection().clear()
-	last_open_scenes = EditorInterface.get_open_scenes().duplicate()
-	GDTUtils.close_all_scenes()
-
-	await get_tree().create_timer(0.25).timeout
-
-	main.server._c2s_project_files_request.rpc_id(1, GDTFiles.get_file_tree_hashes())
-
+	
+	download_project_files(data)
+	
 @rpc("authority", "call_remote", "reliable")
 func _s2c_user_connected(user_dict: Dictionary) -> void:
 	var user = GDTUser.from_dict(user_dict)
