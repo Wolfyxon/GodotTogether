@@ -23,11 +23,19 @@ var is_fully_synced := false
 var last_open_scenes: PackedStringArray = []
 
 func _ready() -> void:
+	if not main:
+		GDTUtils.printerr_stack("main is null")
+		return
+	
 	multiplayer.connected_to_server.connect(_connected)
 	multiplayer.server_disconnected.connect(_disconnected)
-
+	
+	if main.logger:
+		main.logger.got_known_error.connect(_logger_error)
+	
 	# Doesn't fire, probably a Godot bug
 	#multiplayer.connection_failed.connect(_connecting_finished.bind(false))
+	
 	report_ready()
 
 func _connected() -> void:
@@ -46,8 +54,6 @@ func _disconnected() -> void:
 
 	print("Disconnected from server")
 	
-	is_fully_synced = false
-
 	var str_reason = "Connection lost. Reason unknown"
 
 	if disconnect_reason < GDTUser.DisconnectReason.size():
@@ -65,6 +71,12 @@ func _disconnected() -> void:
 
 	disconnected.emit()
 	main.post_session_end()
+
+func _logger_error(error: GDTLogger.KnownError) -> void:
+	if not is_active(): return
+	
+	if error == GDTLogger.KnownError.RPC_CHECKSUM and not connection_is_ack:
+		leave_with_error(GDTUser.DisconnectReason.RPC_CHECKSUM_MISMATCH)
 
 func _connecting_finished(success: bool) -> void:
 	connecting_finished.emit(success)
@@ -102,6 +114,15 @@ func reset() -> void:
 	downloaded_file_count = 0
 	target_file_count = 0
 	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
+
+func leave_with_error(reason := GDTUser.DisconnectReason.UNKNOWN) -> void:
+	if not is_active():
+		return
+	
+	disconnect_reason = reason
+	
+	main.close_connection()
+	_disconnected()
 
 func join_server(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()

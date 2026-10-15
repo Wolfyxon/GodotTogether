@@ -16,7 +16,9 @@ enum Permission {
 
 const PROTOCOL_VERSION = 2
 const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
+
 const ENABLE_MULTIPLAYER_OVERRIDE = true
+const ENABLE_CUSTOM_LOGGER = true
 
 const _META_LOCK_NAME = "gdt_lock"
 
@@ -45,6 +47,7 @@ var tests = GDTUnitTests.new(self, "tests")
 var debug = GDTDebug.new(self, "debug")
 var extras = GDTExtras.new(self, "extras")
 
+var logger: GDTLogger = null
 var mp_override: GDTMultiplayerExtension = null
 
 var plugin_started := false
@@ -63,6 +66,10 @@ func _enter_tree() -> void:
 	if ENABLE_MULTIPLAYER_OVERRIDE:
 		mp_override = GDTMultiplayerExtension.new(self, SceneMultiplayer.new())
 		get_tree().set_multiplayer(mp_override, GDTMultiplayerExtension.ROOT_PATH)
+	
+	if ENABLE_CUSTOM_LOGGER:
+		logger = GDTLogger.new()
+		logger.attach()
 	
 	init_components()
 	setup_menu_button()
@@ -105,6 +112,9 @@ func _exit_tree() -> void:
 	
 	if button:
 		button.queue_free()
+	
+	if logger:
+		logger.detach()
 	
 	cleanup_components()
 	release_lock()
