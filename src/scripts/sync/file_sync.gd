@@ -130,16 +130,15 @@ func _file_removed(path: String) -> void:
 func download_project_files(server_info: GDTServerAuthResponse) -> void:
 	var tree = get_tree()
 	var paths = server_info.get_files_to_download()
-	var download_size = 0
-	
-	for path in paths:
-		download_size += server_info.get_file_size(path)
 	
 	for i in paths.size():
 		var path = paths[i]
+		var file_size = server_info.get_file_size(path)
+		var current_downloaded_bytes = total_received_bytes
+		
 		_c2s_request_file.rpc_id(1, path)
 		
-		while main and main.is_session_active() and total_received_bytes < download_size:
+		while main and main.is_session_active() and total_received_bytes - current_downloaded_bytes < file_size:
 			await tree.process_frame
 		
 		if i % 8 == 0:
