@@ -76,9 +76,12 @@ func scan_files() -> void:
 func can_sync_files() -> bool:
 	return (
 		main != null and
-		main.is_session_active() and
 		not scan_timer.paused and 
-		not (main.client.is_active() and not main.client.is_fully_synced) and
+		(
+			(main.client.is_active() and main.client.is_fully_synced)
+			or
+			main.server.is_active()
+		) and
 		not main.get_settings().get_setting("dev/disable_real_time_file_sync")
 	)
 
