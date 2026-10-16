@@ -174,12 +174,20 @@ func _join() -> void:
 	set_session_init_timeout(GDTServer.APPROVE_TIMEOUT)
 	
 	await main.client.auth_succeed
-
-	set_session_init_cover("Starting project download...")
-
-	while main.client.target_file_count != 0:
-		set_session_init_cover("Downloading files %s/%s" % [main.client.downloaded_file_count, main.client.target_file_count])
-		await main.client.file_received
+	
+	while not main.client.is_fully_synced:
+		if main.file_sync.last_received_file:
+			set_session_init_cover(
+				"%s (%s / %s)" % [
+					main.file_sync.last_received_file,
+					String.humanize_size(main.file_sync.total_received_bytes),
+					String.humanize_size(main.client.server_data.get_project_download_size())
+				]
+			)
+		else:
+			set_session_init_cover("Downloading project...")
+		
+		await get_tree().process_frame
 	
 	_joined()
 
