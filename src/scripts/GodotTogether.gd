@@ -309,6 +309,7 @@ func setup_chat() -> void:
 	chat_btn.tooltip_text = "Toggle GodotTogether chat"
 
 func prepare_session() -> void:
+	file_sync.reset()
 	EditorInterface.save_all_scenes()
 
 func get_gui() -> GodotTogetherGUI:

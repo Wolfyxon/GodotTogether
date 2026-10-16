@@ -4,12 +4,15 @@ class_name GDTFileSync
 
 signal scan_started
 signal scan_complete
+signal received_file(path: String, size: int, position: int)
 
 const CHUNK_SIZE = 1024 * 1024 * 24 # 24 MB
 const MAX_SCRIPT_SIZE = 1024 * 1024 * 8 # 8 MB
 
 var scan_timer = Timer.new()
 var file_mod_times := {}
+
+var total_received_bytes: int = 0
 
 func _ready() -> void:
 	update_timer_wait_times()
@@ -30,6 +33,9 @@ func update_timer_wait_times() -> void:
 
 func ignore_last_changes() -> void:
 	file_mod_times = GDTFiles.get_file_modification_times()
+
+func reset() -> void:
+	total_received_bytes = 0
 
 func update_file(path: String) -> void:
 	if not FileAccess.file_exists(path):
@@ -116,6 +122,28 @@ func _file_removed(path: String) -> void:
 	elif main.server.is_active():
 		server_broadcast_file_delete(path)
 
+func download_project_files(server_info: GDTServerAuthResponse) -> void:
+	var tree = get_tree()
+	var paths = server_info.get_files_to_download()
+	var download_size = 0
+	
+	for path in paths:
+		download_size += server_info.get_file_size(path)
+	
+	for i in paths.size():
+		var path = paths[i]
+		print(path)
+		_c2s_request_file.rpc_id(1, path)
+		
+		while main and main.is_session_active() and total_received_bytes < download_size:
+			await tree.process_frame
+		
+		if i % 8 == 0:
+			await tree.create_timer(1).timeout
+		
+	print("DONE")
+	
+
 static func read_chunks_callback(path: String, fn: Callable, chunk_size := CHUNK_SIZE) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	
@@ -147,7 +175,9 @@ func write_file(
 	offset: int = 0,
 	truncate := true
 ) -> void:
-	if buffer.size() > CHUNK_SIZE:
+	var buf_size = buffer.size()
+	
+	if buf_size > CHUNK_SIZE:
 		GDTUtils.printerr_stack("Buffer is greater than chunk size. This will cause problems")
 	
 	if offset < 0:
@@ -169,7 +199,7 @@ func write_file(
 	GDTFiles.ensure_dir_exists(path)
 	
 	if path.get_extension() == "gd":
-		if offset > MAX_SCRIPT_SIZE or buffer.size() > MAX_SCRIPT_SIZE:
+		if offset > MAX_SCRIPT_SIZE or buf_size > MAX_SCRIPT_SIZE:
 			GDTUtils.printerr_stack("File %s exceeds the maximum script size" % path)
 			return
 		
@@ -200,6 +230,9 @@ func write_file(
 	
 	if not truncate:
 		mode = FileAccess.READ_WRITE
+	
+	received_file.emit(path, buf_size, offset)
+	total_received_bytes += buf_size
 	
 	var file = FileAccess.open(path, mode)
 	var err = FileAccess.get_open_error()
@@ -285,6 +318,37 @@ func client_send_file_to_server(path: String) -> void:
 			buf, 
 			i, 
 			i == 0
+		)
+	)
+
+@rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_file(path: String) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	var user = main.dual.get_user_by_id(id)
+
+	if not main.server.validate_c2s():
+		return
+	
+	if not user: return
+	if not user.authenticated: return
+	
+	if not GDTValidator.is_path_safe(path):
+		GDTUtils.printerr_stack(
+			"User %s (%s) tried to request file at unsafe path: %s" %
+			[user.name, user.id, path]
+		)
+		return
+	
+	if not FileAccess.file_exists(path):
+		return
+	
+	GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
+		write_file.rpc_id(
+			id, 
+			path, 
+			buf, 
+			cursor, 
+			cursor == 0
 		)
 	)
 

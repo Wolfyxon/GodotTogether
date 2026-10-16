@@ -154,7 +154,7 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 	
 	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
-func download_project_files(server_data: GDTServerAuthResponse) -> void:
+func download_project(server_data: GDTServerAuthResponse) -> void:
 	EditorInterface.get_selection().clear()
 	last_open_scenes = EditorInterface.get_open_scenes().duplicate()
 	GDTUtils.close_all_scenes()
@@ -162,28 +162,10 @@ func download_project_files(server_data: GDTServerAuthResponse) -> void:
 	await get_tree().process_frame
 	await get_tree().create_timer(0.25).timeout
 	
-	var to_download: Array = []
+	await main.file_sync.download_project_files(server_data)
 	
-	for path in server_data.file_config:
-		if not GDTValidator.is_path_safe(path):
-			continue
-		
-		if not FileAccess.file_exists(path):
-			to_download.append(path)
-			continue
-			
-		var local_hash = FileAccess.get_sha256(path)
-		
-		if server_data.get_file_hash(path) != local_hash:
-			to_download.append(path)
-			
-	for path in to_download:
-		main.server._c2s_file_request.rpc_id(1, path)
-		await get_tree().process_frame
-		
 	await get_tree().create_timer(1).timeout
-	# TODO: Properly wait for the files to arrive
-	_project_files_downloaded() # TEMP!!!!
+	_project_files_downloaded()
 
 @rpc("authority", "reliable")
 func _s2c_receive_kick_reason(reason: GDTUser.DisconnectReason) -> void:
@@ -214,7 +196,7 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 	auth_succeed.emit()
 	main.file_sync.pause()
 	
-	download_project_files(data)
+	download_project(data)
 	
 @rpc("authority", "call_remote", "reliable")
 func _s2c_user_connected(user_dict: Dictionary) -> void:

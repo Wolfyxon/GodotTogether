@@ -27,6 +27,25 @@ func get_encodable_fields() -> Array:
 		"users"
 	]
 
+func get_files_to_download() -> Array:
+	var res = []
+	
+	for path in file_config:
+		if not GDTValidator.is_path_safe(path):
+			continue
+		
+		if not FileAccess.file_exists(path):
+			res.append(path)
+			continue
+			
+		var local_hash = FileAccess.get_sha256(path)
+		
+		if get_file_hash(path) != local_hash:
+			res.append(path)
+	
+	return res
+
+
 func get_file_hash(path: String) -> String:
 	var entry = get_file_entry(path)
 	
