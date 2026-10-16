@@ -13,6 +13,7 @@ var scan_timer = Timer.new()
 var file_mod_times := {}
 
 var total_received_bytes: int = 0
+var last_received_file: String = ""
 
 func _ready() -> void:
 	update_timer_wait_times()
@@ -36,6 +37,7 @@ func ignore_last_changes() -> void:
 
 func reset() -> void:
 	total_received_bytes = 0
+	last_received_file = ""
 
 func update_file(path: String) -> void:
 	if not FileAccess.file_exists(path):
@@ -135,17 +137,13 @@ func download_project_files(server_info: GDTServerAuthResponse) -> void:
 	
 	for i in paths.size():
 		var path = paths[i]
-		print(path)
 		_c2s_request_file.rpc_id(1, path)
 		
 		while main and main.is_session_active() and total_received_bytes < download_size:
 			await tree.process_frame
 		
 		if i % 8 == 0:
-			await tree.create_timer(1).timeout
-		
-	print("DONE")
-	
+			await tree.create_timer(0.25).timeout
 
 static func read_chunks_callback(path: String, fn: Callable, chunk_size := CHUNK_SIZE) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -236,6 +234,7 @@ func write_file(
 	
 	received_file.emit(path, buf_size, offset)
 	total_received_bytes += buf_size
+	last_received_file = path
 	
 	var file = FileAccess.open(path, mode)
 	var err = FileAccess.get_open_error()

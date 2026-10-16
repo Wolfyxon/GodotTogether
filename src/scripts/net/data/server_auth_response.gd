@@ -8,6 +8,7 @@ var file_config := {
 	# path: [size, hash]
 }
 
+var _files_to_download_cache: Array = []
 
 static func create(main: GodotTogether) -> GDTServerAuthResponse:
 	if not main:
@@ -28,6 +29,9 @@ func get_encodable_fields() -> Array:
 	]
 
 func get_files_to_download() -> Array:
+	if _files_to_download_cache:
+		return _files_to_download_cache
+	
 	var res = []
 	
 	for path in file_config:
@@ -43,8 +47,18 @@ func get_files_to_download() -> Array:
 		if get_file_hash(path) != local_hash:
 			res.append(path)
 	
+	_files_to_download_cache = res
+	
 	return res
 
+func get_project_download_size() -> int:
+	var paths = get_files_to_download()
+	var res = 0
+	
+	for path in paths:
+		res += get_file_size(path)
+	
+	return res
 
 func get_file_hash(path: String) -> String:
 	var entry = get_file_entry(path)

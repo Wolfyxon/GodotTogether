@@ -10,7 +10,9 @@ signal project_files_download_started(amount: int)
 signal file_received(path: String)
 
 var client_peer = ENetMultiplayerPeer.new()
+
 var current_join_data := GDTJoinData.new()
+var server_data: GDTServerAuthResponse = null
 
 var downloaded_file_count := 0
 var target_file_count := 0
@@ -108,6 +110,7 @@ func get_timeout_seconds() -> float:
 	return main.get_settings().get_setting("client/timeout")
 
 func reset() -> void:
+	server_data = null
 	connection_is_ack = false
 	is_fully_synced = false
 	connection_cancelled = false
@@ -154,7 +157,11 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 	
 	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
-func download_project(server_data: GDTServerAuthResponse) -> void:
+func download_project() -> void:
+	if not server_data:
+		GDTUtils.printerr_stack("Cannot download project. server_data null")
+		return
+	
 	EditorInterface.get_selection().clear()
 	last_open_scenes = EditorInterface.get_open_scenes().duplicate()
 	GDTUtils.close_all_scenes()
@@ -164,7 +171,6 @@ func download_project(server_data: GDTServerAuthResponse) -> void:
 	
 	await main.file_sync.download_project_files(server_data)
 	
-	await get_tree().create_timer(1).timeout
 	_project_files_downloaded()
 
 @rpc("authority", "reliable")
@@ -184,19 +190,19 @@ func _s2c_connection_ack() -> void:
 func _s2c_auth_successful(data_dict: Dictionary) -> void:
 	print("Server accepted connection")
 	
-	var data = GDTServerAuthResponse.from_dict(data_dict)
+	server_data = GDTServerAuthResponse.from_dict(data_dict)
 	
-	if not data:
+	if not server_data:
 		GDTUtils.printerr_stack("Unable to decode response: %s" % data_dict)
 		return
 	
-	var users = GDTUser.from_dict_bulk(data.users)
+	var users = GDTUser.from_dict_bulk(server_data.users)
 	main.dual._users_listed(users)
 	
 	auth_succeed.emit()
 	main.file_sync.pause()
 	
-	download_project(data)
+	download_project()
 	
 @rpc("authority", "call_remote", "reliable")
 func _s2c_user_connected(user_dict: Dictionary) -> void:
@@ -227,12 +233,12 @@ func _project_files_downloaded() -> void:
 	is_fully_synced = true
 	
 	await get_tree().process_frame
-	
 	main.get_gui().external_file_change_dialog.reload()
 	
 	await get_tree().process_frame
 	
 	main.file_sync.resume()
+	
 
 @rpc("authority", "reliable")
 func begin_project_files_download(file_count: int) -> void:
