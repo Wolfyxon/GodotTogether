@@ -196,6 +196,9 @@ static func try_connect_bulk(dict: Dictionary) -> void:
 		try_connect(sig, fn)
 
 static func try_open_scene(scene_path: String, tries := 100) -> void:
+	if not scene_path:
+		return
+	
 	var tree = get_tree()
 
 	for i in tries:
