@@ -141,8 +141,8 @@ func download_project_files(server_info: GDTServerAuthResponse) -> void:
 		while main and main.is_session_active() and total_received_bytes - current_downloaded_bytes < file_size:
 			await tree.process_frame
 		
-		if i % 8 == 0:
-			await tree.create_timer(0.25).timeout
+		if i % 16 == 0:
+			await tree.create_timer(0.05).timeout
 
 static func read_chunks_callback(path: String, fn: Callable, chunk_size := CHUNK_SIZE) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
