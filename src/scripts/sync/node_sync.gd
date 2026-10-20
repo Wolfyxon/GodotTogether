@@ -21,6 +21,7 @@ enum SetGetBehavior {
 	RESET
 }
 
+const DEFAULT_HASHING_DEPTH: int = 8
 const DEFAULT_SETGET_NULL_BEHAVIOR = SetGetBehavior.RESET
 const SCAN_DURATION_MEASUREMENT_RESOLUTION = 8
 
@@ -404,14 +405,16 @@ func check_changes() -> void:
 	if main.get_settings().get_setting("dev/log_node_scans"):
 		print("Scanning nodes...")
 	
-	for node in node_data_dict.keys():
+	var obj_cache = {}
+	
+	for node in node_data_dict:
 		# These checks seem redudant for being in check_node()
 		# but actually seem to prevent crashes
 		if not node: continue
 		if not root: break
 		if root.is_queued_for_deletion(): break
 		
-		check_node(node, root)
+		check_node(node, root, obj_cache)
 	
 	_scan_complete()
 
@@ -446,7 +449,7 @@ func _scan_complete() -> void:
 	scan_complete.emit()
 
 # "node" must be untyped to prevent freed nodes from stopping the code
-func check_node(node, root: Node) -> void:
+func check_node(node, root: Node, cache := {}) -> void:
 	if not is_node_valid(node): return
 	if not root: return
 	
@@ -459,12 +462,12 @@ func check_node(node, root: Node) -> void:
 	var data = node_data_dict[node]
 	if not data: return
 	
-	_check_node_properties(node, root, data)
+	_check_node_properties(node, root, data, cache)
 	_check_node_signals(node, root, data)
 
-func _check_node_properties(node, root: Node, data: Dictionary) -> void:
+func _check_node_properties(node, root: Node, data: Dictionary, cache := {}) -> void:
 	var last_hashes = data["property_hashes"]
-	var new_hashes = get_property_hash_dict(node)
+	var new_hashes = get_property_hash_dict(node, DEFAULT_HASHING_DEPTH, cache)
 	var diff = get_property_diff(last_hashes, new_hashes)
 	
 	if "name" in diff:
@@ -1425,9 +1428,12 @@ static func apply_signal_connection_dict(node: Node, dict: Dictionary) -> void:
 static func get_property_diff(hash_dict_a: Dictionary, hash_dict_b: Dictionary) -> Array:
 	return GDTUtils.compare_dicts(hash_dict_a, hash_dict_b, PROPERTY_SEPARATOR)
 
-static func get_property_hash_dict(obj: Object, depth := 64) -> Dictionary:
+static func get_property_hash_dict(
+	obj: Object, 
+	depth := DEFAULT_HASHING_DEPTH, 
+	cache := {}
+) -> Dictionary:
 	var res = {}
-	var cache = {}
 	
 	fill_property_hash_dict(res, obj, depth, cache)
 	return res
