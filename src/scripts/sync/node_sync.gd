@@ -45,6 +45,7 @@ const IGNORED_PROPERTIES: Dictionary = {
 	"Control": [
 		"offset_left", "offset_right",
 		"offset_top", "offset_bottom",
+		"pivot_offset_ratio",
 		"global_position",
 		"rotation_degrees"
 	],
