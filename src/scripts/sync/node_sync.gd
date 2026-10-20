@@ -285,8 +285,8 @@ var last_scan_time: float = 0.0
 
 var last_change_time: float = 0.0
 var recent_change_count: int = 0
-
 var scan_durations: Array = []
+var last_object_cache_size := 0
 
 func _ready() -> void:
 	var editor_ur = EditorInterface.get_editor_undo_redo()
@@ -416,6 +416,7 @@ func check_changes() -> void:
 		
 		check_node(node, root, obj_cache)
 	
+	last_object_cache_size = obj_cache.size()
 	_scan_complete()
 
 func get_avg_scan_time() -> float:

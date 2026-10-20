@@ -35,10 +35,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 825.0
-offset_bottom = 500.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 838.0
+offset_bottom = 513.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -278,6 +278,10 @@ text = "Avg node scan time:"
 [node name="nodeCount" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=1559332646]
 layout_mode = 2
 text = "Total nodes:"
+
+[node name="nodeObjCache" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=78823399]
+layout_mode = 2
+text = "Last object cache size:"
 
 [node name="nodeCanSync" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=901235950]
 layout_mode = 2
