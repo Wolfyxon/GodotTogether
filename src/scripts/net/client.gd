@@ -6,16 +6,12 @@ signal disconnected
 signal connecting_finished(success: bool)
 signal connection_acknowledged
 signal auth_succeed
-signal project_files_download_started(amount: int)
 signal file_received(path: String)
 
 var client_peer = ENetMultiplayerPeer.new()
 
 var current_join_data := GDTJoinData.new()
 var server_data: GDTServerAuthResponse = null
-
-var downloaded_file_count := 0
-var target_file_count := 0
 
 var connection_is_ack = false
 var connection_cancelled := false
@@ -114,8 +110,6 @@ func reset() -> void:
 	connection_is_ack = false
 	is_fully_synced = false
 	connection_cancelled = false
-	downloaded_file_count = 0
-	target_file_count = 0
 	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
 
 func leave_with_error(reason := GDTUser.DisconnectReason.UNKNOWN) -> void:
@@ -238,17 +232,6 @@ func _project_files_downloaded() -> void:
 	await get_tree().process_frame
 	
 	main.file_sync.resume()
-	
-
-@rpc("authority", "reliable")
-func begin_project_files_download(file_count: int) -> void:
-	print("Begin downloading ", file_count, " files")
-
-	target_file_count = file_count
-	project_files_download_started.emit(file_count)
-
-	if file_count == 0:
-		_project_files_downloaded()
 
 @rpc("authority", "reliable")
 func receive_file(
@@ -257,9 +240,6 @@ func receive_file(
 	offset: int = 0,
 	truncate := true
 ) -> void:
-	if not is_fully_synced:
-		downloaded_file_count += 1
-	
 	file_received.emit(path)
 
 	if not GDTValidator.is_path_safe(path):
@@ -269,9 +249,6 @@ func receive_file(
 	print("Receiving from server " + path)
 	main.file_sync.write_file(path, buffer, offset, truncate)
 	
-	if not is_fully_synced and target_file_count != 0 and downloaded_file_count >= target_file_count:
-		target_file_count = 0
-		_project_files_downloaded()
 
 @rpc("authority", "reliable")
 func _s2c_receive_chat_message(text: String, user_id: int) -> void:
