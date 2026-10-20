@@ -58,6 +58,12 @@ func _on_btn_scanned_files_pressed() -> void:
 	for i in paths:
 		print(i)
 
+func _on_btn_node_data_pressed() -> void:
+	for node in main.node_sync.node_data_dict:
+		prints("---", node, "---")
+		print(main.node_sync.node_data_dict[node])
+		print("")
+
 func _on_btn_execute_pressed() -> void:
 	var expr = Expression.new()
 	var source_code = $main/scroll/vbox/exec/vbox/code.text

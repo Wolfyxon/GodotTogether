@@ -216,14 +216,12 @@ metadata/setting = "dev/allow_file_reload_outside_sessions"
 
 [node name="prints" type="FoldableContainer" parent="main/scroll/vbox" unique_id=282098678]
 layout_mode = 2
-folded = true
 title = "Data printing"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/prints" unique_id=557890141]
-visible = false
 layout_mode = 2
 
-[node name="lblEditor" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=1814752883]
+[node name="lblNodes" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=1814752883]
 layout_mode = 2
 theme_type_variation = &"HeaderMedium"
 text = "Editor"
@@ -231,6 +229,10 @@ text = "Editor"
 [node name="btnNodeClasses" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1816482059]
 layout_mode = 2
 text = "Print all node classes in editor"
+
+[node name="btnNodeData" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=2138195580]
+layout_mode = 2
+text = "Print tracked node data"
 
 [node name="lblFiles" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=720643382]
 layout_mode = 2
@@ -371,6 +373,7 @@ icon = ExtResource("2_qe0lv")
 
 [connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeClasses" to="." method="_on_btn_node_classes_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeData" to="." method="_on_btn_node_data_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnFileTree" to="." method="_on_btn_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnScannedFiles" to="." method="_on_btn_scanned_files_pressed"]
