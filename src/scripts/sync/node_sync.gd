@@ -1427,10 +1427,17 @@ static func get_property_diff(hash_dict_a: Dictionary, hash_dict_b: Dictionary) 
 
 static func get_property_hash_dict(obj: Object, depth := 64) -> Dictionary:
 	var res = {}
-	fill_property_hash_dict(res, obj, depth)
+	var cache = {}
+	
+	fill_property_hash_dict(res, obj, depth, cache)
 	return res
 
-static func fill_property_hash_dict(res: Dictionary, obj: Object, depth := 64) -> Dictionary:
+static func fill_property_hash_dict(
+	res: Dictionary, 
+	obj: Object, 
+	depth := 64,
+	_cache := {}
+) -> void:
 	for key in get_property_keys(obj):
 		if not key in obj:
 			continue
@@ -1438,14 +1445,18 @@ static func fill_property_hash_dict(res: Dictionary, obj: Object, depth := 64) -
 		var value = obj[key]
 		
 		if value is Object and depth > 0:
+			if value in _cache:
+				res[key] = _cache[value]
+				continue
+			
 			res[key] = {
 				"." = hash(value)
 			}
-			fill_property_hash_dict(res[key], value, depth - 1)
+			
+			fill_property_hash_dict(res[key], value, depth - 1, _cache)
+			_cache[value] = res[key]
 		else:
 			res[key] = hash(value)
-		
-	return res
 
 static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	var res = {}
