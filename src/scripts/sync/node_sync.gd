@@ -491,10 +491,6 @@ func _check_node_signals(node, _root: Node, data: Dictionary) -> void:
 
 func _editor_undo_redo_changed() -> void:
 	_got_changes()
-	
-	if main.settings.get_setting("sync/node_scan_mode") != NodeScanMode.ON_CHANGE:
-		return
-	
 	check_changes()
 
 func _node_signal_connections_changed(node: Node, signal_names: Array) -> void:
