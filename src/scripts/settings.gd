@@ -224,7 +224,7 @@ func get_update_cache() -> GDTUpdateCheckResult:
 		return
 	
 	if sig_text:
-		sig_text = sig_text.remove_chars("\t\n\ufffd\"',. ")
+		sig_text = sig_text.remove_chars("\r\t\n\ufffd\"',. ")
 	else:
 		sig_text = ""
 	
