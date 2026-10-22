@@ -48,10 +48,10 @@ script = ExtResource("2_dm08s")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = 12.0
-offset_right = -12.0
-offset_bottom = -12.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 49.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -372,26 +372,24 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="hbox" type="HBoxContainer" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=1490764786]
-layout_mode = 2
-
-[node name="title" type="Label" parent="mainMenu/main/sessionInit/cover/vbox/hbox" unique_id=1145894850]
+[node name="title" type="Label" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=1145894850]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Ddd"
+text = "Error"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="timer" type="Label" parent="mainMenu/main/sessionInit/cover/vbox/hbox" unique_id=728808517]
-visible = false
+[node name="timer" type="Label" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=281768038]
 custom_minimum_size = Vector2(0.1, 0)
 layout_mode = 2
+size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 1, 0.5921569)
 text = "0"
 horizontal_alignment = 1
 
 [node name="btnCancel" type="Button" parent="mainMenu/main/sessionInit/cover/vbox" unique_id=1228142158]
+visible = false
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -760,10 +758,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
 visible = false
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 958.0
-offset_bottom = 588.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -924,10 +922,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = 12.0
-offset_right = -12.0
-offset_bottom = -12.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -991,10 +989,10 @@ icon = ExtResource("17_u8ku5")
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 958.0
-offset_bottom = 588.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -1065,10 +1063,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 9.0
-offset_top = 9.0
-offset_right = 741.0
-offset_bottom = 491.0
+offset_left = 21.0
+offset_top = 21.0
+offset_right = 729.0
+offset_bottom = 479.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]

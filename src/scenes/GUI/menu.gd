@@ -52,7 +52,10 @@ func _ready() -> void:
 		_settings_changed()
 
 func _process(_delta: float) -> void:
-	var timer_label = session_init_cover.get_node("vbox/hbox/timer")
+	if not visuals_available():
+		return
+	
+	var timer_label = session_init_cover.get_node("vbox/timer")
 	
 	if cover_timeout != -1:
 		var time = Time.get_unix_time_from_system()
@@ -211,8 +214,8 @@ func set_session_init_cover(text: String = "") -> void:
 		session_init_cover.hide()
 		return
 	
-	session_init_cover.get_node("vbox/hbox/title").text = text
-	session_init_cover.get_node("vbox/hbox/timer").text = ""
+	session_init_cover.get_node("vbox/title").text = text
+	session_init_cover.get_node("vbox/timer").text = ""
 	cover_timeout = -1
 	
 	session_init_cover.show()
