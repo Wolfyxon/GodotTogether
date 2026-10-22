@@ -343,8 +343,7 @@ func server_send_file(peer_id: int, path: String) -> void:
 			cursor == 0
 		)
 		
-		if cursor % 1024 == 0 and main.server.is_active():
-			await get_tree().process_frame
+		await get_tree().create_timer(buf.size() / (1024.0 * 1024.0)).timeout
 	)
 
 func client_send_file_to_server(path: String) -> void:
