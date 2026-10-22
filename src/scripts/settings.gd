@@ -71,7 +71,8 @@ const _DEFAULT_DATA = {
 		"log_node_remote_changes": false,
 		
 		"log_file_changes": false,
-		"log_file_scans": false
+		"log_file_scans": false,
+		"log_file_net": false
 	},
 	"notifications": {
 		"users": true

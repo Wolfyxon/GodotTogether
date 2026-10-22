@@ -93,6 +93,9 @@ func is_change_logging_enabled() -> bool:
 		main.get_settings().get_setting("dev/log_file_changes")
 	)
 
+func is_file_net_logging_enabled() -> bool:
+	return main.settings.get_setting("dev/log_file_net")
+
 func _gd_got_external_changes(_paths: Array) -> void:
 	if not main: return
 	
@@ -131,6 +134,9 @@ func download_project_files(server_info: GDTServerAuthResponse) -> void:
 	var tree = get_tree()
 	var paths = server_info.get_files_to_download()
 	
+	if is_file_net_logging_enabled():
+		print("Requesting download of %s files" % paths.size())
+	
 	for i in paths.size():
 		if not main.is_session_active():
 			return
@@ -139,7 +145,7 @@ func download_project_files(server_info: GDTServerAuthResponse) -> void:
 		var file_size = server_info.get_file_size(path)
 		var current_downloaded_bytes = total_received_bytes
 		
-		_c2s_request_file.rpc_id(1, path)
+		client_request_file(path)
 		
 		while main and main.is_session_active() and total_received_bytes - current_downloaded_bytes < file_size:
 			await tree.process_frame
@@ -198,6 +204,9 @@ func write_file(
 	if not GDTValidator.is_path_safe(path):
 		printerr("Server tried to write at unsafe location: %s" % path)
 		return
+	
+	if is_file_net_logging_enabled():
+		print("Received file %s pos: %s len: %s" % [path, offset, buf_size])
 	
 	GDTFiles.ensure_dir_exists(path)
 	
@@ -335,6 +344,12 @@ func client_send_file_to_server(path: String) -> void:
 			i == 0
 		)
 	)
+	
+func client_request_file(path: String) -> void:
+	if is_file_net_logging_enabled():
+		print("Requesting file from server: %s" % path)
+	
+	_c2s_request_file.rpc_id(1, path)
 
 @rpc("any_peer", "call_remote", "reliable")
 func _c2s_request_file(path: String) -> void:
@@ -381,6 +396,9 @@ func _c2s_request_file_write(
 	if not GDTValidator.is_path_safe(path): 
 		printerr("User %s tried to write file at unsafe location: %s" % [id, path])
 		return
+	
+	if is_file_net_logging_enabled():
+		print("Got file from client: %s %s pos: %s len: %s" % [id, path, offset, buffer.size()])
 	
 	write_file(path, buffer, offset, true)
 	server_broadcast_file_write(path, buffer, offset, truncate, id)

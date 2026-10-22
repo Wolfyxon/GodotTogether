@@ -133,6 +133,11 @@ layout_mode = 2
 text = "Log file scans"
 metadata/setting = "dev/log_file_scans"
 
+[node name="logFileNet" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=490254400]
+layout_mode = 2
+text = "Log network file operations"
+metadata/setting = "dev/log_file_net"
+
 [node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=544100602]
 layout_mode = 2
 
