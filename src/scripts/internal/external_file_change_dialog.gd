@@ -10,6 +10,8 @@ signal changes_reloaded
 var node: ConfirmationDialog
 var tree: Tree
 
+var last_reload_time := 0.0
+
 func _wrapper_init() -> void:
 	_acquire_node()
 	
@@ -102,6 +104,7 @@ func _resaved():
 
 func _reloaded():
 	EditorInterface.get_selection().clear()
+	last_reload_time = Time.get_unix_time_from_system()
 	
 	changes_reloaded.emit()
 
@@ -117,6 +120,7 @@ func reload() -> void:
 	for i in get_paths():
 		push_warning("- ", i)
 	
+	last_reload_time = Time.get_unix_time_from_system()
 	await node.get_tree().process_frame
 	node.confirmed.emit()
 

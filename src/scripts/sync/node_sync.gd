@@ -403,6 +403,10 @@ func check_changes() -> void:
 		_scan_complete() 
 		return
 	
+	if root.is_queued_for_deletion():
+		_scan_complete()
+		return
+	
 	if not root.scene_file_path:
 		_scan_complete()
 		return
@@ -416,12 +420,15 @@ func check_changes() -> void:
 	
 	var obj_cache = {}
 	
-	for node in node_data_dict:
-		# These checks seem redudant for being in check_node()
-		# but actually seem to prevent crashes
-		if not node: continue
-		if not root: break
-		if root.is_queued_for_deletion(): break
+	# IMPORTANT: Iterating directly on the dict will cause a crash!
+	# Do not remove .keys()
+	for node in node_data_dict.keys():
+		if not is_node_valid(root): 
+			_scan_complete()
+			return
+		
+		if not is_node_valid(node): 
+			continue
 		
 		check_node(node, root, obj_cache)
 	
@@ -522,8 +529,9 @@ func _node_signal_connections_changed(node: Node, signal_names: Array) -> void:
 	await main.file_sync.scan_complete
 	await get_tree().process_frame
 	
-	if not scene: 
-		return
+	if not can_sync_nodes(): return
+	if not is_node_valid(node): return
+	if not is_node_valid(scene): return
 	
 	if main.server.is_active():
 		server_broadcast_node_signal_connections_update(node_path, scene.scene_file_path, dict)
@@ -579,8 +587,8 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	# 'owner' is set very late, causing is_node_valid(child) to return false.
 	# Do not check it here
-	if not is_node_valid(parent): return
 	if not can_sync_nodes(): return
+	if not is_node_valid(parent): return
 	if not is_user_node(child): return
 	
 	if not is_node_observed(parent): return
@@ -607,8 +615,8 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 		_c2s_request_node_add.rpc_id(1, parent_path, scene.scene_file_path, child.get_class(), prop_dict)
 
 func _node_tree_exiting(node: Node) -> void:
-	if not is_node_valid(node): return
 	if not can_sync_nodes(): return
+	if not is_node_valid(node): return
 	
 	var selection = EditorInterface.get_selection()
 	selection.remove_node(node)
@@ -626,11 +634,19 @@ func _node_tree_exiting(node: Node) -> void:
 	
 	await get_tree().process_frame
 	
+	if not can_sync_nodes():
+		return
+	
 	var new_scene = EditorInterface.get_edited_scene_root()
 	
 	if not node: return
+	if node.is_queued_for_deletion(): return
+	
 	if not scene: return
+	if scene.is_queued_for_deletion(): return
+	
 	if not new_scene: return
+	if new_scene.is_queued_for_deletion(): return
 	
 	if scene.get_class() != new_scene.get_class():
 		return
@@ -652,9 +668,9 @@ func _node_tree_exiting(node: Node) -> void:
 		_c2s_request_node_delete.rpc_id(1, node_path, scene.scene_file_path)
 
 func _node_child_order_changed(parent: Node) -> void:
+	if not can_sync_nodes(): return
 	if not is_node_valid(parent): return
 	if is_node_supressed(parent): return
-	if not can_sync_nodes(): return
 	
 	_got_changes()
 	
@@ -1280,7 +1296,8 @@ func observe_node_recursive(node: Node) -> void:
 
 func observe_current_scene() -> void:
 	var scene = EditorInterface.get_edited_scene_root()
-	if not scene: return
+	
+	if not is_node_valid(scene): return
 	if not scene.scene_file_path: return
 	
 	if not GDTValidator.is_path_safe(scene.scene_file_path):
@@ -1298,14 +1315,18 @@ func start() -> void:
 	observe_current_scene()
 
 func can_sync_nodes() -> bool:
+	var now = Time.get_unix_time_from_system()
+	
 	return (
 		main != null and
 		(
 			main.is_session_active() or
 			main.get_settings().get_setting("dev/always_scan_nodes")
-		) and
+		) 
+		and
 		not change_timer.paused and
 		not (main.client.is_active() and not main.client.is_fully_synced) and
+		((now - main.get_gui().external_file_change_dialog.last_reload_time) > 1) and
 		not main.get_settings().get_setting("dev/disable_real_time_node_sync")
 	)
 
@@ -2047,7 +2068,11 @@ static func is_node_valid(node) -> bool:
 		node.is_inside_tree() and
 		not node.is_queued_for_deletion() and
 		(
-			(node.owner and is_instance_valid(node.owner))
+			(
+				node.owner and
+				is_instance_valid(node.owner) and
+				not node.owner.is_queued_for_deletion()
+			)
 			or
 			node in EditorInterface.get_open_scene_roots()
 		)
