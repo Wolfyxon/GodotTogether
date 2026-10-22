@@ -587,7 +587,7 @@ func test_ignored_properties() -> bool:
 	created_nodes.append(node3d)
 	
 	var ignored = main.node_sync.get_ignored_properties(node3d)
-	var expected = ["owner", "multiplayer", "global_position", "global_transform"]
+	var expected = ["owner", "multiplayer"]
 	
 	for i in expected:
 		if not i in ignored:
@@ -602,8 +602,8 @@ func test_property_keys() -> bool:
 	
 	var keys = main.node_sync.get_property_keys(node3d)
 	
-	var essentials = ["name", "transform", "visible"]
-	var ignores = ["global_position"]
+	var essentials = ["name", "position", "visible"]
+	var ignores = []
 	
 	for i in essentials:
 		if not i in keys:
@@ -616,11 +616,6 @@ func test_property_keys() -> bool:
 			return false
 	
 	for i in GDTNodeSync.IGNORED_PROPERTIES["Node"]:
-		if i in keys:
-			printerr("%s found" % i)
-			return false
-	
-	for i in GDTNodeSync.IGNORED_PROPERTIES["Node3D"]:
 		if i in keys:
 			printerr("%s found" % i)
 			return false
