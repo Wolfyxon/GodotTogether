@@ -332,6 +332,12 @@ func server_send_file(peer_id: int, path: String) -> void:
 		if not main.server.is_active():
 			return
 		
+		var user = main.dual.get_user_by_id(peer_id)
+		
+		if not user: return
+		if not user.authenticated: return
+		if not user.is_peer_connected(): return
+		
 		if is_file_net_logging_enabled():
 			print("Sending chunk to client: %s %s pos: %s" % [peer_id, path, cursor])
 		
