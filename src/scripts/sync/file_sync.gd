@@ -176,8 +176,11 @@ static func read_chunks_callback(
 		if size <= 0:
 			break
 		
-		await fn.call(buf, current_pos)
+		var res = await fn.call(buf, current_pos)
 		current_pos += size
+		
+		if res == false: # Must be explicit == false
+			break
 	
 	file.close()
 
@@ -330,13 +333,13 @@ func server_broadcast_file_delete(path: String, sender := 0) -> void:
 func server_send_file(peer_id: int, path: String) -> void:
 	read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
 		if not main.server.is_active():
-			return
+			return false
 		
 		var user = main.dual.get_user_by_id(peer_id)
 		
-		if not user: return
-		if not user.authenticated: return
-		if not user.is_peer_connected(): return
+		if not user: return false
+		if not user.authenticated: return false
+		if not user.is_peer_connected(): return false
 		
 		if is_file_net_logging_enabled():
 			print("Sending chunk to client: %s %s pos: %s" % [peer_id, path, cursor])
