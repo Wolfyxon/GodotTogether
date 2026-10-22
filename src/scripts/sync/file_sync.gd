@@ -6,7 +6,7 @@ signal scan_started
 signal scan_complete
 signal received_file(path: String, size: int, position: int)
 
-const CHUNK_SIZE = 1024 * 1024 * 4 # 4 MB
+const CHUNK_SIZE = 1024 * 500 # 500 kB
 const MAX_SCRIPT_SIZE = 1024 * 1024 * 3 # 3 MB
 
 var scan_timer = Timer.new()
@@ -352,7 +352,7 @@ func server_send_file(peer_id: int, path: String) -> void:
 			cursor == 0
 		)
 		
-		var wait_time = (buf.size() / (1024.0 * 1024.0)) * 0.05
+		var wait_time = (buf.size() / (1024.0 * 1024.0)) * 0.01
 		await get_tree().create_timer(wait_time).timeout
 	)
 
