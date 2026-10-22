@@ -6,7 +6,7 @@ signal scan_started
 signal scan_complete
 signal received_file(path: String, size: int, position: int)
 
-const CHUNK_SIZE = 1024 * 1024 * 24 # 24 MB
+const CHUNK_SIZE = 1024 * 1024 * 16 # 16 MB
 const MAX_SCRIPT_SIZE = 1024 * 1024 * 8 # 8 MB
 
 var scan_timer = Timer.new()
