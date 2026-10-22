@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="4_r5h7c"]
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="5_8ebed"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="6_8so7w"]
-[ext_resource type="PackedScene" uid="uid://bobclubq7448p" path="res://addons/GodotTogether/src/scenes/GUI/dev/DevMenu.tscn" id="7_ws5ud"]
 
 [node name="settings" type="PopupPanel" unique_id=1835564117]
 oversampling_override = 1.0
@@ -347,11 +346,7 @@ size_flags_horizontal = 4
 text = "Close"
 icon = ExtResource("6_8so7w")
 
-[node name="DevMenu" parent="." unique_id=968168676 instance=ExtResource("7_ws5ud")]
-visible = false
-
 [connection signal="pressed" from="main/scroll/vbox/updateCheckTimeHbox/btnCheckUpdateNow" to="." method="_on_btn_check_update_now_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/devActions/btnDevMenu" to="DevMenu" method="popup"]
 [connection signal="pressed" from="main/scroll/vbox/btnReload" to="." method="_on_btn_reload_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/actions/reset" to="." method="_on_reset_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/actions/showFile" to="." method="_on_show_file_pressed"]

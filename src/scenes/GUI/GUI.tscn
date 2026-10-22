@@ -23,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://c6okl8nlqm3oc" path="res://addons/GodotTogether/src/img/Skeleton3D.svg" id="17_ulx1o"]
 [ext_resource type="Texture2D" uid="uid://cwnrusacfdot4" path="res://addons/GodotTogether/src/img/VSeparator.svg" id="18_doc2o"]
 [ext_resource type="PackedScene" uid="uid://dmv34kynftxx5" path="res://addons/GodotTogether/src/scenes/GUI/settings/settings.tscn" id="23_ulx1o"]
+[ext_resource type="PackedScene" uid="uid://bobclubq7448p" path="res://addons/GodotTogether/src/scenes/GUI/dev/DevMenu.tscn" id="24_doc2o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_doc2o"]
 font_size = 21
@@ -1131,8 +1132,11 @@ icon = ExtResource("9_4c4b3")
 [node name="settings" parent="mainMenu" unique_id=1835564117 instance=ExtResource("23_ulx1o")]
 visible = false
 
+[node name="DevMenu" parent="." unique_id=968168676 instance=ExtResource("24_doc2o")]
+visible = false
+
 [connection signal="pressed" from="mainMenu/main/topBar/settings" to="mainMenu/settings" method="popup"]
-[connection signal="pressed" from="mainMenu/main/topBar/devMenu" to="mainMenu/settings" method="open_dev_menu"]
+[connection signal="pressed" from="mainMenu/main/topBar/devMenu" to="." method="open_dev_menu"]
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="session_start_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main/sessionInit/start/join" method="show"]

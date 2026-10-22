@@ -24,8 +24,9 @@ func _ready() -> void:
 		if i.has_meta("setting"):
 			register_control(i)
 	
-	$DevMenu.main = gui.main
 	$main/scroll/vbox/devActions/btnRunTests.pressed.connect(gui.main.tests.run_tests)
+	$main/scroll/vbox/devActions/btnDevMenu.pressed.connect(gui.open_dev_menu)
+	
 	hide()
 	
 	sandwich_title.hide()
@@ -33,10 +34,6 @@ func _ready() -> void:
 
 func _settings_changed() -> void:
 	settings_changed.emit()
-
-func open_dev_menu() -> void:
-	visible = true
-	$DevMenu.popup()
 
 func register_control(node: Control) -> void:
 	var path = node.get_meta("setting")

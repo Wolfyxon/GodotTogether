@@ -15,6 +15,8 @@ var scene_tree_editor = GDTSceneTreeEditor.new()
 var scene_editor_tabs = GDTEditorSceneTabs.new()
 var external_file_change_dialog = GDTExternalFileChangeDialog.new()
 
+@onready var dev_menu: GDTDevMenu = $DevMenu
+
 func _ready() -> void:
 	var menu_window = get_menu_window()
 	var menu = get_menu()
@@ -51,6 +53,9 @@ func _process(_delta: float) -> void:
 	
 	if not Engine.is_editor_hint():
 		get_menu_window().visible = true
+
+func open_dev_menu() -> void:
+	dev_menu.popup_centered()
 
 func cleanup() -> void:
 	scene_editor_tabs.clear_colors()
