@@ -25,15 +25,6 @@ const DEFAULT_HASHING_DEPTH: int = 8
 const DEFAULT_SETGET_NULL_BEHAVIOR = SetGetBehavior.RESET
 const SCAN_DURATION_MEASUREMENT_RESOLUTION = 8
 
-const IGNORED_PROPERTY_USAGE_FLAGS := [
-	PROPERTY_USAGE_NONE,
-	PROPERTY_USAGE_GROUP,
-	PROPERTY_USAGE_CATEGORY,
-	PROPERTY_USAGE_SUBGROUP,
-	PROPERTY_USAGE_INTERNAL,
-	PROPERTY_USAGE_READ_ONLY
-]
-
 const IGNORED_PROPERTIES: Dictionary = {
 	"Node": [
 		"owner",
@@ -47,38 +38,7 @@ const IGNORED_PROPERTIES: Dictionary = {
 	"Control": [
 		"offset_left", "offset_right",
 		"offset_top", "offset_bottom",
-		"pivot_offset_ratio",
-		"global_position",
-		"global_rotation_degrees",
-		"rotation_degrees"
-	],
-	"Node2D": [
-		# Handled by 'transform'
-		"position",
-		"scale",
-		"rotation",
-		"rotation_degrees",
-		
-		"global_position",
-		"global_rotation",
-		"global_rotation_degrees",
-		"global_transform",
-		"global_scale",
-		"global_skew"
-	],
-	"Node3D": [
-		# Handled by 'transform'
-		"position",
-		"scale",
-		"rotation",
-		"rotation_degrees",
-		
-		"global_transform",
-		"global_basis",
-		"global_scale",
-		"global_position",
-		"global_rotation",
-		"global_rotation_degrees"
+		"pivot_offset_ratio"
 	],
 	"Resource": [
 		#"resource_path"
@@ -2055,15 +2015,13 @@ func get_property_keys(obj: Object) -> Array[String]:
 	for i in obj.get_property_list():
 		var ok := true
 		
-		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
-			if i["usage"] & usage:
-				ok = false
-				break
+		if i.name != "name" and not i.usage & PROPERTY_USAGE_STORAGE:
+			continue
 		
 		if not ok:
 			continue
 		
-		if i["name"] in ignored:
+		if i.name in ignored:
 			continue
 		
 		#for regex: RegEx in ignored_regex:
