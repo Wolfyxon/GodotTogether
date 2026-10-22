@@ -278,6 +278,9 @@ var node_data_dict = {
 	# } 
 }
 
+var ignored_props_cache = {}
+var regex_cache = {}
+
 var supressed_nodes = {}
 var last_scene_path: String = ""
 
@@ -1471,7 +1474,7 @@ static func apply_signal_connection_dict(node: Node, dict: Dictionary) -> void:
 static func get_property_diff(hash_dict_a: Dictionary, hash_dict_b: Dictionary) -> Array:
 	return GDTUtils.compare_dicts(hash_dict_a, hash_dict_b, PROPERTY_SEPARATOR)
 
-static func get_property_hash_dict(
+func get_property_hash_dict(
 	obj: Object, 
 	depth := DEFAULT_HASHING_DEPTH, 
 	cache := {}
@@ -1481,7 +1484,7 @@ static func get_property_hash_dict(
 	fill_property_hash_dict(res, obj, depth, cache)
 	return res
 
-static func fill_property_hash_dict(
+func fill_property_hash_dict(
 	res: Dictionary, 
 	obj: Object, 
 	depth := DEFAULT_HASHING_DEPTH,
@@ -1507,7 +1510,7 @@ static func fill_property_hash_dict(
 		else:
 			res[key] = hash(value)
 
-static func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
+func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	var res = {}
 	
 	for path: String in paths:
@@ -1544,7 +1547,7 @@ static func should_property_be_ignored(obj: Object, path: String) -> bool:
 	
 	return false
 
-static func apply_property_dict(obj: Object, dict: Dictionary) -> void:
+func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 	for path in dict.keys():
 		var value = dict[path]
 		
@@ -1603,7 +1606,7 @@ static func get_setget_properties_of_class(cls_name: String) -> Variant:
 static func get_setget_properties(obj: Object) -> Variant:
 	return get_setget_properties_of_class(obj.get_class())
 
-static func get_setget_entry_name(class_props: Dictionary, property: String) -> String:
+func get_setget_entry_name(class_props: Dictionary, property: String) -> String:
 	if not class_props:
 		GDTUtils.printerr_stack("Got empty prop dict")
 		return ""
@@ -1623,7 +1626,7 @@ static func get_setget_entry_name(class_props: Dictionary, property: String) -> 
 	
 	return ""
 
-static func get_setget_property(obj: Object, property: String) -> Variant:
+func get_setget_property(obj: Object, property: String) -> Variant:
 	if not property:
 		GDTUtils.printerr_stack("Trying to get empty property of %s" % obj.get_class())
 		return
@@ -1670,7 +1673,7 @@ static func get_setget_property(obj: Object, property: String) -> Variant:
 
 	return obj.get(property)
 
-static func set_setget_property(obj: Object, property: String, value: Variant) -> void:
+func set_setget_property(obj: Object, property: String, value: Variant) -> void:
 	if not property:
 		GDTUtils.printerr_stack("Trying to set empty property of %s" % obj.get_class())
 		return
@@ -1745,7 +1748,7 @@ static func set_setget_property(obj: Object, property: String, value: Variant) -
 	if new_val != value:
 		GDTUtils.printerr_stack("Setting setget property failed: %s '%s'" % [obj.get_class(), property])
 
-static func get_setget_func_args_fragment(
+func get_setget_func_args_fragment(
 	source_args: Array,
 	prop_entry_name: String,
 	property: String,
@@ -1777,7 +1780,7 @@ static func get_setget_func_args_fragment(
 	
 	return res
 	
-static func get_setget_func_args(
+func get_setget_func_args(
 	method_entry: Dictionary,
 	prop_entry_name: String,
 	property: String, 
@@ -1799,7 +1802,7 @@ static func get_setget_func_args(
 		
 	return full_args
 
-static func _call_setget_entry_method(
+func _call_setget_entry_method(
 	obj: Object, 
 	prop_entry: Dictionary,
 	prop_entry_name: String,
@@ -1868,16 +1871,22 @@ static func validate_encoded_resource_integrity(dict: Dictionary) -> bool:
 	
 	return claimed_hash == real_hash
 
-static func get_ignored_properties(obj: Object) -> Array:
+func get_ignored_properties(obj: Object) -> Array:
+	var cls = obj.get_class()
+	
+	if cls in ignored_props_cache:
+		return ignored_props_cache[cls] 
+	
 	var res = []
 	
 	for key in IGNORED_PROPERTIES.keys():
 		if obj.is_class(key):
 			res.append_array(IGNORED_PROPERTIES[key])
 	
+	ignored_props_cache[cls] = res
 	return res
 
-static func is_setget_property(obj: Object, property: String) -> bool:
+func is_setget_property(obj: Object, property: String) -> bool:
 	var class_props = get_setget_properties(obj)
 	
 	if not class_props:
@@ -1894,7 +1903,10 @@ static func is_setget_property(obj: Object, property: String) -> bool:
 		
 	return false
 
-static func get_property_match_regex(path: String) -> RegEx:
+func get_property_match_regex(path: String) -> RegEx:
+	if path in regex_cache:
+		return regex_cache[path]
+	
 	var regex = RegEx.new()
 	
 	var err = regex.compile(
@@ -1907,9 +1919,11 @@ static func get_property_match_regex(path: String) -> RegEx:
 		GDTUtils.printerr_stack("Invalid regex: %s" % path)
 		return
 	
+	regex_cache[path] = regex
+	
 	return regex
 
-static func extract_setget_property_string_args(property: String, source: String) -> Array:
+func extract_setget_property_string_args(property: String, source: String) -> Array:
 	var regex = get_property_match_regex(source)
 	var res = regex.search(property)
 	
@@ -1918,7 +1932,7 @@ static func extract_setget_property_string_args(property: String, source: String
 		
 	return res.strings.slice(1)
 
-static func encode_resource(resource: Resource) -> Dictionary:
+func encode_resource(resource: Resource) -> Dictionary:
 	var res = {
 		"_gdtRes": ResourceType.LOCAL,
 		"props": {}
@@ -1946,7 +1960,7 @@ static func encode_resource(resource: Resource) -> Dictionary:
 	
 	return res
 
-static func decode_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
+func decode_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
 	if not is_encoded_resource(dict):
 		GDTUtils.printerr_stack("Provided dict isn't a valid resource dict")
 		return
@@ -1966,7 +1980,7 @@ static func decode_resource(dict: Dictionary, allow_unsafe := false) -> Resource
 	GDTUtils.printerr_stack("Unknown encoded resource type: %s" % tp)
 	return
 
-static func _decode_local_resource(dict: Dictionary) -> Resource:
+func _decode_local_resource(dict: Dictionary) -> Resource:
 	if not "class" in dict:
 		GDTUtils.printerr_stack("Cannot decode resource. 'class' missing")
 		return
@@ -1995,7 +2009,7 @@ static func _decode_local_resource(dict: Dictionary) -> Resource:
 	apply_property_dict(res, props)
 	return res
 
-static func _decode_file_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
+func _decode_file_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
 	if not "path" in dict:
 		GDTUtils.printerr_stack("Cannot load resource. 'path' missing.")
 		return
@@ -2018,7 +2032,7 @@ static func _decode_file_resource(dict: Dictionary, allow_unsafe := false) -> Re
 	
 	return loaded
 
-static func get_property_keys(obj: Object) -> Array[String]:
+func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
 	
 	var ignored = get_ignored_properties(obj)
@@ -2033,17 +2047,23 @@ static func get_property_keys(obj: Object) -> Array[String]:
 	for i in obj.get_property_list():
 		var ok := true
 		
-		for regex: RegEx in ignored_regex:
-			if regex.search(i["name"]):
-				ok = false
-				break
-
 		for usage in IGNORED_PROPERTY_USAGE_FLAGS:
 			if i["usage"] & usage:
 				ok = false
 				break
-
-		if not ok: continue
+		
+		if not ok:
+			continue
+		
+		# This is the performance culprit
+		for regex: RegEx in ignored_regex:
+			if regex.search(i["name"]):
+				ok = false
+				break
+		
+		if not ok: 
+			continue
+		
 		res.append(i.name)
 
 	return res

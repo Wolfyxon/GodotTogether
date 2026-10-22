@@ -233,7 +233,7 @@ func test_local_resource_encoding() -> bool:
 	var a = StandardMaterial3D.new()
 	a.albedo_texture = NoiseTexture2D.new()
 	
-	var encoded = GDTNodeSync.encode_resource(a)
+	var encoded = main.node_sync.encode_resource(a)
 	
 	if not encoded:
 		printerr("encoded is null")
@@ -243,7 +243,7 @@ func test_local_resource_encoding() -> bool:
 		printerr("Encoded not recognized as an encoded resource")
 		return false
 	
-	var decoded = GDTNodeSync.decode_resource(encoded)
+	var decoded = main.node_sync.decode_resource(encoded)
 	
 	if not decoded:
 		printerr("decoded is null")
@@ -276,8 +276,8 @@ func test_resource_encoding_setget_props() -> bool:
 	tset.add_occlusion_layer()
 	tset.set_occlusion_layer_light_mask(0, 2)
 	
-	var encoded: Dictionary = GDTNodeSync.encode_resource(tset)
-	var decoded: TileSet = GDTNodeSync.decode_resource(encoded, true)
+	var encoded: Dictionary = main.node_sync.encode_resource(tset)
+	var decoded: TileSet = main.node_sync.decode_resource(encoded, true)
 	
 	if not decoded:
 		printerr("Decoded is null")
@@ -320,13 +320,13 @@ func test_file_resource_encoding() -> bool:
 	
 	loaded = loaded as StandardMaterial3D
 	
-	var encoded = GDTNodeSync.encode_resource(loaded)
+	var encoded = main.node_sync.encode_resource(loaded)
 	
 	if not encoded:
 		printerr("Encoding failed")
 		return false
 	
-	var decoded = GDTNodeSync.decode_resource(encoded, true)
+	var decoded = main.node_sync.decode_resource(encoded, true)
 	
 	if not decoded:
 		printerr("Decoding failed")
@@ -501,8 +501,8 @@ func test_hash_dict() -> bool:
 	
 	# -- Unchanged -- #
 	
-	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
-	var h1_unchanged = GDTNodeSync.get_property_hash_dict(lbl)
+	var h1 = main.node_sync.get_property_hash_dict(lbl)
+	var h1_unchanged = main.node_sync.get_property_hash_dict(lbl)
 	
 	var diff_unchanged = GDTNodeSync.get_property_diff(h1, h1_unchanged)
 	
@@ -516,7 +516,7 @@ func test_hash_dict() -> bool:
 	lbl.visible = false
 	lbl.label_settings = LabelSettings.new()
 	
-	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h2 = main.node_sync.get_property_hash_dict(lbl)
 	
 	var diff2 = GDTNodeSync.get_property_diff(h1, h2)
 	var expected_diff2 = ["text", "visible", "label_settings"]
@@ -534,7 +534,7 @@ func test_hash_dict() -> bool:
 	
 	lbl.label_settings = LabelSettings.new()
 	
-	var h3 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h3 = main.node_sync.get_property_hash_dict(lbl)
 	
 	var diff3 = GDTNodeSync.get_property_diff(h2, h3)
 	var expected_diff3 = ["label_settings:."]
@@ -586,7 +586,7 @@ func test_ignored_properties() -> bool:
 	var node3d = Node3D.new()
 	created_nodes.append(node3d)
 	
-	var ignored = GDTNodeSync.get_ignored_properties(node3d)
+	var ignored = main.node_sync.get_ignored_properties(node3d)
 	var expected = ["owner", "multiplayer", "global_position", "global_transform"]
 	
 	for i in expected:
@@ -600,7 +600,7 @@ func test_property_keys() -> bool:
 	var node3d = Sprite2D.new()
 	created_nodes.append(node3d)
 	
-	var keys = GDTNodeSync.get_property_keys(node3d)
+	var keys = main.node_sync.get_property_keys(node3d)
 	
 	var essentials = ["name", "transform", "visible"]
 	var ignores = ["global_position"]
@@ -716,15 +716,15 @@ func test_basic_setget_props() -> bool:
 	]
 	
 	for path in non_setget:
-		if GDTNodeSync.is_setget_property(lbl, path):
+		if main.node_sync.is_setget_property(lbl, path):
 			printerr("Should not be recognized as setget: %s" % path)
 			return false
 	
-	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h1 = main.node_sync.get_property_hash_dict(lbl)
 	
 	lbl.add_theme_font_size_override("font_size", 42)
 	
-	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h2 = main.node_sync.get_property_hash_dict(lbl)
 	var diff = GDTNodeSync.get_property_diff(h1, h2)
 	
 	if diff.size() != 1:
@@ -738,11 +738,11 @@ func test_basic_setget_props() -> bool:
 		printerr("'%s' != '%s'" % [prop, expected_prop])
 		return false
 	
-	if not GDTNodeSync.is_setget_property(lbl, prop):
+	if not main.node_sync.is_setget_property(lbl, prop):
 		printerr("Property not reported as setget")
 		return false
 	
-	GDTNodeSync.set_setget_property(lbl, prop, 19)
+	main.node_sync.set_setget_property(lbl, prop, 19)
 	
 	var val = lbl.get_theme_font_size("font_size")
 	
@@ -752,7 +752,7 @@ func test_basic_setget_props() -> bool:
 	
 	var def = lbl.get_theme_default_font_size()
 	
-	GDTNodeSync.set_setget_property(lbl, prop, def)
+	main.node_sync.set_setget_property(lbl, prop, def)
 	
 	# Godot seems to reset it on its own after a frame now.
 	# This doesn't seem important
@@ -785,7 +785,7 @@ func test_setget_arg_extraction() -> bool:
 			var path = test["path"]
 			var exp_res = test["res"]
 			
-			var res = GDTNodeSync.extract_setget_property_string_args(path, source)
+			var res = main.node_sync.extract_setget_property_string_args(path, source)
 			
 			if res.size() != exp_res.size():
 				printerr("Mismatch: %s != %s" % [res, exp_res])
@@ -853,7 +853,7 @@ func test_setget_arg_processing() -> bool:
 			var property = test_props[i]
 			var exp_args = exp_arg_list[i]
 			
-			var res_args = GDTNodeSync.get_setget_func_args(entry["method"], entry_name, property)
+			var res_args = main.node_sync.get_setget_func_args(entry["method"], entry_name, property)
 			
 			if exp_args.size() != res_args.size():
 				printerr("Arg mismatch: '%s' %s != %s" % [property, res_args, exp_args])
@@ -870,14 +870,14 @@ func test_object_setget_props() -> bool:
 	var lbl = Label.new()
 	created_nodes.append(lbl)
 	
-	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h1 = main.node_sync.get_property_hash_dict(lbl)
 	
 	var style1 = StyleBoxFlat.new()
 	style1.bg_color = Color.RED
 	
 	lbl.add_theme_stylebox_override("normal", style1)
 	
-	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h2 = main.node_sync.get_property_hash_dict(lbl)
 	var diff = GDTNodeSync.get_property_diff(h1, h2)
 	
 	if diff.size() != 1:
@@ -891,14 +891,14 @@ func test_object_setget_props() -> bool:
 		printerr("'%s' != '%s'" % [prop, expected_prop])
 		return false
 	
-	if not GDTNodeSync.is_setget_property(lbl, prop):
+	if not main.node_sync.is_setget_property(lbl, prop):
 		printerr("Property not reported as setget")
 		return false
 	
 	var style2 = StyleBoxFlat.new()
 	style2.bg_color = Color.BLUE
 	
-	GDTNodeSync.set_setget_property(lbl, prop, style2)
+	main.node_sync.set_setget_property(lbl, prop, style2)
 	
 	var val = lbl.get_theme_stylebox("normal")
 	
@@ -925,28 +925,28 @@ func test_node_change_applying_deep_setget() -> bool:
 	created_nodes.append(tmap)
 	tmap.tile_set = tset
 	
-	var h1 = GDTNodeSync.get_property_hash_dict(tmap)
+	var h1 = main.node_sync.get_property_hash_dict(tmap)
 	
 	var source = TileSetAtlasSource.new()
 	source.texture = texture
 	tset.add_source(source)
 	
-	var h2 = GDTNodeSync.get_property_hash_dict(tmap)
+	var h2 = main.node_sync.get_property_hash_dict(tmap)
 	
-	var diff = GDTNodeSync.get_property_diff(h1, h2)
+	var diff = main.node_sync.get_property_diff(h1, h2)
 	
 	if not "tile_set:sources/0" in diff:
 		printerr("tile_set:sources/0 not found in diff")
 		return false
 	
-	var props = GDTNodeSync.get_select_property_dict(tmap, diff)
+	var props = main.node_sync.get_select_property_dict(tmap, diff)
 	
 	var tmap_output = TileMapLayer.new()
 	tmap_output.tile_set = TileSet.new()
 	
 	created_nodes.append(tmap_output)
 	
-	GDTNodeSync.apply_property_dict(tmap_output, props)
+	main.node_sync.apply_property_dict(tmap_output, props)
 	
 	if not tmap_output.tile_set:
 		printerr("TileSet not set")
@@ -993,15 +993,15 @@ func test_setget_remove() -> bool:
 	var prop = "tile_set:occlusion_layer_0/light_mask"
 	var sub_prop = prop.split(":")[1]
 	
-	if not GDTNodeSync.is_setget_property(tmap, prop):
+	if not main.node_sync.is_setget_property(tmap, prop):
 		printerr("Not recognized as setget: %s" % prop)
 		return false
 	
-	if not GDTNodeSync.is_setget_property(tmap.tile_set, sub_prop):
+	if not main.node_sync.is_setget_property(tmap.tile_set, sub_prop):
 		printerr("Not recognized as setget: %s" % sub_prop)
 		return false
 	
-	GDTNodeSync.apply_property_dict(tmap, {
+	main.node_sync.apply_property_dict(tmap, {
 		prop: null
 	})
 	
@@ -1025,7 +1025,7 @@ func test_setget_nullable_remove() -> bool:
 	tmap.tile_set.set_physics_layer_collision_mask(1, 7)
 	
 	# This is what happens when a physics layer gets removed
-	GDTNodeSync.apply_property_dict(tmap, {
+	main.node_sync.apply_property_dict(tmap, {
 		"tile_set:physics_layer_0/collision_layer": null,
 		"tile_set:physics_layer_0/collision_mask": null,
 		"tile_set:physics_layer_0/collision_priority": null,
@@ -1063,7 +1063,7 @@ func test_node_change_applying() -> bool:
 	lbl.label_settings = LabelSettings.new()
 	lbl.label_settings.font_size = 7
 	
-	var h1 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h1 = main.node_sync.get_property_hash_dict(lbl)
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color.RED
 	
@@ -1072,19 +1072,19 @@ func test_node_change_applying() -> bool:
 	lbl.label_settings = LabelSettings.new()
 	lbl.label_settings.font_color = Color.RED
 	
-	var h2 = GDTNodeSync.get_property_hash_dict(lbl)
+	var h2 = main.node_sync.get_property_hash_dict(lbl)
 	
 	var diff = GDTNodeSync.get_property_diff(h1, h2)
-	var props = GDTNodeSync.get_select_property_dict(lbl, diff)
+	var props = main.node_sync.get_select_property_dict(lbl, diff)
 	
 	var lbl_output = Label.new()
 	created_nodes.append(lbl_output)
-	GDTNodeSync.apply_property_dict(lbl_output, props)
+	main.node_sync.apply_property_dict(lbl_output, props)
 	
 	var has_setget = false
 	
 	for i in diff:
-		if GDTNodeSync.is_setget_property(lbl, i):
+		if main.node_sync.is_setget_property(lbl, i):
 			has_setget = true
 			break
 	
@@ -1112,7 +1112,7 @@ func test_node_change_applying() -> bool:
 		printerr("'normal' stylebox override not set")
 		return false
 	
-	var style_output = GDTNodeSync.get_setget_property(lbl_output, "theme_override_styles/normal")
+	var style_output = main.node_sync.get_setget_property(lbl_output, "theme_override_styles/normal")
 	
 	if not style_output:
 		printerr("Stylebox is null")
