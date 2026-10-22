@@ -159,7 +159,7 @@ static func compare_dicts(
 			changed_paths.append(key)
 			continue
 			
-		if val_a is Dictionary and val_b is Dictionary and depth > 0:
+		if depth > 0 and typeof(val_a) == TYPE_DICTIONARY and typeof(val_b) == TYPE_DICTIONARY:
 			var sub_changes = compare_dicts(val_a, val_b, separator, depth - 1)
 			append_array_prefixed(changed_paths, sub_changes, key + separator)
 			continue
