@@ -40,13 +40,16 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"multiplayer"
 	],
 	"AnimationPlayer": [
-		"current_animation"
+		"current_animation",
+		"current_animation_length",
+		"current_animation_position"
 	],
 	"Control": [
 		"offset_left", "offset_right",
 		"offset_top", "offset_bottom",
 		"pivot_offset_ratio",
 		"global_position",
+		"global_rotation_degrees",
 		"rotation_degrees"
 	],
 	"Node2D": [
@@ -58,6 +61,7 @@ const IGNORED_PROPERTIES: Dictionary = {
 		
 		"global_position",
 		"global_rotation",
+		"global_rotation_degrees",
 		"global_transform",
 		"global_scale",
 		"global_skew"
@@ -2036,13 +2040,17 @@ func get_property_keys(obj: Object) -> Array[String]:
 	var res: Array[String] = []
 	
 	var ignored = get_ignored_properties(obj)
-	var ignored_regex = []
 	
-	for i in ignored:
-		var regex = get_property_match_regex(i)
-		
-		if regex:
-			ignored_regex.append(regex)
+	# NOTE: If RegEx ever needs to be enabled, it first needs
+	# Significant optimizations as it's terribly slow
+	
+	#var ignored_regex = []
+	
+	#for i in ignored:
+		#var regex = get_property_match_regex(i)
+		#
+		#if regex:
+			#ignored_regex.append(regex)
 	
 	for i in obj.get_property_list():
 		var ok := true
@@ -2055,11 +2063,13 @@ func get_property_keys(obj: Object) -> Array[String]:
 		if not ok:
 			continue
 		
-		# This is the performance culprit
-		for regex: RegEx in ignored_regex:
-			if regex.search(i["name"]):
-				ok = false
-				break
+		if i["name"] in ignored:
+			continue
+		
+		#for regex: RegEx in ignored_regex:
+		#	if regex.search(i["name"]):
+		#		ok = false
+		#		break
 		
 		if not ok: 
 			continue
