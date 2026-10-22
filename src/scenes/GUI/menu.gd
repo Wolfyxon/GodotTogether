@@ -175,7 +175,10 @@ func _join() -> void:
 	
 	await main.client.auth_succeed
 	
-	while not main.client.is_fully_synced:
+	if not main.client.is_active():
+		return
+	
+	while not main.client.is_fully_synced and main.client.is_active():
 		if main.file_sync.last_received_file:
 			set_session_init_cover(
 				"%s (%s / %s)" % [
@@ -185,9 +188,12 @@ func _join() -> void:
 				]
 			)
 		else:
-			set_session_init_cover("Downloading project...")
+			set_session_init_cover("Starting project download...")
 		
 		await get_tree().process_frame
+	
+	if not main.client.is_active():
+		return
 	
 	_joined()
 
@@ -231,6 +237,7 @@ func main_menu() -> void:
 	$sessionInit/start/join.hide()
 	$session.hide()
 	
+	set_session_init_cover()
 	host_settings.load_settings()
 
 func session_start_menu(tab: String = "") -> void:
