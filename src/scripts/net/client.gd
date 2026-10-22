@@ -151,9 +151,42 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 	
 	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
+func check_disk_space_for_downloads(data: GDTServerAuthResponse) -> bool:
+	var dir = DirAccess.open("res://")
+	
+	if not dir:
+		GDTUtils.printerr_stack("Cannot open project directory. Skipping space check.")
+		return true
+	
+	var space = dir.get_space_left()
+	
+	if space <= 0: # Not supported
+		return true
+	
+	var download_size = data.get_total_file_size()
+	var required = space + GodotTogether.MIN_DISK_SPACE
+	
+	if download_size > required:
+		main.get_gui().alert(
+			GDTUtils.join([
+				"You have %s left on your disk." % String.humanize_size(space),
+				"The project is %s." % String.humanize_size(download_size),
+				"You need at least %s (project size + safety buffer) of free space to safely download the project." % String.humanize_size(required)
+			], "\n"),
+			"Not enough space to download project!"
+		)
+		
+		main.close_connection()
+		return false
+	
+	return true
+
 func download_project() -> void:
 	if not server_data:
 		GDTUtils.printerr_stack("Cannot download project. server_data null")
+		return
+	
+	if not check_disk_space_for_downloads(server_data):
 		return
 	
 	EditorInterface.get_selection().clear()

@@ -17,6 +17,8 @@ enum Permission {
 const PROTOCOL_VERSION = 2
 const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
 
+const MIN_DISK_SPACE = 1024 * 1024 * 500 + 1 # 500 MB
+
 const ENABLE_MULTIPLAYER_OVERRIDE = true
 const ENABLE_CUSTOM_LOGGER = true
 
@@ -81,6 +83,9 @@ func _enter_tree() -> void:
 	if not create_lock():
 		return
 	
+	if not check_disk_space():
+		return
+	
 	await get_tree().process_frame
 	
 	if settings.get_setting("dev/run_tests_on_start"):
@@ -123,6 +128,7 @@ func _exit_tree() -> void:
 		get_tree().set_multiplayer(SceneMultiplayer.new(), GDTMultiplayerExtension.ROOT_PATH)
 
 func init_components() -> void:
+	
 	components = [
 		client, server, dual,
 		file_sync, node_sync, 
@@ -186,6 +192,32 @@ func get_global_rpc_checksum() -> int:
 			res += GDTUtils.get_rpc_checksum(i)
 	
 	return res
+
+func check_disk_space() -> bool:
+	var dir = DirAccess.open("res://")
+	
+	if not dir:
+		GDTUtils.printerr_stack("Unable to open directory 'res://'. Skipping disk space check.")
+		return true
+	
+	var space = dir.get_space_left()
+	
+	if space <= 0: # Not supporteed
+		return true
+	
+	if space > MIN_DISK_SPACE:
+		return true
+	
+	var msg = GDTUtils.join([
+		"You have %s left on the disk where the project is stored." % String.humanize_size(space),
+		"To make sure your system remains bootable, the plugin needs at least %s " +
+		"to not fill up the disk with downloaded projects." % String.humanize_size(MIN_DISK_SPACE),
+		"Please clean up some files."
+	], "\n")
+	
+	gui.get_menu_window().set_error_of_death("Not enough disk space!", msg)
+	
+	return false
 
 func post_check_components() -> void:
 	await get_tree().create_timer(0.25).timeout
