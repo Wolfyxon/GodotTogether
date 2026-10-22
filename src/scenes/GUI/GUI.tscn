@@ -1161,3 +1161,4 @@ visible = false
 [connection signal="pressed" from="mainMenu/settingsError/actions/reset" to="mainMenu/settingsError" method="_on_reset_pressed"]
 [connection signal="pressed" from="mainMenu/settingsError/actions/restart" to="mainMenu/settingsError" method="_on_restart_pressed"]
 [connection signal="pressed" from="mainMenu/about/main/btnClose" to="mainMenu/about" method="hide"]
+[connection signal="popup_hide" from="DevMenu" to="." method="_on_dev_menu_popup_hide"]

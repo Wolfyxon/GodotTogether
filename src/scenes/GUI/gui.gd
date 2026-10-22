@@ -159,3 +159,9 @@ func visuals_available() -> bool:
 func _on_alert_cooldown_timeout() -> void:
 	if alert_heat > 0:
 		alert_heat -= 1
+
+func _on_dev_menu_popup_hide() -> void:
+	var menu_window = get_menu_window()
+	
+	if menu_window.visible:
+		menu_window.show.call_deferred()
