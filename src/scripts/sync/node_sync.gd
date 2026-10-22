@@ -257,8 +257,9 @@ const SETGET_PROPERTIES = {
 
 const PROPERTY_SEPARATOR = ":"
 
-var change_timer = Timer.new()
-var rescan_timer = Timer.new()
+var change_timer := Timer.new()
+var rescan_timer := Timer.new()
+var misc_timer := Timer.new()
 
 var node_data_dict = {
 	# [node]: {
@@ -288,6 +289,8 @@ var last_change_time: float = 0.0
 var recent_change_count: int = 0
 var scan_durations: Array = []
 var last_object_cache_size := 0
+
+var performance_warning_shown = false
 
 func _ready() -> void:
 	var editor_ur = EditorInterface.get_editor_undo_redo()
@@ -332,6 +335,36 @@ func _cycle() -> void:
 			return
 	
 	check_changes()
+
+func _check_performance() -> void:
+	if not main: return
+	
+	var avg_time = get_avg_scan_time()
+	
+	var settings = main.get_settings()
+	if not settings: return
+	
+	if(
+		avg_time > 0.07 and 
+		not performance_warning_shown and 
+		settings.get_setting("sync/node_scan_mode") != NodeScanMode.ON_CHANGE
+	):
+		performance_warning_shown = true
+		
+		var toaster = EditorInterface.get_editor_toaster()
+		
+		var msg = GDTUtils.join([
+				"You are lagging!",
+				"Please change node scan mode to 'On change' in",
+				"GodotTogether > Settings > Performance",
+			], "\n")
+		
+		push_warning(msg)
+		
+		toaster.push_toast(
+			msg,
+			EditorToaster.Severity.SEVERITY_WARNING
+		)
 
 # Investors! Look! We're using AI!!!! AI!!!! LOOK IT'S AI!!!
 # AI POWERED PERFORMANCE BOOSTING!!!!
@@ -381,6 +414,11 @@ func setup_timers() -> void:
 	rescan_timer.timeout.connect(observe_current_scene)
 	add_child(rescan_timer)
 	rescan_timer.start()
+	
+	misc_timer.wait_time = 5
+	misc_timer.timeout.connect(_check_performance)
+	add_child(misc_timer)
+	misc_timer.start()
 	
 	update_timer_wait_times()
 
