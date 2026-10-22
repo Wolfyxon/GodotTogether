@@ -166,7 +166,7 @@ static func read_chunks_callback(path: String, fn: Callable, chunk_size := CHUNK
 		if size <= 0:
 			break
 		
-		fn.call(buf, current_pos)
+		await fn.call(buf, current_pos)
 		current_pos += size
 	
 	file.close()
@@ -314,6 +314,17 @@ func server_broadcast_file_at_path(path: String, sender := 0) -> void:
 func server_broadcast_file_delete(path: String, sender := 0) -> void:
 	main.server.auth_rpc(delete_file, [path], [sender])
 
+func server_send_file(peer_id: int, path: String) -> void:
+	read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
+		write_file.rpc_id(
+			peer_id, 
+			path, 
+			buf, 
+			cursor, 
+			cursor == 0
+		)
+	)
+
 func client_send_file_to_server(path: String) -> void:
 	read_chunks_callback(path, func(buf: PackedByteArray, i: int):
 		_c2s_request_file_write.rpc_id(
@@ -351,15 +362,7 @@ func _c2s_request_file(path: String) -> void:
 	if not FileAccess.file_exists(path):
 		return
 	
-	GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
-		write_file.rpc_id(
-			id, 
-			path, 
-			buf, 
-			cursor, 
-			cursor == 0
-		)
-	)
+	server_send_file(id, path)
 
 @rpc("any_peer", "reliable")
 func _c2s_request_file_write(
