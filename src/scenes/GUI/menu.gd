@@ -104,6 +104,8 @@ func _host() -> void:
 	
 	$session/top/status.text = "You are hosting"
 	$session/top/end.text = "Stop server"
+	$session/top/end.tooltip_text = "Stop hosting, ending the session for everyone"
+	
 
 func _join() -> void:
 	var ip: String = join_ip_input.text
@@ -202,6 +204,7 @@ func _joined() -> void:
 	
 	$session/top/status.text = "Connected"
 	$session/top/end.text = "Disconnect"
+	$session/top/end.tooltip_text = "Leave the session."
 
 func set_session_init_cover(text: String = "") -> void:
 	if text == "":
