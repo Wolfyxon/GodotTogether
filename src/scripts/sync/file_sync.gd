@@ -333,13 +333,18 @@ func _c2s_request_file(path: String) -> void:
 	if not main.server.validate_c2s():
 		return
 	
-	if not user: return
-	if not user.authenticated: return
+	if not user:
+		GDTUtils.printerr_stack("Got file request from peer without user: %s" % id) 
+		return
+	
+	if not user.authenticated: 
+		GDTUtils.printerr_stack("File request from unauthenticated user: %s (%s)" % [user.name, id])
+		return
 	
 	if not GDTValidator.is_path_safe(path):
 		GDTUtils.printerr_stack(
 			"User %s (%s) tried to request file at unsafe path: %s" %
-			[user.name, user.id, path]
+			[user.name, id, path]
 		)
 		return
 	
