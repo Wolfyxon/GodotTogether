@@ -1452,7 +1452,7 @@ static func fill_property_hash_dict(
 		
 		var value = obj[key]
 		
-		if value is Object and depth > 0:
+		if depth > 0 and typeof(value) == TYPE_OBJECT and value:
 			if value in _cache:
 				res[key] = _cache[value]
 				continue
