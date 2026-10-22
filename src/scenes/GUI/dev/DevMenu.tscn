@@ -35,10 +35,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 838.0
-offset_bottom = 513.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 832.0
+offset_bottom = 507.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -186,39 +186,31 @@ metadata/setting = "dev/always_scan_nodes"
 
 [node name="fileSyncOff" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=387970416]
 layout_mode = 2
-tooltip_text = "Disables real time file synchronization.
-Helps test the plugin more quickly when file syncing isn't necessary."
 text = "Disable file sync"
 metadata/setting = "dev/disable_real_time_file_sync"
 
 [node name="nodeSyncOff" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1236908610]
 layout_mode = 2
-tooltip_text = "Disables the core plugin's feature: scanning for changes to replicate.
-Helps test basic networking when this feature isn't needed."
 text = "Disable node sync"
 metadata/setting = "dev/disable_real_time_node_sync"
 
 [node name="restartBroadcast" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=1370068016]
 layout_mode = 2
-tooltip_text = "Do not use when using the plugin normally. This is meant for easier development. 
-Enable sending and receiving a restart signal that restarts the plugin for everyone in the server with this setting enabled.
-"
 text = "Enable restart broadcast"
 metadata/setting = "dev/restart_broadcast"
 
 [node name="fileReloadOutsideSessions" type="CheckButton" parent="main/scroll/vbox/settings/vbox" unique_id=724194430]
 layout_mode = 2
-tooltip_text = "Do not use when using the plugin normally. This is meant for easier development. 
-Enable sending and receiving a restart signal that restarts the plugin for everyone in the server with this setting enabled.
-"
 text = "Allow file reload outside sessions"
 metadata/setting = "dev/allow_file_reload_outside_sessions"
 
 [node name="prints" type="FoldableContainer" parent="main/scroll/vbox" unique_id=282098678]
 layout_mode = 2
+folded = true
 title = "Data printing"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/prints" unique_id=557890141]
+visible = false
 layout_mode = 2
 
 [node name="lblNodes" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=1814752883]
