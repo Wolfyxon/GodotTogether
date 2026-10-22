@@ -13,6 +13,11 @@ signal users_listed(users: Array[GDTUser])
 signal user_script_changed(user: GDTUser, path: String)
 signal user_scene_changed(user: GDTUser, path: String)
 
+enum NetChannel {
+	MAIN,
+	USER_STATE
+}
+
 var camera: Camera3D
 var users: Array[GDTUser]
 
@@ -306,7 +311,7 @@ func create_avatar_2d(user: GDTUser) -> GDTAvatar2D:
 	
 	return avatar
 
-@rpc("any_peer", "unreliable_ordered")
+@rpc("any_peer", "unreliable_ordered", "call_remote", NetChannel.USER_STATE)
 func update_2d_avatar(position: Vector2) -> void:
 	if not main: return
 	
@@ -315,7 +320,7 @@ func update_2d_avatar(position: Vector2) -> void:
 	
 	marker.global_position = position
 
-@rpc("any_peer", "unreliable_ordered")
+@rpc("any_peer", "unreliable_ordered", "call_remote", NetChannel.USER_STATE)
 func update_3d_avatar(position: Vector3, rotation: Vector3) -> void:
 	if not main: return
 	if position == Vector3.ZERO and rotation == Vector3.ZERO: return
@@ -333,7 +338,7 @@ func user_color_to_selection_color(color: Color) -> Color:
 			0.25
 		)
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_remote", NetChannel.USER_STATE)
 func receive_selection(node_paths: Array, scene_path: String) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = get_user_by_id(id)
@@ -363,7 +368,7 @@ func receive_selection(node_paths: Array, scene_path: String) -> void:
 		
 		item.set_custom_bg_color(0, color)
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_remote", NetChannel.USER_STATE)
 func receive_current_scene(path: String) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = get_user_by_id(id)
@@ -375,7 +380,7 @@ func receive_current_scene(path: String) -> void:
 	user.current_scene = path
 	update_scene_colors()
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_remote", NetChannel.USER_STATE)
 func receive_current_script(path: String) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = get_user_by_id(id)
