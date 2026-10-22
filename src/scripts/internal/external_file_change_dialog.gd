@@ -114,6 +114,9 @@ func ignore_without_saving() -> void:
 func reload() -> void:
 	push_warning("[GodotTogether] Reloading external changes. This can cause a crash!")
 	
+	for i in get_paths():
+		push_warning("- ", i)
+	
 	await node.get_tree().process_frame
 	node.confirmed.emit()
 
