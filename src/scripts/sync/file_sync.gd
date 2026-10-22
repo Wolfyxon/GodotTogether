@@ -153,7 +153,11 @@ func download_project_files(server_info: GDTServerAuthResponse) -> void:
 		if i % 16 == 0:
 			await tree.create_timer(0.05).timeout
 
-static func read_chunks_callback(path: String, fn: Callable, chunk_size := CHUNK_SIZE) -> void:
+static func read_chunks_callback(
+	path: String, 
+	fn: Callable, 
+	chunk_size := CHUNK_SIZE
+) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	
 	if not file:
@@ -325,6 +329,12 @@ func server_broadcast_file_delete(path: String, sender := 0) -> void:
 
 func server_send_file(peer_id: int, path: String) -> void:
 	read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
+		if not main.server.is_active():
+			return
+		
+		if is_file_net_logging_enabled():
+			print("Sending chunk to client: %s %s pos: %s" % [peer_id, path, cursor])
+		
 		write_file.rpc_id(
 			peer_id, 
 			path, 
@@ -332,6 +342,9 @@ func server_send_file(peer_id: int, path: String) -> void:
 			cursor, 
 			cursor == 0
 		)
+		
+		if cursor % 1024 == 0 and main.server.is_active():
+			await get_tree().process_frame
 	)
 
 func client_send_file_to_server(path: String) -> void:
