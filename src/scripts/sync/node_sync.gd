@@ -293,19 +293,10 @@ func _ready() -> void:
 	var editor_ur = EditorInterface.get_editor_undo_redo()
 	editor_ur.history_changed.connect(_editor_undo_redo_changed)
 	
-	update_timer_wait_times()
 	main.get_settings().settings_changed.connect(update_timer_wait_times)
-	
-	change_timer.timeout.connect(_cycle)
-	add_child(change_timer)
-	change_timer.start()
-	
-	rescan_timer.wait_time = 1
-	rescan_timer.timeout.connect(observe_current_scene)
-	add_child(rescan_timer)
-	rescan_timer.start()
-	
 	EditorInterface.get_selection().selection_changed.connect(_got_changes)
+	
+	setup_timers()
 	
 	start()
 	report_ready()
@@ -380,6 +371,18 @@ func check_adaptive_scan_performance() -> bool:
 func _got_changes() -> void:
 	last_change_time = Time.get_unix_time_from_system()
 	recent_change_count += 1
+
+func setup_timers() -> void:
+	change_timer.timeout.connect(_cycle)
+	add_child(change_timer)
+	change_timer.start()
+	
+	rescan_timer.wait_time = 1
+	rescan_timer.timeout.connect(observe_current_scene)
+	add_child(rescan_timer)
+	rescan_timer.start()
+	
+	update_timer_wait_times()
 
 func update_timer_wait_times() -> void:
 	change_timer.wait_time = main.get_settings().get_setting("sync/node_refresh_rate")
