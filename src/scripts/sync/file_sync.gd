@@ -132,6 +132,9 @@ func download_project_files(server_info: GDTServerAuthResponse) -> void:
 	var paths = server_info.get_files_to_download()
 	
 	for i in paths.size():
+		if not main.is_session_active():
+			return
+		
 		var path = paths[i]
 		var file_size = server_info.get_file_size(path)
 		var current_downloaded_bytes = total_received_bytes

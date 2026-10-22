@@ -165,7 +165,8 @@ func download_project() -> void:
 	
 	await main.file_sync.download_project_files(server_data)
 	
-	_project_files_downloaded()
+	if is_active():
+		_project_files_downloaded()
 
 @rpc("authority", "reliable")
 func _s2c_receive_kick_reason(reason: GDTUser.DisconnectReason) -> void:
