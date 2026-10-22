@@ -1443,7 +1443,7 @@ static func get_property_hash_dict(
 static func fill_property_hash_dict(
 	res: Dictionary, 
 	obj: Object, 
-	depth := 64,
+	depth := DEFAULT_HASHING_DEPTH,
 	_cache := {}
 ) -> void:
 	for key in get_property_keys(obj):
