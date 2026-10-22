@@ -20,6 +20,8 @@ func _process(_delta: float) -> void:
 	$nodeCount.text = "Total nodes: %s" % main.node_sync.node_data_dict.size()
 	$nodeTime.text = "Avg node scan time: %s s" % main.node_sync.get_avg_scan_time()
 	$nodeObjCache.text = "Last object cache size: %s" % main.node_sync.last_object_cache_size
+	$nodeRegexCache.text = "Property regex cache size: %s" % main.node_sync.regex_cache.size()
+	$nodeIgnoreCache.text = "Ignored property cache size: %s" % main.node_sync.ignored_props_cache.size()
 	$nodeCanSync.text = "Is allowed to run: %s" % main.node_sync.can_sync_nodes()
 	
 	$fileCount.text = "Total files: %s" % main.file_sync.file_mod_times.size()

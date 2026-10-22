@@ -282,6 +282,14 @@ text = "Total nodes:"
 layout_mode = 2
 text = "Last object cache size:"
 
+[node name="nodeRegexCache" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=311598308]
+layout_mode = 2
+text = "Regex cache size:"
+
+[node name="nodeIgnoreCache" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=117494964]
+layout_mode = 2
+text = "Ignored property cache size:"
+
 [node name="nodeCanSync" type="Label" parent="main/scroll/vbox/sync/vbox" unique_id=901235950]
 layout_mode = 2
 text = "Allowed to run: ?"
