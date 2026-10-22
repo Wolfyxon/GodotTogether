@@ -164,6 +164,9 @@ func broadcast_selection() -> void:
 	if not main.is_session_active():
 		return
 	
+	if main.client.is_active() and not main.client.is_fully_synced:
+		return
+	
 	var root = EditorInterface.get_edited_scene_root()
 	if not root: return
 	
@@ -264,6 +267,9 @@ func broadcast_avatars() -> void:
 	if not main: return
 	
 	if not main.is_session_active():
+		return
+		
+	if main.client.is_active() and not main.client.is_fully_synced:
 		return
 	
 	var viewport_3d = EditorInterface.get_editor_viewport_3d()
