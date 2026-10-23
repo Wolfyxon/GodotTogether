@@ -202,7 +202,7 @@ func test_plugin_version() -> bool:
 		printerr("Invalid plugin version %s")
 		return false
 	
-	if not FileAccess.file_exists("res://addons/GodotTogether/.dev") and ver == "unreleased":
+	if not main.is_dev_version() and ver == "unreleased":
 		printerr("The plugin version must not be 'unreleased' in a release build")
 		return false
 	

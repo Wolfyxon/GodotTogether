@@ -288,6 +288,9 @@ func is_session_active() -> bool:
 		)
 	)
 
+func is_dev_version() -> bool:
+	return FileAccess.file_exists("res://addons/GodotTogether/.dev")
+
 func setup_menu_button() -> void:
 	add_control_to_container(EditorPlugin.CONTAINER_TOOLBAR, button)
 	
