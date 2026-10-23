@@ -143,6 +143,7 @@ func is_peer_connected(truly_connected := false) -> bool:
 
 func is_local() -> bool:
 	if not main:
+		GDTUtils.printerr_stack("Unable to check if user is local. main is null")
 		return false
 	
 	return id == main.multiplayer.get_unique_id()
@@ -201,11 +202,12 @@ static func from_dict(dict: Dictionary) -> GDTUser:
 	
 	return user
 
-static func from_dict_bulk(dicts: Array) -> Array[GDTUser]:
+static func from_dict_bulk(dicts: Array, _main: GodotTogether = null) -> Array[GDTUser]:
 	var res: Array[GDTUser] = []
 	
 	for i in dicts:
 		var user = GDTUser.from_dict(i)
+		user.main = _main
 		
 		if user:
 			res.append(user)

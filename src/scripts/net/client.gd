@@ -224,7 +224,7 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 		GDTUtils.printerr_stack("Unable to decode response: %s" % data_dict)
 		return
 	
-	var users = GDTUser.from_dict_bulk(server_data.users)
+	var users = GDTUser.from_dict_bulk(server_data.users, main)
 	main.dual._users_listed(users)
 	
 	auth_succeed.emit()
