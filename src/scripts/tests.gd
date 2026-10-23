@@ -911,7 +911,7 @@ func test_node_change_applying_deep_setget() -> bool:
 	var texture = load("res://icon.svg")
 	
 	if not texture:
-		printerr("res://icon.svg doesn't exist in project. The test cannot continue")
+		push_warning("res://icon.svg doesn't exist in project. The test cannot continue")
 		return true
 	
 	var tmap = TileMapLayer.new()
