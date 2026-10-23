@@ -2034,12 +2034,7 @@ func get_property_keys(obj: Object) -> Array[String]:
 			#ignored_regex.append(regex)
 	
 	for i in obj.get_property_list():
-		var ok := true
-		
 		if i.name != "name" and not i.usage & PROPERTY_USAGE_STORAGE:
-			continue
-		
-		if not ok:
 			continue
 		
 		if i.name in ignored:
@@ -2049,9 +2044,6 @@ func get_property_keys(obj: Object) -> Array[String]:
 		#	if regex.search(i["name"]):
 		#		ok = false
 		#		break
-		
-		if not ok: 
-			continue
 		
 		res.append(i.name)
 
