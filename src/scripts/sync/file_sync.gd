@@ -6,7 +6,7 @@ signal scan_started
 signal scan_complete
 signal received_file(path: String, size: int, position: int)
 
-const CHUNK_SIZE = 1024 * 500 # 500 kB
+const CHUNK_SIZE = 1024 * 100 # 100 kB
 const MAX_SCRIPT_SIZE = 1024 * 1024 * 3 # 3 MB
 
 var scan_timer = Timer.new()
@@ -331,6 +331,9 @@ func server_broadcast_file_delete(path: String, sender := 0) -> void:
 	main.server.auth_rpc(delete_file, [path], [sender])
 
 func server_send_file(peer_id: int, path: String) -> void:
+	var data = {"i": 0}
+	var tree = get_tree()
+	
 	read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
 		if not main.server.is_active():
 			return false
@@ -352,8 +355,13 @@ func server_send_file(peer_id: int, path: String) -> void:
 			cursor == 0
 		)
 		
-		var wait_time = (buf.size() / (1024.0 * 1024.0)) * 0.01
-		await get_tree().create_timer(wait_time).timeout
+		if data.i % 16 == 0:
+			await tree.create_timer(0.5).timeout
+		
+		if data.i % 64 == 0:
+			await tree.create_timer(1).timeout
+		
+		data.i += 1
 	)
 
 func client_send_file_to_server(path: String) -> void:
