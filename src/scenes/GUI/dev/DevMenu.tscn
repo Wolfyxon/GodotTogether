@@ -353,6 +353,23 @@ visible = false
 layout_mode = 2
 text = "Create chunkable tool script"
 
+[node name="info" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1898324454]
+layout_mode = 2
+folded = true
+title = "Info"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/info" unique_id=1816892436]
+visible = false
+layout_mode = 2
+
+[node name="version" type="Label" parent="main/scroll/vbox/info/vbox" unique_id=2136681120]
+layout_mode = 2
+text = "Version name: error"
+
+[node name="dev" type="Label" parent="main/scroll/vbox/info/vbox" unique_id=869376440]
+layout_mode = 2
+text = "Is dev (source code) version: error"
+
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
 size_flags_horizontal = 3
