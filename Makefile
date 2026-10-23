@@ -23,6 +23,8 @@ release: build
 	@echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	@echo " Make sure create a .gdsig signature if you're publishing this!"
 	@echo " Otherwise auto update will NOT work!"
+	@echo ""
+	@echo "Also make sure the plugin version is valid and not 'unreleased'."
 	@echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	@echo ""
 
