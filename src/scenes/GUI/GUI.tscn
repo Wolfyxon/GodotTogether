@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bsgcxdfojdd82" path="res://addons/GodotTogether/src/img/hidden.svg" id="7_1sjc5"]
 [ext_resource type="Texture2D" uid="uid://b2srdea385vtr" path="res://addons/GodotTogether/src/img/server.svg" id="7_jfeym"]
 [ext_resource type="Script" uid="uid://42xnckjjvo6" path="res://addons/GodotTogether/src/scenes/GUI/users.gd" id="7_nhpql"]
+[ext_resource type="Texture2D" uid="uid://n5k2mwbl3kuo" path="res://addons/GodotTogether/src/img/pumpkin.png" id="8_22oqj"]
 [ext_resource type="PackedScene" uid="uid://j86rllgmi5d0" path="res://addons/GodotTogether/src/scenes/GUI/serverSettings/serverSettings.tscn" id="8_jfeym"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="9_4c4b3"]
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/user_ui_entry.gd" id="9_ymxdp"]
@@ -46,7 +47,6 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -97,6 +97,20 @@ text = "Only supported on Godot stable"
 [node name="sessionInit" type="Control" parent="mainMenu/main" unique_id=346473724]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="pumpkin" type="TextureRect" parent="mainMenu/main/sessionInit" unique_id=279984578]
+visible = false
+texture_filter = 1
+custom_maximum_size = Vector2(200, 200)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -105.98047
+offset_right = 102.0
+grow_vertical = 0
+texture = ExtResource("8_22oqj")
+stretch_mode = 5
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=1491207414]
 visible = false
@@ -759,6 +773,7 @@ metadata/_tab_index = 2
 autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
+visible = false
 offset_left = 25.0
 offset_top = 25.0
 offset_right = 945.0

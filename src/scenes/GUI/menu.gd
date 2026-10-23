@@ -27,6 +27,8 @@ func _ready() -> void:
 	await get_tree().process_frame
 	
 	if main:
+		$sessionInit/pumpkin.visible = main.extras and main.extras.is_halloween()
+		
 		main_menu()
 		
 		main.updater.update_detected.connect(_update_available, CONNECT_ONE_SHOT)
