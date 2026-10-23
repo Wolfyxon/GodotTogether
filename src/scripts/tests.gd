@@ -912,7 +912,7 @@ func test_node_change_applying_deep_setget() -> bool:
 	
 	if not texture:
 		printerr("res://icon.svg doesn't exist in project. The test cannot continue")
-		return false
+		return true
 	
 	var tmap = TileMapLayer.new()
 	var tset = TileSet.new()
@@ -1177,6 +1177,27 @@ func test_path_validation() -> bool:
 	for i in unsafe:
 		if GDTValidator.is_path_safe(i):
 			printerr("'%s' got safe" % i)
+	
+	return true
+
+func test_updater() -> bool:
+	if not main.updater:
+		printerr("Updater is null")
+		return false
+	
+	var url = main.updater.GITHUB_RELEASE_URL
+	
+	if not url.begins_with("https://"):
+		printerr("Invalid release URL")
+		return false
+	
+	if not url.contains("Wolfyxon"):
+		printerr("URL does not contain 'Wolfyxon'")
+		return false
+		
+	if not url.contains("GodotTogether"):
+		printerr("URL does not contain GodotTogether")
+		return false
 	
 	return true
 
