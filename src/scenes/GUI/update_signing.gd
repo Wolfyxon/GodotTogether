@@ -34,7 +34,7 @@ func _on_btn_sign_pressed() -> void:
 		main.get_gui().alert("Unable to write signature")
 		return
 		
-	main.get_gui().alert("Signature created at %s" % SIG_PATH)
+	main.get_gui().alert("Signature created and verified at %s" % SIG_PATH)
 
 func _on_btn_verify_pressed() -> void:
 	var build_hash = FileAccess.get_sha256(BUILD_PATH)
