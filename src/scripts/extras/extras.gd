@@ -16,7 +16,7 @@ func is_halloween() -> bool:
 	return (
 		(
 			date["month"] == 10 and
-			date["day"] > 30
+			date["day"] > 20
 		) or
 		(
 			date["month"] == 11 and
