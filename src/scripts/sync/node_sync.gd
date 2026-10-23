@@ -360,7 +360,10 @@ func check_adaptive_scan_performance() -> bool:
 	if avg_time > 0.1 and delay < 2:
 		return false
 	
-	if avg_time > 0.04 and delay < 0.25:
+	if avg_time > 0.05 and delay < 0.5:
+		return false
+	
+	if avg_time > 0.03 and delay < 0.25:
 		return false
 	
 	if avg_time > 0.02 and delay < 0.1:
