@@ -426,7 +426,7 @@ func check_changes(force_full := false) -> void:
 	
 	var sel = EditorInterface.get_selection().get_selected_nodes()
 	var now = Time.get_unix_time_from_system()
-	var scan_whole = force_full or (now - last_whole_scene_scan_time) > 2
+	var scan_whole = force_full or (now - last_whole_scene_scan_time) > 5
 	
 	if scan_whole:
 		last_whole_scene_scan_time = now
