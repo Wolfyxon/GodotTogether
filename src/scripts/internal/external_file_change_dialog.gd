@@ -124,7 +124,7 @@ func reload() -> void:
 	await node.get_tree().process_frame
 	node.confirmed.emit()
 
-func get_paths() -> Array:
+func get_raw_paths() -> Array:
 	var res = []
 	var root = tree.get_root()
 	
@@ -133,5 +133,32 @@ func get_paths() -> Array:
 	
 	for i in root.get_children():
 		res.append(i.get_text(0))
+	
+	return res
+
+# WARNING: Some paths may be inaccurate.
+func get_paths() -> Array:
+	var res = []
+	
+	var raw = get_raw_paths()
+	var scene_paths = EditorInterface.get_open_scenes()
+	
+	for name: String in raw:
+		if name.begins_with("res://") or name.get_extension() == "godot":
+			res.append(name)
+			continue
+		
+		var found = false
+		
+		for scene_path in scene_paths:
+			if scene_path.get_file() == name:
+				res.append(scene_path)
+				found = true
+				break
+				
+		if found:
+			continue
+		
+		res.append(name)
 	
 	return res
