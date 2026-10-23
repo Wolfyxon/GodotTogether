@@ -251,6 +251,7 @@ var last_scene_path: String = ""
 var last_input_time: float = 0.0
 var last_cycle_time: float = 0.0
 var last_scan_time: float = 0.0
+var last_whole_scene_scan_time: float = 0.0
 
 var last_change_time: float = 0.0
 var recent_change_count: int = 0
@@ -395,7 +396,7 @@ func setup_timers() -> void:
 func update_timer_wait_times() -> void:
 	change_timer.wait_time = main.get_settings().get_setting("sync/node_refresh_rate")
 
-func check_changes() -> void:
+func check_changes(force_full := false) -> void:
 	if not can_sync_nodes(): return
 	
 	_scan_started()
@@ -423,6 +424,13 @@ func check_changes() -> void:
 	
 	var obj_cache = {}
 	
+	var sel = EditorInterface.get_selection().get_selected_nodes()
+	var now = Time.get_unix_time_from_system()
+	var scan_whole = force_full or (now - last_whole_scene_scan_time) > 2
+	
+	if scan_whole:
+		last_whole_scene_scan_time = now
+	
 	# IMPORTANT: Iterating directly on the dict will cause a crash!
 	# Do not remove .keys()
 	for node in node_data_dict.keys():
@@ -431,6 +439,9 @@ func check_changes() -> void:
 			return
 		
 		if not is_node_valid(node): 
+			continue
+		
+		if not scan_whole and not node in sel:
 			continue
 		
 		check_node(node, root, obj_cache)
@@ -514,7 +525,7 @@ func _check_node_signals(node, _root: Node, data: Dictionary) -> void:
 
 func _editor_undo_redo_changed() -> void:
 	_got_changes()
-	check_changes()
+	check_changes(true)
 
 func _node_signal_connections_changed(node: Node, signal_names: Array) -> void:
 	if not can_sync_nodes(): return
