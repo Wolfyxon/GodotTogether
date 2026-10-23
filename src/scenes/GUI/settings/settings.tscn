@@ -268,10 +268,7 @@ flat = true
 [node name="btnDevMenu" type="Button" parent="main/scroll/vbox/devActions" unique_id=17930845]
 layout_mode = 2
 size_flags_horizontal = 4
-tooltip_text = "Run internal logic tests.
-You will see results in the output console.
-
-Always use this if you're contributing to the plugin."
+tooltip_text = "Open developer menu with advanced settings and other features for developers."
 text = "Open dev menu"
 icon = ExtResource("3_33enj")
 flat = true
