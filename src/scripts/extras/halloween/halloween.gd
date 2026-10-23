@@ -25,7 +25,7 @@ func random_event() -> void:
 	event_timer.wait_time = get_standard_delay()
 
 func get_standard_delay() -> float:
-	return randf_range(10, 60 * 2)
+	return randf_range(60, 60 * 10)
 
 func spawn_eyes() -> void:
 	var vp = EditorInterface.get_editor_viewport_2d()
