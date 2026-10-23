@@ -56,6 +56,9 @@ func _process(_delta: float) -> void:
 		get_menu_window().visible = true
 
 func open_dev_menu() -> void:
+	# It doesn't wanna open on Windows
+	dev_menu.popup_centered()
+	await get_tree().process_frame
 	dev_menu.popup_centered()
 
 func cleanup() -> void:
