@@ -46,6 +46,7 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -758,7 +759,6 @@ metadata/_tab_index = 2
 autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
-visible = false
 offset_left = 25.0
 offset_top = 25.0
 offset_right = 945.0
@@ -777,7 +777,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="vbox" type="VBoxContainer" parent="mainMenu/disclaimer/checksScroll" unique_id=1342865674]
-custom_maximum_size = Vector2(-1, 400)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
