@@ -16,7 +16,6 @@ func _ready() -> void:
 
 func random_event() -> void:
 	var funcs = [
-		fade_screen,
 		spawn_user_3d,
 		spawn_eyes,
 		play_knocking
@@ -27,13 +26,6 @@ func random_event() -> void:
 
 func get_standard_delay() -> float:
 	return randf_range(10, 60 * 2)
-
-func fade_screen() -> void:
-	var root = EditorInterface.get_base_control()
-	
-	var t = root.create_tween()
-	t.tween_property(root, "modulate", Color(1, 0.9, 0.9), 0.25)
-	t.tween_property(root, "modulate", Color.WHITE, 0.25)
 
 func spawn_eyes() -> void:
 	var vp = EditorInterface.get_editor_viewport_2d()
