@@ -54,9 +54,9 @@ body:
     attributes:
       label: Checks
       options:
-        - label: I searched for other issues describing this bug (closed and open)
+        - label: I read the [troubleshooting page](https://github.com/Wolfyxon/GodotTogether/wiki/Troubleshooting)
           required: true
-        - label: I have read the [wiki](https://github.com/Wolfyxon/GodotTogether/wiki) and believe I'm not doing anything wrong
+        - label: I searched for other issues describing this bug (closed and open)
           required: true
         - label: The bug isn't listed in the [TODO list](https://github.com/Wolfyxon/GodotTogether/issues/1) and the feature it's referring to is implemented
           required: true
