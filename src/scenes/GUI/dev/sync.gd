@@ -29,6 +29,11 @@ func _process(_delta: float) -> void:
 	$fileCanSync.text = "Is allowed to run: %s" % main.file_sync.can_sync_files()
 	$filesInitSynced.text = "Files initially synced: %s" % main.client.is_fully_synced
 
+	$filesDownloaded.text = "Total received bytes: %s" % main.file_sync.total_received_bytes
+	
+	if main.client.server_data:
+		$filesDownloadSize.text = "Download size: %s" % main.client.server_data.get_project_download_size()
+
 func setup() -> void:
 	if not main:
 		printerr("Profiler setup failed because main is null") 
