@@ -18,5 +18,8 @@ YourProject
 7. The plugin should start. You should see a "GodotTogether" button on the Godot's toolbar
 
 
-If you have any issues refer to: https://github.com/Wolfyxon/GodotTogether/wiki/Troubleshooting
-or report a bug: https://github.com/Wolfyxon/GodotTogether/issues
+If you have any issues refer to: 
+https://github.com/Wolfyxon/GodotTogether/wiki/Troubleshooting
+
+If you want to report a bug: 
+https://github.com/Wolfyxon/GodotTogether/issues
