@@ -137,6 +137,8 @@ func download_project_files(server_info: GDTServerAuthResponse) -> void:
 	if is_file_net_logging_enabled():
 		print("Requesting download of %s files" % paths.size())
 	
+	var download_size = server_info.get_project_download_size()
+	
 	for i in paths.size():
 		if not main.is_session_active():
 			return
@@ -147,7 +149,11 @@ func download_project_files(server_info: GDTServerAuthResponse) -> void:
 		
 		client_request_file(path)
 		
-		while main and main.is_session_active() and total_received_bytes - current_downloaded_bytes < file_size:
+		while (
+			main and main.is_session_active() and
+			total_received_bytes - current_downloaded_bytes < file_size and
+			total_received_bytes < download_size
+		):
 			await tree.process_frame
 		
 		if i % 16 == 0:
