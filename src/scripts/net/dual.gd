@@ -387,7 +387,7 @@ func receive_current_scene(path: String) -> void:
 	update_scene_colors()
 
 @rpc("any_peer", "reliable", "call_remote", NetChannel.USER_STATE)
-func receive_current_script(path: String) -> void:
+func receive_current_script(path: String, line: int = 0) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = get_user_by_id(id)
 	if not user: return
@@ -396,6 +396,7 @@ func receive_current_script(path: String) -> void:
 		user_script_changed.emit(user, path)
 	
 	user.current_script = path
+	user.current_script_line = line
 
 @rpc("authority", "call_remote", "reliable")
 func restart() -> void:

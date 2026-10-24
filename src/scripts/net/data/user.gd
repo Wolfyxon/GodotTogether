@@ -39,6 +39,7 @@ var pending := false
 
 var current_scene: String = ""
 var current_script: String = ""
+var current_script_line: int = 0
 
 var _last_address: String = ""
 
