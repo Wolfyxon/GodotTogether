@@ -7,8 +7,8 @@ A plugin for real-time collaboration over the network for Godot Engine.
 [Feature TODO list](https://github.com/wolfyxon/godotTogether/issues/1)
 
 > [!CAUTION]
-> This plugin allows for **remote code execution**.  
-> Make sure to **never collaborate** with **people you don't FULLY trust**.
+> This plugin **may allow** for **remote code execution** or **someone could put malware in your game**.  
+> Make sure to **never collaborate** with **people you don't FULLY trust** and do not disable tool script sanitization unless you know what you're doing!
 > 
 > There's also a risk of your projects becoming corrupted so
 > **always make backups** or/and **use version control** like **git**.
