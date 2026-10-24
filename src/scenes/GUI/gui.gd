@@ -10,6 +10,7 @@ const USER_LIST_DOCK_PATH = "res://addons/GodotTogether/src/scenes/GUI/docks/use
 var alert_heat := 0
 
 var user_list_dock: GDTUserListDock = null
+var script_editor_mgr: GDTScriptEditorManager = null
 
 var scene_tree_editor = GDTSceneTreeEditor.new()
 var scene_editor_tabs = GDTEditorSceneTabs.new()
@@ -32,6 +33,9 @@ func _ready() -> void:
 	
 	if not main:
 		return
+	
+	script_editor_mgr = GDTScriptEditorManager.new(main, "ScriptEditorManager")
+	add_child(script_editor_mgr)
 	
 	dev_menu.main = main
 	menu_window.visible = false
