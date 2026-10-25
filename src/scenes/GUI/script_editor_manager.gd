@@ -30,3 +30,11 @@ func get_code_editor(editor_base: ScriptEditorBase = null) -> CodeEdit:
 		return control
 	
 	return
+
+func get_current_line() -> int:
+	var editor = get_code_editor()
+	
+	if not editor:
+		return 0
+	
+	return editor.get_caret_line()
