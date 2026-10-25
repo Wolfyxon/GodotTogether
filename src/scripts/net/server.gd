@@ -6,6 +6,7 @@ signal hosting_started
 
 const JOIN_DELAY: float = 1.0
 const APPROVE_TIMEOUT: float = 30.0
+const PING_INTERVAL: float = 2.0
 
 const LOCALHOST := [
 	"0:0:0:0:0:0:0:1", 
@@ -15,7 +16,9 @@ const LOCALHOST := [
 ]
 
 var server_peer = ENetMultiplayerPeer.new()
+
 var ip_join_times = {}
+var last_alive_ping: float = 0.0
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_peer_connected)
@@ -27,6 +30,9 @@ func _process(_delta: float) -> void:
 	if not main.is_session_active(): return
 	
 	var now = Time.get_unix_time_from_system()
+	
+	if (now - last_alive_ping) < PING_INTERVAL:
+		main.client._s2c_connection_alive.rpc()
 	
 	for user: GDTUser in main.dual.users:
 		if not user.was_ever_authenticated() and now > user.joined_at + APPROVE_TIMEOUT:

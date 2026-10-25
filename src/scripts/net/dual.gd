@@ -16,7 +16,8 @@ signal user_scene_changed(user: GDTUser, path: String)
 
 enum NetChannel {
 	MAIN,
-	USER_STATE
+	USER_STATE,
+	MISC
 }
 
 var camera: Camera3D

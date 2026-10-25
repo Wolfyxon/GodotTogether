@@ -8,10 +8,13 @@ signal connection_acknowledged
 signal auth_succeed
 signal file_received(path: String)
 
+const TIMEOUT = 30.0
+
 var client_peer = ENetMultiplayerPeer.new()
 
 var current_join_data := GDTJoinData.new()
 var server_data: GDTServerAuthResponse = null
+var last_received_ping: float = 0.0
 
 var connection_is_ack = false
 var connection_cancelled := false
@@ -35,6 +38,16 @@ func _ready() -> void:
 	#multiplayer.connection_failed.connect(_connecting_finished.bind(false))
 	
 	report_ready()
+
+func _process(_delta: float) -> void:
+	if not is_active():
+		return
+	
+	var now = Time.get_unix_time_from_system()
+	
+	if (now - last_received_ping) > TIMEOUT:
+		printerr("Connection timed out for RPC.")
+		main.close_connection() 
 
 func _connected() -> void:
 	if multiplayer.is_server(): return
@@ -212,7 +225,12 @@ func _s2c_connection_ack() -> void:
 		return
 	
 	connection_is_ack = true
+	last_received_ping = Time.get_unix_time_from_system()
 	connection_acknowledged.emit()
+
+@rpc("authority", "unreliable", "call_remote", GDTDual.NetChannel.MISC)
+func _s2c_connection_alive() -> void:
+	last_received_ping = Time.get_unix_time_from_system()
 
 @rpc("authority", "reliable")
 func _s2c_auth_successful(data_dict: Dictionary) -> void:
