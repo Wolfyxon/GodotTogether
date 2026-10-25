@@ -87,7 +87,7 @@ func _update() -> void:
 	
 	var mouse_pos = viewport_2d.get_mouse_position()
 	
-	if mouse_pos != prev_mouse_pos:
+	if mouse_pos != prev_mouse_pos and main.gui.is_2d_scene_editor_open():
 		prev_mouse_pos = mouse_pos
 		update_2d_avatar.rpc(mouse_pos)
 	

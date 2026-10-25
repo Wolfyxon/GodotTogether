@@ -164,6 +164,19 @@ func confirm(text: String) -> bool:
 func visuals_available() -> bool:
 	return main or not Engine.is_editor_hint() 
 
+func is_2d_scene_editor_open() -> bool:
+	var vp = EditorInterface.get_editor_viewport_2d()
+	
+	if not vp:
+		return false
+		
+	var parent = vp.get_parent()
+	
+	if not parent is CanvasItem:
+		return true
+		
+	return parent.is_visible_in_tree()
+
 func _on_alert_cooldown_timeout() -> void:
 	if alert_heat > 0:
 		alert_heat -= 1
