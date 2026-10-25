@@ -24,8 +24,8 @@ const ENABLE_CUSTOM_LOGGER = true
 
 const _META_LOCK_NAME = "gdt_lock"
 
-const GUI_SCENE = preload("../scenes/GUI/GUI.tscn")
-const CHAT_SCENE = preload("../scenes/GUI/chat/chat.tscn")
+var gui_scene = load("res://addons/GodotTogether/src/scenes/GUI/GUI.tscn")
+var chat_scene = load("res://addons/GodotTogether/src/scenes/GUI/chat/chat.tscn")
 
 var client = GDTClient.new(self, "client")
 var server = GDTServer.new(self, "server")
@@ -36,8 +36,8 @@ var node_sync = GDTNodeSync.new(self, "node_sync")
 
 # Do not access this directly, use get_gui()
 # Godot will randomly throw a "Cyclic reference" error
-var gui: GodotTogetherGUI = GUI_SCENE.instantiate()  
-var chat: GDTChat = CHAT_SCENE.instantiate()
+var gui: GodotTogetherGUI = gui_scene.instantiate()  
+var chat: GDTChat = chat_scene.instantiate()
 
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()

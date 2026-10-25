@@ -1125,8 +1125,8 @@ func test_node_change_applying() -> bool:
 
 func test_scenes() -> bool:
 	var scenes = [
-		GodotTogether.GUI_SCENE,
-		GodotTogether.CHAT_SCENE,
+		main.gui_scene,
+		main.chat_scene,
 		main.dual.avatar_2d_scene,
 		main.dual.avatar_2d_scene
 	]
