@@ -10,6 +10,7 @@ const MATERIAL: StandardMaterial3D = preload("material.tres")
 
 var id := -1
 var main: GodotTogether
+var user_ref: WeakRef
 var received_update := false
 
 func _ready() -> void:
@@ -30,7 +31,21 @@ func receive_transform(pos: Vector3, rot: Vector3) -> void:
 
 func _process(_delta) -> void:
 	if not main: return
+	
+	_update_visibility()
+	_update_ui()
 
+func _update_visibility() -> void:
+	var user = get_user()
+	if not user: return
+	
+	var scene = EditorInterface.get_edited_scene_root()
+	if not scene: return
+	if scene.is_queued_for_deletion(): return
+	
+	visible = user.current_scene == scene.scene_file_path
+
+func _update_ui() -> void:
 	# Nothing to show yet (avatar still sitting at its default Vector3.ZERO),
 	# and unproject_position() below is not safe to call for a point that
 	# happens to line up with the camera.
@@ -39,6 +54,7 @@ func _process(_delta) -> void:
 		return
 
 	var cam = EditorInterface.get_editor_viewport_3d().get_camera_3d()
+	
 	if not cam:
 		ui.visible = false
 		return
@@ -55,12 +71,14 @@ func _process(_delta) -> void:
 	ui.visible = cam.is_position_in_frustum(position)
 	ui.position = cam.unproject_position(position) - ui.size / 2 - (Vector2(0, 200) / dist)
 
+
 func set_user(user: GDTUser) -> void:
 	while not ui: await get_tree().physics_frame
 
 	text_ui.get_node("name").text = user.name
 	text_ui.get_node("class").text = user.get_type_as_string()
 	
+	user_ref = weakref(user)
 	id = user.id
 
 	for i in model.get_children():
@@ -75,3 +93,9 @@ func set_user(user: GDTUser) -> void:
 			)
 			
 			i.set_surface_override_material(0, mat)
+
+func get_user() -> GDTUser:
+	if not user_ref:
+		return
+	
+	return user_ref.get_ref() as GDTUser
