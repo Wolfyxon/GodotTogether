@@ -147,6 +147,7 @@ func join_server(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	print("Connecting to %s:%s..." % [ip, port])
 
 	multiplayer.multiplayer_peer = client_peer
+	last_received_ping = Time.get_unix_time_from_system()
 	current_join_data = data
 	current_join_data.rpc_checksum = main.get_global_rpc_checksum()
 	
