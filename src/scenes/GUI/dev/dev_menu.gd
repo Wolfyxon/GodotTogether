@@ -20,7 +20,9 @@ func _ready() -> void:
 	$main/scroll/vbox/tests/vbox/btnRunUnitTests.pressed.connect(main.tests.run_tests)
 	
 	$main/scroll/vbox/info/vbox/version.text = "Version name: %s" % main.get_plugin_version()
+	$main/scroll/vbox/info/vbox/protocol.text = "Protocol version: %s" % main.PROTOCOL_VERSION
 	$main/scroll/vbox/info/vbox/dev.text = "Is dev (source code) version: %s" % main.is_dev_version()
+
 
 func register_settings(nodes: Array) -> void:
 	for i in nodes:

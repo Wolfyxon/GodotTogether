@@ -392,6 +392,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Version name: error"
 
+[node name="protocol" type="Label" parent="main/scroll/vbox/info/vbox" unique_id=1957073327]
+layout_mode = 2
+text = "Protocol version: ?"
+
 [node name="dev" type="Label" parent="main/scroll/vbox/info/vbox" unique_id=869376440]
 layout_mode = 2
 text = "Is dev (source code) version: error"
