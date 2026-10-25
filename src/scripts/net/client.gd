@@ -14,7 +14,9 @@ var client_peer = ENetMultiplayerPeer.new()
 
 var current_join_data := GDTJoinData.new()
 var server_data: GDTServerAuthResponse = null
+
 var last_received_ping: float = 0.0
+var ignore_alive_ping := false
 
 var connection_is_ack = false
 var connection_cancelled := false
@@ -230,7 +232,8 @@ func _s2c_connection_ack() -> void:
 
 @rpc("authority", "unreliable", "call_remote", GDTDual.NetChannel.MISC)
 func _s2c_connection_alive() -> void:
-	last_received_ping = Time.get_unix_time_from_system()
+	if not ignore_alive_ping:
+		last_received_ping = Time.get_unix_time_from_system()
 
 @rpc("authority", "reliable")
 func _s2c_auth_successful(data_dict: Dictionary) -> void:
