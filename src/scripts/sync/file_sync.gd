@@ -190,7 +190,7 @@ static func read_chunks_callback(
 	
 	file.close()
 
-@rpc("authority", "reliable")
+@rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.FILES)
 func write_file(
 	path: String, 
 	buffer: PackedByteArray,
@@ -293,7 +293,7 @@ func write_file(
 	else:
 		EditorInterface.get_resource_filesystem().scan.call_deferred()
 
-@rpc("authority", "reliable")
+@rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.FILES)
 func delete_file(path: String) -> void:
 	if not GDTValidator.is_path_safe(path):
 		printerr("Server tried to delete file at unsafe location: %s" % path)
@@ -415,7 +415,7 @@ func _c2s_request_file(path: String) -> void:
 	
 	server_send_file(id, path)
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_remote", GDTDual.NetChannel.FILES)
 func _c2s_request_file_write(
 	path: String, 
 	buffer: PackedByteArray, 
@@ -439,7 +439,7 @@ func _c2s_request_file_write(
 	write_file(path, buffer, offset, true)
 	server_broadcast_file_write(path, buffer, offset, truncate, id)
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_remote", GDTDual.NetChannel.FILES)
 func _c2s_request_file_delete(path: String) -> void:
 	if not main.server.is_active(): return
 	
