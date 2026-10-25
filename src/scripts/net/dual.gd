@@ -61,6 +61,10 @@ func _ready() -> void:
 	EditorInterface.get_selection().selection_changed.connect(broadcast_selection)
 	
 	report_ready()
+	
+	await get_tree().process_frame
+	
+	main.gui.script_editor_mgr.script_position_changed.connect(broadcast_selection)
 
 func _update() -> void:
 	if not main: return
