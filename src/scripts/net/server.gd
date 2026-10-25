@@ -31,7 +31,8 @@ func _process(_delta: float) -> void:
 	
 	var now = Time.get_unix_time_from_system()
 	
-	if (now - last_alive_ping) < PING_INTERVAL:
+	if (now - last_alive_ping) > PING_INTERVAL:
+		last_alive_ping = now
 		main.client._s2c_connection_alive.rpc()
 	
 	for user: GDTUser in main.dual.users:
