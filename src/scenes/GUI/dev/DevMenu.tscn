@@ -334,9 +334,11 @@ text = "Print tracked files"
 
 [node name="net" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1444636490]
 layout_mode = 2
+folded = true
 title = "Network"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/net" unique_id=1579403681]
+visible = false
 layout_mode = 2
 script = ExtResource("5_vk20n")
 
@@ -372,6 +374,10 @@ text = "Test alert spam"
 visible = false
 layout_mode = 2
 text = "Create chunkable tool script"
+
+[node name="btnDeath" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=2012747826]
+layout_mode = 2
+text = "Show error screen of death"
 
 [node name="info" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1898324454]
 layout_mode = 2
@@ -432,6 +438,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/ignoreAlivePing" to="main/scroll/vbox/net/vbox" method="_on_ignore_alive_ping_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnTestChunkToolScript" to="." method="_on_btn_test_chunk_tool_script_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDeath" to="." method="_on_btn_death_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]

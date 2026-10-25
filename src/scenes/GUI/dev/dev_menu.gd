@@ -137,3 +137,13 @@ func _on_btn_test_chunk_tool_script_pressed() -> void:
 	f.close()
 	
 	print("Created %s" % path)
+
+
+func _on_btn_death_pressed() -> void:
+	if not await main.gui.confirm("Are you sure? This will require a plugin restart to undo."):
+		return
+	
+	main.gui.get_menu_window().set_error_of_death(
+		"Oopsie whoopsie OwO!",
+		"It's your fault."
+	)
