@@ -95,9 +95,14 @@ func _user_goto(user: GDTUser) -> void:
 		
 		if script:
 			EditorInterface.edit_resource(script)
+			EditorInterface.get_script_editor().goto_line(user.current_script_line)
+			
 
 func _user_file_update(user: GDTUser, _path: String) -> void:
 	update_user.call_deferred(user)
+
+func _user_script_pos_update(user: GDTUser) -> void:
+	update_user(user)
 
 func update_user(user: GDTUser) -> void:
 	var node = get_control_of_user(user)
@@ -120,6 +125,7 @@ func setup_signals() -> void:
 	
 	gui.main.dual.user_scene_changed.connect(_user_file_update)
 	gui.main.dual.user_script_changed.connect(_user_file_update)
+	gui.main.dual.user_script_position_changed.connect(_user_script_pos_update)
 
 func get_inspector_dock() -> Control:
 	if _inspector_dock:
@@ -217,7 +223,6 @@ func update_user_control(node: Control, user: GDTUser) -> void:
 	name_label.text = user.name
 	role_btn.selected = user.type
 	
-	
 	if user.current_scene or user.current_script:
 		status_btn.disabled = false
 		
@@ -236,6 +241,10 @@ func update_user_control(node: Control, user: GDTUser) -> void:
 			file = "..." + file.substr(file.length() - LENGTH_LIMIT)
 		
 		status_btn.text = "Editing: %s" % file
+		
+		if user.current_script:
+			status_btn.text += " line: %s" % user.current_script_line
+		
 		status_btn.tooltip_text = "Go to: %s" % source_file
 		status_btn.icon = IMG_EDITING
 		

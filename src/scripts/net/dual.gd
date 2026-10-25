@@ -11,6 +11,7 @@ signal user_rejected(user: GDTUser)
 signal users_listed(users: Array[GDTUser])
 
 signal user_script_changed(user: GDTUser, path: String)
+signal user_script_position_changed(user: GDTUser)
 signal user_scene_changed(user: GDTUser, path: String)
 
 enum NetChannel {
@@ -395,6 +396,8 @@ func receive_current_script(path: String, line: int = 0) -> void:
 	
 	if user.current_script != path:
 		user_script_changed.emit(user, path)
+	
+	user_script_position_changed.emit(user)
 	
 	user.current_script = path
 	user.current_script_line = line
