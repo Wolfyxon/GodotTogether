@@ -14,7 +14,7 @@ enum Permission {
 	MODIFY_CUSTOM_FILES
 }
 
-const PROTOCOL_VERSION = 2
+const PROTOCOL_VERSION = 3
 const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
 
 const MIN_DISK_SPACE = 1024 * 1024 * 500 + 1 # 500 MB
