@@ -27,7 +27,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if not main: return
-	if not main.is_session_active(): return
+	if not is_active(): return
 	
 	var now = Time.get_unix_time_from_system()
 	
