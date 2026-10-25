@@ -186,7 +186,8 @@ func broadcast_selection() -> void:
 	var current_script = script_editor.get_current_script()
 	
 	if script_editor.is_visible_in_tree() and current_script:
-		receive_current_script.rpc_id(0, current_script.resource_path)
+		var script_line = main.gui.script_editor_mgr.get_current_line()
+		receive_current_script.rpc_id(0, current_script.resource_path, script_line)
 	else:
 		receive_current_script.rpc_id(0, "")
 
