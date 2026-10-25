@@ -61,12 +61,21 @@ func _ready() -> void:
 	broadcast_timer.start()
 	
 	EditorInterface.get_selection().selection_changed.connect(broadcast_selection)
+	get_tree().multiplayer_poll = false
 	
 	report_ready()
 	
 	await get_tree().process_frame
 	
 	main.gui.script_editor_mgr.script_position_changed.connect(broadcast_selection)
+
+func _process(_delta: float) -> void:
+	for i in 128:
+		multiplayer.poll()
+
+func _physics_process(_delta: float) -> void:
+	for i in 128:
+		multiplayer.poll()
 
 func _update() -> void:
 	if not main: return
