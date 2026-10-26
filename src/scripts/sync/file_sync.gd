@@ -10,6 +10,8 @@ const CHUNK_SIZE = 1024 * 100 # 100 kB
 const MAX_SCRIPT_SIZE = 1024 * 1024 * 3 # 3 MB
 
 var scan_timer = Timer.new()
+var godot_scan_timer = Timer.new()
+
 var file_mod_times := {}
 
 var total_received_bytes: int = 0
@@ -23,13 +25,24 @@ func _ready() -> void:
 	add_child(scan_timer)
 	scan_timer.start()
 	
+	add_child(godot_scan_timer)
+	godot_scan_timer.timeout.connect(_force_godot_scan)
+	godot_scan_timer.start()
+	
 	EditorInterface.get_resource_filesystem().filesystem_changed.connect(scan_files)
 	main.get_gui().external_file_change_dialog.got_external_changes.connect(_gd_got_external_changes)
 	
 	ignore_last_changes()
 	report_ready()
 
+func _force_godot_scan() -> void:
+	if not main: return
+	if not DisplayServer.window_is_focused(): return
+	
+	main.editor_node.force_filesystem_scan()
+
 func update_timer_wait_times() -> void:
+	godot_scan_timer.wait_time = 1
 	scan_timer.wait_time = main.get_settings().get_setting("sync/file_refresh_rate")
 
 func ignore_last_changes() -> void:

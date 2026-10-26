@@ -51,6 +51,7 @@ var extras = GDTExtras.new(self, "extras")
 
 var logger: GDTLogger = null
 var mp_override: GDTMultiplayerExtension = null
+var editor_node := GDTEditorNode.new()
 
 var plugin_started := false
 var components = []
