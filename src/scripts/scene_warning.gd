@@ -17,7 +17,7 @@ func _process(_delta: float) -> void:
 	var scene = EditorInterface.get_edited_scene_root()
 	
 	if not scene:
-		text = "Scenes without root node are not synced!"
+		text = "Scenes without a root node are not synced!"
 		tooltip_text = "Syncing scenes without a root node is not supported by GodotTogether."
 		visible = true
 	elif scene.scene_file_path.is_empty():
