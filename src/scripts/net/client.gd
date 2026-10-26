@@ -272,7 +272,7 @@ func _s2c_user_disconnected(user_dict: Dictionary) -> void:
 func _project_files_downloaded() -> void:
 	print("Project files downloaded")
 	
-	EditorInterface.get_resource_filesystem().scan()
+	main.editor_node.force_filesystem_scan()
 	
 	await get_tree().process_frame
 	
