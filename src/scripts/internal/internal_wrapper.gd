@@ -21,5 +21,5 @@ static func get_editor_node(cls: String) -> Node:
 	return node
 
 static func get_editor_nodes(cls: String) -> Array:
-	var root = EditorInterface.get_base_control()
+	var root = EditorInterface.get_base_control().get_tree().root
 	return GDTUtils.get_descendants_with_class(root, cls)

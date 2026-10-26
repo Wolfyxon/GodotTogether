@@ -13,7 +13,7 @@ func _wrapper_init() -> void:
 # There's no other way to check them
 func force_filesystem_scan() -> void:
 	var focused = DisplayServer.window_is_focused()
-	
+	EditorInterface.get_current_path()
 	node.notification(Node.NOTIFICATION_APPLICATION_FOCUS_IN, true)
 	
 	if not focused:
