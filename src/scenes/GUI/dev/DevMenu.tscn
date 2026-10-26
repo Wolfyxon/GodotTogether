@@ -370,6 +370,10 @@ icon = ExtResource("5_6rdoo")
 layout_mode = 2
 text = "Test alert spam"
 
+[node name="btnWriteTest" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=307147208]
+layout_mode = 2
+text = "Modify project.godot"
+
 [node name="btnTestChunkToolScript" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=318201983]
 visible = false
 layout_mode = 2
@@ -441,6 +445,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/ignoreAlivePing" to="main/scroll/vbox/net/vbox" method="_on_ignore_alive_ping_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnWriteTest" to="." method="_on_btn_write_test_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnTestChunkToolScript" to="." method="_on_btn_test_chunk_tool_script_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDeath" to="." method="_on_btn_death_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]

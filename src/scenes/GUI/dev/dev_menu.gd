@@ -149,3 +149,21 @@ func _on_btn_death_pressed() -> void:
 		"Oopsie whoopsie OwO!",
 		"It's your fault."
 	)
+
+
+func _on_btn_write_test_pressed() -> void:
+	if not main: return
+	
+	main.get_gui().get_menu_window().hide()
+	hide()
+	
+	await get_tree().process_frame
+	
+	var f = FileAccess.open("res://project.godot", FileAccess.READ_WRITE)
+	
+	if not f:
+		printerr("Unable to open project file")
+		return
+	
+	f.seek_end()
+	f.store_string("\n")
