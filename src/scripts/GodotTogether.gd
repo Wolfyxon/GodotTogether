@@ -36,8 +36,8 @@ var node_sync = GDTNodeSync.new(self, "node_sync")
 
 # Do not access this directly, use get_gui()
 # Godot will randomly throw a "Cyclic reference" error
-var gui: GodotTogetherGUI = gui_scene.instantiate() as GodotTogetherGUI
-var chat: GDTChat = chat_scene.instantiate() as GDTChat
+var gui: GodotTogetherGUI = null
+var chat: GDTChat = null
 
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()
@@ -59,6 +59,8 @@ var components = []
 func _enter_tree() -> void:
 	await get_tree().process_frame
 	
+	init_scene_nodes()
+	
 	if not pre_start_check():
 		printerr("GodotTogether will not run.")
 		return
@@ -78,14 +80,9 @@ func _enter_tree() -> void:
 	setup_menu_button()
 	settings.load_settings()
 	
-	if not check_path():
-		return
-	
-	if not create_lock():
-		return
-	
-	if not check_disk_space():
-		return
+	if not check_path(): return
+	if not create_lock(): return
+	if not check_disk_space(): return
 	
 	await get_tree().process_frame
 	
@@ -128,8 +125,12 @@ func _exit_tree() -> void:
 	if ENABLE_MULTIPLAYER_OVERRIDE:
 		get_tree().set_multiplayer(SceneMultiplayer.new(), GDTMultiplayerExtension.ROOT_PATH)
 
+func init_scene_nodes() -> void:
+	# Possible mitigation for dumb Godot type errors may be to assign the values after waiting 
+	gui = gui_scene.instantiate() as GodotTogetherGUI
+	chat = chat_scene.instantiate() as GDTChat
+
 func init_components() -> void:
-	
 	components = [
 		client, server, dual,
 		file_sync, node_sync, 
