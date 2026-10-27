@@ -295,38 +295,6 @@ func _c2s_connection_alive() -> void:
 	user.got_ping()
 
 @rpc("any_peer", "call_remote", "reliable")
-func _c2s_file_request(path: String) -> void:
-	var id = multiplayer.get_remote_sender_id()
-	var user = main.dual.get_user_by_id(id)
-
-	if not validate_c2s():
-		return
-	
-	if not user: return
-	if not user.authenticated: return
-	
-	if not GDTValidator.is_path_safe(path):
-		GDTUtils.printerr_stack(
-			"User %s (%s) tried to request file at unsafe path: %s" %
-			[user.name, user.id, path]
-		)
-		return
-	
-	if not FileAccess.file_exists(path):
-		return
-	
-	GDTFileSync.read_chunks_callback(path, func(buf: PackedByteArray, cursor: int):
-		main.client.receive_file.rpc_id(
-			id, 
-			path, 
-			buf, 
-			cursor, 
-			cursor == 0
-		)
-	)
-
-
-@rpc("any_peer", "call_remote", "reliable")
 func broadcast_restart():
 	if not main.get_settings().get_setting("dev/restart_broadcast"):
 		return
