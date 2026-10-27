@@ -167,3 +167,17 @@ func _on_btn_write_test_pressed() -> void:
 	
 	f.seek_end()
 	f.store_string("\n")
+
+
+func _on_btn_script_update_test_pressed() -> void:
+	if not main: return
+	
+	print("Waiting...")
+	
+	await get_tree().create_timer(5).timeout
+	print("Updating")
+	
+	var editor = main.gui.script_editor_mgr.get_code_editor()
+	var new_text = "# First line test\n" + editor.text + "\n# Last line test" 
+	
+	main.script_sync.update_code_edit(editor, new_text)
