@@ -412,6 +412,8 @@ func _c2s_request_file(path: String) -> void:
 		GDTUtils.printerr_stack("Got file request from peer without user: %s" % id) 
 		return
 	
+	user.got_ping()
+	
 	if not user.authenticated: 
 		GDTUtils.printerr_stack("File request from unauthenticated user: %s (%s)" % [user.name, id])
 		return
@@ -439,7 +441,12 @@ func _c2s_request_file_write(
 	
 	var id = multiplayer.get_remote_sender_id()
 	
-	if not main.server.caller_has_permission(GodotTogether.Permission.MODIFY_CUSTOM_FILES):
+	var user = main.dual.get_user_by_id(id)
+	if not user: return
+	
+	user.got_ping()
+	
+	if not user.has_permission(GodotTogether.Permission.MODIFY_CUSTOM_FILES):
 		return
 	
 	if not GDTValidator.is_path_safe(path): 
