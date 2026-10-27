@@ -16,14 +16,17 @@ enum DisconnectReason {
 	REJECTED,
 	JOINING_TOO_FAST,
 	
-	# Can reorder. Not yet released
 	CLIENT_OUTDATED,
 	SERVER_OUTDATED,
 	
 	APPROVE_TIMEOUT,
 	ADDRESS_IN_USE,
 	RPC_CHECKSUM_MISMATCH,
-	INVALID
+	INVALID,
+	
+	# Can reorder. Not yet released
+	
+	TIMEOUT
 }
 
 var id: int
@@ -33,6 +36,7 @@ var main: GodotTogether = null
 var type := Type.EDITOR
 var color := Color.WHITE
 var joined_at := -1.0
+var last_ping := 0.0
 var authenticated_at := -1.0
 var authenticated := false
 var pending := false
@@ -52,9 +56,12 @@ var permissions: Array[GodotTogether.Permission] = [
 ]
 
 func _init(_id: int, _peer: ENetPacketPeer = null, _main: GodotTogether = null):
+	var now = Time.get_unix_time_from_system()
+	
 	id = _id
 	peer = _peer
-	joined_at = Time.get_unix_time_from_system()
+	joined_at = now
+	last_ping = now
 	main = _main
 	
 	color = Color(
@@ -74,6 +81,9 @@ func get_encodable_fields() -> Array:
 		"authenticated_at",
 		#"authenticated"
 	]
+
+func got_ping() -> void:
+	last_ping = Time.get_unix_time_from_system()
 
 func has_permission(permission: GodotTogether.Permission) -> bool:
 	return authenticated and permission in permissions
@@ -154,7 +164,7 @@ func get_type_as_string() -> String:
 
 static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 	match reason:
-		DisconnectReason.UNKNOWN:
+		DisconnectReason.UNKNOWN, DisconnectReason.TIMEOUT:
 			return "Connection lost"
 		DisconnectReason.KICKED:
 			return "Kicked by host"

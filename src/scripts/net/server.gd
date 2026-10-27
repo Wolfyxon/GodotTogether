@@ -6,7 +6,6 @@ signal hosting_started
 
 const JOIN_DELAY: float = 1.0
 const APPROVE_TIMEOUT: float = 30.0
-const PING_INTERVAL: float = 2.0
 
 const LOCALHOST := [
 	"0:0:0:0:0:0:0:1", 
@@ -31,13 +30,18 @@ func _process(_delta: float) -> void:
 	
 	var now = Time.get_unix_time_from_system()
 	
-	if (now - last_alive_ping) > PING_INTERVAL:
+	if (now - last_alive_ping) > GDTDual.PING_INTERVAL:
 		last_alive_ping = now
 		main.client._s2c_connection_alive.rpc()
 	
 	for user: GDTUser in main.dual.users:
 		if not user.was_ever_authenticated() and now > user.joined_at + APPROVE_TIMEOUT:
 			user.reject(GDTUser.DisconnectReason.APPROVE_TIMEOUT)
+			continue
+			
+		if (now - user.last_ping) > GDTDual.TIMEOUT:
+			user.kick(GDTUser.DisconnectReason.TIMEOUT)
+			continue
 
 func _peer_connected(id: int) -> void:
 	if not multiplayer.is_server(): 
@@ -236,6 +240,8 @@ func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 		GDTUtils.printerr_stack("Got join data, but %s is already authenticated" % id)
 		return
 	
+	user.got_ping()
+	
 	var data = GDTJoinData.from_dict(data_dict)
 	
 	if not data:
@@ -278,6 +284,15 @@ func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 		return
 	
 	user.auth()
+
+@rpc("any_peer", "unreliable", "call_remote", GDTDual.NetChannel.MISC)
+func _c2s_connection_alive() -> void:
+	if not validate_c2s(): return
+	
+	var user = get_calling_user()
+	if not user: return
+	
+	user.got_ping()
 
 @rpc("any_peer", "call_remote", "reliable")
 func _c2s_file_request(path: String) -> void:
