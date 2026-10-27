@@ -349,4 +349,8 @@ func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -
 	scene_instance.queue_free()
 
 func is_active() -> bool:
-	return client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
+	return (
+		main and
+		multiplayer.multiplayer_peer == client_peer and
+		client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
+	)

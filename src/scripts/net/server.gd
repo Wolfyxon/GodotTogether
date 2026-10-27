@@ -344,7 +344,11 @@ func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []) -> void:
 			fn.rpc_id.callv([i] + args)
 
 func is_active() -> bool:
-	return server_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
+	return (
+		main and
+		multiplayer.multiplayer_peer == server_peer and
+		server_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
+	)
 
 static func is_local(ip: String) -> bool:
 	if ip in LOCALHOST: return true
