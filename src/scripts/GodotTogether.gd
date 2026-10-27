@@ -301,9 +301,9 @@ func setup_menu_button() -> void:
 
 func pre_start_check() -> bool:
 	if not gui:
-		printerr("GUI is not available")
+		printerr("GUI is not available. Try restarting Godot.")
 		return false
-		
+	
 	if not gui.get_menu_window():
 		printerr("get_menu_window() is not available and errors cannot be properly displayed")
 		return false
