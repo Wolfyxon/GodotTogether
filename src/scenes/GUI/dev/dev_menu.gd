@@ -180,4 +180,4 @@ func _on_btn_script_update_test_pressed() -> void:
 	var editor = main.gui.script_editor_mgr.get_code_editor()
 	var new_text = "# First line test\n" + editor.text + "\n# Last line test" 
 	
-	main.script_sync.update_code_edit(editor, new_text)
+	main.gui.script_editor_mgr.update_text_edit(editor, new_text)
