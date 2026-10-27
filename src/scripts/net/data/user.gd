@@ -117,10 +117,6 @@ func auth() -> void:
 		main.server._user_authenticated(self)
 
 func kick(reason: DisconnectReason = DisconnectReason.KICKED) -> void:
-	if not peer:
-		GDTUtils.printerr_stack("Cannot kick %s: missing peer object" % id)
-		return
-	
 	authenticated = false
 
 	if main:
@@ -128,8 +124,12 @@ func kick(reason: DisconnectReason = DisconnectReason.KICKED) -> void:
 	else:
 		push_warning("Unable to send kick reason, main is null")
 
+	if not peer:
+		GDTUtils.printerr_stack("Cannot kick %s: missing peer object" % id)
+		return
+	
 	peer.peer_disconnect_later()
-
+	
 	await EditorInterface.get_editor_main_screen().get_tree().create_timer(3).timeout
 
 	if is_peer_connected(true):
