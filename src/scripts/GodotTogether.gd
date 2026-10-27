@@ -33,6 +33,7 @@ var dual = GDTDual.new(self, "dual")
 
 var file_sync = GDTFileSync.new(self, "file_sync")
 var node_sync = GDTNodeSync.new(self, "node_sync")
+var script_sync = GDTScriptSync.new(self, "script_sync")
 
 # Do not access this directly, use get_gui()
 # Godot will randomly throw a "Cyclic reference" error
@@ -133,7 +134,7 @@ func init_scene_nodes() -> void:
 func init_components() -> void:
 	components = [
 		client, server, dual,
-		file_sync, node_sync, 
+		file_sync, node_sync, script_sync,
 		settings,
 		gui,
 		script_security,
