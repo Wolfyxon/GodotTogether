@@ -130,6 +130,13 @@ func reset() -> void:
 	connection_cancelled = false
 	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
 
+func validate_s2c() -> bool:
+	if not is_active():
+		GDTUtils.printerr_stack("Attempt to call server to client function when client isn't active")
+		return false
+	
+	return true
+
 func leave_with_error(reason := GDTUser.DisconnectReason.UNKNOWN) -> void:
 	if not is_active():
 		return
@@ -259,6 +266,8 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 	
 @rpc("authority", "call_remote", "reliable")
 func _s2c_user_connected(user_dict: Dictionary) -> void:
+	if not validate_s2c(): return
+	
 	var user = GDTUser.from_dict(user_dict)
 	if not user: return
 	
@@ -267,6 +276,8 @@ func _s2c_user_connected(user_dict: Dictionary) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func _s2c_user_disconnected(user_dict: Dictionary) -> void:
+	if not validate_s2c(): return
+	
 	var user = GDTUser.from_dict(user_dict)
 	if not user: return
 
