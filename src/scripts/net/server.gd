@@ -35,6 +35,8 @@ func _process(_delta: float) -> void:
 		main.client._s2c_connection_alive.rpc()
 	
 	for user: GDTUser in main.dual.users:
+		if user.id == 1: continue
+		
 		if not user.was_ever_authenticated() and now > user.joined_at + APPROVE_TIMEOUT:
 			user.reject(GDTUser.DisconnectReason.APPROVE_TIMEOUT)
 			continue

@@ -117,6 +117,10 @@ func auth() -> void:
 		main.server._user_authenticated(self)
 
 func kick(reason: DisconnectReason = DisconnectReason.KICKED) -> void:
+	if id == 1:
+		GDTUtils.printerr_stack("Attempt to kick host")
+		return
+	
 	authenticated = false
 
 	if main:
