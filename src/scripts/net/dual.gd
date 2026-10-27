@@ -21,6 +21,9 @@ enum NetChannel {
 	MISC
 }
 
+const TIMEOUT: float = 30.0
+const PING_INTERVAL: float = 2.0
+
 var camera: Camera3D
 var users: Array[GDTUser]
 

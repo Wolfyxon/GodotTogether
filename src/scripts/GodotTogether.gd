@@ -36,8 +36,8 @@ var node_sync = GDTNodeSync.new(self, "node_sync")
 
 # Do not access this directly, use get_gui()
 # Godot will randomly throw a "Cyclic reference" error
-var gui: GodotTogetherGUI = gui_scene.instantiate()  
-var chat: GDTChat = chat_scene.instantiate()
+var gui: GodotTogetherGUI = gui_scene.instantiate() as GodotTogetherGUI
+var chat: GDTChat = chat_scene.instantiate() as GDTChat
 
 var button = GDTMenuButton.new()
 var toaster: EditorToaster = EditorInterface.get_editor_toaster()

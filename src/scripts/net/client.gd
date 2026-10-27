@@ -8,14 +8,13 @@ signal connection_acknowledged
 signal auth_succeed
 signal file_received(path: String)
 
-const TIMEOUT = 30.0
-
 var client_peer = ENetMultiplayerPeer.new()
 
 var current_join_data := GDTJoinData.new()
 var server_data: GDTServerAuthResponse = null
 
 var last_received_ping: float = 0.0
+var last_sent_ping: float = 0.0
 var ignore_alive_ping := false
 
 var connection_is_ack = false
@@ -42,14 +41,18 @@ func _ready() -> void:
 	report_ready()
 
 func _process(_delta: float) -> void:
-	if not is_active():
-		return
+	if not main: return
+	if not is_active(): return
 	
 	var now = Time.get_unix_time_from_system()
 	
-	if (now - last_received_ping) > TIMEOUT:
+	if (now - last_received_ping) > GDTDual.TIMEOUT:
 		printerr("Connection timed out for RPC.")
-		main.close_connection() 
+		main.close_connection()
+		
+	if (now - last_sent_ping) > GDTDual.PING_INTERVAL:
+		main.server._c2s_connection_alive.rpc_id(1)
+		last_sent_ping = now
 
 func _connected() -> void:
 	if multiplayer.is_server(): return
@@ -346,4 +349,8 @@ func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -
 	scene_instance.queue_free()
 
 func is_active() -> bool:
-	return client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
+	return (
+		main and
+		multiplayer.multiplayer_peer == client_peer and
+		client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
+	)
