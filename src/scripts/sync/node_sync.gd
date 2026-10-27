@@ -40,6 +40,15 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"offset_top", "offset_bottom",
 		"pivot_offset_ratio"
 	],
+	"AudioStreamMP3": [
+		"data"
+	],
+	"AudioStreamWAV": [
+		"data",
+	],
+	"AudioStreamOggVorbis": [
+		"packet_sequence"
+	],
 	"Resource": [
 		#"resource_path"
 	]
