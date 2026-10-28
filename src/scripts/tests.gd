@@ -1546,5 +1546,44 @@ func test_file_chunking() -> bool:
 	
 	return true
 
+func test_line_col_idx() -> bool:
+	var data = [ # Search char is X
+		{
+			"text": "abXc",
+			"args": [0, 2], # line, column
+		},
+		{
+			"text": GDTUtils.join([
+				"ab",
+				"cde",
+				".",
+				"fghjk",
+				"lXmnop",
+				"...."
+			], "\n"),
+			"args": [4, 1],
+		}
+	]
+	
+	for i in data:
+		var txt: String = i["text"]
+		var args = i["args"]
+		var expected = txt.find("X")
+		
+		if expected == -1:
+			printerr("Text %s doesn't contain X char" % txt)
+			return false
+		
+		var idx = GDTUtils.line_column_to_index(txt, args[0], args[1])
+		
+		if idx != expected:
+			printerr(
+				"Index failed for text '%s...' %s != %s. Fragment at that index is: '%s'" % 
+				[ txt.substr(0, 5), idx, expected, txt.substr(idx, 2)]
+			)
+			return false
+	
+	return true
+
 static func _dummy_function(data: String = "") -> String:
 	return data

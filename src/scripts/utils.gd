@@ -323,6 +323,24 @@ static func set_control_disabled(node: Control, state: bool) -> void:
 static func is_file_resource(resource: Resource) -> bool:
 	return not resource.resource_path.is_empty() and not resource.resource_path.contains("::")
 
+static func line_column_to_index(text: String, line: int, col: int) -> int:
+	var lines = text.split("\n")
+	
+	if lines.size() <= line:
+		return -1
+	
+	var res = 0
+	
+	for line_i in lines.size():
+		if line_i != line:
+			res += lines[line_i].length() + 1 # 1 for \n char
+		else:
+			res += col
+			break
+	
+	return res
+
+
 static func get_stack_lines() -> Array:
 	var res = []
 	var stack = get_stack()
