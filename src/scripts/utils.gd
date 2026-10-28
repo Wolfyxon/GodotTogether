@@ -340,7 +340,33 @@ static func line_column_to_index(text: String, line: int, col: int) -> int:
 	
 	return res
 
-
+static func index_to_line_column(text: String, idx: int) -> Array:
+	if idx < 0:
+		return [-1, -1]
+	
+	if idx >= text.length():
+		return [-1, -1]
+	
+	var line = 0
+	var col = 0
+	
+	var cols_counted = false
+	
+	for i in idx:
+		var ch = text[i]
+		var ch_reverse = text[idx - i - 1]
+		
+		if ch == "\n":
+			line += 1
+		
+		if ch_reverse == "\n":
+			cols_counted = true
+		
+		if not cols_counted:
+			col += 1
+		
+	return [line, col]
+		
 static func get_stack_lines() -> Array:
 	var res = []
 	var stack = get_stack()

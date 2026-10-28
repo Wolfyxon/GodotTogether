@@ -1550,7 +1550,7 @@ func test_line_col_idx() -> bool:
 	var data = [ # Search char is X
 		{
 			"text": "abXc",
-			"args": [0, 2], # line, column
+			"lc": [0, 2], # line, column
 		},
 		{
 			"text": GDTUtils.join([
@@ -1561,26 +1561,50 @@ func test_line_col_idx() -> bool:
 				"lXmnop",
 				"...."
 			], "\n"),
-			"args": [4, 1],
+			"lc": [4, 1],
 		}
 	]
 	
 	for i in data:
 		var txt: String = i["text"]
-		var args = i["args"]
-		var expected = txt.find("X")
+		var txt_debug = txt.substr(0, 5)
+		var expected_lc = i["lc"]
+		var expected_line = expected_lc[0]
+		var expected_col = expected_lc[1]
+		var expected_idx = txt.find("X")
 		
-		if expected == -1:
+		if expected_idx == -1:
 			printerr("Text %s doesn't contain X char" % txt)
 			return false
 		
-		var idx = GDTUtils.line_column_to_index(txt, args[0], args[1])
+		var idx = GDTUtils.line_column_to_index(txt, expected_line, expected_col)
 		
-		if idx != expected:
+		if idx != expected_idx:
 			printerr(
-				"Index failed for text '%s...' %s != %s. Fragment at that index is: '%s'" % 
-				[ txt.substr(0, 5), idx, expected, txt.substr(idx, 2)]
+				"line_column_to_index() failed for text '%s...' %s != %s. Fragment at that index is: '%s'" % 
+				[ txt_debug, idx, expected_idx, txt.substr(idx, 2)]
 			)
+			return false
+	
+		var lc_res = GDTUtils.index_to_line_column(txt, idx)
+		
+		if not lc_res:
+			printerr("index_to_line_column() failed. Got empty array")
+			return false
+		
+		var line = lc_res[0]
+		var col = lc_res[1]
+		
+		if line == -1:
+			printerr("index_to_line_column() failed for text '%s...'" % [txt_debug])
+			return false
+		
+		if line != expected_line or col != expected_col:
+			printerr(
+				"index_to_line_column() failed for text '%s...'. lc %s != %s" % 
+				[txt_debug, lc_res, expected_lc]
+			)
+			
 			return false
 	
 	return true
