@@ -26,7 +26,7 @@ func setup_current_editor() -> void:
 	if code_edit.get_instance_id() in set_up_editor_ids:
 		return
 	
-	code_edit.text_changed.connect(_script_code_editor_changed.bind(code_edit))
+	code_edit.text_changed.connect(_script_code_editor_changed.bind(editor, code_edit))
 	set_up_editor_ids.append(code_edit.get_instance_id())
 
 func _script_code_editor_changed(_editor: ScriptEditorBase, _code_edit: CodeEdit) -> void:
