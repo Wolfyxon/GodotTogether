@@ -304,23 +304,6 @@ func _project_files_downloaded() -> void:
 	main.file_sync.resume()
 
 @rpc("authority", "reliable")
-func receive_file(
-	path: String, 
-	buffer: PackedByteArray, 
-	offset: int = 0,
-	truncate := true
-) -> void:
-	file_received.emit(path)
-
-	if not GDTValidator.is_path_safe(path):
-		print("Server attempted to send file at unsafe location: " + path)
-		return
-	
-	print("Receiving from server " + path)
-	main.file_sync.write_file(path, buffer, offset, truncate)
-	
-
-@rpc("authority", "reliable")
 func _s2c_receive_chat_message(text: String, user_id: int) -> void:
 	if not GDTChat.validate_message(text):
 		return
