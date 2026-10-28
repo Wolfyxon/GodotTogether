@@ -1553,6 +1553,10 @@ func test_line_col_idx() -> bool:
 			"lc": [0, 2], # line, column
 		},
 		{
+			"text": "qwertyuiopX",
+			"lc": [0, 10]
+		},
+		{
 			"text": GDTUtils.join([
 				"ab",
 				"cde",
@@ -1562,6 +1566,14 @@ func test_line_col_idx() -> bool:
 				"...."
 			], "\n"),
 			"lc": [4, 1],
+		},
+		{
+			"text": GDTUtils.join([
+				"X",
+				"agagagagag",
+				"fjrifjrf"
+			]),
+			"lc": [0, 0]
 		}
 	]
 	
