@@ -66,13 +66,10 @@ func get_current_line() -> int:
 	return editor.get_caret_line()
 	
 func update_text_edit(edit: TextEdit, text: String) -> void:
-	var carets = [
-		# [line, column]
-	]
+	var old_text = edit.text
 	
-	var selections = [
-		# [line, column]
-	]
+	var caret_idxes = []
+	var selection_end_idxs = []
 	
 	var scroll_v = edit.scroll_vertical
 	var scroll_h = edit.scroll_horizontal
@@ -80,16 +77,19 @@ func update_text_edit(edit: TextEdit, text: String) -> void:
 	for caret_i in edit.get_caret_count():
 		var line = edit.get_caret_line(caret_i)
 		var column = edit.get_caret_column(caret_i)
+		var idx = GDTUtils.line_column_to_index(old_text, line, column)
 		
-		carets.append([line, column])
+		caret_idxes.append(idx)
 		
 		var sel_line_end = edit.get_selection_to_line(caret_i)
 		var sel_column_end = edit.get_selection_to_column(caret_i)
 		
 		if sel_line_end == line and sel_column_end == column:
 			continue 
-			
-		selections.append([sel_line_end, sel_column_end])
+		
+		var end_idx = GDTUtils.line_column_to_index(old_text, sel_line_end, sel_column_end)
+		
+		selection_end_idxs.append(end_idx)
 	
 	edit.text = text
 	edit.scroll_horizontal = scroll_h
@@ -97,17 +97,19 @@ func update_text_edit(edit: TextEdit, text: String) -> void:
 	
 	# TODO: Recalculate caret positions to text differences
 	
-	for caret_i in carets.size():
-		var line = carets[caret_i][0]
-		var col = carets[caret_i][1]
+	for caret_i in caret_idxes.size():
+		var lc = GDTUtils.index_to_line_column(old_text, caret_idxes[caret_i])
 		
-		edit.set_caret_line(line, true, true, 0, caret_i)
-		edit.set_caret_column(col, true, caret_i)
+		edit.set_caret_line(lc[0], true, true, 0, caret_i)
+		edit.set_caret_column(lc[1], true, caret_i)
+	
+	for caret_i in selection_end_idxs.size():
+		var lc_start = GDTUtils.index_to_line_column(old_text, caret_idxes[caret_i])
+		var lc_end = GDTUtils.index_to_line_column(old_text, selection_end_idxs[caret_i])
 		
-	for caret_i in selections.size():
-		var line = carets[caret_i][0]
-		var col = carets[caret_i][1]
-		var line_end = carets[caret_i][0]
-		var col_end = carets[caret_i][1]
+		var line = lc_start[0] 
+		var col = lc_start[1]
+		var line_end = lc_end[0]
+		var col_end = lc_end[1]
 		
 		edit.select(line, col, line_end, col_end, caret_i)
