@@ -177,6 +177,7 @@ func _users_listed(new_users: Array[GDTUser]) -> void:
 		
 		create_avatar_2d(user)
 		create_avatar_3d(user)
+		main.script_sync.create_user_caret(user)
 
 func broadcast_selection() -> void:
 	if not main:
