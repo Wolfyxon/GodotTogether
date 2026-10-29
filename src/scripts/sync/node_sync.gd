@@ -1291,6 +1291,9 @@ func observe_node(node: Node) -> Dictionary:
 	if not is_node_valid(node):
 		return {}
 	
+	if not is_user_node(node):
+		return {}
+	
 	if node in node_data_dict:
 		return node_data_dict[node]
 	
@@ -2080,7 +2083,24 @@ func get_property_keys(obj: Object) -> Array[String]:
 	return res
 
 static func is_user_node(node: Node) -> bool:
-	return node and is_instance_valid(node) and not node.name.contains("@")
+	var basic_check = (
+		node and 
+		is_instance_valid(node) and
+		not node.is_queued_for_deletion() and
+		node.name and
+		not node.name.contains("@") 
+	)
+	
+	if not basic_check:
+		return false
+	
+	# Godot will sometimes name unnamed nodes "_ClassName_id6digits"
+	var instance_str = "_%s_%s" % [node.get_class(), str(node.get_instance_id()).substr(0, 6)]
+	
+	if node.name == instance_str:
+		return false
+	
+	return true
 
 # "node" must be untyped to properly check freed nodes
 static func is_node_valid(node) -> bool:
