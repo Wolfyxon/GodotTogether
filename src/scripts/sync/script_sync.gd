@@ -49,7 +49,7 @@ func _script_code_editor_changed(editor: ScriptEditorBase, code_edit: CodeEdit) 
 	
 	if main.server.is_active():
 		server_broadcast_script(script.resource_path, code_edit.text)
-	else:
+	elif main.client.is_active():
 		_c2s_script_update_request.rpc_id(1, [script.resource_path, code_edit.text])
 
 func update_script(path: String, code: String) -> void:
