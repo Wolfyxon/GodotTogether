@@ -10,6 +10,17 @@ static func sha256_of_buffer(buffer: PackedByteArray) -> String:
 	
 	return hasher.finish().hex_encode()
 
+static func alphabetic_dict_hash(dict: Dictionary) -> int:
+	var keys = dict.keys()
+	keys.sort()
+	
+	var res = 0
+	
+	for key in keys:
+		res += hash(dict[key])
+	
+	return res
+
 static func get_rpc_checksum(node: Node) -> int:
 	var script: Script = node.get_script()
 	var res = 0
@@ -18,12 +29,12 @@ static func get_rpc_checksum(node: Node) -> int:
 		var script_conf: Dictionary = script.get_rpc_config()
 		
 		if script_conf:
-			res = script_conf.hash()
+			res += alphabetic_dict_hash(script_conf)
 	
 	var node_conf = node.get_node_rpc_config()
 	
 	if node_conf:
-		res += node_conf.hash()
+		res += alphabetic_dict_hash(node_conf)
 	
 	return res 
 
