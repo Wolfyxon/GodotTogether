@@ -47,6 +47,9 @@ func _script_code_editor_changed(editor: ScriptEditorBase, code_edit: CodeEdit) 
 	if script.resource_path in supressed_scripts:
 		return
 	
+	if not GDTValidator.is_path_safe(script.resource_path):
+		return
+	
 	if main.server.is_active():
 		server_broadcast_script(script.resource_path, code_edit.text)
 	elif main.client.is_active():
