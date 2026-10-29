@@ -389,6 +389,16 @@ static func get_stack_lines() -> Array:
 	
 	return res
 
+static func get_engine_version_str() -> String:
+	var ver_info = Engine.get_version_info()
+	
+	return "%s.%s.%s-%s" % [
+		ver_info["major"],
+		ver_info["minor"],
+		ver_info["patch"],
+		ver_info["status"]
+	]
+
 static func printerr_stack(message) -> void:
 	var stack_lines = get_stack_lines()
 	stack_lines.remove_at(0)
