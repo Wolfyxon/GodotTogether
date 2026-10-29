@@ -620,6 +620,10 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	if not is_node_observed(parent): return
 	if is_node_observed(child): return
 	
+	# Check if node is internal (like _h_scroll in ScrollContainer)
+	if not child in parent.get_children():
+		return
+	
 	var scene = GDTUtils.get_node_scene(parent)
 	if not scene: return
 	
