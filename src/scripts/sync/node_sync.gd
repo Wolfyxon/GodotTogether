@@ -268,7 +268,7 @@ func _ready() -> void:
 	editor_ur.history_changed.connect(_editor_undo_redo_changed)
 	
 	main.get_settings().settings_changed.connect(update_timer_wait_times)
-	EditorInterface.get_selection().selection_changed.connect(_got_changes)
+	EditorInterface.get_selection().selection_changed.connect(_selection_changed)
 	
 	setup_timers()
 	
@@ -277,6 +277,17 @@ func _ready() -> void:
 
 func _input(_event: InputEvent) -> void:
 	last_input_time = Time.get_unix_time_from_system()
+
+func _selection_changed() -> void:
+	if not main: return
+	
+	_got_changes()
+	
+	var sel = EditorInterface.get_selection()
+	
+	for i in sel.get_selected_nodes():
+		if is_node_valid(i):
+			observe_node(i)
 
 func _cycle() -> void:
 	if not main: return
