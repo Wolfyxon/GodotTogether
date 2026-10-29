@@ -37,10 +37,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 825.0
-offset_bottom = 500.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 832.0
+offset_bottom = 507.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -334,11 +334,9 @@ text = "Print tracked files"
 
 [node name="net" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1444636490]
 layout_mode = 2
-folded = true
 title = "Network"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/net" unique_id=1579403681]
-visible = false
 layout_mode = 2
 script = ExtResource("5_vk20n")
 
@@ -351,6 +349,10 @@ layout_mode = 2
 text = "Ignore server's alive pings (will cause timeout)"
 icon = ExtResource("6_ni5tw")
 icon_alignment = 2
+
+[node name="rpcChecksum" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=273597425]
+layout_mode = 2
+text = "RPC checksum: "
 
 [node name="tests" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1503605208]
 layout_mode = 2
@@ -447,6 +449,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnScannedFiles" to="." method="_on_btn_scanned_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/enabled" to="main/scroll/vbox/sync/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
+[connection signal="visibility_changed" from="main/scroll/vbox/net/vbox" to="main/scroll/vbox/net/vbox" method="_on_visibility_changed"]
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/ignoreAlivePing" to="main/scroll/vbox/net/vbox" method="_on_ignore_alive_ping_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnWriteTest" to="." method="_on_btn_write_test_pressed"]
