@@ -127,7 +127,14 @@ func restore_text_edit_state(edit: TextEdit, data: Dictionary) -> void:
 	edit.scroll_vertical = data["scroll_v"]
 	
 	for caret_i in caret_idxes.size():
-		var lc = GDTUtils.index_to_line_column(last_text, caret_idxes[caret_i])
+		var idx = caret_idxes[caret_i]
+		
+		# Caret will jump to pos 0 if it's set to the end of text
+		# even if it doesn't overflow
+		if idx >= edit.text.length() - 1:
+			idx = edit.text.length() - 2
+		
+		var lc = GDTUtils.index_to_line_column(last_text, idx)
 		
 		edit.set_caret_line(lc[0], true, true, 0, caret_i)
 		edit.set_caret_column(lc[1], true, caret_i)
