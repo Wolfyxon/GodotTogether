@@ -53,7 +53,7 @@ func _script_code_editor_changed(editor: ScriptEditorBase, code_edit: CodeEdit) 
 	if main.server.is_active():
 		server_broadcast_script(script.resource_path, code_edit.text)
 	elif main.client.is_active():
-		_c2s_script_update_request.rpc_id(1, [script.resource_path, code_edit.text])
+		_c2s_script_update_request.rpc_id(1, script.resource_path, code_edit.text)
 
 func update_script(path: String, code: String) -> void:
 	# TODO: Update when script isn't open
@@ -65,13 +65,11 @@ func update_script(path: String, code: String) -> void:
 	var code_edit = main.gui.script_editor_mgr.get_code_editor()
 	if not code_edit: return
 	
-	code_edit.set_block_signals(true)
 	set_script_supressed(path, true)
 	
 	main.gui.script_editor_mgr.update_text_edit(code_edit, code)
 	
 	set_script_supressed(path, false)
-	code_edit.set_block_signals(true)
 
 func set_script_supressed(path: String, state: bool) -> void:
 	if state:
@@ -100,7 +98,8 @@ func _c2s_script_update_request(path: String, code: String) -> void:
 	
 	if not user.has_permission(GodotTogether.Permission.EDIT_SCRIPTS):
 		return
-		
+	
+	update_script(path, code)
 	server_broadcast_script(path, code, id)
 
 func server_broadcast_script(path: String, code: String, sender := 1) -> void:
