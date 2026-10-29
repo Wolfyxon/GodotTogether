@@ -354,6 +354,10 @@ icon_alignment = 2
 layout_mode = 2
 text = "RPC checksum: "
 
+[node name="btnRpcConfig" type="Button" parent="main/scroll/vbox/net/vbox" unique_id=2035800326]
+layout_mode = 2
+text = "Print RPC config"
+
 [node name="tests" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1503605208]
 layout_mode = 2
 folded = true
@@ -451,6 +455,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="visibility_changed" from="main/scroll/vbox/net/vbox" to="main/scroll/vbox/net/vbox" method="_on_visibility_changed"]
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/ignoreAlivePing" to="main/scroll/vbox/net/vbox" method="_on_ignore_alive_ping_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/net/vbox/btnRpcConfig" to="main/scroll/vbox/net/vbox" method="_on_btn_rpc_config_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnWriteTest" to="." method="_on_btn_write_test_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnScriptUpdateTest" to="." method="_on_btn_script_update_test_pressed"]

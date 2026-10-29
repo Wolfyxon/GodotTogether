@@ -27,3 +27,16 @@ func _on_ignore_alive_ping_pressed() -> void:
 	if not main: return
 	
 	main.client.ignore_alive_ping = $ignoreAlivePing.button_pressed
+
+func _on_btn_rpc_config_pressed() -> void:
+	if not main: return
+	
+	for i in main.components:
+		print("--- %s ---" % i.name)
+		
+		var script: Script = i.get_script()
+		
+		if not script:
+			print("< no script >")
+			continue
+		print(JSON.stringify(script.get_rpc_config()), "  ", false)
