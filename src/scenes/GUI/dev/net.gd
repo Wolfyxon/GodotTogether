@@ -38,8 +38,8 @@ func _on_btn_rpc_config_pressed() -> void:
 		var conf = script.get_rpc_config()
 		var funcs = conf.keys()
 		if not funcs: continue
-			
-		print("----==== %s ====----" % i.name)
+		
+		print("----==== %s (%s RPC funcs) ====----" % [i.name, funcs.size()])
 		
 		var max_name_len = 0
 		
