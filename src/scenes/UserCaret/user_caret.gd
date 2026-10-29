@@ -11,20 +11,21 @@ func _process(_delta: float) -> void:
 	var user = get_user()
 	if not user: return
 	
-	#visible = false
+	visible = false
 	
 	var current_script = EditorInterface.get_script_editor().get_current_script()
 	if not current_script: return
 	if current_script.is_queued_for_deletion(): return
 	if not current_script.resource_path: return
 	
-	if current_script.resource_path == user.current_script:
+	if current_script.resource_path != user.current_script:
 		return
 	
 	var edit = main.gui.script_editor_mgr.get_code_editor()
 	if not edit: return
 	
-	var local_pos =  edit.get_pos_at_line_column(user.current_script_line, user.current_script_column)
+	var local_pos = edit.get_pos_at_line_column(user.current_script_line, user.current_script_column)
+	if local_pos.x == -1: return
 	
 	global_position = edit.global_position + Vector2(local_pos)
 	visible = true

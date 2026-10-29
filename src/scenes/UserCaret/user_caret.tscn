@@ -10,17 +10,22 @@ shader = ExtResource("1_nfqxi")
 script = ExtResource("1_56dfi")
 
 [node name="color" type="ColorRect" parent="." unique_id=576058420]
-offset_right = 4.0
-offset_bottom = 38.0
+offset_left = 12.0
+offset_top = -38.0
+offset_right = 16.0
+mouse_filter = 2
 
 [node name="usernameContainer" type="Control" parent="." unique_id=1069716028]
 layout_mode = 3
 anchors_preset = 0
-offset_top = -24.0
-offset_right = 285.0
-offset_bottom = -1.0
+offset_left = 12.0
+offset_top = -64.0
+offset_right = 297.0
+offset_bottom = -41.0
+mouse_filter = 2
 
 [node name="label" type="Label" parent="usernameContainer" unique_id=1727704193]
+z_index = 2
 material = SubResource("ShaderMaterial_nfqxi")
 layout_mode = 1
 anchors_preset = 9
@@ -29,16 +34,18 @@ offset_top = -1.5
 offset_right = 48.0
 offset_bottom = 2.5
 grow_vertical = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 11
 text = "Error"
 vertical_alignment = 2
 
 [node name="bg" type="ColorRect" parent="usernameContainer/label" unique_id=735028075]
-z_index = -1
+self_modulate = Color(1, 1, 1, 0.8862745)
+z_as_relative = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(1, 0.07058824, 1, 1)
