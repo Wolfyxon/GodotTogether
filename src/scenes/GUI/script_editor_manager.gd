@@ -66,23 +66,16 @@ func get_current_line() -> int:
 		return 0
 	
 	return editor.get_caret_line()
-	
-func update_text_edit(edit: TextEdit, text: String) -> void:
-	if edit.text == text: 
-		return
-	
-	var old_text = edit.text
-	
+
+func save_text_edit_state(edit: TextEdit) -> Dictionary:
+	var last_text = edit.text
 	var caret_idxes = []
 	var selection_end_idxs = []
-	
-	var scroll_v = edit.scroll_vertical
-	var scroll_h = edit.scroll_horizontal
 	
 	for caret_i in edit.get_caret_count():
 		var line = edit.get_caret_line(caret_i)
 		var column = edit.get_caret_column(caret_i)
-		var idx = GDTUtils.line_column_to_index(old_text, line, column)
+		var idx = GDTUtils.line_column_to_index(last_text, line, column)
 		
 		caret_idxes.append(idx)
 		
@@ -92,25 +85,41 @@ func update_text_edit(edit: TextEdit, text: String) -> void:
 		if sel_line_end == line and sel_column_end == column:
 			continue 
 		
-		var end_idx = GDTUtils.line_column_to_index(old_text, sel_line_end, sel_column_end)
+		var end_idx = GDTUtils.line_column_to_index(last_text, sel_line_end, sel_column_end)
 		
 		selection_end_idxs.append(end_idx)
 	
-	edit.text = text
-	edit.scroll_horizontal = scroll_h
-	edit.scroll_vertical = scroll_v
+	return {
+		"last_text": edit.text,
+		"caret_idxes": caret_idxes,
+		"selection_end_idxs": selection_end_idxs,
+		"scroll_v": edit.scroll_vertical,
+		"scroll_h": edit.scroll_horizontal
+	}
+
+func restore_text_edit_state(edit: TextEdit, data: Dictionary) -> void:
+	if not data:
+		GDTUtils.printerr_stack("Unable to restore state. Got empty dictionary")
+		return
+	
+	var caret_idxes = data["caret_idxes"]
+	var selection_end_idxs = data["selection_end_idxs"]
+	var last_text = data["last_text"]
 	
 	# TODO: Recalculate caret positions to text differences
 	
+	edit.scroll_horizontal = data["scroll_h"]
+	edit.scroll_vertical = data["scroll_v"]
+	
 	for caret_i in caret_idxes.size():
-		var lc = GDTUtils.index_to_line_column(old_text, caret_idxes[caret_i])
+		var lc = GDTUtils.index_to_line_column(last_text, caret_idxes[caret_i])
 		
 		edit.set_caret_line(lc[0], true, true, 0, caret_i)
 		edit.set_caret_column(lc[1], true, caret_i)
 	
 	for caret_i in selection_end_idxs.size():
-		var lc_start = GDTUtils.index_to_line_column(old_text, caret_idxes[caret_i])
-		var lc_end = GDTUtils.index_to_line_column(old_text, selection_end_idxs[caret_i])
+		var lc_start = GDTUtils.index_to_line_column(last_text, caret_idxes[caret_i])
+		var lc_end = GDTUtils.index_to_line_column(last_text, selection_end_idxs[caret_i])
 		
 		var line = lc_start[0] 
 		var col = lc_start[1]
@@ -118,3 +127,14 @@ func update_text_edit(edit: TextEdit, text: String) -> void:
 		var col_end = lc_end[1]
 		
 		edit.select(line, col, line_end, col_end, caret_i)
+		
+
+func update_text_edit(edit: TextEdit, text: String) -> void:
+	if edit.text == text: 
+		return
+	
+	var state = save_text_edit_state(edit)
+	
+	edit.text = text
+	
+	restore_text_edit_state(edit, state)
