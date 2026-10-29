@@ -11,7 +11,7 @@ script = ExtResource("1_56dfi")
 
 [node name="color" type="ColorRect" parent="." unique_id=576058420]
 offset_right = 4.0
-offset_bottom = 62.0
+offset_bottom = 38.0
 
 [node name="usernameContainer" type="Control" parent="." unique_id=1069716028]
 layout_mode = 3

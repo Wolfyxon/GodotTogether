@@ -1,5 +1,6 @@
 @tool
 extends Node2D
+class_name GDTUserCaret
 
 var main: GodotTogether = null
 var user_ref: WeakRef = null
@@ -10,7 +11,7 @@ func _process(_delta: float) -> void:
 	var user = get_user()
 	if not user: return
 	
-	visible = false
+	#visible = false
 	
 	var current_script = EditorInterface.get_script_editor().get_current_script()
 	if not current_script: return
@@ -20,11 +21,12 @@ func _process(_delta: float) -> void:
 	if current_script.resource_path == user.current_script:
 		return
 	
-	
 	var edit = main.gui.script_editor_mgr.get_code_editor()
 	if not edit: return
 	
-	position = edit.get_pos_at_line_column(user.current_script_line, user.current_script_column)
+	var local_pos =  edit.get_pos_at_line_column(user.current_script_line, user.current_script_column)
+	
+	global_position = edit.global_position + Vector2(local_pos)
 	visible = true
 
 func set_user(user: GDTUser) -> void:

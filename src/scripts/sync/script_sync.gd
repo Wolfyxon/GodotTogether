@@ -2,8 +2,11 @@
 extends GDTComponent
 class_name GDTScriptSync
 
+var user_caret_scene = load("res://addons/GodotTogether/src/scenes/UserCaret/user_caret.tscn")
+
 var main_editor = EditorInterface.get_script_editor()
 
+var user_carets = []
 var set_up_editor_ids = []
 
 var supressed_scripts = {
@@ -18,8 +21,49 @@ func _ready() -> void:
 	await get_tree().process_frame
 	setup_current_editor()
 
+func _exit_tree() -> void:
+	clear_user_carets()
+
 func _script_changed(_script: Script) -> void:
 	setup_current_editor()
+
+func create_user_caret(user: GDTUser) -> void:
+	if not user_caret_scene:
+		GDTUtils.printerr_stack("Cannot create user caret. Source scene is null")
+		return
+	
+	var caret: GDTUserCaret = user_caret_scene.instantiate()
+	
+	caret.main = main
+	caret.set_user(user)
+	main_editor.add_child(caret)
+	user_carets.append(caret)
+
+func get_user_caret(id: int) -> GDTUserCaret:
+	for i in user_carets:
+		if not i: continue
+		
+		var user = i.get_user()
+		if not user: continue
+		
+		if user.id == id:
+			return i
+			
+	return
+
+func remove_user_caret(id: int) -> void:
+	var caret = get_user_caret(id)
+	if not caret: return
+	
+	caret.queue_free()
+	user_carets.erase(caret)
+
+func clear_user_carets() -> void:
+	for i in user_carets:
+		if i:
+			i.queue_free()
+			
+	user_carets.clear()
 
 func setup_current_editor() -> void:
 	if not main: return

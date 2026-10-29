@@ -140,6 +140,7 @@ func _user_connected(user: GDTUser) -> void:
 	
 	create_avatar_2d(user)
 	create_avatar_3d(user)
+	main.script_sync.create_user_caret(user)
 	
 	if should_notify_user_connection():
 		var ip = user.get_address()
@@ -273,6 +274,8 @@ func remove_avatars_of_user(user_id: int) -> void:
 	if avatar_3d: 
 		avatar_3d_markers.erase(avatar_3d)
 		avatar_3d.queue_free()
+	
+	main.script_sync.remove_user_caret(user_id)
 
 func clear_avatars() -> void:
 	for i in avatar_3d_markers:
@@ -285,6 +288,7 @@ func clear_avatars() -> void:
 
 	avatar_3d_markers.clear()
 	avatar_3d_markers.clear()
+	main.script_sync.clear_user_carets()
 
 func broadcast_avatars() -> void:
 	if not main: return
