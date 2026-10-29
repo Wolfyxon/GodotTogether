@@ -23,7 +23,6 @@ func _exit_tree() -> void:
 	if not ui: return
 	ui.queue_free()
 
-
 func receive_transform(pos: Vector3, rot: Vector3) -> void:
 	position = pos
 	rotation = rot
@@ -44,6 +43,11 @@ func _update_visibility() -> void:
 	if scene.is_queued_for_deletion(): return
 	
 	visible = user.current_scene == scene.scene_file_path
+	
+	if visible:
+		ui.modulate.a = 1
+	else:
+		ui.modulate.a = 0
 
 func _update_ui() -> void:
 	# Nothing to show yet (avatar still sitting at its default Vector3.ZERO),
