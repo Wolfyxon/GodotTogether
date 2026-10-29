@@ -184,7 +184,8 @@ func test_internals() -> bool:
 	var node_wrappers = [
 		gui.scene_editor_tabs,
 		gui.scene_tree_editor,
-		gui.external_file_change_dialog
+		gui.external_file_change_dialog,
+		gui.external_script_change_dialog
 	]
 	
 	for i: GDTNodeWrapper in node_wrappers:

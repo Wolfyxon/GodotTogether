@@ -14,7 +14,9 @@ var script_editor_mgr: GDTScriptEditorManager = null
 
 var scene_tree_editor = GDTSceneTreeEditor.new()
 var scene_editor_tabs = GDTEditorSceneTabs.new()
+
 var external_file_change_dialog = GDTExternalFileChangeDialog.new()
+var external_script_change_dialog = GDTExternalScriptChangeDialog.new()
 
 @onready var dev_menu: GDTDevMenu = $DevMenu
 
