@@ -60,6 +60,7 @@ func update_script(path: String, code: String) -> void:
 	
 	var current_script = main_editor.get_current_script()
 	if not current_script: return
+	if current_script.is_queued_for_deletion(): return
 	if current_script.resource_path != path: return
 	
 	var code_edit = main.gui.script_editor_mgr.get_code_editor()

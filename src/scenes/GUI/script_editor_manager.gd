@@ -68,6 +68,10 @@ func get_current_line() -> int:
 	return editor.get_caret_line()
 
 func save_text_edit_state(edit: TextEdit) -> Dictionary:
+	if edit.is_queued_for_deletion():
+		GDTUtils.printerr_stack("Cannot save. Given TextEdit is queued for deletion")
+		return {}
+	
 	var last_text = edit.text
 	var caret_idxes = []
 	var selection_end_idxs = []
@@ -98,6 +102,9 @@ func save_text_edit_state(edit: TextEdit) -> Dictionary:
 	}
 
 func restore_text_edit_state(edit: TextEdit, data: Dictionary) -> void:
+	if edit.is_queued_for_deletion():
+		return
+	
 	if not data:
 		GDTUtils.printerr_stack("Unable to restore state. Got empty dictionary")
 		return
