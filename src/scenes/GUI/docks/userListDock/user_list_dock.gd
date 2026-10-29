@@ -243,7 +243,7 @@ func update_user_control(node: Control, user: GDTUser) -> void:
 		status_btn.text = "Editing: %s" % file
 		
 		if user.current_script:
-			status_btn.text += " line: %s" % user.current_script_line
+			status_btn.text += " line: %s" % (user.current_script_line + 1)
 		
 		status_btn.tooltip_text = "Go to: %s" % source_file
 		status_btn.icon = IMG_EDITING
