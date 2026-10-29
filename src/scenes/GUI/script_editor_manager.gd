@@ -68,6 +68,9 @@ func get_current_line() -> int:
 	return editor.get_caret_line()
 	
 func update_text_edit(edit: TextEdit, text: String) -> void:
+	if edit.text == text: 
+		return
+	
 	var old_text = edit.text
 	
 	var caret_idxes = []
