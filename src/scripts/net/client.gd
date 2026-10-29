@@ -256,6 +256,17 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 		GDTUtils.printerr_stack("Unable to decode response: %s" % data_dict)
 		return
 	
+	var local_engine_ver = GDTUtils.get_engine_version_str()
+	
+	if server_data.engine_version != local_engine_ver:
+		push_warning("Godot version mismatch! Client: %s Host: %s" % [local_engine_ver, server_data.engine_version])
+		
+		main.get_gui().alert(
+			"You are running Godot %s, while the host is running Godot %s.\nYou may encounter issues." % 
+			[local_engine_ver, server_data.engine_version],
+			"Godot version mismatch warning!"
+		)
+	
 	var users = GDTUser.from_dict_bulk(server_data.users, main)
 	main.dual._users_listed(users)
 	
