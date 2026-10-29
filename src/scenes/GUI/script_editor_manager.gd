@@ -20,7 +20,7 @@ func _script_changed(_script: Script) -> void:
 	
 	var current = main_editor.get_current_editor()
 	
-	if current:
+	if current and not current.is_queued_for_deletion():
 		setup_editor(current)
 	
 	update()
@@ -47,10 +47,12 @@ func get_code_editor(editor_base: ScriptEditorBase = null) -> CodeEdit:
 	if not editor_base:
 		editor_base = main_editor.get_current_editor()
 	
-	if not editor_base:
-		return
+	if not editor_base: return
+	if editor_base.is_queued_for_deletion(): return
 	
 	var control = editor_base.get_base_editor()
+	if not control: return
+	if control.is_queued_for_deletion(): return
 	
 	if control is CodeEdit:
 		return control
