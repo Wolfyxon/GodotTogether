@@ -67,6 +67,14 @@ func get_current_line() -> int:
 	
 	return editor.get_caret_line()
 
+func get_current_column() -> int:
+	var editor = get_code_editor()
+	
+	if not editor:
+		return 0
+	
+	return editor.get_caret_column()
+
 func save_text_edit_state(edit: TextEdit) -> Dictionary:
 	if edit.is_queued_for_deletion():
 		GDTUtils.printerr_stack("Cannot save. Given TextEdit is queued for deletion")

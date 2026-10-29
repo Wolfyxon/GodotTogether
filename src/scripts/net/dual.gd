@@ -206,8 +206,10 @@ func broadcast_selection() -> void:
 	var current_script = script_editor.get_current_script()
 	
 	if script_editor.is_visible_in_tree() and current_script:
-		var script_line = main.gui.script_editor_mgr.get_current_line()
-		receive_current_script.rpc_id(0, current_script.resource_path, script_line)
+		var line = main.gui.script_editor_mgr.get_current_line()
+		var col = main.gui.script_editor_mgr.get_current_column()
+		
+		receive_current_script.rpc_id(0, current_script.resource_path, line, col)
 	else:
 		receive_current_script.rpc_id(0, "")
 
@@ -408,7 +410,7 @@ func receive_current_scene(path: String) -> void:
 	update_scene_colors()
 
 @rpc("any_peer", "reliable", "call_remote", NetChannel.USER_STATE)
-func receive_current_script(path: String, line: int = 0) -> void:
+func receive_current_script(path: String, line: int = 0, column: int = 0) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var user = get_user_by_id(id)
 	if not user: return
@@ -420,6 +422,7 @@ func receive_current_script(path: String, line: int = 0) -> void:
 	
 	user.current_script = path
 	user.current_script_line = line
+	user.current_script_column = column
 
 @rpc("authority", "call_remote", "reliable")
 func restart() -> void:
