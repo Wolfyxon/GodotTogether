@@ -24,7 +24,18 @@ func _process(_delta: float) -> void:
 	var edit = main.gui.script_editor_mgr.get_code_editor()
 	if not edit: return
 	
-	var local_pos = edit.get_pos_at_line_column(user.current_script_line, user.current_script_column)
+	var lines = edit.text.remove_chars("\r").split("\n")
+	var col = user.current_script_column
+	
+	if lines.size() <= user.current_script_line:
+		return
+		
+	var line_text = lines[user.current_script_line]
+	
+	if line_text.length() <= user.current_script_column:
+		col = 0
+	
+	var local_pos = edit.get_pos_at_line_column(user.current_script_line, col)
 	if local_pos.x == -1: return
 	
 	global_position = edit.global_position + Vector2(local_pos)
