@@ -17,6 +17,7 @@ signal user_scene_changed(user: GDTUser, path: String)
 enum NetChannel {
 	MAIN,
 	FILES,
+	SCRIPTS,
 	USER_STATE,
 	MISC
 }
