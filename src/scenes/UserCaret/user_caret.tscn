@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cxwsl36tnhego"]
+
+[ext_resource type="Script" uid="uid://cinysw2s7uwt8" path="res://addons/GodotTogether/src/scenes/UserCaret/user_caret.gd" id="1_56dfi"]
+[ext_resource type="Shader" uid="uid://6i5yk5x631bc" path="res://addons/GodotTogether/src/shaders/invert_bg.gdshader" id="1_nfqxi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nfqxi"]
+shader = ExtResource("1_nfqxi")
+
+[node name="UserCaret" type="Node2D" unique_id=828342245]
+script = ExtResource("1_56dfi")
+
+[node name="color" type="ColorRect" parent="." unique_id=576058420]
+offset_right = 4.0
+offset_bottom = 62.0
+
+[node name="usernameContainer" type="Control" parent="." unique_id=1069716028]
+layout_mode = 3
+anchors_preset = 0
+offset_top = -24.0
+offset_right = 285.0
+offset_bottom = -1.0
+
+[node name="label" type="Label" parent="usernameContainer" unique_id=1727704193]
+material = SubResource("ShaderMaterial_nfqxi")
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = -1.5
+offset_right = 48.0
+offset_bottom = 2.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "Error"
+vertical_alignment = 2
+
+[node name="bg" type="ColorRect" parent="usernameContainer/label" unique_id=735028075]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.07058824, 1, 1)
