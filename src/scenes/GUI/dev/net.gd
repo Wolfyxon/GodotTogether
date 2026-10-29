@@ -32,11 +32,30 @@ func _on_btn_rpc_config_pressed() -> void:
 	if not main: return
 	
 	for i in main.components:
-		print("--- %s ---" % i.name)
+		print("----==== %s ====----" % i.name)
 		
 		var script: Script = i.get_script()
 		
 		if not script:
 			print("< no script >")
 			continue
-		print(JSON.stringify(script.get_rpc_config()), "  ", false)
+		
+		var conf = script.get_rpc_config()
+		var funcs = conf.keys()
+		
+		if not funcs:
+			print("< none >")
+			continue
+		
+		var max_name_len = 0
+		
+		for func_name in funcs:
+			if func_name.length() > max_name_len:
+				max_name_len = func_name.length()
+		
+		for func_name in funcs:
+			var sep = " ".repeat(max_name_len - func_name.length())
+			var conf_str = str(conf[func_name]).replace("{ ", "{").replace(" }", "}")
+			print("%s: %s%s" % [func_name, sep, conf_str])
+		
+		print("")
