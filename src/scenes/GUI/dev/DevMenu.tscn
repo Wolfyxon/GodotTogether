@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://c1ii8ge5y21f5" path="res://addons/GodotTogether/src/scenes/GUI/dev/sync.gd" id="5_govu4"]
 [ext_resource type="Script" uid="uid://qbavyogitkv8" path="res://addons/GodotTogether/src/scenes/GUI/dev/net.gd" id="5_vk20n"]
 [ext_resource type="Texture2D" uid="uid://bcj3hd4rcyv7i" path="res://addons/GodotTogether/src/img/warning.svg" id="6_ni5tw"]
+[ext_resource type="Texture2D" uid="uid://b8tqo5inh7rj1" path="res://addons/GodotTogether/src/img/copy.svg" id="7_m2sb3"]
 
 [sub_resource type="GDScriptSyntaxHighlighter" id="GDScriptSyntaxHighlighter_usb8t"]
 
@@ -37,14 +38,15 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 832.0
-offset_bottom = 507.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 825.0
+offset_bottom = 500.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
+scroll_vertical = 180
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -350,9 +352,28 @@ text = "Ignore server's alive pings (will cause timeout)"
 icon = ExtResource("6_ni5tw")
 icon_alignment = 2
 
+[node name="rpcChecksumheader" type="HBoxContainer" parent="main/scroll/vbox/net/vbox" unique_id=1327893079]
+layout_mode = 2
+
+[node name="title" type="Label" parent="main/scroll/vbox/net/vbox/rpcChecksumheader" unique_id=1184389396]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "RPC checksum:"
+
+[node name="btnCopyRpcGlobal" type="Button" parent="main/scroll/vbox/net/vbox/rpcChecksumheader" unique_id=1515371735]
+layout_mode = 2
+text = "Copy global"
+icon = ExtResource("7_m2sb3")
+
+[node name="btnCopyRpcAll" type="Button" parent="main/scroll/vbox/net/vbox/rpcChecksumheader" unique_id=1969136664]
+layout_mode = 2
+text = "Copy full"
+icon = ExtResource("7_m2sb3")
+
 [node name="rpcChecksum" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=273597425]
 layout_mode = 2
-text = "RPC checksum: "
+text = "<error>"
 
 [node name="btnRpcConfig" type="Button" parent="main/scroll/vbox/net/vbox" unique_id=2035800326]
 layout_mode = 2
@@ -455,6 +476,8 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="visibility_changed" from="main/scroll/vbox/net/vbox" to="main/scroll/vbox/net/vbox" method="_on_visibility_changed"]
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/ignoreAlivePing" to="main/scroll/vbox/net/vbox" method="_on_ignore_alive_ping_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/net/vbox/rpcChecksumheader/btnCopyRpcGlobal" to="main/scroll/vbox/net/vbox" method="_on_btn_copy_rpc_global_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/net/vbox/rpcChecksumheader/btnCopyRpcAll" to="main/scroll/vbox/net/vbox" method="_on_btn_copy_rpc_all_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/btnRpcConfig" to="main/scroll/vbox/net/vbox" method="_on_btn_rpc_config_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnWriteTest" to="." method="_on_btn_write_test_pressed"]

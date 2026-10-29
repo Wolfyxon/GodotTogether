@@ -14,7 +14,7 @@ func _process(_delta: float) -> void:
 func _on_visibility_changed() -> void:
 	if not main: return
 	
-	var text = "RPC checksum: \nglobal: %s" % main.get_global_rpc_checksum()
+	var text = "global: %s" % main.get_global_rpc_checksum()
 	
 	for i in main.components:
 		if not i: continue
@@ -53,3 +53,10 @@ func _on_btn_rpc_config_pressed() -> void:
 			print("%s: %s%s" % [func_name, sep, conf_str])
 		
 		print("")
+
+
+func _on_btn_copy_rpc_global_pressed() -> void:
+	DisplayServer.clipboard_set(str(main.get_global_rpc_checksum()))
+
+func _on_btn_copy_rpc_all_pressed() -> void:
+	DisplayServer.clipboard_set($rpcChecksum.text)
