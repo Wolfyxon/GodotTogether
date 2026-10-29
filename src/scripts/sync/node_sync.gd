@@ -36,8 +36,6 @@ const IGNORED_PROPERTIES: Dictionary = {
 		"current_animation_position"
 	],
 	"Control": [
-		"offset_left", "offset_right",
-		"offset_top", "offset_bottom",
 		"pivot_offset_ratio"
 	],
 	
