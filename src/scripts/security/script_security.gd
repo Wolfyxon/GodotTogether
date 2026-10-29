@@ -38,10 +38,15 @@ func check_for_tool_script(path: String, buffer: PackedByteArray) -> void:
 func sanitize_buffer(buf: PackedByteArray) -> PackedByteArray:
 	var text = buf.get_string_from_utf8()
 	
-	if main.get_settings().get_setting("security/sanitize_tool_scripts"):
-		text = detool_code(text)
+	text = sanitize_gdscript(text)
 	
 	return text.to_utf8_buffer()
+
+func sanitize_gdscript(code: String) -> String:
+	if main.get_settings().get_setting("security/sanitize_tool_scripts"):
+		code = detool_code(code)
+	
+	return code
 
 static func is_script_line_ignored(line: String) -> bool:
 	var trimmed = line.strip_edges(true, false)
