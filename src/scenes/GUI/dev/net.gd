@@ -14,7 +14,14 @@ func _process(_delta: float) -> void:
 func _on_visibility_changed() -> void:
 	if not main: return
 	
-	$rpcChecksum.text = "RPC checksum: %s" % main.get_global_rpc_checksum()
+	var text = "RPC checksum: \nglobal: %s" % main.get_global_rpc_checksum()
+	
+	for i in main.components:
+		if not i: continue
+		text += "\n- %s: %s" % [i.name, GDTUtils.get_rpc_checksum(i)] 
+	
+	
+	$rpcChecksum.text = text
 
 func _on_ignore_alive_ping_pressed() -> void:
 	if not main: return
