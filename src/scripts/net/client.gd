@@ -325,34 +325,6 @@ func _s2c_receive_chat_message(text: String, user_id: int) -> void:
 	
 	main.get_chat().add_user_message(text, user)
 
-func _apply_change_to_unloaded_scene(scene_path: String, apply_func: Callable) -> void:
-	if not FileAccess.file_exists(scene_path):
-		push_error("Scene file not found for background update: " + scene_path)
-		return
-
-	var packed_scene: PackedScene = load(scene_path)
-	if not packed_scene:
-		push_error("Failed to load scene for background update: " + scene_path)
-		return
-
-	var scene_instance = packed_scene.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE)
-	if not scene_instance:
-		push_error("Failed to instantiate scene for background update: " + scene_path)
-		return
-
-	var success = apply_func.call(scene_instance)
-
-	if success:
-		var new_packed_scene = PackedScene.new()
-		var result = new_packed_scene.pack(scene_instance)
-
-		if result == OK:
-			ResourceSaver.save(new_packed_scene, scene_path)
-		else:
-			push_error("Failed to pack scene after background update: " + scene_path)
-
-	scene_instance.queue_free()
-
 func is_active() -> bool:
 	return (
 		main and
