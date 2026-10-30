@@ -38,10 +38,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 832.0
-offset_bottom = 507.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 838.0
+offset_bottom = 513.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -335,11 +335,9 @@ text = "Print tracked files"
 
 [node name="net" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1444636490]
 layout_mode = 2
-folded = true
 title = "Network"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/net" unique_id=1579403681]
-visible = false
 layout_mode = 2
 script = ExtResource("5_vk20n")
 
@@ -352,6 +350,10 @@ layout_mode = 2
 text = "Ignore server's alive pings (will cause timeout)"
 icon = ExtResource("6_ni5tw")
 icon_alignment = 2
+
+[node name="polling" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=1408061366]
+layout_mode = 2
+text = "Polls per frame: <error>"
 
 [node name="rpcChecksumheader" type="HBoxContainer" parent="main/scroll/vbox/net/vbox" unique_id=1327893079]
 layout_mode = 2
@@ -382,9 +384,11 @@ text = "Print RPC config"
 
 [node name="tests" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1503605208]
 layout_mode = 2
+folded = true
 title = "Tests"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/tests" unique_id=1246388436]
+visible = false
 layout_mode = 2
 
 [node name="btnRunUnitTests" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=347522384]

@@ -6,6 +6,9 @@ const ROOT_PATH = NodePath("/root")
 var main: GodotTogether = null
 var base: MultiplayerAPI = null
 
+var polls_per_frame := 0
+var recent_poll_count := 0
+
 func _init(_main: GodotTogether, base_api: MultiplayerAPI) -> void:
 	if not _main:
 		GDTUtils.printerr_stack("main is null")
@@ -26,12 +29,20 @@ func _init(_main: GodotTogether, base_api: MultiplayerAPI) -> void:
 
 func setup_signals() -> void:
 	GDTUtils.try_connect_bulk({
+		main.get_tree().process_frame: _process,
+		
 		base.connected_to_server: func(): connected_to_server.emit(),
 		base.connection_failed: func(): connection_failed.emit(),
 		base.server_disconnected: func(): server_disconnected.emit(),
 		base.peer_connected: func(id): peer_connected.emit(id),
 		base.peer_disconnected: func(id): peer_disconnected.emit(id),
 	})
+
+func _process():
+	polls_per_frame = recent_poll_count
+	recent_poll_count = 0
+
+# Function overrides
 
 func _rpc(peer: int, object: Object, method: StringName, args: Array) -> Error:
 	if main and main.get_settings().get_setting("dev/log_rpc_out"):
@@ -40,6 +51,8 @@ func _rpc(peer: int, object: Object, method: StringName, args: Array) -> Error:
 	return base.rpc(peer, object, method, args)
 
 func _poll():
+	recent_poll_count += 1
+	
 	return base.poll()
 
 func _object_configuration_add(object, config: Variant) -> Error:

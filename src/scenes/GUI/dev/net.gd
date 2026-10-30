@@ -10,6 +10,9 @@ func _process(_delta: float) -> void:
 	var now = Time.get_unix_time_from_system()
 	
 	$pingTime.text = "Time since ping from server: %s" % (now - main.client.last_received_ping)
+	
+	if main.mp_override:
+		$polling.text = "Polls per frame: %s" % main.mp_override.polls_per_frame
 
 func _on_visibility_changed() -> void:
 	if not main: return
