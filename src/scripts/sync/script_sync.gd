@@ -16,6 +16,7 @@ var supressed_scripts = {
 func _ready() -> void:
 	report_ready() # Currently this script doesn't do anything so who cares if an error occurs
 	
+	main.get_gui().external_script_change_dialog.got_external_changes.connect(_gd_script_external_changes)
 	main_editor.editor_script_changed.connect(_script_changed)
 	
 	await get_tree().process_frame
@@ -26,6 +27,20 @@ func _exit_tree() -> void:
 
 func _script_changed(_script: Script) -> void:
 	setup_current_editor()
+
+func _gd_script_external_changes(_paths: Array) -> void:
+	if not main: return
+	
+	var settings = main.get_settings()
+	if not settings: return
+	
+	if not main.is_session_active() and not settings.get_setting("dev/allow_file_reload_outside_sessions"):
+		return
+	
+	if not settings.get_setting("files/auto_reload_files"):
+		return
+	
+	main.get_gui().external_script_change_dialog.reload()
 
 func create_user_caret(user: GDTUser) -> void:
 	if not user_caret_scene:
