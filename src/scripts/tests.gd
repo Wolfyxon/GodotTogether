@@ -1478,6 +1478,29 @@ func test_settings() -> bool:
 	
 	return true
 
+func test_setting_migration() -> bool:
+	var data = {
+		"hi": {
+			"a":  "hello"
+		}
+	}
+	
+	var rename_map = {
+		"hi/a": "hi/b"
+	}
+	
+	GDTSettings.rename_data(data, rename_map)
+	
+	if GDTUtils.get_nested(data, "hi/b") != "hello":
+		printerr("Value mismatch at new path")
+		return false
+	
+	if GDTUtils.has_nested(data, "hi/a"):
+		printerr("rename_data() did not delete old path")
+		return false
+	
+	return true
+
 func test_data_encoding() -> bool:
 	var jd1 = GDTJoinData.new()
 	jd1.username = "Hello There"

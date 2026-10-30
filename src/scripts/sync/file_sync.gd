@@ -43,7 +43,7 @@ func _force_godot_scan() -> void:
 
 func update_timer_wait_times() -> void:
 	godot_scan_timer.wait_time = 1
-	scan_timer.wait_time = main.get_settings().get_setting("sync/file_refresh_rate")
+	scan_timer.wait_time = main.get_settings().get_setting("sync/file_scan_interval")
 
 func ignore_last_changes() -> void:
 	file_mod_times = GDTFiles.get_file_modification_times()

@@ -406,7 +406,7 @@ func setup_timers() -> void:
 	update_timer_wait_times()
 
 func update_timer_wait_times() -> void:
-	change_timer.wait_time = main.get_settings().get_setting("sync/node_refresh_rate")
+	change_timer.wait_time = main.get_settings().get_setting("sync/node_scan_interval")
 
 func check_changes(force_full := false) -> void:
 	if not can_sync_nodes(): return
