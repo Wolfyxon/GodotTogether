@@ -105,6 +105,41 @@ static func get_nested(obj, path: String, separator := DICT_PATH_SEPARATOR):
 		current = current[level]
 	
 	return current
+	
+static func has_nested(obj, path: String, separator := DICT_PATH_SEPARATOR) -> bool:
+	var levels = path.split(separator)
+	var current = obj
+	
+	for level in levels:
+		if not current is Dictionary and not current is Object:
+			return false
+		
+		if not level in current: 
+			return false
+		
+		current = current[level]
+	
+	return true
+
+static func erase_nested(dict: Dictionary, path: String, separator := DICT_PATH_SEPARATOR) -> bool:
+	var levels = path.split(separator)
+	var current = dict
+	
+	for level_i in levels.size():
+		var level = levels[level_i]
+		
+		if not current is Dictionary:
+			return false
+		
+		if not level in current: 
+			return false
+		
+		if level_i == levels.size() - 1:
+			current.erase(level)
+		else:
+			current = current[level]
+	
+	return true
 
 static func set_nested(
 	obj, 

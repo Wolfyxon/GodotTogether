@@ -558,6 +558,14 @@ func test_setget_nested() -> bool:
 		}
 	}
 	
+	if not GDTUtils.has_nested(dict, "a/b"):
+		printerr("has_nested() should return true")
+		return false
+		
+	if GDTUtils.has_nested(dict, "a/aaaaaaaaaaaaaa"):
+		printerr("has_nested() should return false for nonexistent path")
+		return false
+	
 	if not GDTUtils.set_nested(dict, "a/b", "c"):
 		printerr("set_nested() should return true")
 		return false
@@ -566,6 +574,14 @@ func test_setget_nested() -> bool:
 	
 	if dict_val != "c":
 		printerr("Dict 'c' != '%s'" % dict_val)
+		return false
+	
+	if not GDTUtils.erase_nested(dict, "a/b"):
+		printerr("erase_nested() should return true")
+		return false
+	
+	if GDTUtils.has_nested(dict, "a/b"):
+		printerr("erase_nested() failed at deleting the path")
 		return false
 	
 	var lbl = Label.new()
