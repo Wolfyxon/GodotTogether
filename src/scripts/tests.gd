@@ -1476,6 +1476,11 @@ func test_settings() -> bool:
 		printerr("Loaded settings are read only")
 		return false
 	
+	for path in GDTSettings.RENAME_MAP:
+		if GDTUtils.has_nested(GDTSettings._DEFAULT_DATA, path):
+			printerr("Default settings data contains path that gets renamed in migration: %s" % path)
+			return false
+	
 	return true
 
 func test_setting_migration() -> bool:
