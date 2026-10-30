@@ -194,7 +194,7 @@ func process_settings_data(dict: Dictionary) -> Dictionary:
 	
 	rename_data(dict, RENAME_MAP)
 	
-	return data
+	return dict
 
 func reset_settings() -> void:
 	if is_logging_enabled():
