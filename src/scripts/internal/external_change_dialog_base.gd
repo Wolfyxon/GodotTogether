@@ -83,7 +83,6 @@ func _cancelled():
 
 func _resaved():
 	changes_resaved.emit()
-	pass
 
 func _reloaded():
 	EditorInterface.get_selection().clear()

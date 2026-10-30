@@ -14,10 +14,10 @@ var supressed_scripts = {
 }
 
 func _ready() -> void:
-	report_ready() # Currently this script doesn't do anything so who cares if an error occurs
-	
 	main.get_gui().external_script_change_dialog.got_external_changes.connect(_gd_script_external_changes)
 	main_editor.editor_script_changed.connect(_script_changed)
+	
+	report_ready()
 	
 	await get_tree().process_frame
 	setup_current_editor()

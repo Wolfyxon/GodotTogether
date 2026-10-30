@@ -22,8 +22,6 @@ func _script_changed(_script: Script) -> void:
 	
 	if current and not current.is_queued_for_deletion():
 		setup_editor(current)
-	
-	update()
 
 func setup_editor(editor: ScriptEditorBase) -> void:
 	var control = editor.get_base_editor()
@@ -39,9 +37,6 @@ func setup_editor(editor: ScriptEditorBase) -> void:
 func _editor_caret_position_changed(_control: CodeEdit) -> void:
 	if not main: return
 	script_position_changed.emit()
-
-func update() -> void:
-	pass
 
 func get_code_editor(editor_base: ScriptEditorBase = null) -> CodeEdit:
 	if not editor_base:
