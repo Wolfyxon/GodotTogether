@@ -112,6 +112,8 @@ func update_script(path: String, code: String) -> void:
 	
 	set_script_supressed(path, true)
 	
+	code = main.script_security.sanitize_gdscript(code)
+	
 	main.gui.script_editor_mgr.update_text_edit(code_edit, code)
 	
 	set_script_supressed(path, false)
@@ -126,8 +128,6 @@ func set_script_supressed(path: String, state: bool) -> void:
 func _s2c_receive_script(path: String, code: String) -> void:
 	if not main.client.validate_s2c(): return
 	if not GDTValidator.is_path_safe(path): return
-	
-	code = main.script_security.sanitize_gdscript(code)
 	
 	update_script(path, code)
 
