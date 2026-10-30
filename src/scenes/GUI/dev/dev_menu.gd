@@ -181,3 +181,12 @@ func _on_btn_script_update_test_pressed() -> void:
 	var new_text = "# First line test\n" + editor.text + "\n# Last line test" 
 	
 	main.gui.script_editor_mgr.update_text_edit(editor, new_text)
+
+func _on_btn_disclaimer_pressed() -> void:
+	if not main: return
+	
+	if not await main.get_gui().confirm("This requires a restart. Continue?"):
+		return
+	
+	main.get_settings().set_setting("seen/disclaimer", false)
+	main.restart()
