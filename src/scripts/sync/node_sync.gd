@@ -2100,6 +2100,12 @@ static func is_user_node(node: Node) -> bool:
 	if node.name == instance_str:
 		return false
 	
+	var parent = node.get_parent()
+	
+	if parent and not parent.is_queued_for_deletion():
+		if parent is GraphEdit and node.name == "_connection_layer":
+			return false
+	
 	return true
 
 # "node" must be untyped to properly check freed nodes
