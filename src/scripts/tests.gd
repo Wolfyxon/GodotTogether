@@ -1666,5 +1666,62 @@ func test_line_col_idx() -> bool:
 	
 	return true
 
+func test_line_diff_modify_remove() -> bool:
+	var a = """
+		Hello there
+		my fred
+		hi
+	"""
+
+	var b = """
+		Hello there,
+		my fred
+	"""
+	
+	var diff = GDTScriptSync.get_line_diff(a, b)
+	
+	if diff.size() != 3:
+		printerr("Size mismatch. %s != %s: %s" % [diff.size(), 3, diff])
+		return false
+	
+	var applied = GDTScriptSync.apply_line_diff(a, diff)
+	
+	if applied != b:
+		printerr("Result text is wrong: %s" % applied)
+		return false
+	
+	return true
+
+func test_line_diff_modify_add() -> bool:
+	var a = """
+		Hello
+	"""
+	
+	var b = """
+		Hello
+		everybody
+		my name
+		is
+		welcome.
+	"""
+	
+	var diff = GDTScriptSync.get_line_diff(a, b)
+	
+	if diff.size() != 6:
+		printerr(
+			"Size mismatch. %s != %s: %s" % 
+			[diff.size(), 6, JSON.stringify(diff, "  ")]
+		)
+		return false
+	
+	var applied = GDTScriptSync.apply_line_diff(a, diff)
+	
+	if applied != b:
+		printerr("Result text is wrong: %s" % applied)
+		return false
+	
+	return true
+
+
 static func _dummy_function(data: String = "") -> String:
 	return data

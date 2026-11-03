@@ -2,6 +2,12 @@
 extends GDTComponent
 class_name GDTScriptSync
 
+enum LineDiffOperation {
+	SET,
+	REMOVE,
+	TERMINATE
+}
+
 var user_caret_scene = load("res://addons/GodotTogether/src/scenes/UserCaret/user_caret.tscn")
 
 var main_editor = EditorInterface.get_script_editor()
@@ -164,3 +170,53 @@ func _c2s_script_update_request(path: String, code: String) -> void:
 
 func server_broadcast_script(path: String, code: String, sender := 1) -> void:
 	main.server.auth_rpc(_s2c_receive_script, [path, code], [sender])
+
+static func get_line_diff(old_text: String, new_text: String) -> Array:
+	var old_lines = old_text.remove_chars("\r").split("\n")
+	var new_lines = new_text.remove_chars("\r").split("\n")
+	
+	var res: Array = []
+	
+	for i in new_lines.size():
+		if i < old_lines.size():
+			if old_lines[i] == new_lines[i]:
+				continue
+				
+		res.append({
+			"line": i,
+			"mode": LineDiffOperation.SET,
+			"text": new_lines[i]
+		})
+		
+	
+	res.append({
+		"line": new_lines.size(),
+		"mode": LineDiffOperation.TERMINATE
+	})
+	
+	return res
+
+static func apply_line_diff(text: String, diff: Array) -> String:
+	var lines = text.split("\n")
+	
+	for line_diff in diff:
+		if not "mode" in line_diff:
+			continue
+		if not "line" in line_diff:
+			continue
+			
+		var mode: LineDiffOperation = line_diff["mode"]
+		var line_i: int = line_diff["line"]
+		
+		if mode == LineDiffOperation.TERMINATE:
+			lines.resize(line_i)
+			break
+		elif mode == LineDiffOperation.SET:
+			var line_text = line_diff["text"]
+			
+			if line_i < lines.size():
+				lines[line_i] = line_text
+			else:
+				lines.append(line_text)
+	
+	return GDTUtils.join(lines, "\n")
