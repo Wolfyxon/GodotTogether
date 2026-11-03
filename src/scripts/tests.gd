@@ -56,6 +56,7 @@ func run_tests() -> void:
 	print("--- Running GodotTogether tests ---")
 	
 	var test_names = []
+	var start = Time.get_unix_time_from_system()
 	
 	for i in get_method_list():
 		if i["name"].begins_with("test_"):
@@ -69,7 +70,7 @@ func run_tests() -> void:
 		exec_test(get(func_name))
 	
 	print()
-	print("Testing complete")
+	print("Testing complete. Took: %s s" % [Time.get_unix_time_from_system() - start])
 	print("Slowest: ", get_by_slowest().slice(0, 5))
 	
 	var fail_str = fail_count
