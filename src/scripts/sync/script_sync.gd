@@ -52,12 +52,24 @@ func _script_code_changed(editor: ScriptEditorBase, code_edit: CodeEdit) -> void
 	if not GDTValidator.is_path_safe(script.resource_path):
 		return
 	
+	var diff = []
 	
+	if script.resource_path in last_sources:
+		diff = get_line_diff(last_sources[script.resource_path], code_edit.text)
+	else:
+		diff = get_line_diff("", code_edit.text)
+	
+	set_last_source_code(script.resource_path, code_edit.text)
 	
 	if main.server.is_active():
-		server_broadcast_script(script.resource_path, code_edit.text)
+		server_broadcast_script_line_diff(script.resource_path, diff)
 	elif main.client.is_active():
-		_c2s_script_update_request.rpc_id(1, script.resource_path, code_edit.text)
+		_c2s_script_line_diff_upload_request.rpc_id(1, script.resource_path, diff)
+	
+	#if main.server.is_active():
+	#	server_broadcast_script(script.resource_path, code_edit.text)
+	#elif main.client.is_active():
+	#	_c2s_script_update_request.rpc_id(1, script.resource_path, code_edit.text)
 
 
 func _gd_script_external_changes(_paths: Array) -> void:
@@ -163,6 +175,8 @@ func update_script(path: String, code: String) -> void:
 
 @rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
 func apply_script_line_diff(path: String, diff: Array) -> void:
+	if not GDTValidator.is_path_safe(path): return
+	
 	var current_script = main_editor.get_current_script()
 	if not current_script: return
 	if current_script.is_queued_for_deletion(): return
@@ -173,16 +187,14 @@ func apply_script_line_diff(path: String, diff: Array) -> void:
 	if edit.is_queued_for_deletion(): return
 	
 	set_script_supressed(path, true)
-	edit.set_block_signals(true)
 	
 	var applied = apply_line_diff(edit.text, diff)
 	var code = main.script_security.sanitize_gdscript(applied)
 	
 	set_last_source_code(path, code)
-	edit.text = code
+	main.gui.script_editor_mgr.update_text_edit(edit, code)
 	
 	set_script_supressed(path, false)
-	edit.set_block_signals(true)
 
 @rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
 func _s2c_receive_script(path: String, code: String) -> void:
