@@ -73,6 +73,13 @@ func _on_btn_node_data_pressed() -> void:
 		print(main.node_sync.node_data_dict[node])
 		print("")
 
+func _on_btn_userdata_pressed() -> void:
+	for i: GDTUser in main.dual.users:
+		print("-- %s: %s --" % [i.id, i.name])
+		print(JSON.stringify(i.to_dict(), "  "))
+	
+	print("Total: %s" % main.dual.users.size())
+
 func _on_btn_execute_pressed() -> void:
 	var expr = Expression.new()
 	var source_code = $main/scroll/vbox/exec/vbox/code.text
