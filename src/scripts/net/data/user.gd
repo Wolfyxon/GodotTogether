@@ -80,6 +80,10 @@ func get_encodable_fields() -> Array:
 		"type",
 		"joined_at",
 		"authenticated_at",
+		"current_scene",
+		"current_script",
+		"current_script_line",
+		"current_script_column"
 		#"authenticated"
 	]
 
