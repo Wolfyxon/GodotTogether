@@ -8,6 +8,10 @@ var user_ref: WeakRef = null
 func _process(_delta: float) -> void:
 	if not main: return
 	
+	_process_script()
+	_process_mouse()
+
+func _process_script() -> void:
 	var user = get_user()
 	if not user: return
 	
@@ -40,6 +44,10 @@ func _process(_delta: float) -> void:
 	
 	global_position = edit.global_position + Vector2(local_pos)
 	visible = true
+
+func _process_mouse() -> void:
+	var mouse = get_global_mouse_position()
+	$usernameContainer.visible = global_position.distance_to(mouse) < 75
 
 func set_user(user: GDTUser) -> void:
 	$color.color = user.color
