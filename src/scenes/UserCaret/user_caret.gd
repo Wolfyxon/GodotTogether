@@ -36,7 +36,7 @@ func _process_script() -> void:
 		
 	var line_text = lines[user.current_script_line]
 	
-	if line_text.length() <= user.current_script_column:
+	if line_text.length() < user.current_script_column:
 		col = 0
 	
 	var local_pos = edit.get_pos_at_line_column(user.current_script_line, col)
