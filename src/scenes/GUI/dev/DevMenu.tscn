@@ -38,10 +38,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 838.0
-offset_bottom = 513.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 825.0
+offset_bottom = 500.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -335,9 +335,11 @@ text = "Print tracked files"
 
 [node name="net" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1444636490]
 layout_mode = 2
+folded = true
 title = "Network"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/net" unique_id=1579403681]
+visible = false
 layout_mode = 2
 script = ExtResource("5_vk20n")
 
@@ -441,6 +443,10 @@ text = "Protocol version: ?"
 [node name="dev" type="Label" parent="main/scroll/vbox/info/vbox" unique_id=869376440]
 layout_mode = 2
 text = "Is dev (source code) version: error"
+
+[node name="diskSpace" type="Label" parent="main/scroll/vbox/info/vbox" unique_id=622436966]
+layout_mode = 2
+text = "Supports disk space check: error"
 
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2

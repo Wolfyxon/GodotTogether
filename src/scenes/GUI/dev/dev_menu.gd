@@ -22,7 +22,11 @@ func _ready() -> void:
 	$main/scroll/vbox/info/vbox/version.text = "Version name: %s" % main.get_plugin_version()
 	$main/scroll/vbox/info/vbox/protocol.text = "Protocol version: %s" % main.PROTOCOL_VERSION
 	$main/scroll/vbox/info/vbox/dev.text = "Is dev (source code) version: %s" % main.is_dev_version()
-
+	
+	var res_dir = DirAccess.open("res://")
+	
+	if res_dir:
+		$main/scroll/vbox/info/vbox/diskSpace.text = "Supports disk space check: %s" % (res_dir.get_space_left() > 0)
 
 func register_settings(nodes: Array) -> void:
 	for i in nodes:
