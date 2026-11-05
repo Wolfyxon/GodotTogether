@@ -12,7 +12,7 @@ func _wrapper_init() -> void:
 	pass
 
 static func get_editor_node(cls: String) -> Node:
-	var root = EditorInterface.get_base_control().get_tree().root
+	var root = GDTUtils.get_root()
 	var node = GDTUtils.get_descendant_with_class(root, cls)
 	
 	if not node:
@@ -21,5 +21,5 @@ static func get_editor_node(cls: String) -> Node:
 	return node
 
 static func get_editor_nodes(cls: String) -> Array:
-	var root = EditorInterface.get_base_control().get_tree().root
+	var root = GDTUtils.get_root()
 	return GDTUtils.get_descendants_with_class(root, cls)

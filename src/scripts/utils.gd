@@ -223,6 +223,9 @@ static func compare_dicts(
 static func get_tree() -> SceneTree:
 	return EditorInterface.get_base_control().get_tree()
 
+static func get_root() -> Node:
+	return get_tree().root
+
 static func try_connect(sig: Signal, fn: Callable) -> void:
 	if not sig.is_connected(fn):
 		sig.connect(fn)
