@@ -1672,13 +1672,13 @@ func test_line_diff_modify() -> bool:
 		Hello there,
 		my fred
 		I see you've travelled so far
-	"""
+	""".remove_chars("\r")
 
 	var b = """
 		Hello there
 		my fred
 		I see you've travelled so far.
-	"""
+	""".remove_chars("\r")
 	
 	var diff = GDTScriptSync.get_line_diff(a, b)
 	
@@ -1699,12 +1699,12 @@ func test_line_diff_modify_remove() -> bool:
 		Hello there
 		my fred
 		hi
-	"""
+	""".remove_chars("\r")
 
 	var b = """
 		Hello there,
 		my fred
-	"""
+	""".remove_chars("\r")
 	
 	var diff = GDTScriptSync.get_line_diff(a, b)
 	
@@ -1723,7 +1723,7 @@ func test_line_diff_modify_remove() -> bool:
 func test_line_diff_modify_add() -> bool:
 	var a = """
 		Hello
-	"""
+	""".remove_chars("\r")
 	
 	var b = """
 		Hello
@@ -1731,7 +1731,7 @@ func test_line_diff_modify_add() -> bool:
 		my name
 		is
 		welcome.
-	"""
+	""".remove_chars("\r")
 	
 	var diff = GDTScriptSync.get_line_diff(a, b)
 	
