@@ -9,6 +9,14 @@ func _process(_delta: float) -> void:
 	
 	var now = Time.get_unix_time_from_system()
 	
+	var reason_code = main.client.disconnect_reason
+	var reason_str = "<unrecognized>"
+	var reason_strings = GDTUser.DisconnectReason.keys()
+	
+	if reason_code < reason_strings.size():
+		reason_str = reason_strings[reason_code]
+	
+	$disconnectReason.text = "last disconnect reason: %s (%s)" % [reason_code, reason_str]
 	$pingTime.text = "Time since ping from server: %s" % (now - main.client.last_received_ping)
 	
 	if main.mp_override:

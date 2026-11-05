@@ -371,6 +371,10 @@ visible = false
 layout_mode = 2
 script = ExtResource("5_vk20n")
 
+[node name="disconnectReason" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=404266751]
+layout_mode = 2
+text = "Last disconnect reason: N/A"
+
 [node name="pingTime" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=1960453719]
 layout_mode = 2
 text = "Time since ping from server: "
