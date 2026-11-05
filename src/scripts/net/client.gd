@@ -130,9 +130,24 @@ func reset() -> void:
 	connection_cancelled = false
 	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
 
-func validate_s2c() -> bool:
-	if not is_active():
+func validate_s2c(can_be_local := false) -> bool:
+	if not is_active() and not can_be_local:
 		GDTUtils.printerr_stack("Attempt to call server to client function when client isn't active")
+		return false
+	
+	var id = multiplayer.get_remote_sender_id()
+	
+	if can_be_local and id == 0:
+		return true
+	
+	if id == 0:
+		GDTUtils.printerr_stack("Attempt to call RPC function locally")
+		return false
+	
+	# The ID is redundantly checked in case the internal authority check fails
+	# or the node authority is changed.
+	if id != 1 and is_active():
+		GDTUtils.printerr_stack("Called by %s instead of host 1" % id)
 		return false
 	
 	return true
@@ -248,6 +263,8 @@ func _s2c_connection_alive() -> void:
 
 @rpc("authority", "reliable")
 func _s2c_auth_successful(data_dict: Dictionary) -> void:
+	if not main.client.validate_s2c(): return
+	
 	print("Server accepted connection")
 	
 	server_data = GDTServerAuthResponse.from_dict(data_dict)

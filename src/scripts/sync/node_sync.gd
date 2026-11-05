@@ -944,6 +944,9 @@ func _c2s_request_signal_connections_update(
 
 @rpc("authority", "call_remote", "reliable")
 func update_node_properties(node_path: String, scene_path: String, property_dict: Dictionary) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
@@ -963,6 +966,9 @@ func update_node_properties(node_path: String, scene_path: String, property_dict
 
 @rpc("authority", "call_remote", "reliable")
 func rename_node(node_path: String, scene_path: String, new_name: String) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
@@ -989,6 +995,9 @@ func add_node(
 	node_class: String,
 	property_dict: Dictionary
 ) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
@@ -1030,6 +1039,9 @@ func add_node(
 
 @rpc("authority", "call_remote", "reliable")
 func delete_node(node_path: String, scene_path: String) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
@@ -1056,6 +1068,9 @@ func delete_node(node_path: String, scene_path: String) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func reorder_children(parent_path: String, scene_path: String, ordered_names: Array) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
@@ -1083,6 +1098,9 @@ func change_node_class(
 	new_class: String,
 	property_dict: Dictionary
 ) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	if not GDTValidator.validate_existing_file_path(scene_path):
 		return
 	
@@ -1132,6 +1150,9 @@ func update_node_signal_connections(
 	scene_path: String, 
 	dict: Dictionary
 ) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	await get_tree().process_frame
 	
 	if not GDTValidator.validate_existing_file_path(scene_path):

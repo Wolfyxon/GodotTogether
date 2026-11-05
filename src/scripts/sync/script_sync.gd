@@ -175,6 +175,8 @@ func update_script(path: String, code: String) -> void:
 
 @rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
 func apply_script_line_diff(path: String, diff: Array) -> void:
+	if not main.client.validate_s2c(true): return
+	
 	if not GDTValidator.is_path_safe(path): return
 	
 	var current_script = main_editor.get_current_script()

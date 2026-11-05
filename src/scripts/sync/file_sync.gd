@@ -210,6 +210,9 @@ func write_file(
 	offset: int = 0,
 	truncate := true
 ) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	var buf_size = buffer.size()
 	
 	if buf_size > CHUNK_SIZE:
@@ -308,6 +311,9 @@ func write_file(
 
 @rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.FILES)
 func delete_file(path: String) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
 	if not GDTValidator.is_path_safe(path):
 		printerr("Server tried to delete file at unsafe location: %s" % path)
 		return
