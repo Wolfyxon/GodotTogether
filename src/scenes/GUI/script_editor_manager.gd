@@ -59,6 +59,35 @@ func get_script_from_editor(editor: ScriptEditorBase) -> Script:
 	
 	return
 
+func get_editor_by_path(script_path: String) -> ScriptEditorBase:
+	if not script_path:
+		return
+	
+	var scripts = main_editor.get_open_scripts()
+	var editors = main_editor.get_open_script_editors()
+	
+	var idx = -1
+	
+	for i in scripts.size():
+		var script = scripts[i]
+		
+		if not script or script.is_queued_for_deletion():
+			continue
+			
+		if script.resource_path == script_path:
+			idx = i
+			break
+	
+	if editors.size() <= idx:
+		return
+	
+	var res = editors[idx]
+	
+	if not res or res.is_queued_for_deletion():
+		return
+	
+	return res
+
 func _editor_caret_position_changed(_control: CodeEdit) -> void:
 	if not main: return
 	script_position_changed.emit()
