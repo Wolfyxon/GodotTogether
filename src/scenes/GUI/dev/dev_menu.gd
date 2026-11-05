@@ -5,6 +5,11 @@ class_name GDTDevMenu
 var main: GodotTogether = null
 
 func _ready() -> void:
+	var tree = get_tree()
+	
+	if tree and tree.current_scene == self:
+		return
+	
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
