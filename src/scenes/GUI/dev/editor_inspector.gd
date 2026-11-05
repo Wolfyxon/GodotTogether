@@ -28,3 +28,6 @@ func _on_btn_load_tree_pressed() -> void:
 		return
 	
 	main.gui.scene_tree_editor.load_tree(node)
+
+func _on_btn_classes_pressed() -> void:
+	GDTDebug.dump_node_classes()

@@ -59,9 +59,6 @@ func inspect_tree(node: Node = GDTUtils.get_root()) -> void:
 		
 	main.gui.scene_tree_editor.load_tree(node)
 
-func _on_btn_node_classes_pressed() -> void:
-	GDTDebug.dump_node_classes()
-
 func _on_btn_file_tree_pressed() -> void:
 	var paths = GDTFiles.get_file_tree()
 	

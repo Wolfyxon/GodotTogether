@@ -47,6 +47,7 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
+scroll_vertical = 1
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -226,15 +227,6 @@ layout_mode = 2
 layout_mode = 2
 text = "Print data of all users"
 
-[node name="lblNodes" type="Label" parent="main/scroll/vbox/prints/vbox" unique_id=1814752883]
-layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "Editor"
-
-[node name="btnNodeClasses" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=1816482059]
-layout_mode = 2
-text = "Print all node classes in editor"
-
 [node name="btnNodeData" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=2138195580]
 layout_mode = 2
 text = "Print tracked node data"
@@ -258,9 +250,11 @@ text = "Print files included in scanning"
 
 [node name="inspector" type="FoldableContainer" parent="main/scroll/vbox" unique_id=138168918]
 layout_mode = 2
+folded = true
 title = "Editor inspector"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/inspector" unique_id=1122064923]
+visible = false
 layout_mode = 2
 script = ExtResource("4_37caa")
 
@@ -280,6 +274,10 @@ To undo loading the editor node tree, reload your scene."
 
 [node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/inspector/vbox" unique_id=1894326370]
 layout_mode = 2
+
+[node name="btnClasses" type="Button" parent="main/scroll/vbox/inspector/vbox" unique_id=979248988]
+layout_mode = 2
+text = "Dump node classes"
 
 [node name="sync" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1652322024]
 layout_mode = 2
@@ -511,12 +509,12 @@ icon = ExtResource("2_qe0lv")
 
 [connection signal="pressed" from="main/scroll/vbox/exec/vbox/btnExecute" to="." method="_on_btn_execute_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUserdata" to="." method="_on_btn_userdata_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeClasses" to="." method="_on_btn_node_classes_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnNodeData" to="." method="_on_btn_node_data_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnFileTree" to="." method="_on_btn_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnUnsafeFileTree" to="." method="_on_btn_unsafe_file_tree_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/prints/vbox/btnScannedFiles" to="." method="_on_btn_scanned_files_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/inspector/vbox/btnLoadTree" to="main/scroll/vbox/inspector/vbox" method="_on_btn_load_tree_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/inspector/vbox/btnClasses" to="main/scroll/vbox/inspector/vbox" method="_on_btn_classes_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/enabled" to="main/scroll/vbox/sync/vbox" method="_on_enabled_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/sync/vbox/btnFiles" to="main/scroll/vbox/sync/vbox" method="_on_btn_files_pressed"]
 [connection signal="visibility_changed" from="main/scroll/vbox/net/vbox" to="main/scroll/vbox/net/vbox" method="_on_visibility_changed"]
