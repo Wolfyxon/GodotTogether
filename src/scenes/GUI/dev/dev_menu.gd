@@ -46,6 +46,14 @@ func fill_main() -> void:
 			if first and "main" in first:
 				first.main = main
 
+# For use in the code executor
+func inspect_tree(node: Node = GDTUtils.get_root()) -> void:
+	if not node:
+		printerr("Node is null")
+		return
+		
+	main.gui.scene_tree_editor.load_tree(node)
+
 func _on_btn_node_classes_pressed() -> void:
 	GDTDebug.dump_node_classes()
 
