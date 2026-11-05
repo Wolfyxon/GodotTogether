@@ -30,3 +30,30 @@ func _acquire_node() -> void:
 	
 	if not node:
 		GDTUtils.printerr_stack("Failed to find external script change window")
+
+func get_paths() -> Array:
+	var res = []
+	
+	var raw = get_raw_paths()
+	var editor = EditorInterface.get_script_editor()
+	var paths = editor.get_open_scripts()
+	
+	for name: String in raw:
+		if name.begins_with("res://"):
+			res.append(name)
+			continue
+		
+		var found = false
+		
+		for path in paths:
+			if path.get_file() == name:
+				res.append(path)
+				found = true
+				break
+		
+		if found:
+			continue
+		
+		res.append(name)
+	
+	return res
