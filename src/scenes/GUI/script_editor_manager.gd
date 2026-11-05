@@ -34,6 +34,31 @@ func setup_editor(editor: ScriptEditorBase) -> void:
 		_editor_caret_position_changed.bind(control)
 	)
 
+func get_script_from_editor(editor: ScriptEditorBase) -> Script:
+	if not editor:
+		GDTUtils.printerr_stack("editor is null")
+		return
+	
+	if editor.is_queued_for_deletion():
+		return
+	
+	var all = main_editor.get_open_script_editors()
+	var scripts = main_editor.get_open_scripts()
+	var idx = all.find(editor)
+	
+	if idx == -1:
+		return
+	
+	if scripts and idx < scripts.size():
+		var res = scripts[idx]
+		
+		if not res or res.is_queued_for_deletion():
+			return
+		
+		return res
+	
+	return
+
 func _editor_caret_position_changed(_control: CodeEdit) -> void:
 	if not main: return
 	script_position_changed.emit()
