@@ -24,7 +24,7 @@ Such software is not a right place for politics.
 Simply respect everyone's time and don't say things that are misleading.
 
 Don't open joke issues like "GodotTogether should support smart microwaves" and
-pull requests llike "prefixed every function and variable with `the_`".
+pull requests like "prefixed every function and variable with `the_`".
 
 Easte eggs are allowed, but only in small amount.
 
