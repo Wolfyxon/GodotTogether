@@ -30,7 +30,7 @@ func _ready() -> void:
 	report_ready()
 	
 	await get_tree().process_frame
-	setup_current_editor()
+	setup_all_editors()
 
 func _exit_tree() -> void:
 	clear_user_carets()
@@ -88,17 +88,39 @@ func setup_current_editor() -> void:
 	if not script.resource_path: return
 	
 	var editor = main_editor.get_current_editor()
+	setup_editor(editor, script)
+
+func setup_all_editors() -> void:
+	setup_current_editor()
+	
+	var scripts = EditorInterface.get_script_editor().get_open_scripts()
+	var editors = EditorInterface.get_script_editor().get_open_script_editors()
+	
+	if scripts.size() != editors.size():
+		GDTUtils.printerr_stack("Engine bug! Size of scripts and script editors don't match!")
+		return
+	
+	for i in scripts.size():
+		setup_editor(editors[i], scripts[i])
+
+func setup_editor(editor: ScriptEditorBase, script: Script) -> void:
+	if editor.is_queued_for_deletion(): return
+	if script.is_queued_for_deletion(): return
+	
+	if not script.resource_path: return
+	
+	if editor.get_instance_id() in set_up_editor_ids:
+		return
 	
 	var code_edit = main.gui.script_editor_mgr.get_code_editor(editor)
 	if not code_edit: return
-	if code_edit.is_queued_for_deletion(): return
 	
-	if code_edit.get_instance_id() in set_up_editor_ids:
-		return
+	if code_edit.is_queued_for_deletion(): return
 	
 	set_last_source_code(script.resource_path, code_edit.text)
 	code_edit.text_changed.connect(_script_code_changed.bind(editor, code_edit))
-	set_up_editor_ids.append(code_edit.get_instance_id())
+	
+	set_up_editor_ids.append(editor.get_instance_id())
 
 func set_last_source_code(path: String, code: String) -> void:
 	last_sources[path] = code
@@ -154,22 +176,20 @@ func apply_script_line_diff(path: String, diff: Array) -> void:
 	
 	if not GDTValidator.is_path_safe(path): return
 	
-	var current_script = main_editor.get_current_script()
-	if not current_script: return
-	if current_script.is_queued_for_deletion(): return
-	if current_script.resource_path != path: return
+	var editor = main.gui.script_editor_mgr.get_editor_by_path(path)
+	if not editor: return
 	
-	var edit = main.gui.script_editor_mgr.get_code_editor()
-	if not edit: return
-	if edit.is_queued_for_deletion(): return
+	var code_edit = main.gui.script_editor_mgr.get_code_editor(editor)
+	if not code_edit: return
+	if code_edit.is_queued_for_deletion(): return
 	
 	set_script_supressed(path, true)
 	
-	var applied = apply_line_diff(edit.text, diff)
+	var applied = apply_line_diff(code_edit.text, diff)
 	var code = main.script_security.sanitize_gdscript(applied)
 	
 	set_last_source_code(path, code)
-	main.gui.script_editor_mgr.update_text_edit(edit, code)
+	main.gui.script_editor_mgr.update_text_edit(code_edit, code)
 	
 	set_script_supressed(path, false)
 
