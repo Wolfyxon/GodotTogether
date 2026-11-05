@@ -29,9 +29,9 @@ enum DisconnectReason {
 	TIMEOUT
 }
 
-var id: int
-var name: String
-var peer: ENetPacketPeer
+var id: int = -1
+var name: String = ""
+var peer: PacketPeer = null
 var main: GodotTogether = null
 var type := Type.EDITOR
 var color := Color.WHITE
@@ -56,7 +56,7 @@ var permissions: Array[GodotTogether.Permission] = [
 	GodotTogether.Permission.DELETE_SCRIPTS
 ]
 
-func _init(_id: int, _peer: ENetPacketPeer = null, _main: GodotTogether = null):
+func _init(_id: int, _peer: PacketPeer = null, _main: GodotTogether = null):
 	var now = Time.get_unix_time_from_system()
 	
 	id = _id
@@ -100,12 +100,16 @@ func get_address() -> String:
 	if not peer:
 		return "localhost"
 	
-	var res = peer.get_remote_address()
+	if peer is ENetPacketPeer:
+		var res = peer.get_remote_address()
+		
+		if res.is_empty():
+			return _last_address
+		
+		_last_address = normalize_address(res)
+	else:
+		_last_address = "<unknown>"
 	
-	if res.is_empty():
-		return _last_address
-	
-	_last_address = normalize_address(res)
 	return _last_address
 
 func auth() -> void:
@@ -137,30 +141,65 @@ func kick(reason: DisconnectReason = DisconnectReason.KICKED) -> void:
 		GDTUtils.printerr_stack("Cannot kick %s: missing peer object" % id)
 		return
 	
-	peer.peer_disconnect_later()
-	
-	await EditorInterface.get_editor_main_screen().get_tree().create_timer(3).timeout
+	disconnect_peer()
 
+func try_disconnect_peer() -> void:
+	if peer is ENetPacketPeer:
+		peer.peer_disconnect_later()
+	elif main:
+		main.multiplayer.multiplayer_peer.disconnect_peer(id)
+	else:
+		GDTUtils.printerr_stack("try_disconnect_peer() failed: main is null")
+
+func force_disconnect_peer() -> void:
+	if peer is ENetPacketPeer:
+		peer.peer_disconnect_now()
+	
+	if not is_peer_connected(true):
+		return
+	
+	if not main:
+		GDTUtils.printerr_stack("Unable to kick peer %s. main is null" % id)
+		return
+	
 	if is_peer_connected(true):
-		peer.peer_disconnect_now(reason)
+		main.multiplayer.multiplayer_peer.disconnect_peer(id)
+	
+	if is_peer_connected(true):
+		main.multiplayer.multiplayer_peer.disconnect_peer(id, true)
+
+func disconnect_peer() -> void:
+	authenticated = false
+	try_disconnect_peer()
+	
+	await GDTUtils.get_tree().create_timer(3).timeout
+	
+	if not is_peer_connected(true):
+		return
+		
+	force_disconnect_peer()
 
 func is_peer_connected(truly_connected := false) -> bool:
 	if not peer:
 		return true
-
-	var state = peer.get_state()
 	
-	if truly_connected:
-		return state != ENetPacketPeer.STATE_DISCONNECTED
+	if peer is ENetPacketPeer:
+		var state = peer.get_state()
+		
+		if truly_connected:
+			return state != ENetPacketPeer.STATE_DISCONNECTED
 
-	var dis = [
-		ENetPacketPeer.STATE_DISCONNECTED,
-		ENetPacketPeer.STATE_DISCONNECT_LATER,
-		ENetPacketPeer.STATE_ACKNOWLEDGING_DISCONNECT
-	]
+		var dis = [
+			ENetPacketPeer.STATE_DISCONNECTED,
+			ENetPacketPeer.STATE_DISCONNECT_LATER,
+			ENetPacketPeer.STATE_ACKNOWLEDGING_DISCONNECT
+		]
+		
+		return not state in dis
+	else:
+		GDTUtils.printerr_stack("No way to tell if peer is connected: %s" % peer.get_class())
 	
-	return not state in dis
-
+	return false
 func is_local() -> bool:
 	if not main:
 		GDTUtils.printerr_stack("Unable to check if user is local. main is null")
