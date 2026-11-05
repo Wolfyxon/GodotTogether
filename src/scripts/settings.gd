@@ -96,7 +96,8 @@ var have_changed := false
 var error_message := ""
 var error_line := 0
 
-var save_mutex = Mutex.new()
+var save_mutex := Mutex.new()
+var update_mutex := Mutex.new()
 
 func _ready() -> void:
 	if GDTUtils.has_readonly(data):
@@ -127,8 +128,12 @@ func has_error() -> bool:
 	return not error_message.is_empty()
 
 func load_default() -> void:
+	update_mutex.lock()
+	
 	data = get_default_data()
 	settings_changed.emit()
+	
+	update_mutex.unlock()
 	
 	if is_logging_enabled():
 		print("Loaded default settings")
@@ -180,12 +185,16 @@ func load_settings() -> bool:
 		load_default()
 		return false
 	
+	update_mutex.lock()
+	
 	data = process_settings_data(parsed)
 	
 	if is_logging_enabled():
 		print("Settings loaded")
 	
 	settings_changed.emit()
+	update_mutex.unlock()
+	
 	return true
 
 func process_settings_data(dict: Dictionary) -> Dictionary:
@@ -257,11 +266,15 @@ func set_setting(path: String, value) -> void:
 		GDTUtils.printerr_stack("Not updating when settings loaded with errors: %s" % path)
 		return
 	
+	update_mutex.lock()
+	
 	is_unsaved = true
 	have_changed = true
 	
 	GDTUtils.set_nested(data, path, value)
 	settings_changed.emit()
+	
+	update_mutex.unlock()
 	
 	if is_logging_enabled():
 		print("Setting changed: %s: %s" % [path, value])
