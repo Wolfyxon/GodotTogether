@@ -65,12 +65,6 @@ func _script_code_changed(editor: ScriptEditorBase, code_edit: CodeEdit) -> void
 		server_broadcast_script_line_diff(script.resource_path, diff)
 	elif main.client.is_active():
 		_c2s_script_line_diff_upload_request.rpc_id(1, script.resource_path, diff)
-	
-	#if main.server.is_active():
-	#	server_broadcast_script(script.resource_path, code_edit.text)
-	#elif main.client.is_active():
-	#	_c2s_script_update_request.rpc_id(1, script.resource_path, code_edit.text)
-
 
 func _gd_script_external_changes(_paths: Array) -> void:
 	if not main: return
@@ -154,25 +148,6 @@ func clear_user_carets() -> void:
 			
 	user_carets.clear()
 
-func update_script(path: String, code: String) -> void:
-	# TODO: Update when script isn't open
-	
-	var current_script = main_editor.get_current_script()
-	if not current_script: return
-	if current_script.is_queued_for_deletion(): return
-	if current_script.resource_path != path: return
-	
-	var code_edit = main.gui.script_editor_mgr.get_code_editor()
-	if not code_edit: return
-	
-	set_script_supressed(path, true)
-	
-	code = main.script_security.sanitize_gdscript(code)
-	
-	main.gui.script_editor_mgr.update_text_edit(code_edit, code)
-	
-	set_script_supressed(path, false)
-
 @rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
 func apply_script_line_diff(path: String, diff: Array) -> void:
 	if not main.client.validate_s2c(true): return
@@ -198,13 +173,6 @@ func apply_script_line_diff(path: String, diff: Array) -> void:
 	
 	set_script_supressed(path, false)
 
-@rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
-func _s2c_receive_script(path: String, code: String) -> void:
-	if not main.client.validate_s2c(): return
-	if not GDTValidator.is_path_safe(path): return
-	
-	update_script(path, code)
-
 @rpc("any_peer", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
 func _c2s_script_line_diff_upload_request(path: String, diff: Array) -> void:
 	if not main.server.validate_c2s(): return
@@ -219,25 +187,6 @@ func _c2s_script_line_diff_upload_request(path: String, diff: Array) -> void:
 		
 	apply_script_line_diff(path, diff)
 	server_broadcast_script_line_diff(path, diff, id)
-
-@rpc("any_peer", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
-func _c2s_script_update_request(path: String, code: String) -> void:
-	var id = multiplayer.get_remote_sender_id()
-	
-	if not main.server.validate_c2s(): return
-	if not GDTValidator.is_path_safe(path): return
-	
-	var user = main.dual.get_user_by_id(id)
-	if not user: return
-	
-	if not user.has_permission(GodotTogether.Permission.EDIT_SCRIPTS):
-		return
-	
-	update_script(path, code)
-	server_broadcast_script(path, code, id)
-
-func server_broadcast_script(path: String, code: String, sender := 1) -> void:
-	main.server.auth_rpc(_s2c_receive_script, [path, code], [sender])
 
 func server_broadcast_script_line_diff(path: String, diff: Array, sender := 1) -> void:
 	main.server.auth_rpc(apply_script_line_diff, [path, diff], [sender])
