@@ -610,6 +610,42 @@ func _node_properties_changed(node: Node, property_paths: Array) -> void:
 	else:
 		_c2s_request_node_update.rpc_id(1, node_path, scene.scene_file_path, property_dict)
 
+func _scene_node_entered_tree(child: Node, parent: Node) -> void:
+	if not can_sync_nodes(): return
+	
+	var scene = GDTUtils.get_node_scene(parent)
+	if not scene: return
+	if not scene.scene_file_path: return
+	if not child.scene_file_path: return
+	
+	if not GDTValidator.is_path_safe(child.scene_file_path):
+		return
+	
+	var parent_path = scene.get_path_to(parent)
+	
+	if is_change_logging_enabled():
+		print("Scene node added %s in %s" % [child.scene_file_path, parent_path])
+	
+	# Cursed. TODO: Optimize later
+	var data_dict = observe_node(child)
+	var prop_list = get_property_diff(data_dict["property_hashes"], {})
+	var prop_dict = get_select_property_dict(child, prop_list)
+	
+	if main.server.is_active():
+		server_broadcast_scene_node_add(
+			parent_path, 
+			scene.scene_file_path, 
+			child.scene_file_path, 
+			prop_dict
+		)
+	elif main.client.is_active():
+		_c2s_request_scene_node_add.rpc_id(1,
+			parent_path, 
+			scene.scene_file_path, 
+			child.scene_file_path, 
+			prop_dict
+		)
+	
 func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	# 'owner' is set very late, causing is_node_valid(child) to return false.
 	# Do not check it here
@@ -643,6 +679,10 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	
 	if is_change_logging_enabled():
 		print("Node added: %s to %s" % [child, parent])
+		
+	if child.scene_file_path:
+		_scene_node_entered_tree(child, parent)
+		return
 	
 	if main.server.is_active():
 		server_broadcast_node_add(parent_path, scene.scene_file_path, child.get_class(), prop_dict)
@@ -857,6 +897,30 @@ func _c2s_request_node_add(
 	server_broadcast_node_add(parent_path, scene_path, node_class, property_dict, id)
 
 @rpc("any_peer", "call_remote", "reliable")
+func _c2s_request_scene_node_add(
+	parent_path: String,
+	scene_path: String,
+	node_scene_path: String,
+	property_dict: Dictionary
+) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	
+	if not main.server.validate_c2s(): 
+		return
+	
+	if not main.server.caller_has_permission(GodotTogether.Permission.EDIT_SCENES):
+		return
+		
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+		
+	if not GDTValidator.validate_existing_file_path(node_scene_path):
+		return
+	
+	add_scene_node(parent_path, scene_path, node_scene_path, property_dict)
+	server_broadcast_scene_node_add(parent_path, scene_path, node_scene_path, property_dict, id)
+
+@rpc("any_peer", "call_remote", "reliable")
 func _c2s_request_node_delete(node_path: String, scene_path: String) -> void:
 	if not main.server.validate_c2s(): 
 		return
@@ -1041,6 +1105,64 @@ func add_node(
 	
 	set_node_supressed(parent, false)
 	set_node_supressed(new_node, false)
+
+@rpc("authority", "call_remote", "reliable")
+func add_scene_node(
+	parent_path: String, 
+	scene_path: String,
+	node_scene_path: String,
+	property_dict: Dictionary
+) -> void:
+	if not main.client.validate_s2c(true): 
+		return
+	
+	if not GDTValidator.validate_existing_file_path(scene_path):
+		return
+	
+	if not GDTValidator.validate_existing_file_path(node_scene_path):
+		GDTUtils.printerr_stack("Invalid path of node scene at path: %s" % node_scene_path)
+		return
+	
+	var scene = GDTUtils.get_loaded_scene_root(scene_path)
+	if not scene: return
+	
+	var parent = scene.get_node_or_null(parent_path)
+	if not parent_path: return
+	
+	if not "name" in property_dict:
+		GDTUtils.printerr_stack("Missing 'name' in property dict")
+		return
+	
+	if parent.has_node(NodePath(property_dict["name"])):
+		return
+	
+	var loaded_scene = load(node_scene_path)
+	
+	if not loaded_scene:
+		GDTUtils.printerr_stack("Failed to load scene path %s" % node_scene_path)
+		return
+		
+	if not loaded_scene is PackedScene:
+		GDTUtils.printerr_stack(
+			"Scene at '%s' is not PackedScene, is '%s'" %
+			[node_scene_path, loaded_scene.get_class()]
+		)
+		return
+		
+	loaded_scene = loaded_scene as PackedScene
+	
+	if not loaded_scene.can_instantiate():
+		GDTUtils.printerr_stack("Scene %s has no nodes" % node_scene_path)
+		return
+		
+	var node = loaded_scene.instantiate()
+	apply_property_dict(node, property_dict)
+	
+	node.owner = scene
+	
+	set_node_supressed(node, true)
+	parent.add_child(node)
+	set_node_supressed(node, false)
 
 @rpc("authority", "call_remote", "reliable")
 func delete_node(node_path: String, scene_path: String) -> void:
@@ -1228,6 +1350,15 @@ func server_broadcast_node_add(
 	sender := 0
 ) -> void:
 	main.server.auth_rpc(add_node, [parent_path, scene_path, node_class, property_dict], [sender])
+
+func server_broadcast_scene_node_add(
+	parent_path: String,
+	scene_path: String,
+	node_scene_path: String,
+	property_dict: Dictionary,
+	sender := 1
+) -> void:
+	main.server.auth_rpc(add_scene_node, [parent_path, scene_path, node_scene_path, property_dict], [sender])
 
 func server_broadcast_reorder_children(
 	parent_path: String, 
