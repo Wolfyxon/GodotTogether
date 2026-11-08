@@ -32,6 +32,7 @@ func get_encodable_fields() -> Array:
 		"file_config",
 		"users",
 		"engine_version",
+		"protocol_version",
 		"rpc_checksum"
 	]
 
