@@ -218,6 +218,30 @@ func test_rpc_checksum() -> bool:
 		printerr("RPC checksum doesn't match %s != %s" % [a, b])
 		return false
 	
+	if a == 0:
+		printerr("Global RPC checksum is 0")
+		return false
+	
+	if a == -1:
+		printerr("Global RPC checksum is -1")
+		return false
+	
+	var checksums = []
+	
+	for i in main.components:
+		var sum = GDTUtils.get_rpc_checksum(i)
+		
+		if sum != 0 and sum in checksums:
+			printerr("Duplicate RPC checksum for %s" % i)
+			printerr(checksums)
+			return false
+			
+		checksums.append(sum)
+	
+	if not checksums:
+		printerr("RPC checksum list empty")
+		return false
+	
 	return true
 
 func test_disconnect_reasons() -> bool:
