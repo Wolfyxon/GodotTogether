@@ -626,6 +626,11 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 	
 	var scene = GDTUtils.get_node_scene(parent)
 	if not scene: return
+	if scene.is_queued_for_deletion(): return
+	if not scene in EditorInterface.get_open_scene_roots(): return
+	
+	if child.owner and child.owner != scene: # Node is child of sub-scene
+		return
 	
 	child.owner = scene # Godot isn't fast enough
 	var data_dict = observe_node(child)
