@@ -4,6 +4,7 @@ class_name GDTServerAuthResponse
 
 var users: Array = [] # User dicts
 var engine_version: String = ""
+var rpc_checksum: int = 0
 
 var file_config := {
 	# path: [size, hash]
@@ -19,6 +20,7 @@ static func create(main: GodotTogether) -> GDTServerAuthResponse:
 	var res = GDTServerAuthResponse.new()
 	res.engine_version = GDTUtils.get_engine_version_str()
 	res.users = main.server.get_user_dicts()
+	res.rpc_checksum = main.get_global_rpc_checksum()
 	res._fill_file_config()
 	
 	return res
@@ -27,7 +29,8 @@ func get_encodable_fields() -> Array:
 	return [
 		"file_config",
 		"users",
-		"engine_version"
+		"engine_version",
+		"rpc_checksum"
 	]
 
 func get_files_to_download() -> Array:

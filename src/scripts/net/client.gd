@@ -273,6 +273,17 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 		GDTUtils.printerr_stack("Unable to decode response: %s" % data_dict)
 		return
 	
+	var local_checksum = main.get_global_rpc_checksum()
+	
+	if server_data.rpc_checksum != local_checksum:
+		printerr(
+			"RPC checksum mismatch. Server %s != Client %s" % 
+			[server_data.rpc_checksum, local_checksum]
+		)
+		
+		leave_with_error(GDTUser.DisconnectReason.RPC_CHECKSUM_MISMATCH)
+		return
+	
 	var local_engine_ver = GDTUtils.get_engine_version_str()
 	
 	if server_data.engine_version != local_engine_ver:
