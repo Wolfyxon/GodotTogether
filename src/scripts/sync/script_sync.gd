@@ -15,6 +15,8 @@ var main_editor = EditorInterface.get_script_editor()
 var user_carets = []
 var set_up_editor_ids = []
 
+var update_mutex := Mutex.new()
+
 var supressed_scripts = {
 	# [path]: bool
 }
@@ -183,6 +185,8 @@ func apply_script_line_diff(path: String, diff: Array) -> void:
 	if not code_edit: return
 	if code_edit.is_queued_for_deletion(): return
 	
+	update_mutex.lock()
+	
 	set_script_supressed(path, true)
 	
 	var applied = apply_line_diff(code_edit.text, diff)
@@ -192,6 +196,8 @@ func apply_script_line_diff(path: String, diff: Array) -> void:
 	main.gui.script_editor_mgr.update_text_edit(code_edit, code)
 	
 	set_script_supressed(path, false)
+	
+	update_mutex.unlock()
 
 @rpc("any_peer", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
 func _c2s_script_line_diff_upload_request(path: String, diff: Array) -> void:
