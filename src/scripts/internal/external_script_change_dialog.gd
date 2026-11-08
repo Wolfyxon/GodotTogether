@@ -36,7 +36,7 @@ func get_paths() -> Array:
 	
 	var raw = get_raw_paths()
 	var editor = EditorInterface.get_script_editor()
-	var paths = editor.get_open_scripts()
+	var scripts = editor.get_open_scripts()
 	
 	for name: String in raw:
 		if name.begins_with("res://"):
@@ -45,7 +45,9 @@ func get_paths() -> Array:
 		
 		var found = false
 		
-		for path in paths:
+		for script in scripts:
+			var path = script.resource_path
+			
 			if path.get_file() == name:
 				res.append(path)
 				found = true
