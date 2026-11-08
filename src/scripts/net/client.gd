@@ -273,6 +273,14 @@ func _s2c_auth_successful(data_dict: Dictionary) -> void:
 		GDTUtils.printerr_stack("Unable to decode response: %s" % data_dict)
 		return
 	
+	if main.PROTOCOL_VERSION < server_data.protocol_version:
+		leave_with_error(GDTUser.DisconnectReason.CLIENT_OUTDATED)
+		return
+	
+	if main.PROTOCOL_VERSION > server_data.protocol_version:
+		leave_with_error(GDTUser.DisconnectReason.SERVER_OUTDATED)
+		return
+	
 	var local_checksum = main.get_global_rpc_checksum()
 	
 	if server_data.rpc_checksum != local_checksum:
