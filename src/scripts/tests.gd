@@ -1775,5 +1775,5 @@ func test_line_diff_modify_add() -> bool:
 	return true
 
 
-static func _dummy_function(data: String = "") -> String:
+static func _dummy_function(data = ""):
 	return data
