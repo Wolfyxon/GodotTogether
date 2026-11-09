@@ -113,6 +113,7 @@ func _exit_tree() -> void:
 	
 	if chat:
 		remove_control_from_bottom_panel(chat)
+		chat.queue_free()
 	
 	if button:
 		button.queue_free()
