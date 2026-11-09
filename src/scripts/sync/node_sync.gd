@@ -626,10 +626,7 @@ func _scene_node_entered_tree(child: Node, parent: Node) -> void:
 	if is_change_logging_enabled():
 		print("Scene node added %s in %s" % [child.scene_file_path, parent_path])
 	
-	# Cursed. TODO: Optimize later
-	var data_dict = observe_node(child)
-	var prop_list = get_property_diff(data_dict["property_hashes"], {})
-	var prop_dict = get_select_property_dict(child, prop_list)
+	var prop_dict = get_property_dict(child)
 	
 	if main.server.is_active():
 		server_broadcast_scene_node_add(
@@ -669,12 +666,10 @@ func _node_child_entered_tree(child: Node, parent: Node) -> void:
 		return
 	
 	child.owner = scene # Godot isn't fast enough
-	var data_dict = observe_node(child)
 	
-	# Cursed. TODO: Optimize later
-	var prop_list = get_property_diff(data_dict["property_hashes"], {})
-	var prop_dict = get_select_property_dict(child, prop_list)
+	observe_node(child)
 	
+	var prop_dict = get_property_dict(child)
 	var parent_path = scene.get_path_to(parent)
 	
 	if is_change_logging_enabled():
@@ -795,11 +790,10 @@ func _node_replacing_by(new_node: Node, current_node: Node) -> void:
 		printerr("Node replacing that isn't a class change not supported")
 		return
 	
-	var path = scene.get_path_to(new_node) # Must get path to new node. Old is already gone
+	observe_node(new_node)
 	
-	var data_dict = observe_node(new_node)
-	var prop_list = get_property_diff(data_dict["property_hashes"], {})
-	var prop_dict = get_select_property_dict(new_node, prop_list)
+	var path = scene.get_path_to(new_node) # Must get path to new node. Old is already gone
+	var prop_dict = get_property_dict(new_node)
 	
 	if is_change_logging_enabled():
 		print("Node replaced: %s -> %s" % [current_node, new_node])
@@ -1684,6 +1678,17 @@ func fill_property_hash_dict(
 			_cache[value] = res[key]
 		else:
 			res[key] = hash(value)
+
+func get_property_dict(obj: Object) -> Dictionary:
+	# TODO: Cursed, optimize later
+	if not obj in node_data_dict:
+		GDTUtils.printerr_stack("Only observedNodes supported")
+		return {}
+	
+	var data_dict = node_data_dict[obj]
+	var prop_list = get_property_diff(data_dict["property_hashes"], {})
+	
+	return get_select_property_dict(obj, prop_list)
 
 func get_select_property_dict(obj: Object, paths: Array) -> Dictionary:
 	var res = {}
