@@ -1589,6 +1589,9 @@ static func get_select_connection_dict(node: Node, signal_names: Array) -> Dicti
 		var connections = get_user_signal_connections(node, sig_name)
 		
 		for con in connections:
+			if not con["flags"] & ConnectFlags.CONNECT_PERSIST:
+				continue
+			
 			var cal = con["callable"]
 			callable_dicts.append(encode_callable_ref(cal))
 		
