@@ -405,6 +405,43 @@ func test_callable_encoding() -> bool:
 	
 	return true
 
+func test_connection_distinction() -> bool:
+	var node = Node.new()
+	created_nodes.append(node)
+	
+	node.tree_entered.connect(func(): pass)
+	node.tree_entered.connect(_dummy_function, ConnectFlags.CONNECT_PERSIST)
+	
+	var con_dict = GDTNodeSync.get_select_connection_dict(node, ["tree_entered"])
+	
+	if not "tree_entered" in con_dict:
+		printerr("'tree_entered' missing: %s" % con_dict)
+		return false
+	
+	var cons = con_dict["tree_entered"]
+	
+	if cons.size() != 1:
+		printerr("init_cons size mismatch %s != 1" % cons.size())
+		return false
+	
+	GDTNodeSync.clear_user_signal_connections(node, "tree_entered")
+	
+	var cleared_cons = GDTNodeSync.get_user_signal_connections(node, "tree_entered")
+	var all_cons = node.get_signal_connection_list("tree_entered")
+	
+	if not cleared_cons.is_empty():
+		printerr("clear_user_signal_connections() failed")
+		return false
+	
+	if all_cons.size() != 1:
+		printerr(
+			"Post-clear all_cons size mismatch %s != 1. Likely cleared too much." % 
+			all_cons.size()
+		)
+		return false
+	
+	return true
+
 func test_sha256() -> bool:
 	var a1 = [1, 2, 3, 4]
 	var a2 = [1, 2, 3, 4]
