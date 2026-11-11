@@ -49,6 +49,7 @@ var updater = GDTUpdater.new(self, "updater")
 var tests = GDTUnitTests.new(self, "tests")
 var debug = GDTDebug.new(self, "debug")
 var extras = GDTExtras.new(self, "extras")
+var steam = GDTSteam.new(self, "steam")
 
 var logger: GDTLogger = null
 var mp_override: GDTMultiplayerExtension = null
@@ -142,7 +143,8 @@ func init_components() -> void:
 		updater, 
 		tests,
 		debug,
-		extras
+		extras,
+		steam
 	]
 	
 	# The array may become empty or null if an error occurs
