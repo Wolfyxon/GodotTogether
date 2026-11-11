@@ -114,7 +114,6 @@ texture = ExtResource("8_22oqj")
 stretch_mode = 5
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=1491207414]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -148,6 +147,15 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.26, 0.26, 1)
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
+
+[node name="steamWarning" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=1915893085]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme_type_variation = &"WarningLabel"
+theme_override_font_sizes/font_size = 17
+text = "Warning: This is a dev build. Steam is not yet functional."
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="method" type="HBoxContainer" parent="mainMenu/main/sessionInit/pre" unique_id=1931486554]
 layout_mode = 2
@@ -202,6 +210,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=2132209178]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
