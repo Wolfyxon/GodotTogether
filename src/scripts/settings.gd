@@ -52,6 +52,11 @@ const _DEFAULT_DATA = {
 	},
 	"dev": {
 		# Everything here should be false by default
+		
+		"steam": {
+			"show_other_app_lobbies": false
+		},
+		
 		"menu_button": false,
 		"run_tests_on_start": false,
 		"restart_broadcast": false,

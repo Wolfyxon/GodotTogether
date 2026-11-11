@@ -275,7 +275,7 @@ func get_friend_lobbies() -> Array:
 		var game_info: Dictionary = steam.getFriendGamePlayed(id)
 		if not game_info: continue
 		
-		if game_info["id"] != steam.getAppID(): 
+		if game_info["id"] != steam.getAppID() and not main.settings.get_setting("dev/steam/show_other_app_lobbies"): 
 			continue
 		
 		var lobby_id = game_info["lobby"]

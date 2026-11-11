@@ -3,6 +3,8 @@ extends VBoxContainer
 
 var main: GodotTogether = null
 
+var is_set_up = false
+
 func _on_visibility_changed() -> void:
 	if not visible: return
 	if not main: return
@@ -12,3 +14,8 @@ func _on_visibility_changed() -> void:
 	$setupStatus.text = "Setup status: %s (%s)" % [main.steam.last_status, GDTSteam.SetupStatus.keys()[main.steam.last_status]]
 	$username.text = "Username: %s" % main.steam.get_local_username()
 	$lobbyId.text = "Current lobby: %s" % main.steam.current_lobby_id
+
+	if not is_set_up:
+		is_set_up = true
+		
+		main.settings.make_setting_control($showOtherApps, "dev/steam/show_other_app_lobbies")

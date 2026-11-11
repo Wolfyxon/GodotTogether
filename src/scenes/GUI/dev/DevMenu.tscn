@@ -260,6 +260,18 @@ script = ExtResource("4_37caa")
 
 [node name="treeSelection" type="OptionButton" parent="main/scroll/vbox/inspector/vbox" unique_id=968586022]
 layout_mode = 2
+selected = 0
+item_count = 5
+popup/item_0/text = "Root"
+popup/item_0/id = 0
+popup/item_1/text = "Base control"
+popup/item_1/id = 1
+popup/item_2/text = "Script editor"
+popup/item_2/id = 2
+popup/item_3/text = "FS dock"
+popup/item_3/id = 3
+popup/item_4/text = "Inspector"
+popup/item_4/id = 4
 
 [node name="btnLoadTree" type="Button" parent="main/scroll/vbox/inspector/vbox" unique_id=536376304]
 layout_mode = 2
@@ -523,6 +535,13 @@ text = "Username: error"
 [node name="lobbyId" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=2028681079]
 layout_mode = 2
 text = "Current lobby: error"
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/steam/vbox" unique_id=910787521]
+layout_mode = 2
+
+[node name="showOtherApps" type="CheckButton" parent="main/scroll/vbox/steam/vbox" unique_id=758217064]
+layout_mode = 2
+text = "Show lobbies of other apps (use only for testing the list)"
 
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
