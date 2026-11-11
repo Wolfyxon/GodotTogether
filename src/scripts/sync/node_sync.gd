@@ -2123,9 +2123,10 @@ func encode_resource(resource: Resource) -> Dictionary:
 	
 	var is_file = GDTUtils.is_file_resource(resource)
 	
+	res["path"] = resource.resource_path
+	
 	if is_file:
 		res["_gdtRes"] = ResourceType.FILE
-		res["path"] = resource.resource_path
 	else:
 		res["class"] = resource.get_class()
 		
@@ -2177,6 +2178,7 @@ func _decode_local_resource(dict: Dictionary, allow_unsafe := false) -> Resource
 	
 	var cls = dict["class"]
 	var props = dict["props"]
+	var path = dict["path"]
 	
 	if not ClassDB.class_exists(cls):
 		GDTUtils.printerr_stack("Cannot decode resource of unknown class: %s" % cls)
@@ -2186,7 +2188,16 @@ func _decode_local_resource(dict: Dictionary, allow_unsafe := false) -> Resource
 		GDTUtils.printerr_stack("Cannot decode resource. Class '%s' is not a Resource" % cls)
 		return
 	
-	var res = ClassDB.instantiate(cls)
+	var res = null
+	
+	if path and GDTValidator.is_path_safe(path):
+		res = load(path)
+		
+		if res.get_class() != cls:
+			res = null
+	
+	if not res:
+		res = ClassDB.instantiate(cls)
 	
 	if not res:
 		GDTUtils.printerr_stack("Failed to create resource")
