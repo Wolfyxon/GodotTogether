@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://qbavyogitkv8" path="res://addons/GodotTogether/src/scenes/GUI/dev/net.gd" id="5_vk20n"]
 [ext_resource type="Texture2D" uid="uid://bcj3hd4rcyv7i" path="res://addons/GodotTogether/src/img/warning.svg" id="6_ni5tw"]
 [ext_resource type="Texture2D" uid="uid://b8tqo5inh7rj1" path="res://addons/GodotTogether/src/img/copy.svg" id="7_m2sb3"]
+[ext_resource type="Script" uid="uid://2uditk4px1x2" path="res://addons/GodotTogether/src/scenes/GUI/dev/steam.gd" id="10_51x1g"]
 
 [sub_resource type="GDScriptSyntaxHighlighter" id="GDScriptSyntaxHighlighter_usb8t"]
 
@@ -489,6 +490,36 @@ text = "Is dev (source code) version: error"
 layout_mode = 2
 text = "Supports disk space check: error"
 
+[node name="steam" type="FoldableContainer" parent="main/scroll/vbox" unique_id=256812078]
+layout_mode = 2
+folded = true
+title = "Steam addon"
+
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/steam" unique_id=183063328]
+visible = false
+layout_mode = 2
+script = ExtResource("10_51x1g")
+
+[node name="addon" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=1920037961]
+layout_mode = 2
+text = "Addon: godotsteam"
+
+[node name="available" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=955078889]
+layout_mode = 2
+text = "Addon available: error"
+
+[node name="appId" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=1183730685]
+layout_mode = 2
+text = "App ID: error"
+
+[node name="setupStatus" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=1042542415]
+layout_mode = 2
+text = "Setup status: unknown"
+
+[node name="username" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=1559317757]
+layout_mode = 2
+text = "Username: error"
+
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -541,6 +572,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnScriptUpdateTest" to="." method="_on_btn_script_update_test_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnTestChunkToolScript" to="." method="_on_btn_test_chunk_tool_script_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDeath" to="." method="_on_btn_death_pressed"]
+[connection signal="visibility_changed" from="main/scroll/vbox/steam/vbox" to="main/scroll/vbox/steam/vbox" method="_on_visibility_changed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]
