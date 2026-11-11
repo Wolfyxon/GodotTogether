@@ -285,6 +285,35 @@ func test_local_resource_encoding() -> bool:
 	
 	return true
 
+func test_nested_local_resource_encoding() -> bool:
+	var mesh = BoxMesh.new()
+	var mat = StandardMaterial3D.new()
+	
+	mat.albedo_color = Color.RED
+	mesh.material = mat
+	
+	var encoded = main.node_sync.encode_resource(mesh)
+	
+	if not encoded:
+		printerr("Encoding failed")
+		return false
+	
+	if not GDTNodeSync.is_encoded_resource(encoded["props"]["material"]):
+		printerr("'material' not encoded as resource")
+		return false
+	
+	var decoded = main.node_sync.decode_resource(encoded)
+	
+	if not decoded:
+		printerr("Decoding failed")
+		return false
+	
+	if not decoded.material:
+		printerr("Material is null")
+		return false
+	
+	return true
+
 func test_resource_encoding_setget_props() -> bool:
 	var tset = TileSet.new()
 	
@@ -1007,7 +1036,7 @@ func test_node_change_applying_deep_setget() -> bool:
 	
 	var h2 = main.node_sync.get_property_hash_dict(tmap)
 	
-	var diff = main.node_sync.get_property_diff(h1, h2)
+	var diff = GDTNodeSync.get_property_diff(h1, h2)
 	
 	if not "tile_set:sources/0" in diff:
 		printerr("tile_set:sources/0 not found in diff")
