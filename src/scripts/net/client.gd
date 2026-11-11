@@ -167,7 +167,7 @@ func leave_with_error(reason := GDTUser.DisconnectReason.UNKNOWN) -> void:
 	main.close_connection()
 	_disconnected()
 
-func join_server(ip: String, port: int, data := GDTJoinData.new()) -> int:
+func join_enet(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()
 	reset()
 	
