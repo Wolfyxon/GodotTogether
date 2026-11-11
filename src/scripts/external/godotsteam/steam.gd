@@ -36,7 +36,6 @@ enum JoinResult {
 	BLOCKED_YOU,
 	BLOCKED,
 	RATE_LIMIT = 15,
-	
 }
 
 const SETUP_STATUS_MAP = {
@@ -57,6 +56,8 @@ const DIR_NAME = "godotsteam"
 const APP_ID = 480
 
 const INIT_META = "_initialized"
+
+signal lobby_join_request(lobby_id: int)
 
 var last_status = SetupStatus.NOT_STARTED
 var last_shutdown_time: float = 0.0
@@ -108,6 +109,7 @@ func _invitied(inviter: int, lobby: int, _game: int) -> void:
 
 func _join_requested(lobby_id: int, _friend_id: int) -> void:
 	print("[GodotTogether:Steam] You are requesting to join lobby %s" % lobby_id)
+	lobby_join_request.emit(lobby_id)
 
 func leave_lobby():
 	var steam = get_singleton()
@@ -224,6 +226,7 @@ func join_lobby_async(lobby_id: int) -> JoinResult:
 	var join_response = res[3]
 	
 	if join_response != JoinResult.OK:
+		printerr("Steam error: %s" % join_response)
 		return join_response
 	
 	var peer_err = peer.connect_to_lobby(lobby_id)
@@ -257,6 +260,34 @@ func get_singleton() -> Object:
 		return
 	
 	return Engine.get_singleton("Steam")
+
+func get_friend_lobbies() -> Array:
+	var res = []
+	
+	var steam = get_singleton()
+	
+	if not steam:
+		GDTUtils.printerr_stack("Trying to get friend lobbies when Steam doesn't exist")
+		return res
+	
+	for i in steam.getFriendCount():
+		var id: int = steam.getFriendByIndex(i, steam.FRIEND_FLAG_IMMEDIATE)
+		var game_info: Dictionary = steam.getFriendGamePlayed(id)
+		if not game_info: continue
+		
+		if game_info["id"] != steam.getAppID(): 
+			continue
+		
+		var lobby_id = game_info["lobby"]
+		if typeof(lobby_id) != TYPE_INT: continue
+		
+		res.append({
+			"user_id": id,
+			"user_name": steam.getFriendPersonaName(id),
+			"lobby_id": lobby_id
+		})
+	
+	return res
 
 static func setup_status_to_string(status: SetupStatus) -> String:
 	if status < 0 or status > SetupStatus.size():

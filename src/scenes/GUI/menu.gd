@@ -9,6 +9,8 @@ var gui: GodotTogetherGUI
 @onready var version_warning = $topBar/versionWarning
 
 @onready var steam_setup = $steamSetup
+@onready var steam_lobbies = $sessionInit/start/join/steam/lobbies/lobbyVbox
+
 @onready var con_method_input = $sessionInit/pre/method/dropdown
 
 @onready var username_input = $sessionInit/pre/username
@@ -32,6 +34,7 @@ func _ready() -> void:
 	if main:
 		$sessionInit/pumpkin.visible = main.extras and main.extras.is_halloween()
 		steam_setup.main = main
+		steam_lobbies.main = main
 		
 		main_menu()
 		
@@ -41,6 +44,9 @@ func _ready() -> void:
 			await get_tree().process_frame
 			session_start_menu("join")
 		)
+		
+		main.steam.lobby_join_request.connect(join_steam)
+		steam_lobbies.lobby_join_request.connect(join_steam)
 
 	if visuals_available():
 		set_session_init_cover()
@@ -128,6 +134,47 @@ func _host_enet() -> void:
 		], "\n"), "Failed to start server")
 		return
 
+func _prepare_connection() -> void:
+	main.client.current_join_data.username = username_input.text
+	main.client.current_join_data.password = join_enet_password_input.text
+	session_cancel.visible = true
+
+func _handle_connecting() -> void:
+	set_session_init_cover("Connected, waiting for server reply...")
+	set_session_init_timeout(GDTServer.APPROVE_TIMEOUT)
+	
+	await main.client.connection_acknowledged
+	
+	set_session_init_cover("Waiting for host's approval...")
+	set_session_init_timeout(GDTServer.APPROVE_TIMEOUT)
+	
+	await main.client.auth_succeed
+	
+	if not main.client.is_active():
+		main.get_gui().alert("Connection finished, but client does not report activity. This is a bug.")
+		main.close_connection()
+		set_session_init_cover()
+		return
+	
+	while not main.client.is_fully_synced and main.client.is_active():
+		if main.file_sync.last_received_file:
+			set_session_init_cover(
+				"%s (%s / %s)" % [
+					main.file_sync.last_received_file,
+					String.humanize_size(main.file_sync.total_received_bytes),
+					String.humanize_size(main.client.server_data.get_project_download_size())
+				]
+			)
+		else:
+			set_session_init_cover("Starting project download...")
+		
+		await get_tree().process_frame
+	
+	if not main.client.is_active():
+		return
+	
+	_joined()
+
 func _join_enet() -> void:
 	var ip: String = join_enet_ip_input.text
 	var port: int = join_enet_port_input.value
@@ -136,11 +183,8 @@ func _join_enet() -> void:
 		gui.alert("Enter a valid IP address or domain.", "Invalid address")
 		return
 	
-	main.client.current_join_data.username = username_input.text
-	main.client.current_join_data.password = join_enet_password_input.text
+	_prepare_connection()
 	
-	session_cancel.visible = true
-
 	set_session_init_cover("Trying to connect...")
 	set_session_init_timeout(main.client.get_timeout_seconds())
 	
@@ -188,37 +232,24 @@ func _join_enet() -> void:
 
 		return
 	
-	set_session_init_cover("Connected, waiting for server reply...")
-	set_session_init_timeout(GDTServer.APPROVE_TIMEOUT)
+	_handle_connecting()
+
+func join_steam(lobby_id: int) -> void:
+	set_session_init_cover("Joining lobby via Steam...")
 	
-	await main.client.connection_acknowledged
+	_prepare_connection()
 	
-	set_session_init_cover("Waiting for host's approval...")
-	set_session_init_timeout(GDTServer.APPROVE_TIMEOUT)
-	
-	await main.client.auth_succeed
-	
-	if not main.client.is_active():
-		return
-	
-	while not main.client.is_fully_synced and main.client.is_active():
-		if main.file_sync.last_received_file:
-			set_session_init_cover(
-				"%s (%s / %s)" % [
-					main.file_sync.last_received_file,
-					String.humanize_size(main.file_sync.total_received_bytes),
-					String.humanize_size(main.client.server_data.get_project_download_size())
-				]
-			)
-		else:
-			set_session_init_cover("Starting project download...")
+	var err = await main.client.join_steam_async(lobby_id)
+
+	if err != GDTSteam.JoinResult.OK:
+		set_session_init_cover()
 		
-		await get_tree().process_frame
-	
-	if not main.client.is_active():
+		# TODO: Error to string
+		main.get_gui().alert("Failed to connect. Code: %s" % err)
+		
 		return
 	
-	_joined()
+	_handle_connecting()
 
 func _host_steam() -> void:
 	var max_clients = host_settings.max_users_input.value
@@ -365,3 +396,15 @@ func _on_restart_pressed() -> void:
 func _on_update_timeout() -> void:
 	if visuals_available():
 		$session/top/restart.visible = main.get_settings().get_setting("dev/restart_broadcast")
+
+func _on_join_pressed() -> void:
+	session_start_menu()
+	$sessionInit/start/join.show()
+	
+	if main.connection_method == GodotTogether.ConnectionMethod.ENET:
+		$sessionInit/start/join/steam.hide()
+		$sessionInit/start/join/enet.show() 
+	elif main.connection_method == GodotTogether.ConnectionMethod.STEAM:
+		steam_lobbies.load_lobbies()
+		$sessionInit/start/join/steam.show()
+		$sessionInit/start/join/enet.hide()

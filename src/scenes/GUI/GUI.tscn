@@ -15,7 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://j86rllgmi5d0" path="res://addons/GodotTogether/src/scenes/GUI/serverSettings/serverSettings.tscn" id="8_jfeym"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="9_4c4b3"]
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/user_ui_entry.gd" id="9_ymxdp"]
+[ext_resource type="Script" uid="uid://8b82hefxvycp" path="res://addons/GodotTogether/src/scenes/GUI/steam_lobbies.gd" id="12_1f85p"]
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
+[ext_resource type="Texture2D" uid="uid://o05r27eteufd" path="res://icon.svg" id="12_tmky2"]
 [ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="13_u8ku5"]
 [ext_resource type="Script" uid="uid://don784mnkl7xf" path="res://addons/GodotTogether/src/scenes/GUI/settings_error.gd" id="14_a4cyb"]
 [ext_resource type="Script" uid="uid://boht1uf26nly1" path="res://addons/GodotTogether/src/scenes/GUI/steam_setup.gd" id="14_auci0"]
@@ -26,6 +28,13 @@
 [ext_resource type="Texture2D" uid="uid://cwnrusacfdot4" path="res://addons/GodotTogether/src/img/VSeparator.svg" id="18_doc2o"]
 [ext_resource type="PackedScene" uid="uid://dmv34kynftxx5" path="res://addons/GodotTogether/src/scenes/GUI/settings/settings.tscn" id="23_ulx1o"]
 [ext_resource type="PackedScene" uid="uid://bobclubq7448p" path="res://addons/GodotTogether/src/scenes/GUI/dev/DevMenu.tscn" id="24_doc2o"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jnq7"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.34901962)
 
 [sub_resource type="LabelSettings" id="LabelSettings_doc2o"]
 font_size = 21
@@ -114,6 +123,7 @@ texture = ExtResource("8_22oqj")
 stretch_mode = 5
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=1491207414]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -210,7 +220,6 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=2132209178]
-visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -222,6 +231,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=513917131]
+visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -313,7 +323,6 @@ text = "Make sure to back up your project."
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=1313580569]
-visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -326,6 +335,7 @@ text = "Join a project"
 horizontal_alignment = 1
 
 [node name="enet" type="VBoxContainer" parent="mainMenu/main/sessionInit/start/join" unique_id=937674740]
+visible = false
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="mainMenu/main/sessionInit/start/join/enet" unique_id=547451636]
@@ -371,6 +381,59 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "How do I join someone not in my local network?"
 uri = "https://github.com/Wolfyxon/GodotTogether/wiki/Hosting-outside-your-network"
+
+[node name="steam" type="VBoxContainer" parent="mainMenu/main/sessionInit/start/join" unique_id=1891783280]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="mainMenu/main/sessionInit/start/join/steam" unique_id=89557760]
+layout_mode = 2
+text = "Join a friend via Steam"
+horizontal_alignment = 1
+
+[node name="lobbies" type="ScrollContainer" parent="mainMenu/main/sessionInit/start/join/steam" unique_id=1433156557]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="lobbyVbox" type="VBoxContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies" unique_id=1714391615]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("12_1f85p")
+
+[node name="friend" type="PanelContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox" unique_id=1269911786]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7jnq7")
+
+[node name="hbox" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend" unique_id=1120927288]
+layout_mode = 2
+
+[node name="avatar" type="TextureRect" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend/hbox" unique_id=2000254199]
+visible = false
+layout_mode = 2
+texture = ExtResource("12_tmky2")
+expand_mode = 2
+
+[node name="username" type="Label" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend/hbox" unique_id=180021323]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Username"
+
+[node name="btnJoin" type="Button" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend/hbox" unique_id=1420314623]
+layout_mode = 2
+text = "Join"
+
+[node name="HSeparator" type="HSeparator" parent="mainMenu/main/sessionInit/start/join/steam" unique_id=95858260]
+layout_mode = 2
+
+[node name="lblPassword" type="Label" parent="mainMenu/main/sessionInit/start/join/steam" unique_id=1693627421]
+layout_mode = 2
+text = "Password"
+
+[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/join/steam" unique_id=2137212603]
+layout_mode = 2
+placeholder_text = "Enter password..."
+secret = true
 
 [node name="warning" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=764680905]
 custom_minimum_size = Vector2(100, 0)
@@ -1202,8 +1265,7 @@ visible = false
 [connection signal="pressed" from="mainMenu/main/topBar/settings" to="mainMenu/settings" method="popup"]
 [connection signal="pressed" from="mainMenu/main/topBar/devMenu" to="." method="open_dev_menu"]
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
-[connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="session_start_menu"]
-[connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main/sessionInit/start/join" method="show"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="_on_join_pressed"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main" method="session_start_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main/sessionInit/start/host" method="show"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/host/start" to="mainMenu/main" method="_host"]

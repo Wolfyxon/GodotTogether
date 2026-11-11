@@ -169,7 +169,6 @@ func leave_with_error(reason := GDTUser.DisconnectReason.UNKNOWN) -> void:
 
 func join_server(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	main.prepare_session()
-	
 	reset()
 	
 	var err = client_peer.create_client(ip, port)
@@ -185,6 +184,17 @@ func join_server(ip: String, port: int, data := GDTJoinData.new()) -> int:
 	_handle_connecting()
 
 	return OK
+
+func join_steam_async(lobby_id: int) -> GDTSteam.JoinResult:
+	main.prepare_session()
+	reset()
+	
+	var res = await main.steam.join_lobby_async(lobby_id)
+	
+	if res != GDTSteam.JoinResult.OK:
+		return res
+	
+	return GDTSteam.JoinResult.OK
 
 func send_join_data(obj: GDTJoinData = null) -> void:
 	if not obj:
