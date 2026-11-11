@@ -376,6 +376,7 @@ func _s2c_receive_chat_message(text: String, user_id: int) -> void:
 func is_active() -> bool:
 	return (
 		main and
+		client_peer and
 		multiplayer.multiplayer_peer == client_peer and
 		client_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
 	)

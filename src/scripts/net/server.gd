@@ -342,6 +342,7 @@ func auth_rpc(fn: Callable, args: Array, exclude_ids: Array[int] = []) -> void:
 func is_active() -> bool:
 	return (
 		main and
+		server_peer and
 		multiplayer.multiplayer_peer == server_peer and
 		server_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED
 	)
