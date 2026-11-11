@@ -47,7 +47,6 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 1
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -430,6 +429,20 @@ layout_mode = 2
 text = "Run unit tests"
 icon = ExtResource("5_6rdoo")
 
+[node name="btnDisclaimer" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=635462218]
+layout_mode = 2
+text = "Show disclaimer again"
+
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/tests/vbox" unique_id=140656957]
+layout_mode = 2
+
+[node name="warning" type="Label" parent="main/scroll/vbox/tests/vbox" unique_id=627667468]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_type_variation = &"WarningLabel"
+text = "Some of these tests may break your editor or project. Use with caution."
+autowrap_mode = 3
+
 [node name="btnAlertSpam" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=563898447]
 layout_mode = 2
 text = "Test alert spam"
@@ -450,10 +463,6 @@ text = "Create chunkable tool script"
 [node name="btnDeath" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=2012747826]
 layout_mode = 2
 text = "Show error screen of death"
-
-[node name="btnDisclaimer" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=635462218]
-layout_mode = 2
-text = "Show disclaimer again"
 
 [node name="info" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1898324454]
 layout_mode = 2
@@ -526,12 +535,12 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/rpcChecksumheader/btnCopyRpcGlobal" to="main/scroll/vbox/net/vbox" method="_on_btn_copy_rpc_global_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/rpcChecksumheader/btnCopyRpcAll" to="main/scroll/vbox/net/vbox" method="_on_btn_copy_rpc_all_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/btnRpcConfig" to="main/scroll/vbox/net/vbox" method="_on_btn_rpc_config_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDisclaimer" to="." method="_on_btn_disclaimer_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnWriteTest" to="." method="_on_btn_write_test_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnScriptUpdateTest" to="." method="_on_btn_script_update_test_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnTestChunkToolScript" to="." method="_on_btn_test_chunk_tool_script_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDeath" to="." method="_on_btn_death_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDisclaimer" to="." method="_on_btn_disclaimer_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]
