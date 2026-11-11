@@ -21,6 +21,24 @@ enum Result {
 	ACCESS_DENIED
 }
 
+enum JoinResult {
+	# From Steam API
+	NONE,
+	OK = 1,
+	NOT_FOUND,
+	NOT_ALLOWED,
+	FULL,
+	ERROR,
+	BANNED,
+	LIMITED_ACCOUNT,
+	CLAN_DISABLED,
+	COMMUNITY_BAN,
+	BLOCKED_YOU,
+	BLOCKED,
+	RATE_LIMIT = 15,
+	
+}
+
 const SETUP_STATUS_MAP = {
 	SetupStatus.OK: "Ok",
 	SetupStatus.INTERNAL_ERROR: "Internal error. This is a bug.",
@@ -85,6 +103,12 @@ func _steam_shutting_down() -> void:
 	if gui:
 		gui.alert(msg)
 
+func _invitied(inviter: int, lobby: int, _game: int) -> void:
+	print("[GodotTogether:Steam] You were invited by %s to lobby %s" % [inviter, lobby])
+
+func _join_requested(lobby_id: int, _friend_id: int) -> void:
+	print("[GodotTogether:Steam] You are requesting to join lobby %s" % lobby_id)
+
 func leave_lobby():
 	var steam = get_singleton()
 	
@@ -116,7 +140,9 @@ func setup_signals() -> void:
 	if not steam: return
 	
 	GDTUtils.try_connect_bulk({
-		steam.steam_shutdown: _steam_shutting_down
+		steam.steam_shutdown: _steam_shutting_down,
+		steam.lobby_invite: _invitied,
+		steam.join_requested: _join_requested
 	})
 
 func setup_steam_api() -> SetupStatus:
@@ -183,6 +209,33 @@ func create_lobby_async(max_clients := 10) -> Result:
 	multiplayer.multiplayer_peer = peer
 	
 	return Result.OK
+
+func join_lobby_async(lobby_id: int) -> JoinResult:
+	var steam = get_singleton()
+	
+	if not steam:
+		GDTUtils.printerr_stack("Attempt to join lobby when Steam doesn't exist")  
+		return JoinResult.NONE
+	
+	steam.joinLobby.call_deferred(lobby_id)
+	
+	#lobby: int, permissions: int, locked: bool, response: int
+	var res = await steam.lobby_joined 
+	var join_response = res[3]
+	
+	if join_response != JoinResult.OK:
+		return join_response
+	
+	var peer_err = peer.connect_to_lobby(lobby_id)
+	
+	if peer_err != OK:
+		printerr("Peeer error: %s" % peer_err)
+		leave_lobby()
+		return JoinResult.ERROR
+	
+	multiplayer.multiplayer_peer = peer
+	
+	return JoinResult.OK
 
 func addon_exists() -> bool:
 	return DirAccess.open("res://addons/" + DIR_NAME) != null
