@@ -1730,7 +1730,7 @@ static func should_property_be_ignored(obj: Object, path: String) -> bool:
 	
 	return false
 
-func apply_property_dict(obj: Object, dict: Dictionary) -> void:
+func apply_property_dict(obj: Object, dict: Dictionary, allow_unsafe_resources := false) -> void:
 	for path in dict.keys():
 		var value = dict[path]
 		
@@ -1738,7 +1738,7 @@ func apply_property_dict(obj: Object, dict: Dictionary) -> void:
 			continue
 		
 		if is_encoded_resource(value):
-			value = decode_resource(value)
+			value = decode_resource(value, allow_unsafe_resources)
 		
 		if is_setget_property(obj, path):
 			set_setget_property(obj, path, value)
@@ -2137,6 +2137,9 @@ func encode_resource(resource: Resource) -> Dictionary:
 			elif key in resource:
 				value = resource[key]
 			
+			if value is Resource:
+				value = encode_resource(value)
+			
 			res["props"][key] = value
 	
 	res["hash"] = get_encoded_resource_hash(res)
@@ -2156,14 +2159,14 @@ func decode_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
 	
 	match tp:
 		ResourceType.LOCAL:
-			return _decode_local_resource(dict)
+			return _decode_local_resource(dict, allow_unsafe)
 		ResourceType.FILE:
 			return _decode_file_resource(dict, allow_unsafe)
 	
 	GDTUtils.printerr_stack("Unknown encoded resource type: %s" % tp)
 	return
 
-func _decode_local_resource(dict: Dictionary) -> Resource:
+func _decode_local_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
 	if not "class" in dict:
 		GDTUtils.printerr_stack("Cannot decode resource. 'class' missing")
 		return
@@ -2189,7 +2192,7 @@ func _decode_local_resource(dict: Dictionary) -> Resource:
 		GDTUtils.printerr_stack("Failed to create resource")
 		return
 	
-	apply_property_dict(res, props)
+	apply_property_dict(res, props, allow_unsafe)
 	return res
 
 func _decode_file_resource(dict: Dictionary, allow_unsafe := false) -> Resource:
