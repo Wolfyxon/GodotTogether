@@ -11,16 +11,39 @@ enum SetupStatus {
 	STEAM_CLIENT_OUTDATED
 }
 
+enum Result {
+	NONE,
+	OK,
+	FAIL,
+	NO_CONNECTION,
+	TIMEOUT,
+	LIMIT_EXCEEDED,
+	ACCESS_DENIED
+}
+
+const SETUP_STATUS_MAP = {
+	SetupStatus.OK: "Ok",
+	SetupStatus.INTERNAL_ERROR: "Internal error. This is a bug.",
+	SetupStatus.NOT_STARTED: "Setup not started",
+	SetupStatus.NOT_AVAILABLE: "Steam addon is not available",
+	SetupStatus.NO_STEAM_CLIENT: "Steam is not running",
+	SetupStatus.STEAM_CLIENT_OUTDATED: "Steam is outdated"
+}
+
 # The asset store doesn't provide a proper API to get latest version
 # Hardcoding seems the safest for now
 const DOWNLOAD_URL = "https://store.godotengine.org/asset/godotsteam/godotsteam-gdextension/download/8276/"
 const DOWNLOAD_SHA256 = "d4358888959a03f4df0c71aafbcdca8f34b8cb9d4522aa5c8454f0e9e3debbf7"
+
+const DIR_NAME = "godotsteam"
 const APP_ID = 480
 
 const INIT_META = "_initialized"
 
 var last_status = SetupStatus.NOT_STARTED
 var last_shutdown_time: float = 0.0
+var current_lobby_id: int = 0
+var peer: MultiplayerPeer = null
 
 # WARNING: Do not use the 'Steam' singleton or any types here directly
 #          The script must remain parsable when the godotsteam addon is not installed.
@@ -29,8 +52,10 @@ var last_shutdown_time: float = 0.0
 # things. Do not use it.
 
 func _ready() -> void:
-	setup()
 	report_ready()
+
+func _exit_tree() -> void:
+	leave_lobby()
 
 func _process(_delta: float) -> void:
 	if is_ready():
@@ -60,12 +85,30 @@ func _steam_shutting_down() -> void:
 	if gui:
 		gui.alert(msg)
 
+func leave_lobby():
+	var steam = get_singleton()
+	
+	if current_lobby_id != 0:
+		steam.leaveLobby(current_lobby_id)
+		current_lobby_id = 0
+
+func create_peer() -> MultiplayerPeer:
+	if peer:
+		return peer
+	
+	peer = ClassDB.instantiate("SteamMultiplayerPeer")
+	return peer
+
 func setup() -> SetupStatus:
 	last_status = setup_steam_api()
 	
 	if last_status == SetupStatus.OK:
 		setup_signals()
 
+	if not create_peer():
+		printerr("Unable to create SteamMultiplayerPeer peer")
+		return SetupStatus.INTERNAL_ERROR
+	
 	return last_status
 
 func setup_signals() -> void:
@@ -111,6 +154,39 @@ func setup_steam_api() -> SetupStatus:
 	
 	return SetupStatus.OK
 
+func create_lobby_async(max_clients := 10) -> Result:
+	var steam = get_singleton()
+	
+	if not steam:
+		GDTUtils.printerr_stack("Attempt to create lobby when Steam doesn't exist") 
+		return Result.NONE
+	
+	var start = func():
+		await get_tree().process_frame
+		steam.createLobby(steam.LOBBY_TYPE_FRIENDS_ONLY, max_clients)
+	start.call()
+	
+	var res = await steam.lobby_created
+	var status = res[0]
+	current_lobby_id = res[1]
+	
+	if status != steam.RESULT_OK:
+		printerr("Failed to create Steam lobby. Error: %s" % status)
+		return Result.FAIL
+	
+	var peer_err = peer.host_with_lobby(current_lobby_id)
+	
+	if peer_err != OK:
+		printerr("Unable to connect host peer to lobby. Error: %s" % peer_err)
+		return Result.FAIL
+	
+	multiplayer.multiplayer_peer = peer
+	
+	return Result.OK
+
+func addon_exists() -> bool:
+	return DirAccess.open("res://addons/" + DIR_NAME) != null
+
 func is_installed_enabled() -> bool:
 	return Engine.has_singleton("Steam")
 
@@ -128,3 +204,9 @@ func get_singleton() -> Object:
 		return
 	
 	return Engine.get_singleton("Steam")
+
+static func setup_status_to_string(status: SetupStatus) -> String:
+	if status < 0 or status > SetupStatus.size():
+		return "Unknown error"
+	
+	return SETUP_STATUS_MAP[status]

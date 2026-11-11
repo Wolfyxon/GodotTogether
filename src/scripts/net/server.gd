@@ -14,7 +14,7 @@ const LOCALHOST := [
 	"localhost"
 ]
 
-var server_peer = ENetMultiplayerPeer.new()
+var server_peer: MultiplayerPeer = null
 
 var ip_join_times = {}
 var last_alive_ping: float = 0.0
@@ -107,6 +107,10 @@ func _user_authenticated(user: GDTUser) -> void:
 	main.server.auth_rpc(main.client._s2c_user_connected, [user_dict], [user.id])
 	main.dual._user_connected(user)
 
+func close_connection() -> void:
+	if server_peer:
+		server_peer.close()
+
 func create_server_user() -> GDTUser:
 	var user = GDTUser.new(1, null)
 	
@@ -150,25 +154,40 @@ func get_authenticated_ids(include_server := true) -> Array[int]:
 
 	return res
 
-func start_hosting(port: int, max_clients := 10) -> int:
+func start_hosting_enet(port: int, max_clients := 10) -> int:
 	main.prepare_session()
-
+	
+	server_peer = ENetMultiplayerPeer.new()
+	
 	var err = server_peer.create_server(port, max_clients)
 	
 	if err:
 		push_error("Failed to start server: %d" % err)
 		return err
-
+	
 	print("Server started. Port: %s Max clients: %s" % [port, max_clients])
-
+	
 	multiplayer.multiplayer_peer = server_peer
-
-	main.dual._users_listed([
-		create_server_user()
-	])
 
 	_post_start()
 
+	return err
+
+func start_hosting_steam_async(max_clients := 10) -> GDTSteam.Result:
+	main.prepare_session()
+	
+	print("Requesting Steam lobby...")
+	var err = await main.steam.create_lobby_async(max_clients)
+	
+	if err != GDTSteam.Result.OK:
+		return err
+	
+	server_peer = main.steam.peer
+	
+	print("Steam lobby started")
+	
+	_post_start()
+	
 	return err
 
 func validate_c2s() -> bool:
@@ -193,6 +212,10 @@ func caller_has_permission(permission: GodotTogether.Permission) -> bool:
 	return id_has_permission(id, permission)
 
 func _post_start() -> void:
+	main.dual._users_listed([
+		create_server_user()
+	])
+	
 	main.file_sync.resume()
 	main.session_start()
 	

@@ -8,13 +8,16 @@ var gui: GodotTogetherGUI
 @onready var update_btn = $topBar/update
 @onready var version_warning = $topBar/versionWarning
 
+@onready var steam_setup = $steamSetup
+@onready var con_method_input = $sessionInit/pre/method/dropdown
+
 @onready var username_input = $sessionInit/pre/username
 @onready var session_init_cover = $sessionInit/cover
 @onready var session_cancel = $sessionInit/cover/vbox/btnCancel
 
-@onready var join_ip_input = $sessionInit/start/join/address/ip
-@onready var join_port_input =  $sessionInit/start/join/address/port
-@onready var join_password_input = $sessionInit/start/join/password
+@onready var join_enet_ip_input = $sessionInit/start/join/enet/address/ip
+@onready var join_enet_port_input =  $sessionInit/start/join/enet/address/port
+@onready var join_enet_password_input = $sessionInit/start/join/enet/password
 
 @onready var users: GDTUserList = $session/tabs/Users
 @onready var server_settings_tab = $"session/tabs/Server settings"
@@ -28,6 +31,7 @@ func _ready() -> void:
 	
 	if main:
 		$sessionInit/pumpkin.visible = main.extras and main.extras.is_halloween()
+		steam_setup.main = main
 		
 		main_menu()
 		
@@ -48,8 +52,8 @@ func _ready() -> void:
 		settings.settings_changed.connect(_settings_changed)
 		
 		settings.make_setting_control(username_input, "username")
-		settings.make_setting_control(join_ip_input, "last_connection/ip")
-		settings.make_setting_control(join_port_input, "last_connection/port")
+		settings.make_setting_control(join_enet_ip_input, "last_connection/ip")
+		settings.make_setting_control(join_enet_port_input, "last_connection/port")
 
 		_settings_changed()
 
@@ -81,47 +85,59 @@ func _query_update() -> void:
 		main.updater.begin_update()
 
 func _host() -> void:
-	if main:
-		var port = host_settings.port_input.value
-		var max_clients = host_settings.max_users_input.value
-		
-		set_session_init_cover("Starting server...")
-		session_cancel.visible = false
-		
-		await RenderingServer.frame_post_draw
-		
-		var err = main.server.start_hosting(port, max_clients)
-		
-		if err:
-			set_session_init_cover()
-			gui.alert(GDTUtils.join([
-				"Unable to start server.",
-				"Make sure a GodotTogether server is not already running in another Godot instance",
-				"and no other application is using this port.",
-				"Error code: %s" % error_string(err),
-			], "\n"), "Failed to start server")
-			return
-		
-		server_settings_tab.load_settings()
-		main.dual.get_server_user().name = username_input.text
+	if not main: return
+
+	set_session_init_cover("Starting server...")
+	
+	match main.connection_method:
+		GodotTogether.ConnectionMethod.ENET:
+			await _host_enet()
+		GodotTogether.ConnectionMethod.STEAM:
+			await _host_steam()
+	
+	if not main.is_session_active():
+		printerr("Session not reported as active")
+		return
+	
+	server_settings_tab.load_settings()
+	main.dual.get_server_user().name = username_input.text
 
 	session_menu()
 	
 	$session/top/status.text = "You are hosting"
 	$session/top/end.text = "Stop server"
 	$session/top/end.tooltip_text = "Stop hosting, ending the session for everyone"
-	
 
-func _join() -> void:
-	var ip: String = join_ip_input.text
-	var port: int = join_port_input.value
+func _host_enet() -> void:
+	var port = host_settings.port_input.value
+	var max_clients = host_settings.max_users_input.value
+	
+	session_cancel.visible = false
+	
+	await RenderingServer.frame_post_draw
+	
+	var err = main.server.start_hosting_enet(port, max_clients)
+	
+	if err:
+		set_session_init_cover()
+		gui.alert(GDTUtils.join([
+			"Unable to start server.",
+			"Make sure a GodotTogether server is not already running in another Godot instance",
+			"and no other application is using this port.",
+			"Error code: %s" % error_string(err),
+		], "\n"), "Failed to start server")
+		return
+
+func _join_enet() -> void:
+	var ip: String = join_enet_ip_input.text
+	var port: int = join_enet_port_input.value
 	
 	if not ip.strip_edges():
 		gui.alert("Enter a valid IP address or domain.", "Invalid address")
 		return
 	
 	main.client.current_join_data.username = username_input.text
-	main.client.current_join_data.password = join_password_input.text
+	main.client.current_join_data.password = join_enet_password_input.text
 	
 	session_cancel.visible = true
 
@@ -204,6 +220,20 @@ func _join() -> void:
 	
 	_joined()
 
+func _host_steam() -> void:
+	var max_clients = host_settings.max_users_input.value
+	
+	set_session_init_cover("Connecting to Steam...")
+	
+	var err = await main.server.start_hosting_steam_async(max_clients)
+	
+	if err != GDTSteam.Result.OK:
+		set_session_init_cover()
+		gui.alert("Unable to create lobby. Error: %s" % err)
+		return
+		
+	
+
 func _joined() -> void:
 	session_menu()
 	
@@ -250,6 +280,7 @@ func main_menu() -> void:
 
 func session_start_menu(tab: String = "") -> void:
 	set_session_init_cover()
+	setup_connection_method()
 	
 	$sessionInit/start.show()
 	$sessionInit/pre.hide()
@@ -266,7 +297,33 @@ func session_start_menu(tab: String = "") -> void:
 	$sessionInit/start.hide()
 	await get_tree().process_frame
 	$sessionInit/start.show()
+
+func setup_connection_method() -> void:
+	main.connection_method = con_method_input.selected
+	
+	if main.connection_method != GodotTogether.ConnectionMethod.STEAM:
+		return
+	
+	if not main.steam.addon_exists():
+		set_session_init_cover()
+		gui.alert("GodotSteam addon is not installed")
+		return
+	
+	set_session_init_cover("Initializing Steam...")
+	
+	var status = main.steam.setup()
+	
+	if status != GDTSteam.SetupStatus.OK:
+		await get_tree().process_frame
+		await get_tree().process_frame
+		await get_tree().process_frame
 		
+		main_menu()
+		gui.alert(GDTSteam.setup_status_to_string(status), "Failed to initialize Steam")
+		return
+		
+	set_session_init_cover()
+
 func visuals_available() -> bool:
 	if not gui: 
 		return false

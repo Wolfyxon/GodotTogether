@@ -69,4 +69,5 @@ icon = ExtResource("2_rknon")
 flat = true
 expand_icon = true
 
+[connection signal="visibility_changed" from="." to="." method="update_settings_mode"]
 [connection signal="toggled" from="password/toggle" to="." method="_on_password_toggled"]

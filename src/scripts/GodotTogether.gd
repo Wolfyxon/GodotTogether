@@ -14,6 +14,11 @@ enum Permission {
 	MODIFY_CUSTOM_FILES
 }
 
+enum ConnectionMethod {
+	ENET,
+	STEAM
+}
+
 const PROTOCOL_VERSION = 4
 const SUPPORTED_ENGINE_VERSION = [4, 7, 2]
 
@@ -55,6 +60,7 @@ var logger: GDTLogger = null
 var mp_override: GDTMultiplayerExtension = null
 var editor_node := GDTEditorNode.new()
 
+var connection_method: ConnectionMethod = ConnectionMethod.ENET
 var plugin_started := false
 var components = []
 
@@ -289,8 +295,8 @@ func is_session_active() -> bool:
 		multiplayer.has_multiplayer_peer() and
 		Engine.is_editor_hint() and
 		(
-			GDTUtils.is_peer_connected(client.client_peer) or 
-			GDTUtils.is_peer_connected(server.server_peer)
+			(client.client_peer and GDTUtils.is_peer_connected(client.client_peer)) or 
+			(server.server_peer and GDTUtils.is_peer_connected(server.server_peer))
 		)
 	)
 
@@ -364,14 +370,14 @@ func get_settings() -> GDTSettings:
 
 func close_connection() -> void:
 	if client:
-		client.connection_cancelled = true
-		client.client_peer.close()
+		client.close_connection()
 	
 	if server:
-		server.server_peer.close()
+		server.close_connection()
 	
 	multiplayer.multiplayer_peer = null
 	
+	steam.leave_lobby()
 	post_session_end()
 
 func session_start() -> void:

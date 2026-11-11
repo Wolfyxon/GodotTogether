@@ -32,9 +32,15 @@ func register_control(node: Control, path: String):
 	controls.append(node)
 
 func update_settings_mode() -> void:
+	if not gui: return
+	if not gui.main: return
+	
+	var is_enet = gui.main.connection_method == GodotTogether.ConnectionMethod.ENET
+	
+	$port.visible = is_enet
 	$port/value.editable = not server_active
 	$max_users/value.editable = not server_active
-	$allowSameIp.visible = server_active
+	$allowSameIp.visible = server_active and is_enet
 
 func load_settings() -> void:
 	for i in controls:

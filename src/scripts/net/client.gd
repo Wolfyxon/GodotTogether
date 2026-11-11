@@ -130,6 +130,12 @@ func reset() -> void:
 	connection_cancelled = false
 	disconnect_reason = GDTUser.DisconnectReason.UNKNOWN
 
+func close_connection() -> void:
+	connection_cancelled = true
+	
+	if client_peer:
+		client_peer.close()
+
 func validate_s2c(can_be_local := false) -> bool:
 	if not is_active() and not can_be_local:
 		GDTUtils.printerr_stack("Attempt to call server to client function when client isn't active")

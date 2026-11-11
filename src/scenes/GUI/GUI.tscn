@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
 [ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="13_u8ku5"]
 [ext_resource type="Script" uid="uid://don784mnkl7xf" path="res://addons/GodotTogether/src/scenes/GUI/settings_error.gd" id="14_a4cyb"]
+[ext_resource type="Script" uid="uid://boht1uf26nly1" path="res://addons/GodotTogether/src/scenes/GUI/steam_setup.gd" id="14_auci0"]
 [ext_resource type="Texture2D" uid="uid://bpui0o3t80my5" path="res://addons/GodotTogether/src/img/script.svg" id="15_bvn1h"]
 [ext_resource type="Texture2D" uid="uid://byk4whu37edh8" path="res://addons/GodotTogether/src/img/extLink.svg" id="16_8pkel"]
 [ext_resource type="Texture2D" uid="uid://dqcpfgtyhqwwq" path="res://addons/GodotTogether/src/img/reload.svg" id="17_u8ku5"]
@@ -47,14 +48,13 @@ theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = 18.0
-offset_right = -18.0
-offset_bottom = -18.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 49.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -149,6 +149,26 @@ theme_override_colors/font_color = Color(1, 0.26, 0.26, 1)
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 
+[node name="method" type="HBoxContainer" parent="mainMenu/main/sessionInit/pre" unique_id=1931486554]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="label" type="Label" parent="mainMenu/main/sessionInit/pre/method" unique_id=263718730]
+layout_mode = 2
+text = "Connection method:"
+horizontal_alignment = 1
+
+[node name="dropdown" type="OptionButton" parent="mainMenu/main/sessionInit/pre/method" unique_id=891888226]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+selected = 0
+item_count = 2
+popup/item_0/text = "IP / Port"
+popup/item_0/id = 0
+popup/item_1/text = "Steam"
+popup/item_1/id = 1
+
 [node name="sep" type="Control" parent="mainMenu/main/sessionInit/pre" unique_id=634257283]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
@@ -193,7 +213,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="host" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=513917131]
-visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -285,6 +304,7 @@ text = "Make sure to back up your project."
 horizontal_alignment = 1
 
 [node name="join" type="VBoxContainer" parent="mainMenu/main/sessionInit/start" unique_id=1313580569]
+visible = false
 custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -296,21 +316,24 @@ theme_override_font_sizes/font_size = 26
 text = "Join a project"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/start/join" unique_id=547451636]
+[node name="enet" type="VBoxContainer" parent="mainMenu/main/sessionInit/start/join" unique_id=937674740]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="mainMenu/main/sessionInit/start/join/enet" unique_id=547451636]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Server address"
 
-[node name="address" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/join" unique_id=1363497800]
+[node name="address" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/join/enet" unique_id=1363497800]
 layout_mode = 2
 alignment = 1
 
-[node name="ip" type="LineEdit" parent="mainMenu/main/sessionInit/start/join/address" unique_id=1584906226]
+[node name="ip" type="LineEdit" parent="mainMenu/main/sessionInit/start/join/enet/address" unique_id=1584906226]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "IP address of the host..."
 
-[node name="port" type="SpinBox" parent="mainMenu/main/sessionInit/start/join/address" unique_id=63867957]
+[node name="port" type="SpinBox" parent="mainMenu/main/sessionInit/start/join/enet/address" unique_id=63867957]
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Port"
@@ -319,21 +342,21 @@ max_value = 49151.0
 value = 5017.0
 prefix = ":"
 
-[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/join" unique_id=206569424]
+[node name="password" type="LineEdit" parent="mainMenu/main/sessionInit/start/join/enet" unique_id=206569424]
 layout_mode = 2
 placeholder_text = "Password..."
 secret = true
 
-[node name="join" type="Button" parent="mainMenu/main/sessionInit/start/join" unique_id=958901691]
+[node name="join" type="Button" parent="mainMenu/main/sessionInit/start/join/enet" unique_id=958901691]
 layout_mode = 2
 text = "Join server"
 icon = ExtResource("4_lrlm7")
 
-[node name="sep" type="Control" parent="mainMenu/main/sessionInit/start/join" unique_id=605824632]
+[node name="sep" type="Control" parent="mainMenu/main/sessionInit/start/join/enet" unique_id=605824632]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="netWikiLink" type="LinkButton" parent="mainMenu/main/sessionInit/start/join" unique_id=1070537760]
+[node name="netWikiLink" type="LinkButton" parent="mainMenu/main/sessionInit/start/join/enet" unique_id=1070537760]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -413,6 +436,23 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Cancel"
 icon = ExtResource("9_4c4b3")
+
+[node name="steamSetup" type="VBoxContainer" parent="mainMenu/main" unique_id=510912332]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("14_auci0")
+
+[node name="vbox" type="VBoxContainer" parent="mainMenu/main/steamSetup" unique_id=439290162]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="cancel" type="Button" parent="mainMenu/main/steamSetup" unique_id=594070004]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cancel"
+icon = ExtResource("6_8e3fv")
 
 [node name="session" type="VBoxContainer" parent="mainMenu/main" unique_id=1582343068]
 visible = false
@@ -774,10 +814,11 @@ metadata/_tab_index = 2
 autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 952.0
-offset_bottom = 582.0
+visible = false
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -937,10 +978,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = 18.0
-offset_right = -18.0
-offset_bottom = -18.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -1004,10 +1045,10 @@ icon = ExtResource("17_u8ku5")
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 952.0
-offset_bottom = 582.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -1078,10 +1119,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 15.0
-offset_top = 15.0
-offset_right = 735.0
-offset_bottom = 485.0
+offset_left = 21.0
+offset_top = 21.0
+offset_right = 729.0
+offset_bottom = 479.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]
@@ -1157,7 +1198,7 @@ visible = false
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main" method="session_start_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main/sessionInit/start/host" method="show"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/host/start" to="mainMenu/main" method="_host"]
-[connection signal="pressed" from="mainMenu/main/sessionInit/start/join/join" to="mainMenu/main" method="_join"]
+[connection signal="pressed" from="mainMenu/main/sessionInit/start/join/enet/join" to="mainMenu/main" method="_join_enet"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/cancel" to="mainMenu/main" method="main_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/cover/vbox/btnCancel" to="mainMenu/main" method="_on_btn_cancel_pressed"]
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]
