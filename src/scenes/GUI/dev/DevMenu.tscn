@@ -520,6 +520,10 @@ text = "Setup status: unknown"
 layout_mode = 2
 text = "Username: error"
 
+[node name="lobbyId" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=2028681079]
+layout_mode = 2
+text = "Current lobby: error"
+
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
 size_flags_horizontal = 3
