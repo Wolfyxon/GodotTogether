@@ -82,7 +82,7 @@ func _disconnected() -> void:
 		
 	main.get_gui().alert(
 		str_reason,
-		"Disconnected from the server"
+		"GodotTogether disconnected"
 	)
 
 	disconnected.emit()
