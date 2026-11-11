@@ -2193,7 +2193,7 @@ func _decode_local_resource(dict: Dictionary, allow_unsafe := false) -> Resource
 	if path and GDTValidator.is_path_safe(path):
 		res = load(path)
 		
-		if res.get_class() != cls:
+		if res != null and res.get_class() != cls:
 			res = null
 	
 	if not res:
