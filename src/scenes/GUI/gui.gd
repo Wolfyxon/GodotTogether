@@ -139,8 +139,8 @@ func alert(text: String, title := "GodotTogether") -> AcceptDialog:
 	add_window(popup)
 	popup.popup_centered()
 
-	popup.canceled.connect(popup.queue_free)
-	popup.confirmed.connect(popup.queue_free)
+	popup.canceled.connect(_alert_closed.bind(popup))
+	popup.confirmed.connect(_alert_closed.bind(popup))
 	
 	return popup
 
@@ -178,6 +178,12 @@ func is_2d_scene_editor_open() -> bool:
 		return true
 		
 	return parent.is_visible_in_tree()
+
+func _alert_closed(window: Window) -> void:
+	alert_heat = max(alert_heat - 5, 0)
+	
+	if window and not window.is_queued_for_deletion():
+		window.queue_free()
 
 func _on_alert_cooldown_timeout() -> void:
 	if alert_heat > 0:
