@@ -2,6 +2,8 @@
 extends GDTComponent
 class_name GDTSteam
 
+signal lobby_join_request(lobby_id: int)
+
 enum SetupStatus {
 	OK,
 	INTERNAL_ERROR,
@@ -47,17 +49,10 @@ const SETUP_STATUS_MAP = {
 	SetupStatus.STEAM_CLIENT_OUTDATED: "Steam is outdated"
 }
 
-# The asset store doesn't provide a proper API to get latest version
-# Hardcoding seems the safest for now
-const DOWNLOAD_URL = "https://store.godotengine.org/asset/godotsteam/godotsteam-gdextension/download/8276/"
-const DOWNLOAD_SHA256 = "d4358888959a03f4df0c71aafbcdca8f34b8cb9d4522aa5c8454f0e9e3debbf7"
-
-const DIR_NAME = "godotsteam"
 const APP_ID = 480
-
 const INIT_META = "_initialized"
 
-signal lobby_join_request(lobby_id: int)
+@onready var installer: GDTSteamInstaller = null
 
 var last_status = SetupStatus.NOT_STARTED
 var last_shutdown_time: float = 0.0
@@ -71,9 +66,16 @@ var peer: MultiplayerPeer = null
 # things. Do not use it.
 
 func _ready() -> void:
+	installer = GDTSteamInstaller.new()
+	installer.main = main
+	add_child(installer)
+	
 	report_ready()
 
 func _exit_tree() -> void:
+	if installer:
+		installer.queue_free()
+	
 	leave_lobby()
 
 func _process(_delta: float) -> void:
@@ -241,7 +243,7 @@ func join_lobby_async(lobby_id: int) -> JoinResult:
 	return JoinResult.OK
 
 func addon_exists() -> bool:
-	return DirAccess.open("res://addons/" + DIR_NAME) != null
+	return GDTSteamInstaller.addon_exists()
 
 func is_installed_enabled() -> bool:
 	return Engine.has_singleton("Steam")

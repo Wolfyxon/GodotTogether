@@ -363,20 +363,6 @@ func delete_download_zip() -> void:
 	if rm_err != OK:
 		printerr("Unable to delete old update file: %s: %s" % [DOWNLOAD_FILE, error_string(rm_err)])
 
-func prepare_dir() -> String:
-	var dir = DirAccess.open(ROOT)
-	
-	if not dir:
-		return "Unable to access project directory"
-	
-	if not dir.dir_exists(DOWNLOAD_DIR):
-		var err = dir.make_dir(DOWNLOAD_DIR)
-		
-		if err != OK:
-			return "Unable to create temp directory: %s" % error_string(err) 
-	
-	return ""
-
 func download_update_zip(url: String) -> String:
 	http.timeout = DOWNLOAD_TIMEOUT
 	http.download_file = ZIP_PATH
@@ -507,3 +493,17 @@ func apply_update() -> void:
 	# In case the installer doesn't shutdown the plugin
 	if main and is_instance_valid(main):
 		main.shutdown()
+
+static func prepare_dir() -> String:
+	var dir = DirAccess.open(ROOT)
+	
+	if not dir:
+		return "Unable to access project directory"
+	
+	if not dir.dir_exists(DOWNLOAD_DIR):
+		var err = dir.make_dir(DOWNLOAD_DIR)
+		
+		if err != OK:
+			return "Unable to create temp directory: %s" % error_string(err) 
+	
+	return ""

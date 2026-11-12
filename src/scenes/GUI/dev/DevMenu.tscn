@@ -40,14 +40,15 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 825.0
-offset_bottom = 500.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 832.0
+offset_bottom = 507.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
+scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -504,11 +505,9 @@ text = "Supports disk space check: error"
 
 [node name="steam" type="FoldableContainer" parent="main/scroll/vbox" unique_id=256812078]
 layout_mode = 2
-folded = true
 title = "Steam addon"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/steam" unique_id=183063328]
-visible = false
 layout_mode = 2
 script = ExtResource("10_51x1g")
 
@@ -542,6 +541,17 @@ layout_mode = 2
 [node name="showOtherApps" type="CheckButton" parent="main/scroll/vbox/steam/vbox" unique_id=758217064]
 layout_mode = 2
 text = "Show lobbies of other apps (use only for testing the list)"
+
+[node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/steam/vbox" unique_id=1524208698]
+layout_mode = 2
+
+[node name="btnDownloadInstall" type="Button" parent="main/scroll/vbox/steam/vbox" unique_id=339366657]
+layout_mode = 2
+text = "Downlod and install addon"
+
+[node name="btnInstallExisting" type="Button" parent="main/scroll/vbox/steam/vbox" unique_id=1109895267]
+layout_mode = 2
+text = "Install existing addon download"
 
 [node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
@@ -596,6 +606,8 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnTestChunkToolScript" to="." method="_on_btn_test_chunk_tool_script_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDeath" to="." method="_on_btn_death_pressed"]
 [connection signal="visibility_changed" from="main/scroll/vbox/steam/vbox" to="main/scroll/vbox/steam/vbox" method="_on_visibility_changed"]
+[connection signal="pressed" from="main/scroll/vbox/steam/vbox/btnDownloadInstall" to="main/scroll/vbox/steam/vbox" method="_on_btn_download_install_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/steam/vbox/btnInstallExisting" to="main/scroll/vbox/steam/vbox" method="_on_btn_install_existing_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]

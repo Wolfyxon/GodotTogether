@@ -19,3 +19,12 @@ func _on_visibility_changed() -> void:
 		is_set_up = true
 		
 		main.settings.make_setting_control($showOtherApps, "dev/steam/show_other_app_lobbies")
+
+func _on_btn_download_install_pressed() -> void:
+	if not await main.get_gui().confirm("Download and install GodotSteam?"):
+		return
+	
+	main.steam.installer.install()
+
+func _on_btn_install_existing_pressed() -> void:
+	main.steam.installer.install_existing()
