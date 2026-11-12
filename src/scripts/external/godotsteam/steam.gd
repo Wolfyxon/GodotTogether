@@ -42,7 +42,7 @@ enum JoinResult {
 
 const SETUP_STATUS_MAP = {
 	SetupStatus.OK: "Ok",
-	SetupStatus.INTERNAL_ERROR: "Internal error. This is a bug.",
+	SetupStatus.INTERNAL_ERROR: "Internal error. Make sure Steam is running and your antivirus isn't blocking the addon.",
 	SetupStatus.NOT_STARTED: "Setup not started",
 	SetupStatus.NOT_AVAILABLE: "Steam addon is not available",
 	SetupStatus.NO_STEAM_CLIENT: "Steam is not running",
