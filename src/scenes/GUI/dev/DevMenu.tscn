@@ -48,7 +48,6 @@ offset_bottom = 507.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -505,9 +504,11 @@ text = "Supports disk space check: error"
 
 [node name="steam" type="FoldableContainer" parent="main/scroll/vbox" unique_id=256812078]
 layout_mode = 2
+folded = true
 title = "Steam addon"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/steam" unique_id=183063328]
+visible = false
 layout_mode = 2
 script = ExtResource("10_51x1g")
 

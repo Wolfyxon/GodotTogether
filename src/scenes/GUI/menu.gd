@@ -351,7 +351,7 @@ func setup_connection_method() -> bool:
 		return false
 	
 	if not main.steam.is_installed_enabled():
-		main.get_gui().alert("Steam addon seems to be installed but it can't be accessed. Try restarting Godot or redownlaoding the Steam addon.")
+		main.get_gui().alert("GodotSteam seems to be installed but it can't be accessed. Try restarting Godot or redownlaoding GodotSteam.")
 		return false
 	
 	set_session_init_cover("Initializing Steam...")
