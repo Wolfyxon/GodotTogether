@@ -309,15 +309,20 @@ func main_menu() -> void:
 	set_session_init_cover()
 	host_settings.load_settings()
 
-func session_start_menu(tab: String = "") -> void:
+func session_start_menu(tab: String = "") -> bool:
 	set_session_init_cover()
-	setup_connection_method()
+	
+	if not await setup_connection_method():
+		return false
 	
 	$sessionInit/start.show()
 	$sessionInit/pre.hide()
 	$sessionInit.show()
 	$session.hide()
 
+	$sessionInit/start/join.hide()
+	$sessionInit/start/host.hide()
+	
 	if tab == "join":
 		$sessionInit/start/join.show()
 	elif tab == "host":
@@ -328,17 +333,19 @@ func session_start_menu(tab: String = "") -> void:
 	$sessionInit/start.hide()
 	await get_tree().process_frame
 	$sessionInit/start.show()
+	
+	return true
 
-func setup_connection_method() -> void:
+func setup_connection_method() -> bool:
 	main.connection_method = con_method_input.selected
 	
 	if main.connection_method != GodotTogether.ConnectionMethod.STEAM:
-		return
+		return true
 	
 	if not main.steam.addon_exists():
 		set_session_init_cover()
 		gui.alert("GodotSteam addon is not installed")
-		return
+		return false
 	
 	set_session_init_cover("Initializing Steam...")
 	
@@ -351,9 +358,10 @@ func setup_connection_method() -> void:
 		
 		main_menu()
 		gui.alert(GDTSteam.setup_status_to_string(status), "Failed to initialize Steam")
-		return
+		return false
 		
 	set_session_init_cover()
+	return true
 
 func visuals_available() -> bool:
 	if not gui: 
@@ -398,7 +406,9 @@ func _on_update_timeout() -> void:
 		$session/top/restart.visible = main.get_settings().get_setting("dev/restart_broadcast")
 
 func _on_join_pressed() -> void:
-	session_start_menu()
+	if not await session_start_menu():
+		return
+	
 	$sessionInit/start/join.show()
 	
 	if main.connection_method == GodotTogether.ConnectionMethod.ENET:
