@@ -53,7 +53,7 @@ func _log_error(
 
 func _process() -> void:
 	if frame_error_history.size() >= FRAME_RESOLUTION:
-		frame_error_history.pop_back()
+		frame_error_history.pop_front()
 	
 	frame_error_history.append(errors_last_frame)
 	errors_last_frame = 0
@@ -66,7 +66,7 @@ func is_spamming_errors() -> bool:
 		return false
 	
 	for i in frame_error_history:
-		if i < 10:
+		if i == 0:
 			return false
 	
 	return true
