@@ -2282,6 +2282,9 @@ static func is_user_node(node: Node) -> bool:
 	var parent = node.get_parent()
 	
 	if parent and not parent.is_queued_for_deletion():
+		if not parent.find_child(node.name, false):
+			return false
+		
 		if parent is GraphEdit and node.name == "_connection_layer":
 			return false
 	
