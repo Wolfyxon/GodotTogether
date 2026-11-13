@@ -58,6 +58,9 @@ func _process() -> void:
 	frame_error_history.append(errors_last_frame)
 	errors_last_frame = 0
 
+func get_avg_errors_per_frame() -> float:
+	return GDTUtils.avg(frame_error_history)
+
 func is_spamming_errors() -> bool:
 	if frame_error_history.size() < 2:
 		return false
