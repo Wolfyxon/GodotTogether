@@ -5,11 +5,14 @@ class_name GDTUserCaret
 var main: GodotTogether = null
 var user_ref: WeakRef = null
 
+const NATIVE_FONT_SIZE = 21.0
+
 func _process(_delta: float) -> void:
 	if not main: return
 	
 	_process_script()
 	_process_mouse()
+	_process_scale()
 
 func _process_script() -> void:
 	var user = get_user()
@@ -48,6 +51,11 @@ func _process_script() -> void:
 func _process_mouse() -> void:
 	var mouse = get_global_mouse_position()
 	$usernameContainer.visible = global_position.distance_to(mouse) < 75
+
+func _process_scale() -> void:
+	var font_scale = main.gui.script_editor_mgr.get_font_scale()
+	
+	scale = Vector2(font_scale, font_scale)
 
 func set_user(user: GDTUser) -> void:
 	$color.color = user.color

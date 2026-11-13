@@ -4,6 +4,8 @@ class_name GDTScriptEditorManager
 
 signal script_position_changed
 
+const NATIVE_FONT_SIZE: int = 21
+
 var main_editor: ScriptEditor = null
 
 func _ready() -> void:
@@ -209,6 +211,16 @@ func restore_text_edit_state(edit: TextEdit, data: Dictionary) -> void:
 		
 		edit.select(line, col, line_end, col_end, caret_i)
 		
+func get_font_size() -> int:
+	var code = get_code_editor()
+	
+	if code:
+		return code.get_theme_font_size("font_size")
+
+	return NATIVE_FONT_SIZE
+
+func get_font_scale() -> float:
+	return float(get_font_size()) / float(NATIVE_FONT_SIZE)
 
 func update_text_edit(edit: TextEdit, text: String) -> void:
 	if edit.text == text: 
