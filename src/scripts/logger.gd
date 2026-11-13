@@ -15,7 +15,15 @@ const MATCH_MAP = {
 	]
 }
 
+const FRAME_RESOLUTION = 10
+
 var _err_mutex := Mutex.new()
+
+var errors_last_frame: int = 0
+var frame_error_history: Array = []
+
+func _init() -> void:
+	GDTUtils.get_tree().process_frame.connect(_process)
 
 func attach() -> void:
 	OS.add_logger(self)
@@ -35,14 +43,30 @@ func _log_error(
 ) -> void:
 	var err = get_error_for_message(code)
 	
-	if err == KnownError.UNKNOWN:
-		return
-		
 	_err_mutex.lock()
+	errors_last_frame += 1
 	
-	got_known_error.emit(err)
+	if err != KnownError.UNKNOWN:
+		got_known_error.emit(err)
 	
 	_err_mutex.unlock()
+
+func _process() -> void:
+	if frame_error_history.size() >= FRAME_RESOLUTION:
+		frame_error_history.pop_back()
+	
+	frame_error_history.append(errors_last_frame)
+	errors_last_frame = 0
+
+func is_spamming_errors() -> bool:
+	if frame_error_history.size() < 2:
+		return false
+	
+	for i in frame_error_history:
+		if i < 10:
+			return false
+	
+	return true
 
 static func get_error_for_message(msg: String) -> KnownError:
 	for err in MATCH_MAP.keys():
