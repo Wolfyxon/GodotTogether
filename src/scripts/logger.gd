@@ -3,6 +3,7 @@ extends Logger
 class_name GDTLogger
 
 signal got_known_error(code: KnownError)
+signal error_spam_detected
 
 enum KnownError {
 	UNKNOWN,
@@ -21,6 +22,8 @@ var _err_mutex := Mutex.new()
 
 var errors_last_frame: int = 0
 var frame_error_history: Array = []
+
+var was_spamming_errors: bool = false
 
 func _init() -> void:
 	GDTUtils.get_tree().process_frame.connect(_process)
@@ -57,6 +60,10 @@ func _process() -> void:
 	
 	frame_error_history.append(errors_last_frame)
 	errors_last_frame = 0
+	
+	if not was_spamming_errors and is_spamming_errors():
+		was_spamming_errors = true
+		error_spam_detected.emit()
 
 func get_avg_errors_per_frame() -> float:
 	return GDTUtils.avg(frame_error_history)

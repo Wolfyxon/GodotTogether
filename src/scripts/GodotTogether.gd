@@ -83,6 +83,8 @@ func _enter_tree() -> void:
 	if ENABLE_CUSTOM_LOGGER:
 		logger = GDTLogger.new()
 		logger.attach()
+		
+		logger.error_spam_detected.connect(_error_spam)
 	
 	init_components()
 	setup_menu_button()
@@ -133,6 +135,13 @@ func _exit_tree() -> void:
 	
 	if ENABLE_MULTIPLAYER_OVERRIDE:
 		get_tree().set_multiplayer(SceneMultiplayer.new(), GDTMultiplayerExtension.ROOT_PATH)
+
+func _error_spam() -> void:
+	gui.alert(GDTUtils.join([
+		"Godot is spamming errors in the console.",
+		"This may be due to a bug in GodotTogether.",
+		"If this only happens if the plugin is active, please report this."
+	], "\n"))
 
 func init_scene_nodes() -> void:
 	# Possible mitigation for dumb Godot type errors may be to assign the values after waiting 
