@@ -17,7 +17,6 @@
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/user_ui_entry.gd" id="9_ymxdp"]
 [ext_resource type="Script" uid="uid://8b82hefxvycp" path="res://addons/GodotTogether/src/scenes/GUI/steam_lobbies.gd" id="12_1f85p"]
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
-[ext_resource type="Texture2D" uid="uid://o05r27eteufd" path="res://icon.svg" id="12_tmky2"]
 [ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="13_u8ku5"]
 [ext_resource type="Script" uid="uid://don784mnkl7xf" path="res://addons/GodotTogether/src/scenes/GUI/settings_error.gd" id="14_a4cyb"]
 [ext_resource type="Script" uid="uid://boht1uf26nly1" path="res://addons/GodotTogether/src/scenes/GUI/steam_setup.gd" id="14_auci0"]
@@ -60,10 +59,10 @@ script = ExtResource("2_dm08s")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 49.0
-offset_bottom = -25.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -411,7 +410,6 @@ layout_mode = 2
 [node name="avatar" type="TextureRect" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend/hbox" unique_id=2000254199]
 visible = false
 layout_mode = 2
-texture = ExtResource("12_tmky2")
 expand_mode = 2
 
 [node name="username" type="Label" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend/hbox" unique_id=180021323]
@@ -887,10 +885,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 952.0
+offset_bottom = 582.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -1050,10 +1048,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -17.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -1117,10 +1115,10 @@ icon = ExtResource("17_u8ku5")
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 25.0
-offset_top = 25.0
-offset_right = 945.0
-offset_bottom = 575.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 952.0
+offset_bottom = 582.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -1191,10 +1189,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 21.0
-offset_top = 21.0
-offset_right = 729.0
-offset_bottom = 479.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 735.0
+offset_bottom = 485.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]
