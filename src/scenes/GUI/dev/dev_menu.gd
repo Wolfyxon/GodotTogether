@@ -4,6 +4,8 @@ class_name GDTDevMenu
 
 var main: GodotTogether = null
 
+var test_user: GDTUser = null
+
 func _ready() -> void:
 	var tree = get_tree()
 	
@@ -16,6 +18,9 @@ func _ready() -> void:
 	
 	if not main:
 		return
+	
+	test_user = GDTUser.new(-64, null, main)
+	test_user.name = "<Test user>"
 	
 	fill_main()
 	
@@ -211,3 +216,13 @@ func _on_btn_disclaimer_pressed() -> void:
 	
 	main.get_settings().set_setting("seen/disclaimer", false)
 	main.restart()
+
+func _on_btn_caret_pressed() -> void:
+	if not test_user:
+		printerr("test user is null")
+		return
+	
+	test_user.current_script = EditorInterface.get_script_editor().get_current_script().resource_path
+	
+	if not main.script_sync.get_user_caret(test_user.id):
+		main.script_sync.create_user_caret(test_user)
