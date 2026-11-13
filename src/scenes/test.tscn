@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c67kvac1g38je"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m85qx"]
+bg_color = Color(0.843715, 0, 0.18101633, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[node name="Test" type="Node" unique_id=1142195231]
+
+[node name="Label" type="Label" parent="." unique_id=1678395051]
+offset_left = 344.0
+offset_top = 2.0
+offset_right = 789.0
+offset_bottom = 38.0
+text = "This is a test scene used by GodotTogether unit tests"
+
+[node name="Panel" type="Panel" parent="." unique_id=153090410]
+offset_right = 152.0
+offset_bottom = 122.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_m85qx")

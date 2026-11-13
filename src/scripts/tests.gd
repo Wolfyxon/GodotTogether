@@ -9,6 +9,7 @@ var test_times = {}
 var longest_test_name = 0
 var running_on_start = false
 
+var scene_instance: Node = null
 var created_nodes = []
 
 func _ready() -> void:
@@ -53,6 +54,18 @@ func run_tests() -> void:
 		printerr("Cannot run tests without main")
 		return
 	
+	var test_scene = load("res://addons/GodotTogether/src/scenes/test.tscn")
+	
+	if not test_scene:
+		printerr("Unable to load test scene")
+		return
+		
+	scene_instance = test_scene.instantiate()
+	
+	if not scene_instance:
+		printerr("Failed to create test scene")
+		return
+	
 	print("--- Running GodotTogether tests ---")
 	
 	var test_names = []
@@ -83,6 +96,9 @@ func run_tests() -> void:
 	reset()
 	
 	print("------------------------------------")
+	
+	if scene_instance and not scene_instance.is_queued_for_deletion():
+		scene_instance.queue_free()
 
 func reset() -> void:
 	success_count = 0
@@ -281,6 +297,48 @@ func test_local_resource_encoding() -> bool:
 	
 	if not decoded.albedo_texture:
 		printerr("Missing 'albedo_texture'")
+		return false
+	
+	return true
+
+func test_shared_resource_encoding() -> bool:
+	var panel: Panel = scene_instance.get_node("Panel")
+	
+	if not panel:
+		return false
+	
+	var stylebox = panel.get_theme_stylebox("panel")
+	
+	if not stylebox:
+		printerr("Panel has no stylebox")
+		return false
+	
+	if not stylebox.resource_path:
+		printerr("Stylebox has no resource path")
+		return false
+	
+	var encoded = main.node_sync.encode_resource(stylebox)
+	
+	if not encoded["path"]:
+		printerr("Encoded path is empty")
+		return false
+	
+	var decoded = main.node_sync.decode_resource(encoded, true)
+	
+	if not decoded:
+		printerr("Decoding failed")
+		return false
+	
+	if not decoded.resource_path:
+		printerr("Decoded resource has no path")
+		return false
+	
+	if decoded.resource_path != stylebox.resource_path:
+		printerr("Path mismatch")
+		return false
+	
+	if decoded != stylebox:
+		printerr("Decoded is not the same object as original")
 		return false
 	
 	return true
