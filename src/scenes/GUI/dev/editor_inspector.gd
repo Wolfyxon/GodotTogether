@@ -10,6 +10,8 @@ func _ready() -> void:
 	while get_tree() and not main:
 		await get_tree().process_frame
 	
+	if not main: return
+	
 	register_loadable_node(GDTUtils.get_root(), "Root")
 	register_loadable_node(EditorInterface.get_base_control(), "Base control")
 	register_loadable_node(EditorInterface.get_script_editor(), "Script editor")

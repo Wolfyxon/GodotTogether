@@ -48,7 +48,7 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 339
+scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -261,18 +261,6 @@ script = ExtResource("4_37caa")
 
 [node name="treeSelection" type="OptionButton" parent="main/scroll/vbox/inspector/vbox" unique_id=968586022]
 layout_mode = 2
-selected = 0
-item_count = 5
-popup/item_0/text = "Root"
-popup/item_0/id = 0
-popup/item_1/text = "Base control"
-popup/item_1/id = 1
-popup/item_2/text = "Script editor"
-popup/item_2/id = 2
-popup/item_3/text = "FS dock"
-popup/item_3/id = 3
-popup/item_4/text = "Inspector"
-popup/item_4/id = 4
 
 [node name="btnLoadTree" type="Button" parent="main/scroll/vbox/inspector/vbox" unique_id=536376304]
 layout_mode = 2
