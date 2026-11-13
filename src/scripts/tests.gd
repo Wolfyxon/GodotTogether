@@ -1289,6 +1289,21 @@ func test_node_change_applying() -> bool:
 	
 	return true
 
+func test_user_node_check() -> bool:
+	var graph = GraphEdit.new() # GraphEdit has plenty of internal nodes
+	graph.name = "GraphEdit"
+	
+	if not GDTNodeSync.is_user_node(graph):
+		printerr("GraphEdit not reported as user's")
+		return false
+	
+	for i in graph.get_children(true):
+		if GDTNodeSync.is_user_node(i):
+			printerr("Reported as user node: %s" % i)
+			return false
+	
+	return true
+
 func test_scenes() -> bool:
 	var scenes = [
 		main.gui_scene,
