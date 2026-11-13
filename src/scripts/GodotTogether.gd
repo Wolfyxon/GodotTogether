@@ -137,11 +137,14 @@ func _exit_tree() -> void:
 		get_tree().set_multiplayer(SceneMultiplayer.new(), GDTMultiplayerExtension.ROOT_PATH)
 
 func _error_spam() -> void:
-	gui.alert(GDTUtils.join([
+	var msg = GDTUtils.join([
 		"Godot is spamming errors in the console.",
 		"This may be due to a bug in GodotTogether.",
 		"If this only happens if the plugin is active, please report this."
-	], "\n"))
+	], "\n")
+	
+	gui.alert(msg)
+	EditorInterface.get_editor_toaster().push_toast(msg, EditorToaster.SEVERITY_ERROR)
 
 func init_scene_nodes() -> void:
 	# Possible mitigation for dumb Godot type errors may be to assign the values after waiting 
