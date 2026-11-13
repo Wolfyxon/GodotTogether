@@ -62,7 +62,7 @@ func inspect_tree(node: Node = GDTUtils.get_root()) -> void:
 		printerr("Node is null")
 		return
 		
-	main.gui.scene_tree_editor.load_tree(node)
+	main.get_gui().scene_tree_editor.load_tree(node)
 
 func _on_btn_file_tree_pressed() -> void:
 	var paths = GDTFiles.get_file_tree()
@@ -168,10 +168,10 @@ func _on_btn_test_chunk_tool_script_pressed() -> void:
 
 
 func _on_btn_death_pressed() -> void:
-	if not await main.gui.confirm("Are you sure? This will require a plugin restart to undo."):
+	if not await main.get_gui().confirm("Are you sure? This will require a plugin restart to undo."):
 		return
 	
-	main.gui.get_menu_window().set_error_of_death(
+	main.get_gui().get_menu_window().set_error_of_death(
 		"Oopsie whoopsie OwO!",
 		"It's your fault."
 	)
@@ -203,10 +203,10 @@ func _on_btn_script_update_test_pressed() -> void:
 	await get_tree().create_timer(5).timeout
 	print("Updating")
 	
-	var editor = main.gui.script_editor_mgr.get_code_editor()
+	var editor = main.get_gui().script_editor_mgr.get_code_editor()
 	var new_text = "# First line test\n" + editor.text + "\n# Last line test" 
 	
-	main.gui.script_editor_mgr.update_text_edit(editor, new_text)
+	main.get_gui().script_editor_mgr.update_text_edit(editor, new_text)
 
 func _on_btn_disclaimer_pressed() -> void:
 	if not main: return

@@ -71,7 +71,7 @@ func _ready() -> void:
 	
 	await get_tree().process_frame
 	
-	main.gui.script_editor_mgr.script_position_changed.connect(broadcast_selection)
+	main.get_gui().script_editor_mgr.script_position_changed.connect(broadcast_selection)
 
 func _process(_delta: float) -> void:
 	for i in 128:
@@ -89,9 +89,12 @@ func _update() -> void:
 	var viewport_2d = EditorInterface.get_editor_viewport_2d()
 	if not viewport_2d: return
 	
+	var gui = main.get_gui()
+	if not gui: return
+	
 	var mouse_pos = viewport_2d.get_mouse_position()
 	
-	if mouse_pos != prev_mouse_pos and main.gui.is_2d_scene_editor_open():
+	if mouse_pos != prev_mouse_pos and gui.is_2d_scene_editor_open():
 		prev_mouse_pos = mouse_pos
 		update_2d_avatar.rpc(mouse_pos)
 	
@@ -207,9 +210,11 @@ func broadcast_selection() -> void:
 	var script_editor = EditorInterface.get_script_editor()
 	var current_script = script_editor.get_current_script()
 	
+	var gui = main.get_gui()
+	
 	if script_editor.is_visible_in_tree() and current_script:
-		var line = main.gui.script_editor_mgr.get_current_line()
-		var col = main.gui.script_editor_mgr.get_current_column()
+		var line = gui.script_editor_mgr.get_current_line()
+		var col = gui.script_editor_mgr.get_current_column()
 		
 		receive_current_script.rpc_id(0, current_script.resource_path, line, col)
 	else:

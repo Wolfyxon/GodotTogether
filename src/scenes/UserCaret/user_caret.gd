@@ -28,7 +28,7 @@ func _process_script() -> void:
 	if current_script.resource_path != user.current_script:
 		return
 	
-	var edit = main.gui.script_editor_mgr.get_code_editor()
+	var edit = main.get_gui().script_editor_mgr.get_code_editor()
 	if not edit: return
 	
 	var lines = edit.text.remove_chars("\r").split("\n")
@@ -53,7 +53,7 @@ func _process_mouse() -> void:
 	$usernameContainer.visible = global_position.distance_to(mouse) < 75
 
 func _process_scale() -> void:
-	var font_scale = main.gui.script_editor_mgr.get_font_scale()
+	var font_scale = main.get_gui().script_editor_mgr.get_font_scale()
 	
 	scale = Vector2(font_scale, font_scale)
 

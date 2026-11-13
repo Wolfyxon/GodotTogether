@@ -114,7 +114,7 @@ func setup_editor(editor: ScriptEditorBase, script: Script) -> void:
 	if editor.get_instance_id() in set_up_editor_ids:
 		return
 	
-	var code_edit = main.gui.script_editor_mgr.get_code_editor(editor)
+	var code_edit = main.get_gui().script_editor_mgr.get_code_editor(editor)
 	if not code_edit: return
 	
 	if code_edit.is_queued_for_deletion(): return
@@ -175,13 +175,14 @@ func clear_user_carets() -> void:
 @rpc("authority", "reliable", "call_remote", GDTDual.NetChannel.SCRIPTS)
 func apply_script_line_diff(path: String, diff: Array) -> void:
 	if not main.client.validate_s2c(true): return
-	
 	if not GDTValidator.is_path_safe(path): return
 	
-	var editor = main.gui.script_editor_mgr.get_editor_by_path(path)
+	var gui = main.get_gui()
+	
+	var editor = gui.script_editor_mgr.get_editor_by_path(path)
 	if not editor: return
 	
-	var code_edit = main.gui.script_editor_mgr.get_code_editor(editor)
+	var code_edit = gui.script_editor_mgr.get_code_editor(editor)
 	if not code_edit: return
 	if code_edit.is_queued_for_deletion(): return
 	
@@ -193,7 +194,7 @@ func apply_script_line_diff(path: String, diff: Array) -> void:
 	var code = main.script_security.sanitize_gdscript(applied)
 	
 	set_last_source_code(path, code)
-	main.gui.script_editor_mgr.update_text_edit(code_edit, code)
+	gui.script_editor_mgr.update_text_edit(code_edit, code)
 	
 	set_script_supressed(path, false)
 	
