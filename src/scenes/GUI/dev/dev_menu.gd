@@ -226,3 +226,9 @@ func _on_btn_caret_pressed() -> void:
 	
 	if not main.script_sync.get_user_caret(test_user.id):
 		main.script_sync.create_user_caret(test_user)
+
+func _on_btn_scene_tree_pressed() -> void:
+	var scene = EditorInterface.get_edited_scene_root()
+	if not scene: return
+	
+	scene.print_tree_pretty()
