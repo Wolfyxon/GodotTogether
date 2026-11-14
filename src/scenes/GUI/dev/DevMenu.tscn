@@ -402,6 +402,10 @@ text = "Unique ID: <error>"
 layout_mode = 2
 text = "Has peer: <error>"
 
+[node name="peerStatus" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=430987630]
+layout_mode = 2
+text = "Peer status: <error>"
+
 [node name="isServer" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=1813918977]
 layout_mode = 2
 text = "Is server: <error>"

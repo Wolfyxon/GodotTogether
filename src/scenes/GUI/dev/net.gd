@@ -29,7 +29,10 @@ func _process(_delta: float) -> void:
 		if multiplayer.has_multiplayer_peer():
 			$peerCount.text = "Peer count: %s" % multiplayer.get_peers().size()
 			$id.text = "Unique id: %s" % multiplayer.get_unique_id()
+			
+			$peerStatus.text = "Peer status: %s" % multiplayer.multiplayer_peer.get_connection_status()
 		else:
+			$peerStatus.text = "Peer status: no peer"
 			$id.text = "Unique id: unknown"
 			$peerCount.text = "Peer count: 0"
 	
