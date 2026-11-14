@@ -12,12 +12,12 @@ func _ready() -> void:
 	if tree and tree.current_scene == self:
 		return
 	
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
+	await tree.process_frame
+	await tree.process_frame
+	await tree.process_frame
 	
-	if not main:
-		return
+	if not main: return
+	if not is_inside_tree(): return
 	
 	test_user = GDTUser.new(-64, null, main)
 	test_user.name = "<Test user>"
