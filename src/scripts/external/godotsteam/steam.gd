@@ -243,6 +243,8 @@ func join_lobby_async(lobby_id: int) -> JoinResult:
 		GDTUtils.printerr_stack("Attempt to join lobby when Steam doesn't exist")  
 		return JoinResult.NONE
 	
+	print("Joining lobby %s" % lobby_id)
+	
 	steam.joinLobby.call_deferred(lobby_id)
 	
 	#lobby: int, permissions: int, locked: bool, response: int
@@ -253,6 +255,8 @@ func join_lobby_async(lobby_id: int) -> JoinResult:
 		printerr("Steam error: %s" % join_response)
 		return join_response
 	
+	print("Joined successfully, starting peer")
+	
 	var peer_err = peer.connect_to_lobby(lobby_id)
 	
 	if peer_err != OK:
@@ -261,6 +265,8 @@ func join_lobby_async(lobby_id: int) -> JoinResult:
 		return JoinResult.ERROR
 	
 	multiplayer.multiplayer_peer = peer
+	
+	print("Peer successfully initialized")
 	
 	return JoinResult.OK
 
