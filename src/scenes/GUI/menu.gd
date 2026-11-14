@@ -244,8 +244,8 @@ func join_steam(lobby_id: int) -> void:
 	if err != GDTSteam.JoinResult.OK:
 		set_session_init_cover()
 		
-		# TODO: Error to string
-		main.get_gui().alert("Failed to join lobby. Code: %s" % err)
+		var err_str = GDTSteam.join_result_to_string(err)
+		main.get_gui().alert("Failed to join lobby: %s" % err_str)
 		
 		return
 	

@@ -49,6 +49,21 @@ const SETUP_STATUS_MAP = {
 	SetupStatus.STEAM_CLIENT_OUTDATED: "Steam is outdated"
 }
 
+const JOIN_RESULT_MAP = {
+	JoinResult.OK: "Ok",
+	JoinResult.NOT_FOUND: "Lobby not found",
+	JoinResult.NOT_ALLOWED: "Not allowed",
+	JoinResult.FULL: "Lobby is full",
+	JoinResult.ERROR: "Internal error. This is probably a bug.",
+	JoinResult.BANNED: "You are banned from this lobby",
+	JoinResult.LIMITED_ACCOUNT: "Your account isn't considered trusted",
+	#JoinResult.CLAN_DISABLED: "" # idk what this is tbh
+	JoinResult.COMMUNITY_BAN: "Your Steam account is community banned",
+	JoinResult.BLOCKED_YOU: "The host blocked you",
+	JoinResult.BLOCKED: "You blocked the host's account",
+	JoinResult.RATE_LIMIT: "You are being rate limited by Steam. Wait a bit."
+}
+
 const APP_ID = 480
 const INIT_META = "_initialized"
 
@@ -296,3 +311,12 @@ static func setup_status_to_string(status: SetupStatus) -> String:
 		return "Unknown error"
 	
 	return SETUP_STATUS_MAP[status]
+
+static func join_result_to_string(result: JoinResult) -> String:
+	if result in JOIN_RESULT_MAP:
+		return JOIN_RESULT_MAP[result]
+	
+	if result >= 0 and result < JoinResult.size():
+		return JoinResult.keys()[result]
+	
+	return "Unknown code: %s" % result
