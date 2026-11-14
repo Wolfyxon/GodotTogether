@@ -68,6 +68,7 @@ const _DEFAULT_DATA = {
 		
 		"log_settings": false,
 		
+		"log_incoming_alive_pings": false,
 		"log_rpc_out": false,
 		"log_rpc_in": false,
 		

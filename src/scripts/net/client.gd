@@ -274,6 +274,9 @@ func _s2c_connection_ack() -> void:
 
 @rpc("authority", "unreliable", "call_remote", GDTDual.NetChannel.MISC)
 func _s2c_connection_alive() -> void:
+	if main.settings.get_setting("dev/log_incoming_alive_pings"):
+		print("Connectiong ping from server")
+	
 	if not ignore_alive_ping:
 		last_received_ping = Time.get_unix_time_from_system()
 

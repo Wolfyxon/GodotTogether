@@ -315,7 +315,11 @@ func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 
 @rpc("any_peer", "unreliable", "call_remote", GDTDual.NetChannel.MISC)
 func _c2s_connection_alive() -> void:
+	var id = multiplayer.get_remote_sender_id()
 	if not validate_c2s(): return
+	
+	if main.settings.get_setting("dev/log_incoming_alive_pings"):
+		print("Connectiong ping from peer %s" % id )
 	
 	var user = get_calling_user()
 	if not user: return

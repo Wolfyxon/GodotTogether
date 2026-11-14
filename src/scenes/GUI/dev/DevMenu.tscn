@@ -49,6 +49,7 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
+scroll_vertical = 457
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -91,11 +92,9 @@ icon = ExtResource("3_kl0hy")
 
 [node name="logging" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1349864807]
 layout_mode = 2
-folded = true
 title = "Logging"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/logging" unique_id=658249290]
-visible = false
 layout_mode = 2
 
 [node name="HSeparator4" type="HSeparator" parent="main/scroll/vbox/logging/vbox" unique_id=1329406644]
@@ -151,6 +150,11 @@ layout_mode = 2
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 text = "Network"
+
+[node name="logAlivePings" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=1499002897]
+layout_mode = 2
+text = "Log incoming alive pings"
+metadata/setting = "dev/log_incoming_alive_pings"
 
 [node name="logOutgoingRpc" type="CheckButton" parent="main/scroll/vbox/logging/vbox" unique_id=1204758547]
 layout_mode = 2
