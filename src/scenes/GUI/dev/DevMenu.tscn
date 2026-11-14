@@ -41,10 +41,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 838.0
-offset_bottom = 513.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 825.0
+offset_bottom = 500.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -217,9 +217,11 @@ metadata/setting = "dev/allow_file_reload_outside_sessions"
 
 [node name="prints" type="FoldableContainer" parent="main/scroll/vbox" unique_id=282098678]
 layout_mode = 2
+folded = true
 title = "Data printing"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/prints" unique_id=557890141]
+visible = false
 layout_mode = 2
 
 [node name="btnUserdata" type="Button" parent="main/scroll/vbox/prints/vbox" unique_id=935751093]
@@ -552,6 +554,10 @@ text = "Username: error"
 [node name="lobbyId" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=2028681079]
 layout_mode = 2
 text = "Current lobby: error"
+
+[node name="userCount" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=509785469]
+layout_mode = 2
+text = "Users in lobby: error"
 
 [node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/steam/vbox" unique_id=910787521]
 layout_mode = 2

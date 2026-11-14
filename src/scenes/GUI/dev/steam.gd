@@ -13,12 +13,23 @@ func _on_visibility_changed() -> void:
 	$appId.text = "App ID: %s" % main.steam.APP_ID
 	$setupStatus.text = "Setup status: %s (%s)" % [main.steam.last_status, GDTSteam.SetupStatus.keys()[main.steam.last_status]]
 	$username.text = "Username: %s" % main.steam.get_local_username()
-	$lobbyId.text = "Current lobby: %s" % main.steam.current_lobby_id
 
 	if not is_set_up:
 		is_set_up = true
 		
 		main.settings.make_setting_control($showOtherApps, "dev/steam/show_other_app_lobbies")
+
+func _process(_delta: float) -> void:
+	if not is_visible_in_tree(): return
+	if not main: return
+	
+	$lobbyId.text = "Current lobby: %s" % main.steam.current_lobby_id
+	
+	if main.steam.current_lobby_id > 0:
+		var count = main.steam.get_singleton().getNumLobbyMembers(main.steam.current_lobby_id)
+		$userCount.text = "Users in lobby: %s" % count
+	else:
+		$userCount.text = "Users in lobby: <no lobby>"
 
 func _on_btn_download_install_pressed() -> void:
 	if not await main.get_gui().confirm("Download and install GodotSteam?"):
