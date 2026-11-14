@@ -128,6 +128,12 @@ func _join_requested(lobby_id: int, _friend_id: int) -> void:
 	print("[GodotTogether:Steam] You are requesting to join lobby %s" % lobby_id)
 	lobby_join_request.emit(lobby_id)
 
+func _lobby_joined(lobby: int, permissions: int, locked: bool, response: int) -> void:
+	print(
+		"[GodotTogether:Steam] Lobby joined %s perms %s locked %s res %s" % 
+		[lobby, permissions, locked, response]
+	)
+
 func leave_lobby():
 	var steam = get_singleton()
 	
@@ -161,7 +167,8 @@ func setup_signals() -> void:
 	GDTUtils.try_connect_bulk({
 		steam.steam_shutdown: _steam_shutting_down,
 		steam.lobby_invite: _invitied,
-		steam.join_requested: _join_requested
+		steam.join_requested: _join_requested,
+		steam.lobby_joined: _lobby_joined
 	})
 
 func setup_steam_api() -> SetupStatus:
