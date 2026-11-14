@@ -47,6 +47,7 @@ func _ready() -> void:
 		
 		main.steam.lobby_join_request.connect(join_steam)
 		steam_lobbies.lobby_join_request.connect(join_steam)
+		main.get_settings().make_setting_control($sessionInit/pre/method/dropdown, "last_connection/method")
 
 	if visuals_available():
 		set_session_init_cover()

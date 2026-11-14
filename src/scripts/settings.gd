@@ -11,6 +11,7 @@ const _DEFAULT_DATA = {
 	"format_version": 1,
 	
 	"last_connection": {
+		"method": GodotTogether.ConnectionMethod.ENET,
 		"ip": "",
 		"port": 5017,
 	},
