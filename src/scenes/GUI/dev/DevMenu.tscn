@@ -49,7 +49,7 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 340
+scroll_vertical = 91
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -374,9 +374,11 @@ text = "Print tracked files"
 
 [node name="net" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1444636490]
 layout_mode = 2
+folded = true
 title = "Network"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/net" unique_id=1579403681]
+visible = false
 layout_mode = 2
 script = ExtResource("5_vk20n")
 
@@ -388,15 +390,35 @@ text = "Last disconnect reason: N/A"
 layout_mode = 2
 text = "Time since ping from server: "
 
+[node name="hasMultiplayer" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=155652668]
+layout_mode = 2
+text = "Has multiplayer: <error>"
+
+[node name="id" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=620467801]
+layout_mode = 2
+text = "Unique ID: <error>"
+
+[node name="hasPeer" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=271245732]
+layout_mode = 2
+text = "Has peer: <error>"
+
+[node name="isServer" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=1813918977]
+layout_mode = 2
+text = "Is server: <error>"
+
+[node name="peerCount" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=352319791]
+layout_mode = 2
+text = "Peer count: <error>"
+
+[node name="polling" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=1408061366]
+layout_mode = 2
+text = "Polls per frame: <error>"
+
 [node name="ignoreAlivePing" type="CheckButton" parent="main/scroll/vbox/net/vbox" unique_id=179607138]
 layout_mode = 2
 text = "Ignore server's alive pings (will cause timeout)"
 icon = ExtResource("6_ni5tw")
 icon_alignment = 2
-
-[node name="polling" type="Label" parent="main/scroll/vbox/net/vbox" unique_id=1408061366]
-layout_mode = 2
-text = "Polls per frame: <error>"
 
 [node name="rpcChecksumheader" type="HBoxContainer" parent="main/scroll/vbox/net/vbox" unique_id=1327893079]
 layout_mode = 2

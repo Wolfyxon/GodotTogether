@@ -19,6 +19,20 @@ func _process(_delta: float) -> void:
 	$disconnectReason.text = "last disconnect reason: %s (%s)" % [reason_code, reason_str]
 	$pingTime.text = "Time since ping from server: %s" % (now - main.client.last_received_ping)
 	
+	$hasMultiplayer.text = "Has multiplayer: %s (if this is false, some values may not update)" % (multiplayer != null)
+	
+	if multiplayer:
+		var has_peer = multiplayer.has_multiplayer_peer()
+		$hasPeer.text = "Has peer: %s" % has_peer
+		$isServer.text = "Is server: %s" % (has_peer and multiplayer.is_server())
+		
+		if multiplayer.has_multiplayer_peer():
+			$peerCount.text = "Peer count: %s" % multiplayer.get_peers().size()
+			$id.text = "Unique id: %s" % multiplayer.get_unique_id()
+		else:
+			$id.text = "Unique id: unknown"
+			$peerCount.text = "Peer count: 0"
+	
 	if main.mp_override:
 		$polling.text = "Polls per frame: %s" % main.mp_override.polls_per_frame
 
@@ -64,7 +78,6 @@ func _on_btn_rpc_config_pressed() -> void:
 			print("%s: %s%s" % [func_name, sep, conf_str])
 		
 		print("")
-
 
 func _on_btn_copy_rpc_global_pressed() -> void:
 	DisplayServer.clipboard_set(str(main.get_global_rpc_checksum()))
