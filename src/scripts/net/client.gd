@@ -107,6 +107,9 @@ func _handle_connecting() -> void:
 	var start = Time.get_unix_time_from_system()
 	var timeout = start + get_timeout_seconds()
 
+	last_received_ping = Time.get_unix_time_from_system()
+	current_join_data.rpc_checksum = main.get_global_rpc_checksum()
+	
 	while (status == -1 or status != success) and Time.get_unix_time_from_system() < timeout and not connection_cancelled:
 		status = client_peer.get_connection_status()
 		await get_tree().process_frame
@@ -167,7 +170,7 @@ func leave_with_error(reason := GDTUser.DisconnectReason.UNKNOWN) -> void:
 	main.close_connection()
 	_disconnected()
 
-func join_enet(ip: String, port: int, data := GDTJoinData.new()) -> int:
+func join_enet(ip: String, port: int, data: GDTJoinData = null) -> int:
 	main.prepare_session()
 	reset()
 	
@@ -176,10 +179,8 @@ func join_enet(ip: String, port: int, data := GDTJoinData.new()) -> int:
 
 	print("Connecting to %s:%s..." % [ip, port])
 
-	multiplayer.multiplayer_peer = client_peer
-	last_received_ping = Time.get_unix_time_from_system()
 	current_join_data = data
-	current_join_data.rpc_checksum = main.get_global_rpc_checksum()
+	multiplayer.multiplayer_peer = client_peer
 	
 	_handle_connecting()
 
@@ -193,6 +194,8 @@ func join_steam_async(lobby_id: int) -> GDTSteam.JoinResult:
 	
 	if res != GDTSteam.JoinResult.OK:
 		return res
+	
+	_handle_connecting()
 	
 	return GDTSteam.JoinResult.OK
 
