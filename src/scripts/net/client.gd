@@ -55,8 +55,6 @@ func _process(_delta: float) -> void:
 		last_sent_ping = now
 
 func _connected() -> void:
-	if multiplayer.is_server(): return
-
 	_connecting_finished(true)
 	
 	print("Connected, your ID is: %s" % multiplayer.get_unique_id())
@@ -66,8 +64,6 @@ func _connected() -> void:
 	send_join_data()
 
 func _disconnected() -> void:
-	if multiplayer.is_server(): return
-
 	print("Disconnected from server")
 	
 	var str_reason = "Connection lost. Reason unknown"
