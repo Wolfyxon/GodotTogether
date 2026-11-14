@@ -71,3 +71,7 @@ func _on_btn_copy_rpc_global_pressed() -> void:
 
 func _on_btn_copy_rpc_all_pressed() -> void:
 	DisplayServer.clipboard_set($rpcChecksum.text)
+
+func _on_btn_ping_pressed() -> void:
+	main.server._c2s_connection_alive.rpc_id(1)
+	main.client._s2c_connection_alive.rpc()
