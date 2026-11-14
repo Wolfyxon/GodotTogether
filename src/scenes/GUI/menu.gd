@@ -245,9 +245,18 @@ func join_steam(lobby_id: int) -> void:
 		set_session_init_cover()
 		
 		# TODO: Error to string
-		main.get_gui().alert("Failed to connect. Code: %s" % err)
+		main.get_gui().alert("Failed to join lobby. Code: %s" % err)
 		
 		return
+	
+	if not await main.client.connecting_finished:
+		set_session_init_cover()
+		
+		if main.client.connection_cancelled:
+			return
+		
+		main.gui.alert("Failed to establish connection in lobby.")
+		main.steam.leave_lobby()
 	
 	_handle_connecting()
 
