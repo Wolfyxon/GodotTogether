@@ -2,8 +2,8 @@
 extends Object
 class_name GDTValidator
 
-const max_username_length = 32
-const max_message_length = 1024
+const MAX_USERNAME_LENGTH = 32
+const MAX_MESSAGE_LENGTH = 1024
 
 enum TextError {
 	OK,
@@ -60,13 +60,13 @@ static func validate_existing_file_path(path: String) -> bool:
 	return true
 
 static func validate_username(username: String) -> TextError:
-	if username.length() > max_username_length: return TextError.TOO_LONG
+	if username.length() > MAX_USERNAME_LENGTH: return TextError.TOO_LONG
 	if is_empty(username): return TextError.EMPTY
 	
 	return TextError.OK
 
 static func validate_message(message: String) -> TextError:
-	if message.length() > max_message_length: return TextError.TOO_LONG
+	if message.length() > MAX_MESSAGE_LENGTH: return TextError.TOO_LONG
 	if is_empty(message): return TextError.EMPTY
 	
 	return TextError.OK
