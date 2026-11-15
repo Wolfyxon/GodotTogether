@@ -6,7 +6,6 @@ signal disconnected
 signal connecting_finished(success: bool)
 signal connection_acknowledged
 signal auth_succeed
-signal file_received(path: String)
 
 var client_peer = ENetMultiplayerPeer.new()
 
