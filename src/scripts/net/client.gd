@@ -59,7 +59,17 @@ func _connected() -> void:
 	print("Connected, your ID is: %s" % multiplayer.get_unique_id())
 	main.button.set_session_icon(GDTMenuButton.ICON_CLIENT)
 
-	await get_tree().physics_frame
+	var tree = get_tree()
+	
+	await tree.physics_frame
+	await tree.physics_frame
+	
+	if not is_active():
+		push_warning("Peer does not report connectivity. Waiting before auth.")
+		
+		while not is_active():
+			await tree.physics_frame
+	
 	send_join_data()
 
 func _disconnected() -> void:
