@@ -106,6 +106,10 @@ func _connecting_finished(success: bool) -> void:
 		main.session_start()
 
 func _handle_connecting() -> void:
+	if not current_join_data:
+		GDTUtils.printerr_stack("current_join_data is null")
+		return
+	
 	var success = MultiplayerPeer.ConnectionStatus.CONNECTION_CONNECTED
 
 	var status = -1
@@ -183,7 +187,7 @@ func leave_with_error(reason := GDTUser.DisconnectReason.UNKNOWN) -> void:
 	main.close_connection()
 	_disconnected()
 
-func join_enet(ip: String, port: int, data: GDTJoinData = null) -> int:
+func join_enet(ip: String, port: int) -> int:
 	main.prepare_session()
 	reset()
 	
@@ -191,8 +195,7 @@ func join_enet(ip: String, port: int, data: GDTJoinData = null) -> int:
 	if err: return err
 
 	print("Connecting to %s:%s..." % [ip, port])
-
-	current_join_data = data
+	
 	multiplayer.multiplayer_peer = client_peer
 	
 	_handle_connecting()
