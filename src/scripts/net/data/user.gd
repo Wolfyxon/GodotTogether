@@ -23,10 +23,11 @@ enum DisconnectReason {
 	ADDRESS_IN_USE,
 	RPC_CHECKSUM_MISMATCH,
 	INVALID,
+	TIMEOUT,
 	
 	# Can reorder. Not yet released
-	
-	TIMEOUT
+	USERNAME_TOO_LONG,
+	USERNAME_EMPTY
 }
 
 var id: int = -1
@@ -256,6 +257,10 @@ static func disconnect_reason_to_string(reason: DisconnectReason) -> String:
 			return "RPC checksum mismatch. You and the host are running different versions of the plugin."
 		DisconnectReason.INVALID:
 			return "Your client sent invalid data to the server"
+		DisconnectReason.USERNAME_TOO_LONG:
+			return "Your username is too long"
+		DisconnectReason.USERNAME_EMPTY:
+			return "Your username is empty"
 	
 	return "Disconnected. Unknown status: %s" % reason
 

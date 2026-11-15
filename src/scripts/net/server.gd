@@ -301,6 +301,19 @@ func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 		user.kick(GDTUser.DisconnectReason.RPC_CHECKSUM_MISMATCH)
 		return
 	
+	var username_err = GDTValidator.validate_username(data.username)
+	
+	if username_err != GDTValidator.TextError.OK:
+		
+		if username_err == GDTValidator.TextError.TOO_LONG:
+			user.kick(GDTUser.DisconnectReason.USERNAME_TOO_LONG)
+		elif username_err == GDTValidator.TextError.EMPTY:
+			user.kick(GDTUser.DisconnectReason.USERNAME_EMPTY)
+		else:
+			user.kick(GDTUser.DisconnectReason.INVALID)
+		
+		return
+	
 	user.name = data.username
 	
 	if main.get_settings().get_setting("server/require_approval"):
