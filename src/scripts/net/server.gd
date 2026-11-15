@@ -54,7 +54,7 @@ func _peer_connected(id: int) -> void:
 	var user = GDTUser.new(id, peer, main)
 	var ip = user.get_address()
 	
-	print("New connection from %s ID: %d" % [peer.get_remote_address(), id])
+	print("New connection from %s ID: %d" % [ip, id])
 	
 	if get_users_with_address(ip) and not main.get_settings().get_setting("server/allow_multiple_users_from_same_address"):
 		user.kick(GDTUser.DisconnectReason.ADDRESS_IN_USE)
