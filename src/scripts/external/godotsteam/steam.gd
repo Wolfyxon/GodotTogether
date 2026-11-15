@@ -130,7 +130,7 @@ func _join_requested(lobby_id: int, _friend_id: int) -> void:
 
 func _lobby_joined(lobby: int, permissions: int, locked: bool, response: int) -> void:
 	print(
-		"[GodotTogether:Steam] Lobby joined %s perms %s locked %s res %s" % 
+		"[GodotTogether:Steam] Lobby join result %s perms %s locked %s res %s" % 
 		[lobby, permissions, locked, response]
 	)
 
@@ -243,6 +243,10 @@ func join_lobby_async(lobby_id: int) -> JoinResult:
 		GDTUtils.printerr_stack("Attempt to join lobby when Steam doesn't exist")  
 		return JoinResult.NONE
 	
+	if lobby_id == 0:
+		GDTUtils.printerr_stack("Invalid lobby id: %s" % lobby_id)
+		return JoinResult.ERROR
+	
 	print("Joining lobby %s" % lobby_id)
 	
 	steam.joinLobby.call_deferred(lobby_id)
@@ -310,6 +314,8 @@ func get_friend_lobbies() -> Array:
 		
 		var lobby_id = game_info["lobby"]
 		if typeof(lobby_id) != TYPE_INT: continue
+		
+		if lobby_id == 0: continue
 		
 		res.append({
 			"user_id": id,
