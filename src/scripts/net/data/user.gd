@@ -184,22 +184,40 @@ func is_peer_connected(truly_connected := false) -> bool:
 		return true
 	
 	if peer is ENetPacketPeer:
-		var state = peer.get_state()
-		
-		if truly_connected:
-			return state != ENetPacketPeer.STATE_DISCONNECTED
-
-		var dis = [
-			ENetPacketPeer.STATE_DISCONNECTED,
-			ENetPacketPeer.STATE_DISCONNECT_LATER,
-			ENetPacketPeer.STATE_ACKNOWLEDGING_DISCONNECT
-		]
-		
-		return not state in dis
+		return _is_enet_connected(truly_connected)
+	if is_steam():
+		return _is_steam_connected()
 	else:
 		GDTUtils.printerr_stack("No way to tell if peer is connected: %s" % peer.get_class())
 	
 	return false
+
+func is_steam() -> bool:
+	return peer.get_class() == "SteamPacketPeer"
+
+func _is_enet_connected(truly_connected := false) -> bool:
+	var state = peer.get_state()
+	
+	if truly_connected:
+		return state != ENetPacketPeer.STATE_DISCONNECTED
+
+	var dis = [
+		ENetPacketPeer.STATE_DISCONNECTED,
+		ENetPacketPeer.STATE_DISCONNECT_LATER,
+		ENetPacketPeer.STATE_ACKNOWLEDGING_DISCONNECT
+	]
+	
+	return not state in dis
+
+func _is_steam_connected(_truly_connected := false) -> bool:
+	var state = peer.get_state()
+	
+	return state in [
+		peer.PeerState.STATE_CONNECTED,
+		peer.PeerState.STATE_CONNECTING,
+		peer.PeerState.STATE_FINDING_ROUTE
+	]
+
 func is_local() -> bool:
 	if not main:
 		GDTUtils.printerr_stack("Unable to check if user is local. main is null")
