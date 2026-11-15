@@ -107,6 +107,8 @@ func get_address() -> String:
 			return _last_address
 		
 		_last_address = normalize_address(res)
+	elif peer.get_class() == "SteamPacketPeer":
+		return "<steam>"
 	else:
 		_last_address = "<unknown>"
 	
