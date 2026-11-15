@@ -149,6 +149,7 @@ func create_peer() -> MultiplayerPeer:
 	return peer
 
 func setup() -> SetupStatus:
+	setup_project_settings()
 	last_status = setup_steam_api()
 	
 	if last_status == SetupStatus.OK:
@@ -170,6 +171,17 @@ func setup_signals() -> void:
 		steam.join_requested: _join_requested,
 		steam.lobby_joined: _lobby_joined
 	})
+
+func setup_project_settings() -> void:
+	const CHANNELS_PATH = "steam/multiplayer_peer/max_channels"
+	
+	var channels = ProjectSettings.get_setting(CHANNELS_PATH)
+	
+	if (
+		not typeof(channels) in [TYPE_INT, TYPE_FLOAT] or
+		channels < GDTDual.NetChannel.size()
+	):
+		ProjectSettings.set_setting(CHANNELS_PATH, GDTDual.NetChannel.size())
 
 func setup_steam_api() -> SetupStatus:
 	if not is_installed_enabled(): 
