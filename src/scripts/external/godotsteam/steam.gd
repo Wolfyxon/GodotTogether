@@ -137,7 +137,7 @@ func _lobby_joined(lobby: int, permissions: int, locked: bool, response: int) ->
 func leave_lobby():
 	var steam = get_singleton()
 	
-	if current_lobby_id != 0:
+	if steam and current_lobby_id != 0:
 		steam.leaveLobby(current_lobby_id)
 		current_lobby_id = 0
 
