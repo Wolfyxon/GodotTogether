@@ -137,7 +137,15 @@ func close_connection() -> void:
 
 func validate_s2c(can_be_local := false) -> bool:
 	if not is_active() and not can_be_local:
-		GDTUtils.printerr_stack("Attempt to call server to client function when client isn't active")
+		var state_str = "<no peer>"
+		
+		if client_peer:
+			state_str = client_peer.get_connection_status()
+		
+		GDTUtils.printerr_stack(
+			"Attempt to call server to client function when client isn't active. State: %s" % 
+			state_str
+		)
 		return false
 	
 	var id = multiplayer.get_remote_sender_id()
