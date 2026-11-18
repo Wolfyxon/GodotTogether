@@ -120,6 +120,22 @@ func _on_btn_alert_spam_pressed() -> void:
 	for i in 1000:
 		main.get_gui().alert(str(i))
 
+func _on_btn_progress_pressed() -> void:
+	var prog = main.gui.progress()
+	prog.set_max(100)
+	
+	var tree = get_tree()
+	
+	for i in 100 + 1:
+		prog.set_value(i)
+		
+		await tree.create_timer(0.05).timeout
+	
+	await tree.create_timer(1).timeout
+	
+	if prog and prog.is_inside_tree():
+		printerr("Progress window still active. Deleting.")
+		prog.queue_free()
 
 func _on_btn_test_chunk_tool_script_pressed() -> void:
 	# Decrease CHUNK_SIZE before using!

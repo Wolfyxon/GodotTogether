@@ -49,7 +49,7 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 91
+scroll_vertical = 406
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -457,11 +457,9 @@ text = "Force send alive ping"
 
 [node name="tests" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1503605208]
 layout_mode = 2
-folded = true
 title = "Tests"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/tests" unique_id=1246388436]
-visible = false
 layout_mode = 2
 
 [node name="btnRunUnitTests" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=347522384]
@@ -486,6 +484,10 @@ autowrap_mode = 3
 [node name="btnAlertSpam" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=563898447]
 layout_mode = 2
 text = "Test alert spam"
+
+[node name="btnProgress" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=390447448]
+layout_mode = 2
+text = "Test progress popup"
 
 [node name="btnWriteTest" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=307147208]
 layout_mode = 2
@@ -661,6 +663,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/net/vbox/btnPing" to="main/scroll/vbox/net/vbox" method="_on_btn_ping_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDisclaimer" to="." method="_on_btn_disclaimer_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnAlertSpam" to="." method="_on_btn_alert_spam_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnProgress" to="." method="_on_btn_progress_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnWriteTest" to="." method="_on_btn_write_test_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnScriptUpdateTest" to="." method="_on_btn_script_update_test_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnTestChunkToolScript" to="." method="_on_btn_test_chunk_tool_script_pressed"]
