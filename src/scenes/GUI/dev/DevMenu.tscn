@@ -585,7 +585,7 @@ text = "Setup status: unknown"
 
 [node name="username" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=1559317757]
 layout_mode = 2
-text = "Username: error"
+text = "Username: <steam not started>"
 
 [node name="lobbyId" type="Label" parent="main/scroll/vbox/steam/vbox" unique_id=2028681079]
 layout_mode = 2
