@@ -9,7 +9,7 @@ var gui: GodotTogetherGUI
 @onready var version_warning = $topBar/versionWarning
 
 @onready var steam_setup = $steamSetup
-@onready var steam_lobbies = $sessionInit/start/join/steam/lobbies/lobbyVbox
+@onready var steam_lobbies = $sessionInit/start/join/steam/lobbies/lobbiesVbox
 
 @onready var con_method_input = $sessionInit/pre/method/dropdown
 

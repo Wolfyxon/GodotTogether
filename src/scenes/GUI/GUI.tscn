@@ -59,10 +59,10 @@ script = ExtResource("2_dm08s")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = 18.0
-offset_right = -18.0
-offset_bottom = -18.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 49.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
@@ -394,30 +394,30 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="lobbyVbox" type="VBoxContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies" unique_id=1714391615]
+[node name="lobbiesVbox" type="VBoxContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies" unique_id=1714391615]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("12_1f85p")
 
-[node name="friend" type="PanelContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox" unique_id=1269911786]
+[node name="friend" type="PanelContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbiesVbox" unique_id=1269911786]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7jnq7")
 
-[node name="hbox" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend" unique_id=1120927288]
+[node name="hbox" type="HBoxContainer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbiesVbox/friend" unique_id=1120927288]
 layout_mode = 2
 
-[node name="avatar" type="TextureRect" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend/hbox" unique_id=2000254199]
+[node name="avatar" type="TextureRect" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbiesVbox/friend/hbox" unique_id=2000254199]
 visible = false
 layout_mode = 2
 expand_mode = 2
 
-[node name="username" type="Label" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend/hbox" unique_id=180021323]
+[node name="username" type="Label" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbiesVbox/friend/hbox" unique_id=180021323]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Username"
 
-[node name="btnJoin" type="Button" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbyVbox/friend/hbox" unique_id=1420314623]
+[node name="btnJoin" type="Button" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbiesVbox/friend/hbox" unique_id=1420314623]
 layout_mode = 2
 text = "Join"
 
@@ -885,10 +885,10 @@ autostart = true
 
 [node name="disclaimer" type="VBoxContainer" parent="mainMenu" unique_id=997426570]
 visible = false
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 952.0
-offset_bottom = 582.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("12_tagic")
 
 [node name="header" type="Label" parent="mainMenu/disclaimer" unique_id=2122190817]
@@ -1048,10 +1048,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = 18.0
-offset_right = -18.0
-offset_bottom = -18.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -1115,10 +1115,10 @@ icon = ExtResource("17_u8ku5")
 
 [node name="settingsError" type="VBoxContainer" parent="mainMenu" unique_id=536486298]
 visible = false
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 952.0
-offset_bottom = 582.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 945.0
+offset_bottom = 575.0
 script = ExtResource("14_a4cyb")
 
 [node name="header" type="Label" parent="mainMenu/settingsError" unique_id=258996290]
@@ -1189,10 +1189,10 @@ size = Vector2i(750, 500)
 borderless = false
 
 [node name="main" type="VBoxContainer" parent="mainMenu/about" unique_id=2001600492]
-offset_left = 15.0
-offset_top = 15.0
-offset_right = 735.0
-offset_bottom = 485.0
+offset_left = 21.0
+offset_top = 21.0
+offset_right = 729.0
+offset_bottom = 479.0
 alignment = 1
 
 [node name="scroll" type="ScrollContainer" parent="mainMenu/about/main" unique_id=858069687]
