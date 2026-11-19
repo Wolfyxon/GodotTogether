@@ -49,7 +49,7 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 406
+scroll_vertical = 651
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -457,9 +457,11 @@ text = "Force send alive ping"
 
 [node name="tests" type="FoldableContainer" parent="main/scroll/vbox" unique_id=1503605208]
 layout_mode = 2
+folded = true
 title = "Tests"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/tests" unique_id=1246388436]
+visible = false
 layout_mode = 2
 
 [node name="btnRunUnitTests" type="Button" parent="main/scroll/vbox/tests/vbox" unique_id=347522384]
@@ -559,11 +561,9 @@ text = "Test error spam"
 
 [node name="steam" type="FoldableContainer" parent="main/scroll/vbox" unique_id=256812078]
 layout_mode = 2
-folded = true
 title = "Steam addon"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/steam" unique_id=183063328]
-visible = false
 layout_mode = 2
 script = ExtResource("10_51x1g")
 
@@ -604,6 +604,10 @@ text = "Show lobbies of other apps (use only for testing the list)"
 
 [node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/steam/vbox" unique_id=1524208698]
 layout_mode = 2
+
+[node name="btnStart" type="Button" parent="main/scroll/vbox/steam/vbox" unique_id=2009957734]
+layout_mode = 2
+text = "Start steam"
 
 [node name="btnDownloadInstall" type="Button" parent="main/scroll/vbox/steam/vbox" unique_id=339366657]
 layout_mode = 2
@@ -670,6 +674,7 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnDeath" to="." method="_on_btn_death_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/tests/vbox/btnCaret" to="." method="_on_btn_caret_pressed"]
 [connection signal="visibility_changed" from="main/scroll/vbox/steam/vbox" to="main/scroll/vbox/steam/vbox" method="_on_visibility_changed"]
+[connection signal="pressed" from="main/scroll/vbox/steam/vbox/btnStart" to="main/scroll/vbox/steam/vbox" method="_on_btn_start_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/steam/vbox/btnDownloadInstall" to="main/scroll/vbox/steam/vbox" method="_on_btn_download_install_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/steam/vbox/btnInstallExisting" to="main/scroll/vbox/steam/vbox" method="_on_btn_install_existing_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]

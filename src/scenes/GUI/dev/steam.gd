@@ -32,6 +32,15 @@ func _process(_delta: float) -> void:
 	else:
 		$userCount.text = "Users in lobby: <no lobby>"
 
+func _on_btn_start_pressed() -> void:
+	var status = main.steam.setup()
+	var status_str = GDTSteam.setup_status_to_string(status)
+	
+	if status == GDTSteam.SetupStatus.OK:
+		_on_visibility_changed()
+	
+	main.gui.alert(status_str)
+	
 func _on_btn_download_install_pressed() -> void:
 	if not await main.get_gui().confirm("Download and install GodotSteam?"):
 		return
