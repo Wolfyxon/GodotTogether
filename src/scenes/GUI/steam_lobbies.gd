@@ -3,6 +3,7 @@ extends VBoxContainer
 
 signal lobby_join_request
 
+@onready var no_lobbies = $noLobbies
 @onready var templ = $friend
 
 var main: GodotTogether = null
@@ -30,8 +31,12 @@ func load_lobbies() -> void:
 		
 		item.visible = true
 		add_child(item)
+		
+		no_lobbies.hide()
 
 func clear() -> void:
 	for i in get_children():
-		if i != templ and i is Control:
+		if i != templ and i != no_lobbies and i is Control:
 			i.queue_free()
+			
+	no_lobbies.show()
