@@ -427,6 +427,10 @@ text = "Username"
 layout_mode = 2
 text = "Join"
 
+[node name="refreshTimer" type="Timer" parent="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbiesVbox" unique_id=1849386925]
+wait_time = 2.0
+autostart = true
+
 [node name="HSeparator" type="HSeparator" parent="mainMenu/main/sessionInit/start/join/steam" unique_id=95858260]
 layout_mode = 2
 
@@ -1278,6 +1282,7 @@ autostart = true
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main/sessionInit/start/host" method="show"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/host/start" to="mainMenu/main" method="_host"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/join/enet/join" to="mainMenu/main" method="_join_enet"]
+[connection signal="timeout" from="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbiesVbox/refreshTimer" to="mainMenu/main/sessionInit/start/join/steam/lobbies/lobbiesVbox" method="_on_refresh_timer_timeout"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/start/cancel" to="mainMenu/main" method="main_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/cover/vbox/btnCancel" to="mainMenu/main" method="_on_btn_cancel_pressed"]
 [connection signal="pressed" from="mainMenu/main/session/top/end" to="mainMenu/main" method="end_session"]

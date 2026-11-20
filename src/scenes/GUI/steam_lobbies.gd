@@ -40,3 +40,9 @@ func clear() -> void:
 			i.queue_free()
 			
 	no_lobbies.show()
+
+func _on_refresh_timer_timeout() -> void:
+	if not is_visible_in_tree(): return
+	if not main: return
+	
+	load_lobbies()
