@@ -224,7 +224,7 @@ icon = ExtResource("2_847fc")
 [node name="lblUpdateDisclaimer" type="Label" parent="main/scroll/vbox" unique_id=814006868]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-text = "GodotTogether will never install anything without your approval."
+text = "GodotTogether will never install anything without your consent."
 vertical_alignment = 2
 
 [node name="HSeparator5" type="HSeparator" parent="main/scroll/vbox" unique_id=1492413944]
