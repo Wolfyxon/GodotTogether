@@ -49,7 +49,7 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 100
+scroll_vertical = 499
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -652,6 +652,18 @@ text = "Last check:"
 [node name="latestVersion" type="Label" parent="main/scroll/vbox/updates/vbox" unique_id=1002145272]
 layout_mode = 2
 text = "Latest version:"
+
+[node name="url" type="HBoxContainer" parent="main/scroll/vbox/updates/vbox" unique_id=633849296]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="main/scroll/vbox/updates/vbox/url" unique_id=1191871593]
+layout_mode = 2
+text = "Download URL:"
+
+[node name="value" type="LineEdit" parent="main/scroll/vbox/updates/vbox/url" unique_id=1755163484]
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
 
 [node name="btnClearUpdateData" type="Button" parent="main/scroll/vbox/updates/vbox" unique_id=1378547103]
 layout_mode = 2

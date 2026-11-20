@@ -26,11 +26,8 @@ func load_check_data() -> void:
 		last_check_str = Time.get_datetime_string_from_unix_time(last_check)
 	
 	$lastCheck.text = "Last check time: %s" % last_check_str
-	
-	if res.is_err():
-		return
-		
 	$latestVersion.text = "Latest version: %s" % res.version
+	$url/value.text = res.download_url
 
 func _on_btn_sign_pressed() -> void:
 	var build_hash = FileAccess.get_sha256(BUILD_PATH)
