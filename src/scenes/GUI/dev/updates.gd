@@ -78,4 +78,5 @@ func _on_btn_verify_pressed() -> void:
 
 func _on_btn_clear_update_data_pressed() -> void:
 	main.get_settings().clear_update_cache()
+	main.updater.check_cached()
 	load_check_data()
