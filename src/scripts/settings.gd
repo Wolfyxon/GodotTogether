@@ -266,12 +266,19 @@ func get_update_cache() -> GDTUpdateCheckResult:
 	return res
 
 func get_setting(path: String):
+	if not setting_exists(path):
+		GDTUtils.printerr_stack("Unknown setting: %s" % path)
+		return
+	
 	return GDTUtils.get_nested(data, path)
 
 func set_setting(path: String, value) -> void:
 	if has_error():
 		GDTUtils.printerr_stack("Not updating when settings loaded with errors: %s" % path)
 		return
+	
+	if not setting_exists(path):
+		GDTUtils.printerr_stack("Unknown setting: '%s'. Updating anyway" % path)
 	
 	update_mutex.lock()
 	
@@ -286,6 +293,9 @@ func set_setting(path: String, value) -> void:
 	if is_logging_enabled():
 		print("Setting changed: %s: %s" % [path, value])
 
+func setting_exists(path: String) -> bool:
+	return GDTUtils.has_nested(_DEFAULT_DATA, path)
+
 func _set_setting_reverse(value, path: String) -> void:
 	set_setting(path, value)
 
@@ -295,6 +305,10 @@ func make_setting_control(
 	format := "", 
 	callback: Callable = _none
 ) -> void:
+	if not setting_exists(path):
+		GDTUtils.printerr_stack("Unknown setting '%s'. Node: %s" % [path, node])
+		return
+	
 	var sig = null
 	
 	if node is OptionButton:
