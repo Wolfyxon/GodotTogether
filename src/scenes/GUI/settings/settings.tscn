@@ -18,10 +18,10 @@ borderless = false
 script = ExtResource("1_b5wo4")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1100841752]
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 782.0
-offset_bottom = 682.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 775.0
+offset_bottom = 675.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=1872551780]
 layout_mode = 2

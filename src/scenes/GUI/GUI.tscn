@@ -61,7 +61,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 25.0
 offset_top = 25.0
-offset_right = 49.0
+offset_right = -25.0
 offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -86,6 +86,7 @@ icon = ExtResource("15_bvn1h")
 flat = true
 
 [node name="about" type="Button" parent="mainMenu/main/topBar" unique_id=1100326616]
+visible = false
 layout_mode = 2
 text = "About"
 icon = ExtResource("3_gc6ii")

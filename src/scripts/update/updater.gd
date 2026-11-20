@@ -147,11 +147,14 @@ func get_current_version() -> String:
 func is_time_to_check() -> bool:
 	var settings = main.get_settings()
 	
-	var last_check = settings.get_setting(LAST_CHECK_SETTING_PATH)
+	var last_check = get_last_check_time()
 	var interval = settings.get_setting("update/check_interval_hours") * 60 * 60
 	var now = Time.get_unix_time_from_system()
 	
 	return now > last_check + interval
+
+func get_last_check_time() -> float:
+	return main.get_settings().get_setting(LAST_CHECK_SETTING_PATH)
 
 func validate_github_asset(asset: Dictionary) -> bool:
 	if not "name" in asset:

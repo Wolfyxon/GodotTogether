@@ -1,11 +1,36 @@
 @tool
 extends VBoxContainer
-class_name GDTReleaseSigner
 
-var main: GodotTogether
+var main: GodotTogether = null
 
 const BUILD_PATH = "res://addons/GodotTogether/build/GodotTogether.zip"
 const SIG_PATH = "res://addons/GodotTogether/build/release.gdsig"
+
+func _on_visibility_changed() -> void:
+	if not main: return
+	
+	load_check_data()
+
+func load_check_data() -> void:
+	var res = main.updater.latest_result
+	if not res: return
+	
+	var status_str = GDTUpdateCheckResult.ResultType.keys()[res.type]
+	$checkStatus.text = "Check status: %s" % status_str
+	$error.text = "Error: %s" % res.error
+	
+	var last_check = main.updater.get_last_check_time()
+	var last_check_str = "never"
+	
+	if last_check > 0:
+		last_check_str = Time.get_datetime_string_from_unix_time(last_check)
+	
+	$lastCheck.text = "Last check time: %s" % last_check_str
+	
+	if res.is_err():
+		return
+		
+	$latestVersion.text = "Latest version: %s" % res.version
 
 func _on_btn_sign_pressed() -> void:
 	var build_hash = FileAccess.get_sha256(BUILD_PATH)
@@ -52,3 +77,8 @@ func _on_btn_verify_pressed() -> void:
 		main.get_gui().alert("OK. Signature is valid")
 	else:
 		main.get_gui().alert("ERROR: Signature is invalid")
+
+
+func _on_btn_clear_update_data_pressed() -> void:
+	main.get_settings().clear_update_cache()
+	load_check_data()

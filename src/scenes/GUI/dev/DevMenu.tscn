@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bnsgm8yrm82ne" path="res://addons/GodotTogether/src/scenes/GUI/dev/dev_menu.gd" id="1_2xnq5"]
 [ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="1_o4f5c"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="2_qe0lv"]
-[ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/update_signing.gd" id="2_usb8t"]
+[ext_resource type="Script" uid="uid://cubiwqtmscy3w" path="res://addons/GodotTogether/src/scenes/GUI/dev/updates.gd" id="2_usb8t"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="3_kl0hy"]
 [ext_resource type="Script" uid="uid://dy3fvjwl5pen5" path="res://addons/GodotTogether/src/scenes/GUI/dev/editor_inspector.gd" id="4_37caa"]
 [ext_resource type="Texture2D" uid="uid://brg88hl5cx0q5" path="res://addons/GodotTogether/src/img/check.svg" id="5_6rdoo"]
@@ -49,7 +49,7 @@ offset_bottom = 500.0
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
 size_flags_vertical = 3
-scroll_vertical = 651
+scroll_vertical = 100
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll" unique_id=1419736378]
 layout_mode = 2
@@ -561,9 +561,11 @@ text = "Test error spam"
 
 [node name="steam" type="FoldableContainer" parent="main/scroll/vbox" unique_id=256812078]
 layout_mode = 2
+folded = true
 title = "Steam addon"
 
 [node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/steam" unique_id=183063328]
+visible = false
 layout_mode = 2
 script = ExtResource("10_51x1g")
 
@@ -617,28 +619,62 @@ text = "Downlod and install addon"
 layout_mode = 2
 text = "Install existing addon download"
 
-[node name="updateSigningContainer" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
+[node name="updates" type="FoldableContainer" parent="main/scroll/vbox" unique_id=83351936]
 layout_mode = 2
 size_flags_horizontal = 3
-folded = true
-title = "Update signing"
+title = "Updates"
 
-[node name="updateSigning" type="VBoxContainer" parent="main/scroll/vbox/updateSigningContainer" unique_id=1835030861]
-visible = false
+[node name="vbox" type="VBoxContainer" parent="main/scroll/vbox/updates" unique_id=1835030861]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("2_usb8t")
 
-[node name="keyInput" type="TextEdit" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=314991037]
+[node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/updates/vbox" unique_id=1764135780]
+layout_mode = 2
+
+[node name="lblCheckData" type="Label" parent="main/scroll/vbox/updates/vbox" unique_id=1155230558]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Update check data"
+
+[node name="checkStatus" type="Label" parent="main/scroll/vbox/updates/vbox" unique_id=1987014935]
+layout_mode = 2
+text = "Check status: <not checked>"
+
+[node name="error" type="Label" parent="main/scroll/vbox/updates/vbox" unique_id=1041286121]
+layout_mode = 2
+text = "Error:"
+
+[node name="lastCheck" type="Label" parent="main/scroll/vbox/updates/vbox" unique_id=225495866]
+layout_mode = 2
+text = "Last check:"
+
+[node name="latestVersion" type="Label" parent="main/scroll/vbox/updates/vbox" unique_id=1002145272]
+layout_mode = 2
+text = "Latest version:"
+
+[node name="btnClearUpdateData" type="Button" parent="main/scroll/vbox/updates/vbox" unique_id=1378547103]
+layout_mode = 2
+text = "Clear cached data"
+
+[node name="HSeparator2" type="HSeparator" parent="main/scroll/vbox/updates/vbox" unique_id=1951423531]
+layout_mode = 2
+
+[node name="lblSign" type="Label" parent="main/scroll/vbox/updates/vbox" unique_id=234605363]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Signing"
+
+[node name="keyInput" type="TextEdit" parent="main/scroll/vbox/updates/vbox" unique_id=314991037]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 placeholder_text = "Paste private key block"
 
-[node name="btnSign" type="Button" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=918739488]
+[node name="btnSign" type="Button" parent="main/scroll/vbox/updates/vbox" unique_id=918739488]
 layout_mode = 2
 text = "Sign build"
 
-[node name="btnVerify" type="Button" parent="main/scroll/vbox/updateSigningContainer/updateSigning" unique_id=1836796620]
+[node name="btnVerify" type="Button" parent="main/scroll/vbox/updates/vbox" unique_id=1836796620]
 layout_mode = 2
 text = "Verify last signature"
 
@@ -677,6 +713,8 @@ icon = ExtResource("2_qe0lv")
 [connection signal="pressed" from="main/scroll/vbox/steam/vbox/btnStart" to="main/scroll/vbox/steam/vbox" method="_on_btn_start_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/steam/vbox/btnDownloadInstall" to="main/scroll/vbox/steam/vbox" method="_on_btn_download_install_pressed"]
 [connection signal="pressed" from="main/scroll/vbox/steam/vbox/btnInstallExisting" to="main/scroll/vbox/steam/vbox" method="_on_btn_install_existing_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnSign" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_sign_pressed"]
-[connection signal="pressed" from="main/scroll/vbox/updateSigningContainer/updateSigning/btnVerify" to="main/scroll/vbox/updateSigningContainer/updateSigning" method="_on_btn_verify_pressed"]
+[connection signal="visibility_changed" from="main/scroll/vbox/updates/vbox" to="main/scroll/vbox/updates/vbox" method="_on_visibility_changed"]
+[connection signal="pressed" from="main/scroll/vbox/updates/vbox/btnClearUpdateData" to="main/scroll/vbox/updates/vbox" method="_on_btn_clear_update_data_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/updates/vbox/btnSign" to="main/scroll/vbox/updates/vbox" method="_on_btn_sign_pressed"]
+[connection signal="pressed" from="main/scroll/vbox/updates/vbox/btnVerify" to="main/scroll/vbox/updates/vbox" method="_on_btn_verify_pressed"]
 [connection signal="pressed" from="main/btnClose" to="." method="hide"]
