@@ -140,11 +140,12 @@ func leave_lobby():
 	if steam and current_lobby_id != 0:
 		steam.leaveLobby(current_lobby_id)
 		current_lobby_id = 0
+		
+	if peer:
+		peer.close()
+		peer = null
 
 func create_peer() -> MultiplayerPeer:
-	if peer:
-		return peer
-	
 	peer = ClassDB.instantiate("SteamMultiplayerPeer")
 	return peer
 
@@ -154,10 +155,6 @@ func setup() -> SetupStatus:
 	
 	if last_status == SetupStatus.OK:
 		setup_signals()
-
-	if not create_peer():
-		printerr("Unable to create SteamMultiplayerPeer peer")
-		return SetupStatus.INTERNAL_ERROR
 	
 	return last_status
 
@@ -225,6 +222,10 @@ func create_lobby_async(max_clients := 10) -> Result:
 		GDTUtils.printerr_stack("Attempt to create lobby when Steam doesn't exist") 
 		return Result.NONE
 	
+	if not create_peer():
+		GDTUtils.printerr_stack("Unable to create SteamMultiplayerPeer peer")
+		return Result.FAIL
+	
 	var start = func():
 		await get_tree().process_frame
 		steam.createLobby(steam.LOBBY_TYPE_FRIENDS_ONLY, max_clients)
@@ -257,6 +258,10 @@ func join_lobby_async(lobby_id: int) -> JoinResult:
 	
 	if lobby_id == 0:
 		GDTUtils.printerr_stack("Invalid lobby id: %s" % lobby_id)
+		return JoinResult.ERROR
+	
+	if not create_peer():
+		GDTUtils.printerr_stack("Unable to create SteamMultiplayerPeer peer")
 		return JoinResult.ERROR
 	
 	print("Joining lobby %s" % lobby_id)
