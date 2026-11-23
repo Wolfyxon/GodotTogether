@@ -63,12 +63,15 @@ func _connected() -> void:
 	
 	await tree.physics_frame
 	await tree.physics_frame
+	await tree.physics_frame
 	
 	if not is_active():
 		push_warning("Peer does not report connectivity. Waiting before auth.")
 		
 		while not is_active():
 			await tree.physics_frame
+		
+		print("Waiting for peer activity complete")
 	
 	send_join_data()
 
