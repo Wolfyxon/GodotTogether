@@ -225,6 +225,7 @@ func send_join_data(obj: GDTJoinData = null) -> void:
 	
 	var dict = obj.to_dict()
 	
+	print("Sending join data")
 	main.server._c2s_receive_join_data.rpc_id(1, dict)
 
 func check_disk_space_for_downloads(data: GDTServerAuthResponse) -> bool:
