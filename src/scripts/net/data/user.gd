@@ -216,9 +216,9 @@ func _is_steam_connected(_truly_connected := false) -> bool:
 	var state = peer.get_state()
 	
 	return state in [
-		peer.PeerState.STATE_CONNECTED,
-		peer.PeerState.STATE_CONNECTING,
-		peer.PeerState.STATE_FINDING_ROUTE
+		peer.STATE_CONNECTED,
+		peer.STATE_CONNECTING,
+		peer.STATE_FINDING_ROUTE
 	]
 
 func is_local() -> bool:
