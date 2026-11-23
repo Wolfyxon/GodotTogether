@@ -258,6 +258,7 @@ func join_steam(lobby_id: int) -> void:
 		
 		main.gui.alert("Failed to establish connection in lobby.")
 		main.steam.leave_lobby()
+		return
 	
 	_handle_connecting()
 
