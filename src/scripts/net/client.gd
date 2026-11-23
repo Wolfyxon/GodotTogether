@@ -7,7 +7,7 @@ signal connecting_finished(success: bool)
 signal connection_acknowledged
 signal auth_succeed
 
-var client_peer = ENetMultiplayerPeer.new()
+var client_peer: MultiplayerPeer = null
 
 var current_join_data := GDTJoinData.new()
 var server_data: GDTServerAuthResponse = null
@@ -191,6 +191,8 @@ func leave_with_error(reason := GDTUser.DisconnectReason.UNKNOWN) -> void:
 	_disconnected()
 
 func join_enet(ip: String, port: int) -> int:
+	client_peer = ENetMultiplayerPeer.new()
+	
 	main.prepare_session()
 	reset()
 	
@@ -210,6 +212,8 @@ func join_steam_async(lobby_id: int) -> GDTSteam.JoinResult:
 	reset()
 	
 	var res = await main.steam.join_lobby_async(lobby_id)
+	
+	client_peer = main.steam.peer
 	
 	if res != GDTSteam.JoinResult.OK:
 		return res
