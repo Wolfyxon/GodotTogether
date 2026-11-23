@@ -170,15 +170,14 @@ func setup_signals() -> void:
 	})
 
 func setup_project_settings() -> void:
-	const CHANNELS_PATH = "steam/multiplayer_peer/max_channels"
+	var settings = get_settings_singletonn()
 	
-	var channels = ProjectSettings.get_setting(CHANNELS_PATH)
+	if not settings:
+		GDTUtils.printerr_stack("Steam settings singleton not available")
+		return
 	
-	if (
-		not typeof(channels) in [TYPE_INT, TYPE_FLOAT] or
-		channels < GDTDual.NetChannel.size()
-	):
-		ProjectSettings.set_setting(CHANNELS_PATH, GDTDual.NetChannel.size())
+	if settings.max_channels < GDTDual.NetChannel.size():
+		settings.max_channels = GDTDual.NetChannel.size()
 
 func setup_steam_api() -> SetupStatus:
 	if not is_installed_enabled(): 
@@ -311,6 +310,12 @@ func get_singleton() -> Object:
 		return
 	
 	return Engine.get_singleton("Steam")
+
+func get_settings_singletonn() -> Object:
+	if not is_installed_enabled(): 
+		return
+		
+	return Engine.get_singleton("SteamProjectSettings")
 
 func get_friend_lobbies() -> Array:
 	var res = []
