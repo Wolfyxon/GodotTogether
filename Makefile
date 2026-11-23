@@ -11,8 +11,6 @@ ESSENTIAL_ROOT_PATHS := src plugin.cfg .gitignore install_instructions.txt LICEN
 .PHONY: release build clean
 
 release: build
-	rm -f $(ZIP_PATH)
-	
 	cd $(BUILD_ROOT_DIR) && zip -r ../$(ZIP_PATH) $(BUILD_DIR_STRUCTURE)
 	
 	@echo ""
@@ -24,7 +22,7 @@ release: build
 	@echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	@echo ""
 
-build:
+build: clean
 	mkdir -p $(BUILD_FILES_DIR)
 	touch $(BUILD_ROOT_DIR)/.gdignore
 	
