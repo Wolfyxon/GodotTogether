@@ -176,8 +176,9 @@ func setup_project_settings() -> void:
 		GDTUtils.printerr_stack("Steam settings singleton not available")
 		return
 	
-	if settings.max_channels < GDTDual.NetChannel.size():
-		settings.max_channels = GDTDual.NetChannel.size()
+	if settings.max_channels < GDTDual.NetChannel.size() + 1:
+		settings.max_channels = GDTDual.NetChannel.size() + 1
+
 
 func setup_steam_api() -> SetupStatus:
 	if not is_installed_enabled(): 
