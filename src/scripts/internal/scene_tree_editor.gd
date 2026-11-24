@@ -104,7 +104,7 @@ func load_tree(root_node: Node, tree_root: TreeItem = null) -> void:
 	clear_tree(tree_root)
 	load_node_to_item(tree_root, root_node)
 	
-	for i in root_node.get_children():
+	for i in root_node.get_children(true):
 		var item = tree_root.create_child()
 		load_tree(i, item)
 
