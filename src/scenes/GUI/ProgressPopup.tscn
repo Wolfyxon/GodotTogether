@@ -18,7 +18,7 @@ script = ExtResource("1_jmpr0")
 offset_left = 9.0
 offset_top = 9.0
 offset_right = 391.0
-offset_bottom = 100.0
+offset_bottom = 66.0
 
 [node name="label" type="Label" parent="vbox" unique_id=270881616]
 layout_mode = 2

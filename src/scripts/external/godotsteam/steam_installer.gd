@@ -16,6 +16,8 @@ var main: GodotTogether = null
 var http = HTTPRequest.new()
 var zip = ZIPReader.new()
 
+var downalod_id = 0
+
 func _ready() -> void:
 	add_child(http)
 
@@ -23,6 +25,9 @@ func install() -> void:
 	var gui = main.get_gui()
 	
 	var download_err = await download()
+	
+	if download_err == "Cancelled":
+		return
 	
 	if download_err:
 		gui.alert(download_err, "Failed to download Steam addon")
@@ -69,8 +74,14 @@ func download() -> String:
 		prog.queue_free()
 		return "Failed to start request: %s" % error_string(init_err)
 	
+	var current_id = downalod_id + 1
+	downalod_id = current_id
+	
 	var res = await http.request_completed
 	var code = res[1]
+	
+	if downalod_id != current_id:
+		return "Cancelled"
 	
 	if code == 0:
 		return "No internet connection"

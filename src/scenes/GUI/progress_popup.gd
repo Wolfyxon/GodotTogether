@@ -42,10 +42,15 @@ func bind_property(object: Object, path: String) -> void:
 func bind_func(callable: Callable) -> void:
 	_bind_func = callable
 
-func bind_to_http_download(http: HTTPRequest) -> void:
+func bind_to_http_download(http: HTTPRequest, cancellable := true) -> void:
 	close_on_max = false
+	
 	set_max(http.get_body_size())
 	bind_func(http.get_downloaded_bytes)
+	
+	if cancellable:
+		add_cancel_button("Cancel")
+		canceled.connect(http.cancel_request)
 	
 	http.request_completed.connect(_http_complete)
 
