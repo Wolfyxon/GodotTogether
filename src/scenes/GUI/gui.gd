@@ -112,7 +112,14 @@ func open_menu() -> void:
 	window.checked_reflow()
 
 func progress(description := "Please wait...") -> GDTProgressPopup:
-	var popup = GDTProgressPopup.new(description)
+	var progress_window_scene = load("res://addons/GodotTogether/src/scenes/GUI/ProgressPopup.tscn")
+	
+	if not progress_window_scene:
+		GDTUtils.printerr_stack("Failed to load progress window scene")
+		return
+	
+	var popup = progress_window_scene.instantiate()
+	popup.description = description
 	
 	add_window(popup)
 	popup.popup_centered()

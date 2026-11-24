@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bb6cjqsbbe6jr"]
+
+[ext_resource type="Script" uid="uid://jgn0fxy7p54t" path="res://addons/GodotTogether/src/scenes/GUI/progress_popup.gd" id="1_jmpr0"]
+
+[node name="ProgressPopup" type="AcceptDialog" unique_id=1395561409]
+oversampling_override = 1.0
+title = "Please wait..."
+initial_position = 5
+size = Vector2i(400, 117)
+visible = true
+transient = false
+borderless = true
+always_on_top = true
+dialog_close_on_escape = false
+script = ExtResource("1_jmpr0")
+
+[node name="vbox" type="VBoxContainer" parent="." unique_id=1878151365]
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 391.0
+offset_bottom = 66.0
+
+[node name="label" type="Label" parent="vbox" unique_id=270881616]
+layout_mode = 2
+text = "Please wait..."
+horizontal_alignment = 1
+
+[node name="bar" type="ProgressBar" parent="vbox" unique_id=892748791]
+layout_mode = 2
