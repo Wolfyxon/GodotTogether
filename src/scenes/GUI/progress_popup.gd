@@ -1,38 +1,27 @@
-extends PopupPanel
+@tool
+extends AcceptDialog
 class_name GDTProgressPopup
 
-var bar: ProgressBar
+@onready var bar: ProgressBar = $vbox/bar
 
 var _bind_object: Object = null
 var _bind_property: String = ""
 var _bind_func: Callable
 
 var close_on_max = true
+var description = "Please wait..."
 
-func _init(description: String) -> void:
-	min_size = Vector2(500, 150)
-	size = min_size
-	exclusive = true
-	transient = true
-	always_on_top = true
-	borderless = false
+func _ready() -> void:
+	if self == EditorInterface.get_edited_scene_root():
+		return
 	
-	var vbox = VBoxContainer.new()
-	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	
-	var label = Label.new()
-	label.text = description
-	
-	bar = ProgressBar.new()
-	
-	vbox.add_child(label)
-	vbox.add_child(bar)
-	add_child(vbox)
-	
-	popup_hide.connect(_hidden)
+	get_ok_button().hide()
+	$vbox/label.text = description
 
 func _process(_delta: float) -> void:
+	if self == EditorInterface.get_edited_scene_root():
+		return
+	
 	if _bind_object and _bind_property:
 		set_value(_bind_object.get(_bind_property))
 	
