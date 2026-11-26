@@ -40,6 +40,8 @@ func _ready() -> void:
 			error_gui.gui = gui
 			error_gui.update()
 			error_gui.visible = true
+			
+		$background/snowflakes.visible = main.extras.is_christmas()
 
 func checked_reflow() -> void:
 	if triggered_reflows < 3:

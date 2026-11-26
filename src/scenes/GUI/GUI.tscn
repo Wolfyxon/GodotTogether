@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bca7vw5pjll6r" path="res://addons/GodotTogether/src/scenes/GUI/menu_window.gd" id="2_dm08s"]
 [ext_resource type="Script" uid="uid://5k773gkwomjn" path="res://addons/GodotTogether/src/scenes/GUI/menu.gd" id="3_1pnv7"]
 [ext_resource type="Texture2D" uid="uid://ud1hjg85kyy3" path="res://addons/GodotTogether/src/img/info.svg" id="3_gc6ii"]
+[ext_resource type="Texture2D" uid="uid://d3yi30pnfljim" path="res://addons/GodotTogether/src/img/snowflake.png" id="4_1f85p"]
 [ext_resource type="Texture2D" uid="uid://ca0d07y80h41v" path="res://addons/GodotTogether/src/img/play.svg" id="4_lrlm7"]
 [ext_resource type="Theme" uid="uid://cgfw88edsjlsh" path="res://addons/GodotTogether/src/theme.tres" id="5_dxbrh"]
 [ext_resource type="Texture2D" uid="uid://c8t20ydugw0ia" path="res://addons/GodotTogether/src/img/arrowLeft.svg" id="6_8e3fv"]
@@ -54,6 +55,35 @@ borderless = false
 min_size = Vector2i(500, 400)
 theme = ExtResource("5_dxbrh")
 script = ExtResource("2_dm08s")
+
+[node name="background" type="Control" parent="mainMenu" unique_id=95668004]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="snowflakes" type="TextureRect" parent="mainMenu/background" unique_id=1129055025]
+visible = false
+self_modulate = Color(1, 1, 1, 0.047058824)
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("4_1f85p")
+expand_mode = 1
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="main" type="VBoxContainer" parent="mainMenu" unique_id=1195862221]
 anchors_preset = 15

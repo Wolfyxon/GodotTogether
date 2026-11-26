@@ -10,6 +10,15 @@ func _ready() -> void:
 	if is_halloween():
 		start_halloween()
 
+func is_christmas() -> bool:
+	var date = Time.get_datetime_dict_from_system()
+	
+	return (
+		date["month"] == 12 and
+		date["day"] > 20 and
+		date["day"] < 30
+	)
+
 func is_halloween() -> bool:
 	var date = Time.get_datetime_dict_from_system()
 	
