@@ -41,10 +41,10 @@ theme = ExtResource("1_o4f5c")
 script = ExtResource("1_2xnq5")
 
 [node name="main" type="VBoxContainer" parent="." unique_id=1379330167]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 838.0
-offset_bottom = 788.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 825.0
+offset_bottom = 775.0
 
 [node name="scroll" type="ScrollContainer" parent="main" unique_id=790521226]
 layout_mode = 2
@@ -276,17 +276,23 @@ icon = ExtResource("6_ni5tw")
 icon_alignment = 2
 
 [node name="warning" type="Label" parent="main/scroll/vbox/inspector/vbox" unique_id=767575987]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 theme_type_variation = &"WarningLabel"
 text = "Avoid using this in important scenes as they could be affected by touching the node tree."
+autowrap_mode = 3
 
 [node name="codeHint" type="Label" parent="main/scroll/vbox/inspector/vbox" unique_id=1151034966]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "You can also use inspect_tree(node) in the code executor."
+autowrap_mode = 3
 
 [node name="closeHint" type="Label" parent="main/scroll/vbox/inspector/vbox" unique_id=1212317406]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "To undo loading the editor node tree, reload your scene by switching tabs or closing and reopening it."
+autowrap_mode = 3
 
 [node name="HSeparator" type="HSeparator" parent="main/scroll/vbox/inspector/vbox" unique_id=1894326370]
 layout_mode = 2
