@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://mqy1dbfo1wl2" path="res://addons/GodotTogether/src/scenes/Avatar3D/avatar_3d.gd" id="1_kun10"]
 [ext_resource type="Material" uid="uid://ddflrrq43ph57" path="res://addons/GodotTogether/src/scenes/Avatar3D/material.tres" id="2_gl4nl"]
+[ext_resource type="ArrayMesh" uid="uid://tncx8tan0dun" path="res://addons/GodotTogether/src/scenes/Avatar3D/accessories/xmashat/xmashat.obj" id="2_mcnwv"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_u7t51"]
 material = ExtResource("2_gl4nl")
@@ -15,6 +16,10 @@ height = 3.0
 
 [node name="Avatar3D" type="Node3D" unique_id=1108145093]
 script = ExtResource("1_kun10")
+
+[node name="xmasHat" type="MeshInstance3D" parent="." unique_id=103089207]
+transform = Transform3D(-0.13179807, 0, 0.099268675, 0, 0.165, 0, -0.099268675, 0, -0.13179807, -0.00020503998, 0.12990111, 0.008098826)
+mesh = ExtResource("2_mcnwv")
 
 [node name="model" type="Node3D" parent="." unique_id=1149882133]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

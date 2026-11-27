@@ -19,6 +19,8 @@ func _ready() -> void:
 	ui.visible = true
 	EditorInterface.get_editor_viewport_3d().add_child(ui)
 	
+	$xmasHat.visible = main.extras and main.extras.is_christmas()
+	
 func _exit_tree() -> void:
 	if not ui: return
 	ui.queue_free()
