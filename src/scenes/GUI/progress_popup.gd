@@ -82,11 +82,20 @@ func set_max(value: float) -> void:
 	
 	bar.max_value = value
 
+func get_max() -> float:
+	return bar.max_value
+
 func set_value(value: float) -> void:
 	bar.value = value
 	
 	if close_on_max and value >= bar.max_value:
 		queue_free()
+
+func add_value(value: float) -> void:
+	set_value(get_value() + value)
+
+func get_value() -> float:
+	return bar.value
 
 func step(steps: float = 1.0) -> void:
 	set_value(bar.value + steps)
