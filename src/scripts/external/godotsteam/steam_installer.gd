@@ -33,7 +33,7 @@ func install() -> void:
 		gui.alert(download_err, "Failed to download Steam addon")
 		return
 		
-	install_existing()
+	await install_existing()
 
 func install_existing() -> void:
 	var gui = main.get_gui()
@@ -44,7 +44,7 @@ func install_existing() -> void:
 		gui.alert(verify_err, "Downloaded file is invalid")
 		return
 		
-	var unzip_err = unzip()
+	var unzip_err = await unzip()
 	
 	if unzip_err:
 		gui.alert(unzip_err, "Unpacking failed")
@@ -79,6 +79,9 @@ func download() -> String:
 	
 	var res = await http.request_completed
 	var code = res[1]
+	
+	if prog:
+		prog.queue_free()
 	
 	if downalod_id != current_id:
 		return "Cancelled"
@@ -136,7 +139,28 @@ func verify_download() -> String:
 	return ""
 
 func unzip() -> String:
-	for file_path in zip.get_files():
+	var files = zip.get_files()
+	
+	if not files:
+		return "ZIP is empty"
+	
+	var tree = get_tree()
+	
+	if not tree:
+		return "No scene tree"
+	
+	var prog = main.gui.progress("Unpacking...")
+	
+	prog.set_max(0)
+	for file_path in files:
+		if file_path.ends_with("/"):
+			continue
+			
+		prog.set_max(prog.get_max() + 1)
+	
+	for i in files.size():
+		var file_path = files[i]
+		
 		if file_path.ends_with("/"): # Current entry is a directory
 			continue
 		
@@ -149,12 +173,20 @@ func unzip() -> String:
 		var file = FileAccess.open(physical_path, FileAccess.WRITE)
 		
 		if not file:
+			prog.queue_free()
 			return "Unable to create file %s" % physical_path
 		
 		if not file.store_buffer(buf):
+			prog.queue_free()
 			return "Unable to write file: %s" % physical_path
 		
+		prog.add_value(1)
 		print(file_path)
+		
+		if i % 128:
+			await tree.process_frame
+	
+	prog.queue_free()
 	
 	return ""
 
