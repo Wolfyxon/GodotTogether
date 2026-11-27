@@ -73,7 +73,7 @@ func _update_ui() -> void:
 	dist += 0.05 # Extra distance to prevent division by 0
 
 	ui.visible = cam.is_position_in_frustum(position)
-	ui.position = cam.unproject_position(position) - ui.size / 2 - (Vector2(0, 200) / dist)
+	ui.position = cam.unproject_position(position) - ui.size / 2 - (Vector2(0, 150) / dist)
 
 
 func set_user(user: GDTUser) -> void:
