@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://n5k2mwbl3kuo" path="res://addons/GodotTogether/src/img/pumpkin.png" id="8_22oqj"]
 [ext_resource type="PackedScene" uid="uid://j86rllgmi5d0" path="res://addons/GodotTogether/src/scenes/GUI/serverSettings/serverSettings.tscn" id="8_jfeym"]
 [ext_resource type="Texture2D" uid="uid://b7n2dtrqvhajk" path="res://addons/GodotTogether/src/img/x.svg" id="9_4c4b3"]
+[ext_resource type="Texture2D" uid="uid://df2f54whvbm62" path="res://addons/GodotTogether/src/img/tree.png" id="9_v8njf"]
 [ext_resource type="Script" uid="uid://cru3xs4p5vwyg" path="res://addons/GodotTogether/src/scenes/GUI/user_ui_entry.gd" id="9_ymxdp"]
 [ext_resource type="Script" uid="uid://8b82hefxvycp" path="res://addons/GodotTogether/src/scenes/GUI/steam_lobbies.gd" id="12_1f85p"]
 [ext_resource type="Script" uid="uid://nvotlr3sr25h" path="res://addons/GodotTogether/src/scenes/GUI/disclaimer.gd" id="12_tagic"]
@@ -137,6 +138,19 @@ text = "Only supported on Godot stable"
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="tree" type="TextureRect" parent="mainMenu/main/sessionInit" unique_id=815621049]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -226.54999
+offset_right = 197.0
+grow_vertical = 0
+texture = ExtResource("9_v8njf")
+stretch_mode = 4
+
 [node name="pumpkin" type="TextureRect" parent="mainMenu/main/sessionInit" unique_id=279984578]
 visible = false
 texture_filter = 1
@@ -152,7 +166,6 @@ texture = ExtResource("8_22oqj")
 stretch_mode = 5
 
 [node name="pre" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=1491207414]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -240,6 +253,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="start" type="VBoxContainer" parent="mainMenu/main/sessionInit" unique_id=2132209178]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5

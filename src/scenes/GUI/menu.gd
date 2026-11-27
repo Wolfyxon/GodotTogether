@@ -33,6 +33,8 @@ func _ready() -> void:
 	
 	if main:
 		$sessionInit/pumpkin.visible = main.extras and main.extras.is_halloween()
+		$sessionInit/tree.visible = main.extras and main.extras.is_christmas()
+		
 		steam_setup.main = main
 		steam_lobbies.main = main
 		
