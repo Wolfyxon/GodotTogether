@@ -133,7 +133,7 @@ func _on_btn_progress_pressed() -> void:
 	
 	await tree.create_timer(1).timeout
 	
-	if prog and prog.is_inside_tree():
+	if prog and not prog.is_queued_for_deletion() and prog.is_inside_tree():
 		printerr("Progress window still active. Deleting.")
 		prog.queue_free()
 

@@ -71,7 +71,9 @@ func download() -> String:
 	print("Downloading %s into %s" % [DOWNLOAD_URL, DOWNLOAD_PATH])
 	
 	if init_err != OK:
-		prog.queue_free()
+		if prog and not prog.is_queued_for_deletion():
+			prog.queue_free()
+		
 		return "Failed to start request: %s" % error_string(init_err)
 	
 	var current_id = downalod_id + 1
@@ -80,7 +82,7 @@ func download() -> String:
 	var res = await http.request_completed
 	var code = res[1]
 	
-	if prog:
+	if prog and not prog.is_queued_for_deletion():
 		prog.queue_free()
 	
 	if downalod_id != current_id:
@@ -186,7 +188,9 @@ func unzip() -> String:
 		if i % 128:
 			await tree.process_frame
 	
+	await tree.process_frame
 	prog.queue_free()
+	await tree.process_frame
 	
 	return ""
 
