@@ -194,6 +194,14 @@ size_flags_horizontal = 4
 text = "Error"
 placeholder_text = "Your username..."
 
+[node name="steamUsername" type="LineEdit" parent="mainMenu/main/sessionInit/pre" unique_id=248939577]
+visible = false
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+placeholder_text = "< from Steam >"
+editable = false
+
 [node name="usernameError" type="Label" parent="mainMenu/main/sessionInit/pre" unique_id=493121542]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.26, 0.26, 1)
@@ -1312,6 +1320,7 @@ autostart = true
 [connection signal="pressed" from="mainMenu/main/topBar/settings" to="mainMenu/settings" method="popup"]
 [connection signal="pressed" from="mainMenu/main/topBar/devMenu" to="." method="open_dev_menu"]
 [connection signal="pressed" from="mainMenu/main/topBar/about" to="mainMenu/about" method="popup"]
+[connection signal="item_selected" from="mainMenu/main/sessionInit/pre/method/dropdown" to="mainMenu/main" method="_update_connection_method"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/join" to="mainMenu/main" method="_on_join_pressed"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main" method="session_start_menu"]
 [connection signal="pressed" from="mainMenu/main/sessionInit/pre/host" to="mainMenu/main/sessionInit/start/host" method="show"]

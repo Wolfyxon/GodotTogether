@@ -14,6 +14,7 @@ var gui: GodotTogetherGUI
 @onready var con_method_input = $sessionInit/pre/method/dropdown
 
 @onready var username_input = $sessionInit/pre/username
+@onready var steam_username_lbl = $sessionInit/pre/steamUsername
 @onready var session_init_cover = $sessionInit/cover
 @onready var session_cancel = $sessionInit/cover/vbox/btnCancel
 
@@ -50,6 +51,7 @@ func _ready() -> void:
 		main.steam.lobby_join_request.connect(join_steam)
 		steam_lobbies.lobby_join_request.connect(join_steam)
 		main.get_settings().make_setting_control($sessionInit/pre/method/dropdown, "last_connection/method")
+		_update_connection_method(con_method_input.selected)
 
 	if visuals_available():
 		set_session_init_cover()
@@ -321,6 +323,7 @@ func main_menu() -> void:
 	
 	set_session_init_cover()
 	host_settings.load_settings()
+	_update_connection_method(con_method_input.selected)
 
 func session_start_menu(tab: String = "") -> bool:
 	set_session_init_cover()
@@ -438,3 +441,16 @@ func _on_join_pressed() -> void:
 		steam_lobbies.load_lobbies()
 		$sessionInit/start/join/steam.show()
 		$sessionInit/start/join/enet.hide()
+
+func _update_connection_method(index: int) -> void:
+	if not main: return
+	
+	if index == GodotTogether.ConnectionMethod.STEAM:
+		username_input.visible = false
+		steam_username_lbl.visible = true
+		
+		if main.steam.is_ready():
+			steam_username_lbl.text = main.steam.get_local_username()
+	else:
+		username_input.visible = true
+		steam_username_lbl.visible = false
