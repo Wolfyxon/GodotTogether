@@ -198,6 +198,37 @@ func is_peer_connected(truly_connected := false) -> bool:
 func is_steam() -> bool:
 	return peer.get_class() == "SteamPacketPeer"
 
+func get_steam_id() -> int:
+	if not is_steam():
+		GDTUtils.printerr_stack("called get_steam_id() on a non-Steam user")
+		return -1
+		
+	return peer.get_steam_id()
+
+func get_steam_username() -> String:
+	if not is_steam():
+		GDTUtils.printerr_stack("Called get_steam_username() on a non-Steam user")
+		return ""
+	
+	var steam_id = get_steam_id()
+	var placeholder = "<Steam user %s>" % steam_id
+	
+	if steam_id <= 0:
+		GDTUtils.printerr_stack("get_steam_id() failed")
+		return placeholder
+	
+	if not main:
+		GDTUtils.printerr_stack("main is null")
+		return placeholder
+	
+	var steam_name = main.steam.get_username(steam_id)
+	
+	if not steam_name:
+		GDTUtils.printerr_stack("GDTSteam.get_username() failed")
+		return placeholder
+	
+	return steam_name
+
 func _is_enet_connected(truly_connected := false) -> bool:
 	var state = peer.get_state()
 	

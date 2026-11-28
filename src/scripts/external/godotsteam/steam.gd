@@ -303,6 +303,12 @@ func get_local_username() -> String:
 	
 	return steam.getFriendPersonaName(steam.current_steam_id)
 
+func get_username(steam_id: int) -> String:
+	var steam = get_singleton()
+	if not steam: return ""
+	
+	return steam.getFriendPersonaName(steam_id)
+
 func is_ready() -> bool:
 	return last_status == SetupStatus.OK
 

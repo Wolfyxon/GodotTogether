@@ -114,7 +114,11 @@ func close_connection() -> void:
 func create_server_user() -> GDTUser:
 	var user = GDTUser.new(1, null)
 	
-	user.name = main.settings.get_setting("username")
+	if main.connection_method == GodotTogether.ConnectionMethod.STEAM:
+		user.name = main.steam.get_local_username()
+	else:
+		user.name = main.settings.get_setting("username")
+	
 	user.type = GDTUser.Type.HOST
 	user.main = main
 	user.id = 1
@@ -300,6 +304,12 @@ func _c2s_receive_join_data(data_dict: Dictionary) -> void:
 		printerr("RPC checksum mismatch. %s != %s" % [data.rpc_checksum, rpc_checksum])
 		user.kick(GDTUser.DisconnectReason.RPC_CHECKSUM_MISMATCH)
 		return
+	
+	if main.connection_method == GodotTogether.ConnectionMethod.STEAM:
+		var steam_name = user.get_steam_username()
+		
+		if steam_name:
+			data.username = steam_name
 	
 	var username_err = GDTValidator.validate_username(data.username)
 	
