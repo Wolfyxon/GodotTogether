@@ -19,6 +19,7 @@ script = ExtResource("1_kun10")
 
 [node name="xmasHat" type="MeshInstance3D" parent="." unique_id=103089207]
 transform = Transform3D(-0.13179807, 0, 0.099268675, 0, 0.165, 0, -0.099268675, 0, -0.13179807, -0.00020503998, 0.12990111, 0.008098826)
+visible = false
 mesh = ExtResource("2_mcnwv")
 
 [node name="model" type="Node3D" parent="." unique_id=1149882133]
